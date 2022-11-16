@@ -1,12 +1,14 @@
 <p align="center">
-    <a href="https://github.com/yiisoft" target="_blank">
+    <a href="https://https://github.com/shiguangxiaotou3/wordpress" target="_blank">
         <img src="https://www.shiguangxiaotou.com/favicon.ico" height="100px">
     </a>
-    <h1 align="center">wordpress plugins CRUD </h1>
+    <h1 align="center">wordpress plugin CRUD for MVC </h1>
     <br>
 </p>
 
 ### shiguangxiaotou/crud 是一个基于wordpress的MVC插件
+ 这是一个基于yii2的MVC的插件框架,部分功能可能有待完善.
+ 对于习惯了面向对象的开发模式开发者,很不习惯wordpress面向函数,面向勾子的编程模式。那么crud能解决你的痛点
 ~~~
 microsoft/bingads
 crud                        根
@@ -32,12 +34,6 @@ crud                        根
   |-LICENSE.md
 ~~~
 
-~~~sh
-sudo ln -s /etc/apache2/sites-available/wp.shiguangxiaotou.com.conf /etc/apache2/sites-enabled/wp.shiguangxiaotou.com.conf
-composer config --global --auth github-oauth.github.com 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
-~~~
-
-
 ~~~php
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -55,7 +51,4 @@ composer config --global --auth github-oauth.github.com ghp_RewZG8zfPM2ahLtpNwda
 </html>
 <?php $this->endPage() ?>
 ~~~
-
-~~~
-   1. Bing ads参数：
 
