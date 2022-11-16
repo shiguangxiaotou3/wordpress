@@ -38,8 +38,8 @@ class Dns extends Component
 {
     public $_client;
     public $lang = "zh_CN";
-    public $accessKeyId = "LTAIFQDQqwnWYQL2";
-    public $accessKeySecret = "ivWz9rxvrGNJzkSRrlbLJteHltOtve";
+    public $accessKeyId = "";
+    public $accessKeySecret = "";
 
 
     /**

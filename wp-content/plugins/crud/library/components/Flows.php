@@ -12,8 +12,8 @@ use yii\base\Component;
  */
 class Flows extends Component{
 
-    public $apiKey="8abe88fa0ba1e343a7749310eddac8ed";
-    public $domain="https://go.isenmy.com/admin_api/v1/";
+    public $apiKey="";
+    public $domain="";
     private $ch;
 
     public function __construct($config){
