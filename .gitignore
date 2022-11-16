@@ -1,6 +1,5 @@
 wp-admin/*
 wp-includes/*
-*/.DS_Store
 .idea
 index.php
 config.md
@@ -18,3 +17,5 @@ wp-settings.php
 wp-signup.php
 wp-trackback.php
 xmlrpc.php
+server.php
+direct
