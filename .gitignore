@@ -1,6 +1,9 @@
 wp-admin/*
 wp-includes/*
+*/.DS_Store
 .idea
+index.php
+config.md
 wp-activate.php
 wp-blog-header.php
 wp-comments-post.php
