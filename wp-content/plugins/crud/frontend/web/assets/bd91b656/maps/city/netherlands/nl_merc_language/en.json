@@ -1,0 +1,17 @@
+{
+    "insets":{"width":900,"top":0,"height":1071.5366309598676,"bbox":[{"y":-7090498.896693508,"x":373044.2486137667},{"y":-6580094.805296535,"x":801740.4489907753}],"left":0},
+    "names":[
+         {"code":"NL-OV","name":"Overijssel"},
+         {"code":"NL-FR","name":"Friesland"},
+         {"code":"NL-UT","name":"Utrecht"},
+         {"code":"NL-GE","name":"Gelderland"},
+         {"code":"NL-FL","name":"Flevoland"},
+         {"code":"NL-NH","name":"Noord-Holland"},
+         {"code":"NL-ZE","name":"Zeeland"},
+         {"code":"NL-ZH","name":"Zuid-Holland"},
+         {"code":"NL-GR","name":"Groningen"},
+         {"code":"NL-DR","name":"Drenthe"},
+         {"code":"NL-NB","name":"Noord-Brabant"},
+         {"code":"NL-LI","name":"Limburg"}
+    ] 
+}

@@ -1,0 +1,27 @@
+{
+    "insets":{"width":900,"top":0,"height":1452.0211302823068,"bbox":[{"y":-9262763.575792028,"x":1223668.3208382255},{"y":-6888448.113700481,"x":2695330.0420880616}],"left":0},
+    "names":[
+         {"code":"SE-O","name":"Västra Götaland"},
+         {"code":"SE-N","name":"Halland"},
+         {"code":"SE-M","name":"Skåne"},
+         {"code":"SE-K","name":"Blekinge"},
+         {"code":"SE-I","name":"Gotland"},
+         {"code":"SE-H","name":"Kalmar"},
+         {"code":"SE-G","name":"Kronoberg"},
+         {"code":"SE-F","name":"Jönköping"},
+         {"code":"SE-E","name":"Östergötland"},
+         {"code":"SE-D","name":"Södermanland"},
+         {"code":"SE-C","name":"Uppsala"},
+         {"code":"SE-Z","name":"Jämtland"},
+         {"code":"SE-Y","name":"Västernorrland"},
+         {"code":"SE-X","name":"Gävleborg"},
+         {"code":"SE-W","name":"Dalarna"},
+         {"code":"SE-BD","name":"Norrbotten"},
+         {"code":"SE-T","name":"Orebro"},
+         {"code":"SE-S","name":"Värmland"},
+         {"code":"SE-U","name":"Västmanland"},
+         {"code":"SE-AC","name":"Västerbotten"},
+         {"code":"SE-AB","name":"Stockholm"},
+         {"code":"SE-","name":""}
+    ] 
+}

@@ -1,0 +1,21 @@
+{
+    "insets":{"width":900,"top":0,"height":1223.9059488513599,"bbox":[{"y":-7378296.907634238,"x":651826.6317576179},{"y":-5989477.065138949,"x":1673096.1659230748}],"left":0},
+    "names":[
+         {"code":"DE-BE","name":"Berlin"},
+         {"code":"DE-ST","name":"Sachsen-Anhalt"},
+         {"code":"DE-RP","name":"Rheinland-Pfalz"},
+         {"code":"DE-BB","name":"Brandenburg"},
+         {"code":"DE-NI","name":"Niedersachsen"},
+         {"code":"DE-MV","name":"Mecklenburg-Vorpommern"},
+         {"code":"DE-TH","name":"Thüringen"},
+         {"code":"DE-BW","name":"Baden-Württemberg"},
+         {"code":"DE-HH","name":"Hamburg"},
+         {"code":"DE-SH","name":"Schleswig-Holstein"},
+         {"code":"DE-NW","name":"Nordrhein-Westfalen"},
+         {"code":"DE-SN","name":"Sachsen"},
+         {"code":"DE-HB","name":"Bremen"},
+         {"code":"DE-SL","name":"Saarland"},
+         {"code":"DE-BY","name":"Bayern"},
+         {"code":"DE-HE","name":"Hessen"}
+    ] 
+}

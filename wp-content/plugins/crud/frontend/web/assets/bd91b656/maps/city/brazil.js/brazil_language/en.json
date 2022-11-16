@@ -1,0 +1,32 @@
+{
+    "insets":[],
+    "names":[
+         {"code":"ro","name":"RO"},
+         {"code":"ac","name":"AC"},
+         {"code":"am","name":"AM"},
+         {"code":"rr","name":"RR"},
+         {"code":"ap","name":"AP"},
+         {"code":"to","name":"TO"},
+         {"code":"mt","name":"MT"},
+         {"code":"go","name":"GO"},
+         {"code":"ms","name":"MS"},
+         {"code":"mg","name":"MG"},
+         {"code":"pr","name":"PR"},
+         {"code":"rs","name":"RS"},
+         {"code":"ba","name":"BA"},
+         {"code":"pi","name":"PI"},
+         {"code":"ce","name":"CE"},
+         {"code":"rn","name":"RN"},
+         {"code":"al","name":"AL"},
+         {"code":"se","name":"SE"},
+         {"code":"df","name":"DF"},
+         {"code":"pe","name":"PE"},
+         {"code":"ma","name":"MA"},
+         {"code":"pa","name":"PA"},
+         {"code":"sp","name":"SP"},
+         {"code":"rj","name":"RJ"},
+         {"code":"es","name":"ES"},
+         {"code":"sc","name":"SC"},
+         {"code":"pb","name":"PB"}
+    ] 
+}

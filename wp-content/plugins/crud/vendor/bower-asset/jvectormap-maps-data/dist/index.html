@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./../dist/css/jquery-jvectormap.css">
+    <style>
+        body{
+            margin: 0 0;padding: 0 0;
+            background-color: rgb(220,220,220);
+        }
+       .app{
+           margin: 20px auto 0 auto;
+           width: 960px;
+           padding:  15px;
+           background-color: white;
+       }
+       .map{
+           margin:5px;
+           background-color: #4A410D;
+       }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <h2>jvectorMap 地理数据包整理集合</h2>
+        <div style="width: 100%;display: flex" >
+            <div class="map" id="world" style="width: 50%;height: 300px"></div>
+            <div class="map" id="cn" style="width: 50%;height: 300px"></div>
+        </div>
+        <p>中国地区一天添加台湾，放心使用</p>
+    </div>
+</body>
+<script src="./../node_modules/jquery/dist/jquery.js"></script>
+<script src="./js/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="./js/jquery-mousewheel.js"></script>
+<!-- Maps Data  -->
+<script src="./maps/city/world/world-merc.js"></script>
+<script src="./maps/region/cn/cn_merc.js"></script>
+<script>
+    jQuery(function ($) {
+        let visitorsData = {
+            US: 398, GB: 320, RU: 3000,
+            SA: 400, CA: 1000, IN: 800
+        };
+        $('#world').vectorMap({
+            map: 'world-merc',
+            backgroundColor: 'transparent',
+            regionStyle: {
+                initial: {
+                    fill: '#e4e4e4',
+                    'fill-opacity': 1,
+                    stroke: 'none',
+                    'stroke-width': 0,
+                    'stroke-opacity': 1
+                }
+            },
+            series: {
+                regions: [
+                    {
+                        values: visitorsData,
+                        scale: [ '#ebf4f9','#92c1dc'],
+                        normalizeFunction: 'polynomial'
+                    }
+                ]
+            },
+            onRegionLabelShow: function (e, el, code) {
+                if (typeof visitorsData[code] != 'undefined')
+                    el.html(el.html() + ': ' + visitorsData[code] + ' new visitors');
+            }
+        });
+        let cnData = {
+            "CN-42": 10000, "CN-37": 320, "CN-65": 3000,
+        };
+        $('#cn').vectorMap({
+            map: 'cn_merc',
+            backgroundColor: 'transparent',
+            regionStyle: {
+                initial: {
+                    fill: '#e4e4e4',
+                    'fill-opacity': 1,
+                    stroke: 'none',
+                    'stroke-width': 0,
+                    'stroke-opacity': 1
+                }
+            },
+            series: {
+                regions: [
+                    {
+                        values: cnData,
+                        scale: [ '#ebf4f9','#92c1dc'],
+                        normalizeFunction: 'polynomial'
+                    }
+                ]
+            },
+            onRegionLabelShow: function (e, el, code) {
+                if (typeof visitorsData[code] != 'undefined')
+                    el.html(el.html() + ': ' + visitorsData[code] + ' new visitors');
+            }
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,19 @@
+{
+    "insets":{"width":900,"top":0,"height":642.7998068515678,"bbox":[{"y":-2133282.836999871,"x":-7472412.761398178},{"y":7317055.261580011,"x":5759240.699079444}],"left":0},
+    "names":[
+         {"code":"GU","name":"Guam"},
+         {"code":"PW","name":"Palau"},
+         {"code":"KI","name":"Kiribati"},
+         {"code":"NC","name":"New Caledonia"},
+         {"code":"NU","name":"Niue"},
+         {"code":"NZ","name":"New Zealand"},
+         {"code":"AU","name":"Australia"},
+         {"code":"PG","name":"Papua New Guinea"},
+         {"code":"SB","name":"Solomon Is."},
+         {"code":"PF","name":"Fr. Polynesia"},
+         {"code":"FJ","name":"Fiji"},
+         {"code":"FM","name":"Micronesia"},
+         {"code":"WS","name":"Samoa"},
+         {"code":"VU","name":"Vanuatu"}
+    ] 
+}

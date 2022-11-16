@@ -1,0 +1,14 @@
+{
+    "insets":{"width":900,"top":0,"height":1099.3708327378595,"bbox":[{"y":1033622.6387222832,"x":12576510.61983689},{"y":7317287.234959443,"x":17720633.028951164}],"left":0},
+    "names":[
+         {"code":"AU-ACT","name":"Australian Capital Territory"},
+         {"code":"AU-WA","name":"Western Australia"},
+         {"code":"AU-TAS","name":"Tasmania"},
+         {"code":"AU-","name":"Jervis Bay Territory"},
+         {"code":"AU-VIC","name":"Victoria"},
+         {"code":"AU-NT","name":"Northern Territory"},
+         {"code":"AU-QLD","name":"Queensland"},
+         {"code":"AU-SA","name":"South Australia"},
+         {"code":"AU-NSW","name":"New South Wales"}
+    ] 
+}

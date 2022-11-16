@@ -1,0 +1,13 @@
+{
+    "insets":{"width":900,"top":0,"height":344.85258690118116,"bbox":[{"y":-12178456.231950931,"x":903208.6719108557},{"y":-4863989.504817909,"x":19992582.811667882}],"left":0},
+    "names":[
+         {"code":"RU-NC","name":"North Caucasian Federal District"},
+         {"code":"RU-VO","name":"Volga Federal District"},
+         {"code":"RU-CE","name":"Central Federal District"},
+         {"code":"RU-SI","name":"Siberian Federal District"},
+         {"code":"RU-NW","name":"Northwestern Federal District"},
+         {"code":"RU-SO","name":"Southern Federal District"},
+         {"code":"RU-UR","name":"Ural Federal District"},
+         {"code":"RU-FE","name":"Far Eastern Federal District"}
+    ] 
+}

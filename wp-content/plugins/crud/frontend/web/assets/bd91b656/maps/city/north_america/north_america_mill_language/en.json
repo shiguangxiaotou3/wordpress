@@ -1,0 +1,25 @@
+{
+    "insets":{"width":900,"top":0,"height":543.9752077221104,"bbox":[{"y":-12658749.920443352,"x":-19602744.043810368},{"y":-805507.5274078546,"x":8293.375346519799}],"left":0},
+    "names":[
+         {"code":"PR","name":"Puerto Rico"},
+         {"code":"DO","name":"Dominican Rep."},
+         {"code":"DM","name":"Dominica"},
+         {"code":"LC","name":"Saint Lucia"},
+         {"code":"NI","name":"Nicaragua"},
+         {"code":"PA","name":"Panama"},
+         {"code":"CA","name":"Canada"},
+         {"code":"SV","name":"El Salvador"},
+         {"code":"HT","name":"Haiti"},
+         {"code":"TT","name":"Trinidad and Tobago"},
+         {"code":"JM","name":"Jamaica"},
+         {"code":"GT","name":"Guatemala"},
+         {"code":"HN","name":"Honduras"},
+         {"code":"BZ","name":"Belize"},
+         {"code":"BS","name":"Bahamas"},
+         {"code":"CR","name":"Costa Rica"},
+         {"code":"US","name":"United States"},
+         {"code":"GL","name":"Greenland"},
+         {"code":"MX","name":"Mexico"},
+         {"code":"CU","name":"Cuba"}
+    ] 
+}

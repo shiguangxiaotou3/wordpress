@@ -1,0 +1,31 @@
+{
+    "insets":{"width":900,"top":0,"height":1011.2721004482331,"bbox":[{"y":-1771245.8301074507,"x":-8174009.062545},{"y":-72319.67910333326,"x":-6662018.832392322}],"left":0},
+    "names":[
+         {"code":"VE-","name":""},
+         {"code":"VE-L","name":"Mérida"},
+         {"code":"VE-M","name":"Miranda"},
+         {"code":"VE-N","name":"Monagas"},
+         {"code":"VE-O","name":"Nueva Esparta"},
+         {"code":"VE-H","name":"Cojedes"},
+         {"code":"VE-I","name":"Falcón"},
+         {"code":"VE-J","name":"Guárico"},
+         {"code":"VE-K","name":"Lara"},
+         {"code":"VE-D","name":"Aragua"},
+         {"code":"VE-E","name":"Barinas"},
+         {"code":"VE-F","name":"Bolívar"},
+         {"code":"VE-G","name":"Carabobo"},
+         {"code":"VE-A","name":"Distrito Capital"},
+         {"code":"VE-B","name":"Anzoátegui"},
+         {"code":"VE-C","name":"Apure"},
+         {"code":"VE-X","name":"Vargas"},
+         {"code":"VE-Y","name":"Delta Amacuro"},
+         {"code":"VE-Z","name":"Amazonas"},
+         {"code":"VE-T","name":"Trujillo"},
+         {"code":"VE-U","name":"Yaracuy"},
+         {"code":"VE-V","name":"Zulia"},
+         {"code":"VE-W","name":"Dependencias Federales"},
+         {"code":"VE-P","name":"Portuguesa"},
+         {"code":"VE-R","name":"Sucre"},
+         {"code":"VE-S","name":"Táchira"}
+    ] 
+}

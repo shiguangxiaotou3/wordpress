@@ -1,0 +1,188 @@
+[12-Nov-2022 23:19:16 Asia/Shanghai] PHP Fatal error:  Uncaught yii\base\UnknownClassException: Unable to find 'crud\backend\web\App' in file: /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php. Namespace missing? in /Library/WebServer/Documents/wp/wp-content/plugins/crud/vendor/yiisoft/yii2/BaseYii.php:296
+Stack trace:
+#0 [internal function]: yii\BaseYii::autoload('crud\\backend\\we...')
+#1 /Library/WebServer/Documents/wp/wp-content/plugins/crud/crud.php(47): spl_autoload_call('crud\\backend\\we...')
+#2 /Library/WebServer/Documents/wp/wp-settings.php(428): include_once('/Library/WebSer...')
+#3 /Library/WebServer/Documents/wp/wp-config.php(98): require_once('/Library/WebSer...')
+#4 /Library/WebServer/Documents/wp/wp-load.php(50): require_once('/Library/WebSer...')
+#5 /Library/WebServer/Documents/wp/wp-blog-header.php(13): require_once('/Library/WebSer...')
+#6 /Library/WebServer/Documents/wp/index.php(17): require('/Library/WebSer...')
+#7 {main}
+  thrown in /Library/WebServer/Documents/wp/wp-content/plugins/crud/vendor/yiisoft/yii2/BaseYii.php on line 296
+[12-Nov-2022 23:35:17 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'crud\common\model\Files' not found in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php:8
+Stack trace:
+#0 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/main.php(7): require()
+#1 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php(38): require('/Library/WebSer...')
+#2 /Library/WebServer/Documents/wp/wp-content/plugins/crud/crud.php(47): backend\web\App->__construct()
+#3 /Library/WebServer/Documents/wp/wp-settings.php(428): include_once('/Library/WebSer...')
+#4 /Library/WebServer/Documents/wp/wp-config.php(98): require_once('/Library/WebSer...')
+#5 /Library/WebServer/Documents/wp/wp-load.php(50): require_once('/Library/WebSer...')
+#6 /Library/WebServer/Documents/wp/wp-blog-header.php(13): require_once('/Library/WebSer...')
+#7 /Library/WebServer/Documents/wp/index.php(17): require('/Library/WebSer...')
+#8 {main}
+  thrown in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php on line 8
+[12-Nov-2022 23:35:17 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'crud\common\model\Files' not found in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php:8
+Stack trace:
+#0 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/main.php(7): require()
+#1 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php(38): require('/Library/WebSer...')
+#2 /Library/WebServer/Documents/wp/wp-content/plugins/crud/crud.php(47): backend\web\App->__construct()
+#3 /Library/WebServer/Documents/wp/wp-settings.php(428): include_once('/Library/WebSer...')
+#4 /Library/WebServer/Documents/wp/wp-config.php(98): require_once('/Library/WebSer...')
+#5 /Library/WebServer/Documents/wp/wp-load.php(50): require_once('/Library/WebSer...')
+#6 /Library/WebServer/Documents/wp/wp-blog-header.php(13): require_once('/Library/WebSer...')
+#7 /Library/WebServer/Documents/wp/index.php(17): require('/Library/WebSer...')
+#8 {main}
+  thrown in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php on line 8
+[12-Nov-2022 23:35:17 Asia/Shanghai] PHP Notice:  函数 is_embed 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:35:17 Asia/Shanghai] PHP Notice:  函数 is_search 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:36:04 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'crud\model\Files' not found in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php:8
+Stack trace:
+#0 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/main.php(7): require()
+#1 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php(38): require('/Library/WebSer...')
+#2 /Library/WebServer/Documents/wp/wp-content/plugins/crud/crud.php(47): backend\web\App->__construct()
+#3 /Library/WebServer/Documents/wp/wp-settings.php(428): include_once('/Library/WebSer...')
+#4 /Library/WebServer/Documents/wp/wp-config.php(98): require_once('/Library/WebSer...')
+#5 /Library/WebServer/Documents/wp/wp-load.php(50): require_once('/Library/WebSer...')
+#6 /Library/WebServer/Documents/wp/wp-blog-header.php(13): require_once('/Library/WebSer...')
+#7 /Library/WebServer/Documents/wp/index.php(17): require('/Library/WebSer...')
+#8 {main}
+  thrown in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php on line 8
+[12-Nov-2022 23:36:04 Asia/Shanghai] PHP Notice:  函数 is_embed 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:36:04 Asia/Shanghai] PHP Notice:  函数 is_search 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:36:04 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'crud\model\Files' not found in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php:8
+Stack trace:
+#0 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/main.php(7): require()
+#1 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php(38): require('/Library/WebSer...')
+#2 /Library/WebServer/Documents/wp/wp-content/plugins/crud/crud.php(47): backend\web\App->__construct()
+#3 /Library/WebServer/Documents/wp/wp-settings.php(428): include_once('/Library/WebSer...')
+#4 /Library/WebServer/Documents/wp/wp-config.php(98): require_once('/Library/WebSer...')
+#5 /Library/WebServer/Documents/wp/wp-load.php(50): require_once('/Library/WebSer...')
+#6 /Library/WebServer/Documents/wp/wp-blog-header.php(13): require_once('/Library/WebSer...')
+#7 /Library/WebServer/Documents/wp/index.php(17): require('/Library/WebSer...')
+#8 {main}
+  thrown in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php on line 8
+[12-Nov-2022 23:36:04 Asia/Shanghai] PHP Notice:  函数 is_embed 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:36:04 Asia/Shanghai] PHP Notice:  函数 is_search 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:37:09 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'crud\model\Files' not found in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php:8
+Stack trace:
+#0 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/main.php(7): require()
+#1 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php(38): require('/Library/WebSer...')
+#2 /Library/WebServer/Documents/wp/wp-content/plugins/crud/crud.php(47): backend\web\App->__construct()
+#3 /Library/WebServer/Documents/wp/wp-settings.php(428): include_once('/Library/WebSer...')
+#4 /Library/WebServer/Documents/wp/wp-config.php(98): require_once('/Library/WebSer...')
+#5 /Library/WebServer/Documents/wp/wp-load.php(50): require_once('/Library/WebSer...')
+#6 /Library/WebServer/Documents/wp/wp-blog-header.php(13): require_once('/Library/WebSer...')
+#7 /Library/WebServer/Documents/wp/index.php(17): require('/Library/WebSer...')
+#8 {main}
+  thrown in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php on line 8
+[12-Nov-2022 23:37:09 Asia/Shanghai] PHP Notice:  函数 is_embed 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:37:09 Asia/Shanghai] PHP Notice:  函数 is_search 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:37:09 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'crud\model\Files' not found in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php:8
+Stack trace:
+#0 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/main.php(7): require()
+#1 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php(38): require('/Library/WebSer...')
+#2 /Library/WebServer/Documents/wp/wp-content/plugins/crud/crud.php(47): backend\web\App->__construct()
+#3 /Library/WebServer/Documents/wp/wp-settings.php(428): include_once('/Library/WebSer...')
+#4 /Library/WebServer/Documents/wp/wp-config.php(98): require_once('/Library/WebSer...')
+#5 /Library/WebServer/Documents/wp/wp-load.php(50): require_once('/Library/WebSer...')
+#6 /Library/WebServer/Documents/wp/wp-blog-header.php(13): require_once('/Library/WebSer...')
+#7 /Library/WebServer/Documents/wp/index.php(17): require('/Library/WebSer...')
+#8 {main}
+  thrown in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php on line 8
+[12-Nov-2022 23:37:10 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'crud\model\Files' not found in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php:8
+Stack trace:
+#0 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/main.php(7): require()
+#1 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php(38): require('/Library/WebSer...')
+#2 /Library/WebServer/Documents/wp/wp-content/plugins/crud/crud.php(47): backend\web\App->__construct()
+#3 /Library/WebServer/Documents/wp/wp-settings.php(428): include_once('/Library/WebSer...')
+#4 /Library/WebServer/Documents/wp/wp-config.php(98): require_once('/Library/WebSer...')
+#5 /Library/WebServer/Documents/wp/wp-load.php(50): require_once('/Library/WebSer...')
+#6 /Library/WebServer/Documents/wp/wp-blog-header.php(13): require_once('/Library/WebSer...')
+#7 /Library/WebServer/Documents/wp/index.php(17): require('/Library/WebSer...')
+#8 {main}
+  thrown in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php on line 8
+[12-Nov-2022 23:37:10 Asia/Shanghai] PHP Notice:  函数 is_embed 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:37:10 Asia/Shanghai] PHP Notice:  函数 is_search 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:37:11 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'crud\model\Files' not found in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php:8
+Stack trace:
+#0 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/main.php(7): require()
+#1 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php(38): require('/Library/WebSer...')
+#2 /Library/WebServer/Documents/wp/wp-content/plugins/crud/crud.php(47): backend\web\App->__construct()
+#3 /Library/WebServer/Documents/wp/wp-settings.php(428): include_once('/Library/WebSer...')
+#4 /Library/WebServer/Documents/wp/wp-config.php(98): require_once('/Library/WebSer...')
+#5 /Library/WebServer/Documents/wp/wp-load.php(50): require_once('/Library/WebSer...')
+#6 /Library/WebServer/Documents/wp/wp-blog-header.php(13): require_once('/Library/WebSer...')
+#7 /Library/WebServer/Documents/wp/index.php(17): require('/Library/WebSer...')
+#8 {main}
+  thrown in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php on line 8
+[12-Nov-2022 23:37:11 Asia/Shanghai] PHP Notice:  函数 is_embed 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:37:11 Asia/Shanghai] PHP Notice:  函数 is_search 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:40:45 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'crud\model\Files' not found in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php:8
+Stack trace:
+#0 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/main.php(7): require()
+#1 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php(38): require('/Library/WebSer...')
+#2 /Library/WebServer/Documents/wp/wp-content/plugins/crud/crud.php(47): backend\web\App->__construct()
+#3 /Library/WebServer/Documents/wp/wp-settings.php(428): include_once('/Library/WebSer...')
+#4 /Library/WebServer/Documents/wp/wp-config.php(98): require_once('/Library/WebSer...')
+#5 /Library/WebServer/Documents/wp/wp-load.php(50): require_once('/Library/WebSer...')
+#6 /Library/WebServer/Documents/wp/wp-blog-header.php(13): require_once('/Library/WebSer...')
+#7 /Library/WebServer/Documents/wp/index.php(17): require('/Library/WebSer...')
+#8 {main}
+  thrown in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php on line 8
+[12-Nov-2022 23:40:45 Asia/Shanghai] PHP Notice:  函数 is_embed 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:40:45 Asia/Shanghai] PHP Notice:  函数 is_search 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:40:45 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'crud\model\Files' not found in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php:8
+Stack trace:
+#0 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/main.php(7): require()
+#1 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php(38): require('/Library/WebSer...')
+#2 /Library/WebServer/Documents/wp/wp-content/plugins/crud/crud.php(47): backend\web\App->__construct()
+#3 /Library/WebServer/Documents/wp/wp-settings.php(428): include_once('/Library/WebSer...')
+#4 /Library/WebServer/Documents/wp/wp-config.php(98): require_once('/Library/WebSer...')
+#5 /Library/WebServer/Documents/wp/wp-load.php(50): require_once('/Library/WebSer...')
+#6 /Library/WebServer/Documents/wp/wp-blog-header.php(13): require_once('/Library/WebSer...')
+#7 /Library/WebServer/Documents/wp/index.php(17): require('/Library/WebSer...')
+#8 {main}
+  thrown in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php on line 8
+[12-Nov-2022 23:40:45 Asia/Shanghai] PHP Notice:  函数 is_embed 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:40:45 Asia/Shanghai] PHP Notice:  函数 is_search 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:40:47 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'crud\model\Files' not found in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php:8
+Stack trace:
+#0 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/main.php(7): require()
+#1 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php(38): require('/Library/WebSer...')
+#2 /Library/WebServer/Documents/wp/wp-content/plugins/crud/crud.php(47): backend\web\App->__construct()
+#3 /Library/WebServer/Documents/wp/wp-settings.php(428): include_once('/Library/WebSer...')
+#4 /Library/WebServer/Documents/wp/wp-config.php(98): require_once('/Library/WebSer...')
+#5 /Library/WebServer/Documents/wp/wp-load.php(50): require_once('/Library/WebSer...')
+#6 /Library/WebServer/Documents/wp/wp-blog-header.php(13): require_once('/Library/WebSer...')
+#7 /Library/WebServer/Documents/wp/index.php(17): require('/Library/WebSer...')
+#8 {main}
+  thrown in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php on line 8
+[12-Nov-2022 23:40:47 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'crud\model\Files' not found in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php:8
+Stack trace:
+#0 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/main.php(7): require()
+#1 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php(38): require('/Library/WebSer...')
+#2 /Library/WebServer/Documents/wp/wp-content/plugins/crud/crud.php(47): backend\web\App->__construct()
+#3 /Library/WebServer/Documents/wp/wp-settings.php(428): include_once('/Library/WebSer...')
+#4 /Library/WebServer/Documents/wp/wp-config.php(98): require_once('/Library/WebSer...')
+#5 /Library/WebServer/Documents/wp/wp-load.php(50): require_once('/Library/WebSer...')
+#6 /Library/WebServer/Documents/wp/wp-blog-header.php(13): require_once('/Library/WebSer...')
+#7 /Library/WebServer/Documents/wp/index.php(17): require('/Library/WebSer...')
+#8 {main}
+  thrown in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php on line 8
+[12-Nov-2022 23:40:47 Asia/Shanghai] PHP Notice:  函数 is_embed 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[12-Nov-2022 23:40:47 Asia/Shanghai] PHP Notice:  函数 is_search 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[13-Nov-2022 21:49:43 UTC] PHP Fatal error:  Cannot redeclare is_serialized() (previously declared in /Library/WebServer/Documents/wp/wp-includes/functions.php:669) in /Library/WebServer/Documents/wp/wp-content/plugins/crud/library/function.php on line 124
+[15-Nov-2022 05:11:11 Asia/Shanghai] PHP Notice:  函数 is_embed 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[15-Nov-2022 05:11:11 Asia/Shanghai] PHP Notice:  函数 is_search 的调用方法<strong>不正确</strong>。 条件标签在运行查询之前使用是无效的。这样做的话，返回值只会为false。 请查阅<a href="https://wordpress.org/support/article/debugging-in-wordpress/">调试WordPress</a>来获取更多信息。 （这个消息是在3.1.0版本添加的。） in /Library/WebServer/Documents/wp/wp-includes/functions.php on line 5833
+[15-Nov-2022 05:11:11 Asia/Shanghai] PHP Fatal error:  Uncaught Error: Class 'crud\model\Files' not found in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php:8
+Stack trace:
+#0 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/main.php(7): require()
+#1 /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php(39): require('/Library/WebSer...')
+#2 /Library/WebServer/Documents/wp/wp-content/plugins/crud/crud.php(47): backend\web\App->__construct()
+#3 /Library/WebServer/Documents/wp/wp-settings.php(428): include_once('/Library/WebSer...')
+#4 /Library/WebServer/Documents/wp/wp-config.php(98): require_once('/Library/WebSer...')
+#5 /Library/WebServer/Documents/wp/wp-load.php(50): require_once('/Library/WebSer...')
+#6 /Library/WebServer/Documents/wp/wp-blog-header.php(13): require_once('/Library/WebSer...')
+#7 /Library/WebServer/Documents/wp/index.php(17): require('/Library/WebSer...')
+#8 {main}
+  thrown in /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/config/params.php on line 8

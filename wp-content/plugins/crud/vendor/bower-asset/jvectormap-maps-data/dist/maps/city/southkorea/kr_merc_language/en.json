@@ -1,0 +1,22 @@
+{
+    "insets":{"width":900,"top":0,"height":832.5224404550414,"bbox":[{"y":-4670369.763056013,"x":13878960.292553546},{"y":-3923547.514448412,"x":14686313.933831325}],"left":0},
+    "names":[
+         {"code":"KR-31","name":"Ulsan"},
+         {"code":"KR-49","name":"Jeju"},
+         {"code":"KR-48","name":"South Gyeongsang"},
+         {"code":"KR-45","name":"North Jeolla"},
+         {"code":"KR-44","name":"South Chungcheong"},
+         {"code":"KR-47","name":"North Gyeongsang"},
+         {"code":"KR-46","name":"South Jeolla"},
+         {"code":"KR-41","name":"Gyeonggi"},
+         {"code":"KR-43","name":"North Chungcheong"},
+         {"code":"KR-42","name":"Gangwon"},
+         {"code":"KR-27","name":"Daegu"},
+         {"code":"KR-11","name":"Seoul"},
+         {"code":"KR-50","name":"Sejong"},
+         {"code":"KR-29","name":"Gwangju"},
+         {"code":"KR-28","name":"Incheon"},
+         {"code":"KR-30","name":"Daejeon"},
+         {"code":"KR-26","name":"Busan"}
+    ] 
+}

@@ -1,0 +1,16 @@
+{
+    "insets":{"width":900,"top":0,"height":734.9571609417198,"bbox":[{"y":-6712949.417563546,"x":280867.8681907376},{"y":-6362537.404474747,"x":709968.8124904385}],"left":0},
+    "names":[
+         {"code":"BE-VWV","name":"West Flanders"},
+         {"code":"BE-VAN","name":"Antwerp"},
+         {"code":"BE-WLX","name":"Luxembourg"},
+         {"code":"BE-WBR","name":"Walloon Brabant"},
+         {"code":"BE-VBR","name":"Flemish Brabant"},
+         {"code":"BE-VOV","name":"East Flanders"},
+         {"code":"BE-WLG","name":"Liege"},
+         {"code":"BE-VLI","name":"Limburg"},
+         {"code":"BE-WHT","name":"Hainaut"},
+         {"code":"BE-WNA","name":"Namur"},
+         {"code":"BE-BRU","name":"Brussels"}
+    ] 
+}

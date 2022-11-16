@@ -1,0 +1,18 @@
+{
+    "insets":{"width":900,"top":0,"height":905.8723093907364,"bbox":[{"y":-1391900.644539083,"x":-12188330.527048683},{"y":6974170.643481547,"x":-3876492.223609794}],"left":0},
+    "names":[
+         {"code":"PY","name":"Paraguay"},
+         {"code":"CO","name":"Colombia"},
+         {"code":"VE","name":"Venezuela"},
+         {"code":"CL","name":"Chile"},
+         {"code":"SR","name":"Suriname"},
+         {"code":"BO","name":"Bolivia"},
+         {"code":"EC","name":"Ecuador"},
+         {"code":"AR","name":"Argentina"},
+         {"code":"GY","name":"Guyana"},
+         {"code":"BR","name":"Brazil"},
+         {"code":"PE","name":"Peru"},
+         {"code":"UY","name":"Uruguay"},
+         {"code":"FK","name":"Falkland Is."}
+    ] 
+}

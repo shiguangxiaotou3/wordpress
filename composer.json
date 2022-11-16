@@ -1,0 +1,58 @@
+{
+  "name": "shiguangxiaotou/crud",
+  "description": "基于yii2框架的二次开发",
+  "keywords": [
+    "yii2",
+    "二次开发",
+    "myweb",
+    "project template"
+  ],
+  "homepage": "http://www.shiguangxiaotou.com",
+  "type": "composer-plugin",
+  "license": "BSD-3-Clause",
+  "support": {
+    "issues": "https://github.com/yiisoft/yii2/issues?state=open"
+  },
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=5.4",
+    "yiisoft/yii2": "^2.0",
+    "erusev/parsedown": "^1.7",
+    "alibabacloud/alidns-20150109": "^3.0",
+    "google/cloud-translate": "^1.12",
+    "jaybizzle/crawler-detect": "^1.2",
+    "microsoft/bingads": "^13.0"
+  },
+  "require-dev": {
+    "yiisoft/yii2-debug": "~2.1.0",
+    "yiisoft/yii2-gii": "~2.2.0",
+    "yiisoft/yii2-faker": "~2.0.0",
+    "phpunit/phpunit": "~9.5.0",
+    "codeception/codeception": "^5.0.0 || ^4.0",
+    "codeception/lib-innerbrowser": "^3.0 || ^1.1",
+    "codeception/module-asserts": "^3.0 || ^1.1",
+    "codeception/module-yii2": "^1.1",
+    "codeception/module-filesystem": "^3.0 || ^2.0 || ^1.1",
+    "codeception/verify": "^2.2",
+    "symfony/browser-kit": "^6.0 || >=2.7 <=4.2.4"
+  },
+  "replace": {
+    "ext-mcrypt": "*",
+    "bower-asset/jquery": "*",
+    "bower-asset/inputmask": "*",
+    "bower-asset/punycode": "*",
+    "bower-asset/yii2-pjax": "*"
+  },
+  "autoload": {
+    "psr-4": {
+     "crud\\": "wp-content/plugins/crud/library/"
+    }
+  },
+  "config": {
+    "vendor-dir": "wp-content/plugins/crud/vendor",
+    "process-timeout": 1800,
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true
+    }
+  }
+}

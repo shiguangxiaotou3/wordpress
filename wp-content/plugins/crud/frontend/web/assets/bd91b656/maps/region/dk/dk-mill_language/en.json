@@ -1,0 +1,10 @@
+{
+    "insets":{"width":900,"top":0,"height":569.964808875159,"bbox":[{"y":-7269444.613770485,"x":901477.4865441808},{"y":-6768665.33427138,"x":1692230.4322193111}],"left":0},
+    "names":[
+         {"code":"DK-85","name":"Sjaælland"},
+         {"code":"DK-84","name":"Hovedstaden"},
+         {"code":"DK-81","name":"Nordjylland"},
+         {"code":"DK-83","name":"Syddanmark"},
+         {"code":"DK-82","name":"Midtjylland"}
+    ] 
+}
