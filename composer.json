@@ -1,17 +1,15 @@
 {
   "name": "shiguangxiaotou/crud",
-  "description": "基于yii2框架的二次开发",
+  "description": "这是一个基于Yii2的MVC的wordpress插件",
   "keywords": [
-    "yii2",
-    "二次开发",
-    "myweb",
+   "wprdpress", "yii2","plugins", "MVC",
     "project template"
   ],
   "homepage": "http://www.shiguangxiaotou.com",
   "type": "composer-plugin",
   "license": "BSD-3-Clause",
   "support": {
-    "issues": "https://github.com/yiisoft/yii2/issues?state=open"
+    "issues": "http://www.shiguangxiaotou.com"
   },
   "minimum-stability": "stable",
   "require": {

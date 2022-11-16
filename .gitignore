@@ -1,5 +1,6 @@
 wp-admin/*
 wp-includes/*
+.DS_Store
 .idea
 license.txt
 readme.html
