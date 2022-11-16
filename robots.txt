@@ -1,0 +1,14 @@
+User-agent:*
+Disallow:/wp-json
+
+User-agent:*
+Disallow:/wp-admin
+
+User-agent:*
+Allow:/
+
+User-agent:*
+Allow:/?cat=*
+
+User-agent:*
+Allow:/?p=*

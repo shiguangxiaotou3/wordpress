@@ -1,6 +1,8 @@
 wp-admin/*
 wp-includes/*
 .idea
+license.txt
+readme.html
 index.php
 config.md
 wp-activate.php
