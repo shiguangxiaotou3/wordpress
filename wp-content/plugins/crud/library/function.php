@@ -300,3 +300,26 @@ function replaceSymbol($str){
     }
     return $str;
 }
+
+/**
+ * 删除递归删除文件.DS_Store文件
+ * @param $dir
+ * @param string|array $file
+ */
+function deleteDsStore($dir, $deleteFile)
+{
+    $handle = opendir($dir);
+    while (false !== ($file = readdir($handle))) {
+        if ($file != '.' && $file != '..') {
+            if (($file == $deleteFile) or in_array($file, $deleteFile)) {
+                if (unlink($dir . "/" . $file)) {
+                    echo $dir . "/" . $file . "\n";
+                }
+            }
+            if (is_dir($dir . "/" . $file)) {
+                deleteDsStore($dir . "/" . $file);
+            }
+        }
+    }
+    closedir($handle);
+}

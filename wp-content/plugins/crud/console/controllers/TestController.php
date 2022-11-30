@@ -28,6 +28,14 @@ class TestController extends Controller
     }
 
     /**
+     * 删除.DS_Store文件
+     */
+    public function actionDeleteDsStore(){
+        $dir = "/Library/WebServer/Documents/wp";
+        deleteDsStore($dir);
+    }
+
+    /**
      * @return array|string[]
      */
     public function optionAliases()
