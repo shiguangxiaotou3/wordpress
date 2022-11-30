@@ -13,7 +13,7 @@
   },
   "minimum-stability": "stable",
   "require": {
-    "php": ">=5.4",
+    "php": ">=5.5",
     "yiisoft/yii2": "^2.0",
     "erusev/parsedown": "^1.7",
     "alibabacloud/alidns-20150109": "^3.0",

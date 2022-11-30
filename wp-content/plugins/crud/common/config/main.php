@@ -24,6 +24,14 @@ return [
                         'app/error' => 'error.php',
                     ],
                 ],
+                'wp' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@library/messages/wp',
+                    'fileMap' => [
+                        'wp' => 'wp.php',
+                        'wp/error' => 'error.php',
+                    ],
+                ],
                 'console' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@library/messages/console',

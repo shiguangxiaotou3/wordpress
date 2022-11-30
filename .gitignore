@@ -5,6 +5,8 @@ wp-includes/*
 license.txt
 readme.html
 index.php
+gii.php
+gii.sh
 LICENSE
 push.sh
 direct

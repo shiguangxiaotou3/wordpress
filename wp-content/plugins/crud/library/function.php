@@ -151,15 +151,35 @@ function getVarValueByVarName($str, $name)
 }
 
 /**
- * 将搭驼峰字符串 替换为小写_链接
- * @param $str
+ * 驼峰名称转换:WpTable=>wp_table
+ * wpTable=>wp_table
+ * @param string $str
+ * @param string $interval
  * @return string
  */
-function toUnderScore($str,$interval="_"){
-    $dstr = preg_replace_callback('/([A-Z]+)/',function($matchs)use($interval) {
-        return $interval.strtolower($matchs[0]);
-    },$str);
-    return trim(preg_replace('/_{2,}/','_',$dstr),'_');
+function toUnderScore($str, $interval = "_")
+{
+    $dstr = preg_replace_callback('/([A-Z]+)/', function ($matchs) use ($interval) {
+        return $interval . strtolower($matchs[0]);
+    }, $str);
+    return trim(preg_replace('/' . $interval . '{2,}/', $interval, $dstr), $interval);
+}
+
+/**
+ * 驼峰名称转换
+ * 将 wp_table=>WpTable或wpTable
+ * @param string $str
+ * @param bool $flags
+ * @param string $interval
+ * @return string|string[]
+ */
+function toScoreUnder($str, $flags = true, $interval = "_")
+{
+    $results = str_replace($interval, " ", $str);
+    // 大驼峰
+    $results = str_replace(' ', "", ucwords($results));
+    return $flags ? $results : lcfirst($results);
+
 }
 
 /**

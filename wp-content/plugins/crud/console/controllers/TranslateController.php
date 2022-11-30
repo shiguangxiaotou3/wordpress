@@ -20,7 +20,7 @@ class TranslateController extends Controller
      */
     public function actionI18n(){
         $translate = \Yii::$app->baidu;
-        $path = \Yii::getAlias("@library/messages/city/zh-CN/city.php");
+        $path = \Yii::getAlias("@library/messages/wp/zh-CN/wp.php");
         $data = require_once $path;
         $result1 =$result2 =[];
         foreach ($data as $key =>$value){
