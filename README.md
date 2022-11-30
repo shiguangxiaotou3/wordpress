@@ -175,7 +175,7 @@ class App extends  BaseApp {
     // 将回调执行$this->app->runAction("wechat/index")
     // 对于ajax请求
     // $.post("/wp-admin/admin-ajax.php",{action:"wechat/index"},function(){})
-    // action字段决定由那个控制器处理请求，应为wordpress的ajax统一由admin-ajax.php
+    // action字段决定由那个控制器处理请求，因为wordpress的ajax统一由admin-ajax.php处理
         $request = $this->app->request;
         if($request->isAjax){
             if($request->isGet){

@@ -5,6 +5,8 @@ wp-includes/*
 license.txt
 readme.html
 index.php
+LICENSE
+direct
 config.md
 wp-activate.php
 wp-blog-header.php
@@ -21,4 +23,3 @@ wp-signup.php
 wp-trackback.php
 xmlrpc.php
 server.php
-direct
