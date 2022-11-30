@@ -96,9 +96,8 @@ class ControllerActionsWidget extends Widget
      * @return mixed|string
      */
     public static function get_page_title($menu_slug){
-        global $crud;
 
-        $data =$crud->backend->params['menus'];
+        $data =Yii::$app->params['menus'];
         $title ="";
         foreach ($data as $datum){
             if($datum["menu_slug"] == $menu_slug){

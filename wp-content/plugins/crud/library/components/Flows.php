@@ -16,18 +16,6 @@ class Flows extends Component{
     public $domain="";
     private $ch;
 
-    public function __construct($config){
-        if (!isset( $config['apikey'])){
-            throw new Exception("必须设置key");
-        }else{
-            $this->apiKey = $config["apikey"];
-        }
-        if (isset($config['domain'])){
-            $this->domain = $config['domain'];
-        }
-        $this->_ch =curl_init();
-
-    }
 
     /**
      * @link $_ch

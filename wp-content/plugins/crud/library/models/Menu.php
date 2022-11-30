@@ -88,8 +88,6 @@ class Menu extends Model{
      * 注册子级菜单
      */
     public function addSubMenu( &$app){
-//        $action = str_replace("/","_",$this->menu_slug);
-//        add_action("wp_ajax_".$action,[$app,"ajax"]);
         add_submenu_page(
             $this->parent_slug,
             $this->page_title,

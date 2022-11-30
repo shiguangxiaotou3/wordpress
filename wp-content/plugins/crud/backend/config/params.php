@@ -88,14 +88,14 @@ return [
         // Bing广告api SDK
         [
             "parent_slug" =>  "index",
-            "page_title" => "Bing 广告",
-            "menu_title" => "Bing 广告",
+            "page_title" => "Bing 广告SDK配置",
+            "menu_title" =>  "Bing 广告SDK配置",
             "menu_slug" => "ads",
         ],
         [
             "parent_slug" =>  "ads",
-            "page_title" => "回调",
-            "menu_title" => "回调",
+            "page_title" => "Flows配置",
+            "menu_title" => "Flows配置",
             "menu_slug" => "ads/redirect-uri",
         ],
         [
@@ -109,6 +109,12 @@ return [
             "page_title" => "文档",
             "menu_title" => "文档",
             "menu_slug" => "ads/doc",
+        ],
+        [
+            "parent_slug" =>  "ads",
+            "page_title" => "一览表",
+            "menu_title" => "一览表",
+            "menu_slug" => "ads/action",
         ],
         [
             "parent_slug" =>  "ads",
@@ -139,25 +145,10 @@ return [
         // 错误
         [
             "parent_slug" =>  "index",
-            "page_title" => "Error",
-            "menu_title" => "Error",
-            "menu_slug" => "error",
+            "page_title" => "编辑",
+            "menu_title" => "编辑",
+            "menu_slug" => "editor",
         ],
-        // 微信公众号
-        [
-            "parent_slug" =>  "index",
-            "page_title" => "微信公众号",
-            "menu_title" => "微信公众号",
-            "menu_slug" => "subscription-service",
-        ],
-//        [
-//            "parent_slug" =>  "index",
-//            "page_title" => "Bing 广告",
-//            "menu_title" => "Bing 广告",
-//            "menu_slug" => "ads",
-//        ],
-
-
     ],
     'settings' => [
         "switch" => [
@@ -419,6 +410,93 @@ return [
                 ],
             ]
         ],
+        "flows"=>[
+            'option_group' => 'crud_group',
+            'page' => 'ads/redirectUri',
+            'section_id' => 'flows',
+            "section_description" => 'Flows追踪配置',
+            'fields' => [
+                [
+                    'id' => 'apiKey',
+                    "title" => "apiKey",
+                    'args' => [
+                        "tag" => "password",
+                        "defaultValue" => "",
+                        "description" => "追踪Flows密钥",
+                        'options' => [
+                            "class" => "regular-text code"
+                        ]
+                    ],
+                ],
+                [
+                    'id' => 'domain',
+                    "title" => "domain",
+                    'args' => [
+                        "tag" => "text",
+                        "defaultValue" =>"https://go.isenmy.com/admin_api/v1/",
+                        "description" => "追踪Flows域名前缀",
+                        'options' => [
+                            "class" => "regular-text code",
+                            "placeholder" => 'https://go.isenmy.com/admin_api/v1/',
+                        ]
+                    ],
+                ],
+                [
+                    'id' => 'stream_id',
+                    "title" => "stream_id",
+                    'args' => [
+                        "tag" => "text",
+                        "defaultValue" =>"",
+                        'options' => [
+                            "class" => "regular-text code",
+                            "placeholder" => '223',
+                        ]
+                    ],
+                ],
+                [
+                    'id' => 'name',
+                    "title" => "name",
+                    'args' => [
+                        "tag" => "text",
+                        "defaultValue" =>"",
+                        'options' => [
+                            "class" => "regular-text code",
+                        ]
+                    ],
+                ],
+                [
+                    'id' => 'mode',
+                    "title" => "mode",
+                    'args' => [
+                        "tag" => "dropDownList",
+                        "defaultValue" => "",
+                        'options' => [
+                            "class" => "regular-text code"
+                        ],
+                        "items"=>[
+                            'accept'=>"accept",
+                            'reject'=>"reject"
+                        ]
+
+                    ],
+                ],
+                [
+                    'id' => 'payload',
+                    "title" => "payload",
+                    "description" => "多个字段使用换行",
+                    'args' => [
+                        "tag" => "textarea",
+                        "defaultValue" => "",
+                        'options' => [
+                            "rows"=>"5",
+                            "cols"=>"50",
+                            "class"=>"large-text code",
+                            "placeholder"=>"待输入的文字"
+                        ],
+                    ],
+                ],
+            ]
+        ],
         "ads"=>[
             'option_group' => 'crud_group',
             'page' => 'ads/index',
@@ -441,11 +519,6 @@ return [
                         ]
                     ],
                 ],
-//                    "clientId" => "759ca395-1397-4d64-bdf9-586a95b5d017",
-//                    "developerToken" => "107385O683686415",
-//                    "clientSecret" => "851d0c8b-dc62-4d5f-ad13-955d058d2c85",
-//                    "oAuthRefreshTokenPath" => Yii::getAlias("@library/refresh.txt"),
-//                    "redirect_uri" => "http://wp.myweb.com/wp-admin/admin.php?page=ads/redirect-uri",
                 [
                     'id' => 'clientId',
                     "title" => "clientId",
@@ -467,7 +540,24 @@ return [
                         "description" => "应用程序证书",
                         'options' => [
                             "class" => "regular-text code"
-                        ]
+                        ],
+
+                    ],
+                ],
+                [
+                    'id' => 'oAuthScope',
+                    "title" => "oAuthScope",
+                    'args' => [
+                        "tag" => "dropDownList",
+                        "defaultValue" => "msads.manage",
+                        'options' => [
+                            "class" => "regular-text code"
+                        ],
+                        "items"=>[
+                            'msads.manage'=>"msads.manage",
+                            'bingads.manage'=>"bingads.manage",
+                            'ads.manage'=>'ads.manage'
+                        ],
                     ],
                 ],
                 [
@@ -507,128 +597,42 @@ return [
                     ],
                 ],
                 [
-                    'id' => 'apiKey',
-                    "title" => "apiKey",
+                    'id' => 'accountId',
+                    "title" => "AccountId",
                     'args' => [
                         "tag" => "text",
-                        "defaultValue" => "",
-                        "description" => "追踪Flows密钥",
+                        "description" =>"客户帐户ID",
                         'options' => [
                             "class" => "regular-text code"
                         ]
                     ],
                 ],
                 [
-                    'id' => 'domain',
-                    "title" => "domain",
+                    'id' => 'customerId',
+                    "title" => "CustomerId",
+                    "description" =>"客户ID",
                     'args' => [
                         "tag" => "text",
-                        "defaultValue" =>"", //"http://wp.myweb.com/wp-admin/admin.php?page=ads/redirect-uri",
-                        "description" => "追踪Flows域名前缀",
-                        'options' => [
-                            "class" => "regular-text code",
-                            "placeholder" => 'https://go.isenmy.com/admin_api/v1/',
-                        ]
-                    ],
-                ],
-            ]
-        ],
-        "wechat"=>[
-            'option_group' => 'crud_group',
-            'page' => 'subscription-service',
-            'section_id' => 'wechat',
-            "section_description" => '微信公众号基础配置',
-            'fields' => [
-                [
-                    'id' => 'environment',
-                    "title" => "运行模式",
-                    'args' => [
-                        "tag" => "dropDownList",
-                        "defaultValue" => "Development",
-                        "description" => "运行环境",
+                        "description" =>"客户帐户ID",
                         'options' => [
                             "class" => "regular-text code"
-                        ],
-                        "items"=>[
-                                'Production'=>"生产模式",
-                                'Development'=>"开发模式"
                         ]
                     ],
                 ],
                 [
-                    'id' => 'pro-appId',
-                    "title" => "appId",
+                    'id' => 'adGroupId',
+                    "title" => "adGroupId",
+                    "description" =>"adGroupId",
                     'args' => [
-                        "tag" => "password",
-                        "defaultValue" => "",
-                        "description" => "生产环境",
+                        "tag" => "text",
+                        "description" =>"adGroupId",
                         'options' => [
                             "class" => "regular-text code"
-                        ],
+                        ]
                     ],
                 ],
-                [
-                    'id' => 'pro-appSecret',
-                    "title" => "appSecret",
-                    'args' => [
-                        "tag" => "password",
-                        "defaultValue" => "",
-                        "description" => "生产环境",
-                        'options' => [
-                            "class" => "regular-text code"
-                        ],
-                    ],
-                ],
-                [
-                    'id' => 'pro-token',
-                    "title" => "Token",
-                    'args' => [
-                        "tag" => "password",
-                        "defaultValue" => "",
-                        "description" => "生产环境",
-                        'options' => [
-                            "class" => "regular-text code"
-                        ],
-                    ],
-                ],
-                [
-                    'id' => 'dev-appId',
-                    "title" => "appId",
-                    'args' => [
-                        "tag" => "password",
-                        "defaultValue" => "",
-                        "description" => "开发环境",
-                        'options' => [
-                            "class" => "regular-text code"
-                        ],
-                    ],
-                ],
-                [
-                    'id' => 'dev-appSecret',
-                    "title" => "appSecret",
-                    'args' => [
-                        "tag" => "password",
-                        "defaultValue" => "",
-                        "description" => "开发环境",
-                        'options' => [
-                            "class" => "regular-text code"
-                        ],
-                    ],
-                ],
-                [
-                    'id' => 'dev-token',
-                    "title" => "Token",
-                    'args' => [
-                        "tag" => "password",
-                        "defaultValue" => "",
-                        "description" => "开发环境",
-                        'options' => [
-                            "class" => "regular-text code"
-                        ],
-                    ],
-                ],
-            ]
-        ],
 
+            ]
+        ],
     ],
 ];

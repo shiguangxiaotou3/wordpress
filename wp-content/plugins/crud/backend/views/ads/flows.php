@@ -1,14 +1,15 @@
 <?php
 /** @var $this yii\web\View */
 /** @var $url string */
-
+/** @var $results */
 use yii\helpers\Html;
+use crud\widgets\PreCodeWidget;
 use crud\widgets\ControllerActionsWidget;
 
 ?>
 
 
-< class="wrap">
+<div class="wrap">
     <h1 class="wp-heading-inline">
         <?=  get_admin_page_parent() ?>
         <small><?php echo esc_html( get_admin_page_title() ); ?></small>
@@ -25,7 +26,6 @@ use crud\widgets\ControllerActionsWidget;
         </p>
     </form>
     <hr style="width: 100%;" />
-    <?php
-        dump($results);
-    ?>
+    <?= PreCodeWidget::widget(['code' =>print_r($results,true)  ,"language" => "text"]); ?>
+
 </div>

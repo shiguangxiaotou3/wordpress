@@ -18,7 +18,6 @@ function crud_deActivate(){
     flush_rewrite_rules();
 }
 
-
 /**
  * 获取函数的的形参名称
  * @param $functionName
@@ -59,6 +58,22 @@ function getMethodArgs($className, $methodName){
 }
 
 /**
+ * 获取类的方法和形参名称
+ * @param $className
+ * @return array
+ */
+function getClassInfo($className){
+    $results =[];
+    $methods = get_class_methods($className);
+    if(!empty($methods)){
+        foreach ($methods as $method){
+            $results[$method] = getMethodArgs($className,$method);
+        }
+    }
+    return $results;
+}
+
+/**
  * 兼容对象和函数的写法
  * @return array|mixed
  */
@@ -70,9 +85,18 @@ function getParams(){
     } else {
         $paramsNames = getFunctionArgs($functionName);
     }
+    return $paramsNames;
     return ($paramsNames and !empty($paramsNames))
         ? array_combine($paramsNames, $backtrace["args"])
         : $backtrace["args"];
+}
+
+/**
+ * @param $object
+ * @param $data
+ */
+function assignment($object,$data){
+
 }
 
 /**
@@ -126,9 +150,14 @@ function getVarValueByVarName($str, $name)
     return "";
 }
 
-function toUnderScore($str){
-    $dstr = preg_replace_callback('/([A-Z]+)/',function($matchs) {
-        return '_'.strtolower($matchs[0]);
+/**
+ * 将搭驼峰字符串 替换为小写_链接
+ * @param $str
+ * @return string
+ */
+function toUnderScore($str,$interval="_"){
+    $dstr = preg_replace_callback('/([A-Z]+)/',function($matchs)use($interval) {
+        return $interval.strtolower($matchs[0]);
     },$str);
     return trim(preg_replace('/_{2,}/','_',$dstr),'_');
 }
@@ -156,7 +185,9 @@ function array_sum_by_key(){
 
 }
 
-
+/**
+ * 判断字符串是否为序列号数据
+ */
 if(!function_exists("is_serialized")){
     /**
      * 判断是否为序列号数据
@@ -186,8 +217,6 @@ if(!function_exists("is_serialized")){
         return false;
     }
 }
-
-
 
 /**
  * 构造写入数据
@@ -241,7 +270,7 @@ function upDateConfig($filePath, $config){
     }catch (Exception$exception ){
         $tmp_config = [];
     }
-    $save_config =array_merge($tmp_config,$config);
+    $save_config = array_merge($tmp_config,$config);
     if($tmp_config != $save_config){
         $str = "<?php\r\nreturn [\r\n";  // 拼接数组字符串-开头
         $str .= ConfigToStr($str,  $save_config,1);  // 拼接数组字符串-中间
@@ -249,4 +278,25 @@ function upDateConfig($filePath, $config){
         return file_put_contents($filePath, $str);
     }
 
+}
+
+/**
+ * 替换中文符号
+ * @param $str
+ * @return string|string[]
+ */
+function replaceSymbol($str){
+    $config =[
+        "。"=>".",
+        "（"=>"(",
+        "）"=>")",
+        "“"=>"\"",
+        "”"=>"\"",
+        "'"=>"\'",
+        "？"=>"?"
+    ];
+    foreach ($config as $key =>$value){
+        $str = str_replace($key,$value,$str);
+    }
+    return $str;
 }

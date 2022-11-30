@@ -29,6 +29,12 @@ return [
         ],
         'request' => [
             'csrfParam' => '_csrf-backend',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+                'text/json' => 'yii\web\JsonParser',
+                'text/xml' => 'crud\components\XmlRequestParser',
+                'application/xml' => 'crud\components\XmlRequestParser',
+            ],
         ],
         "cache" => [
             'class' => "yii\caching\FileCache",

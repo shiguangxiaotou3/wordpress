@@ -5,7 +5,6 @@ return [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
         'cache' => [
@@ -41,23 +40,21 @@ return [
                         'city/error' => 'error.php',
                     ],
                 ],
-                'region' => [
+                'ads' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@library/messages/region',
+                    'basePath' => '@library/messages/ads',
                     'fileMap' => [
-                        'region' => 'region.php',
-                        'region/error' => 'error.php',
-                    ],
-                ],
-                'country' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@library/messages/country',
-                    'fileMap' => [
-                        'country' => 'country.php',
+                        'country' => 'ads.php',
                         'country/error' => 'error.php',
                     ],
                 ],
             ],
         ],
     ],
+    'modules' => [
+        'wechat' => [
+            'class' => 'crud\modules\wechat\Wechat',
+        ],
+    ],
 ];
+

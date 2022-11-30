@@ -71,7 +71,7 @@ JS;
         submit_button();
         ?>
     </form>
-    <div style="display: flex;justify-content: space-between">
+    <div style="display: flex;justify-content: space-between;flex-wrap: wrap">
         <div style="width: 350px">
             <pre><code  class="language-javascript"><?= $js ?></code></pre>
         </div>

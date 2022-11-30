@@ -1,0 +1,23 @@
+{
+    "require": {
+        "microsoft/bingads": "^13.0",
+        "yiisoft/yii2": "^2.0"
+    },
+    "replace": {
+        "ext-mcrypt": "*",
+        "bower-asset/jquery": "*",
+        "bower-asset/inputmask": "*",
+        "bower-asset/punycode": "*",
+        "bower-asset/yii2-pjax": "*"
+    },
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "crud\\": "src/"
+        }
+    }
+}

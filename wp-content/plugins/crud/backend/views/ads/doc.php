@@ -13,7 +13,7 @@ HighlightAsset::addCssFile($this,"/styles/".$css);
 $this->registerJs('hljs.initHighlightingOnLoad();',View::POS_HEAD);
 $css =<<<CSS
 #doc img{
-max-width: 100%; height: auto; width: auto; width: auto
+    max-width: 100%; height: auto; width: auto; width: auto;
 }
 CSS;
 $this->registerCss($css);

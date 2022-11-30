@@ -10,6 +10,7 @@
  */
 
 namespace console\controllers;
+use crud\library\components\Ads;
 use yii\console\Controller;
 /**
  * 测试应用
@@ -21,7 +22,9 @@ class TestController extends Controller
      * 测试
      */
     public function actionIndex(){
-        echo "asda";
+        /** @var Ads $ads */
+        $ads = \Yii::$app->ads;
+        print_r( $ads-> GetCustomerInfo($ads->customerId));
     }
 
     /**

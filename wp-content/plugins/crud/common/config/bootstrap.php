@@ -5,9 +5,7 @@ Yii::setAlias('@backend', dirname(dirname(__DIR__ )). '/backend');
 Yii::setAlias('@frontend', dirname(dirname(__DIR__)) . '/frontend');
 Yii::setAlias('@common',dirname(__DIR__));
 Yii::setAlias('@console', dirname(dirname(__DIR__)) . '/console');
-Yii::setAlias('@api', dirname(dirname(__DIR__)) . '/api');
 Yii::setAlias('@library', dirname(dirname(__DIR__) ). '/library');
-Yii::setAlias('@test', dirname(dirname(__DIR__) ). '/test');
 Yii::setAlias('@bower' , dirname(dirname(__DIR__))."/vendor/bower-asset" );
 Yii::setAlias('@npm', dirname(dirname(__DIR__))."/vendor/npm-asset" );
 
@@ -52,7 +50,6 @@ if(!function_exists("get_option")){
                 unset($conn);
                 break;
             }
-
         }
         unset($conn);
         return is_serialized($value) ? unserialize($value) : $value;

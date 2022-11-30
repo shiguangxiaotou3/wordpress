@@ -34,9 +34,9 @@ use crud\widgets\ControllerActionsWidget;
         ?>
     </form>
     <?php
-        global $crud;
 
-        $domains = $crud->backend->dns->domains;
+
+        $domains = Yii::$app->dns->domains;
         if( $domains){
             echo WpTableWidget::widget([
                 'columns' => [
@@ -51,7 +51,6 @@ use crud\widgets\ControllerActionsWidget;
         }
 
     ?>
-
 </div>
 
 <?php

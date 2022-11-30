@@ -14,12 +14,15 @@ use yii\web\Controller;
  */
 class IndexController extends Controller
 {
+    public $enableCsrfValidation=false;
+    public $layout=false;
     /**
      * @return string
      */
     public function actionIndex()
     {
-        return $this->render("index");
+        return  "asdasd";
+//        return $this->render("index");
     }
 
     /**

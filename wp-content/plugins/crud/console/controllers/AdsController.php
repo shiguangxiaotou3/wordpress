@@ -18,14 +18,7 @@ class AdsController extends Controller{
      * 通过CLI获取Ads的token授权url
      */
     public function actionIndex(){
-        $ipinfo['region'] ="Hubei";
-        /** @var Ads $ads */
-        $ads = Yii::$app->ads;
-        upDateConfig(
-            Yii::getAlias("@library/messages/region/zh-CN/region.php"),
-            [$ipinfo['region']=>""]
-        );
-//       echo $ads->getTokenUrlByCli();
+        var_dump(Yii::$app->flows);
     }
 
     /**

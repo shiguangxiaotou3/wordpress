@@ -139,6 +139,9 @@ class Settings extends Model{
                 $item_html[] ="<lable style='margin: 0.35em 0 0.5em!important;display: inline-block;'> " .$input.$item_description ."</lable>";
             }
             echo "<fieldset>".join("<br />",$item_html)."</fieldset>";
+        }elseif ($tag == "textarea"){
+            $value = get_option($name);
+            echo Html::textarea( $name,$value, $options);
         }
 
         echo (!empty($description)) ? "<p>$description</p>" :"";

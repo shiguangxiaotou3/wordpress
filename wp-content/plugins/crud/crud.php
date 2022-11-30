@@ -42,65 +42,7 @@ register_activation_hook(__FILE__, "crud_activate");
 register_deactivation_hook(__FILE__, "crud_activate");
 date_default_timezone_set('Asia/Shanghai');
 
-/**
- *
- * @property-read $api
- * @property-read $backend
- * @property-read $frontend
- * Class crud
- */
-class crud extends \yii\base\BaseObject {
-
-    public $_api;
-    public $_backend;
-    public $_frontend;
-
-    /**
-     * crud constructor.
-     */
-    public function __construct(){
-        $this->_api = new api\web\App();
-        $this->_backend = new backend\web\App();
-        $this->_frontend =new frontend\web\App();
-    }
-
-    /**
-     * @return  api\web\App
-     */
-    public function getApi(){
-        return $this->_api->app;
-    }
-
-    /**
-     * @return \yii\web\Application
-     */
-    public function getBackend(){
-
-        return $this->_backend->app;
-    }
-
-    /**
-     * @return \yii\web\Application
-     */
-    public function getFrontend(){
-        return $this->_frontend->app;
-    }
-
-    /**
-     * 运行容器
-     */
-    public function run(){
-        $this->_api->run();
-        $this->_backend->run();
-        $this->_frontend->run();
-    }
-
-}
-
 global $crud;
-$crud =new crud();
+$crud = new backend\web\App();
 $crud->run();
-
-
-
 

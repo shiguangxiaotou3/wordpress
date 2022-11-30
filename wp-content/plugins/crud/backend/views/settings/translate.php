@@ -63,46 +63,48 @@ $this->registerJs($js);
         submit_button();
         ?>
     </form>
-    <?php  //PreCodeWidget::widget(["code" => $js, "language" => "javascript"]]); ?>
-    <form action="admin.php?page=settings%2Ftranslate" method="post">
-        <div style="display: flex;justify-content:space-around;padding: 10px 20px;">
-            <div>
-                <label for="source">文件语言</label>
-                <select id="source" class="regular-text code" name="source" placeholder="文件语言"  aria-describedby="timezone-description">
-                    <option value="auto1" >自动识别1</option>
-                    <option value="auto2" >自动识别2</option>
-                    <option value="auto3" >自动识别3</option>
-                    <optgroup label="自动识别">
-                    </optgroup>
-                    <optgroup label="可用">
-                    </optgroup>
-                </select>
-            </div>
-            <div>
-                <label for="target">目标语言</label>
-                <select id="target" class="regular-text code" name="target"  placeholder="目标语言" aria-describedby="timezone-description">
-                </select>
-            </div>
-        </div>
-        <div id="translate" style="display: flex;justify-content:space-around">
-            <div id="text" >
-                <textarea name="txt" rows="10" cols="50" id="txt" class="large-text code"></textarea>
-            </div>
-            <div >
-                <?= PreCodeWidget::widget([
-                    "options" => ['id'=>"results","class"=>"large-text code","style"=>"width:500px"],
-                    "language" => "json",
-                    "code" => ""
-                ]);
-                ?>
-<!--                <textarea name="results" rows="10" cols="50" id="results" class="large-text code"></textarea>-->
-            </div>
-        </div>
-<!--        --><?php //submit_button();?>
-    </form>
-
+    <hr style="width: 100%;" />
+    <table class="form-table" role="presentation">
+        <tbody>
+            <tr>
+                <th scope="row">待翻译的文本</th>
+                <td>
+                    <textarea name="text" rows="5" cols="50" id="txt" class="large-text code" placeholder="待输入的文字"></textarea>
+                    <p>多个文本使用换行或"\n"</p>
+                    <?= PreCodeWidget::widget([
+                        "options" => ['id' => "results", "class" => "large-text code"],
+                        "language" => "json",
+                        "code" => ""]);
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">源语言</th>
+                <td>
+                    <select id="source" class="regular-text code" name="source" placeholder="文件语言"
+                            aria-describedby="timezone-description">
+                        <option value="auto1">自动识别1</option>
+                        <option value="auto2">自动识别2</option>
+                        <option value="auto3">自动识别3</option>
+                        <optgroup label="自动识别">
+                        </optgroup>
+                        <optgroup label="可用">
+                        </optgroup>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">目标语言</th>
+                <td>
+                    <select id="target" class="regular-text code" name="target" placeholder="目标语言"
+                            aria-describedby="timezone-description">
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
-<?php //echo \yii\web\Request::CSRF_HEADER; ?><!--' : '--><?php //echo Yii::$app -> request -> csrfToken; ?>
+
 
 
 

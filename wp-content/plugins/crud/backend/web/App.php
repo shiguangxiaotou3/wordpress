@@ -3,33 +3,27 @@
 namespace backend\web;
 
 
+use crud\modules\wechat\Wechat;
 use Yii;
-use Exception;
-use yii\web\Controller;
+use crud\App as BaseApp;
 use crud\models\Menu;
 use crud\models\Settings;
-use yii\base\BaseObject;
-use yii\web\Application;
+use yii\web\Application ;
 use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
-use crud\widgets\WpTableWidget;
 
 
 /**
- * Class App
+ * App对象基类
  * @property-read Application $app
  * @package crud\backend\web
  */
-class App extends  BaseObject {
+class App extends  BaseApp {
 
-    public $_admin;
+    public $_app;
     /**
-     * @var Controller $_controller
-     */
-    public $_controller;
-
-    /**
-     * App constructor.
+     * 创建app对象
+     * @throws yii\base\InvalidConfigException
      */
     public function __construct(){
         require __DIR__ . '/../config/bootstrap.php';
@@ -37,27 +31,22 @@ class App extends  BaseObject {
             require __DIR__ . '/../../common/config/main.php',
             require __DIR__ . '/../../common/config/main-local.php',
             require __DIR__ . '/../config/main.php',
-            require __DIR__ . '/../config/main-local.php'
+            require __DIR__ . '/../config/main-local.php',
+            Wechat::config()
         );
-        try {
-            $this->_admin = new Application($config);
-        }catch (Exception $exception){
-            self::exception($exception,debug_backtrace());
-        }
-
+        $this->_app = new Application($config);
     }
 
     /**
      * 获取app容器
+     * @throws Yii\base\InvalidConfigException
      */
     public function getApp(){
-        if(isset($this->_admin)){
-           return ($this->_admin->id !== "backend") ?self::__construct() : $this->_admin ;
-        }else{
-           return self::__construct();
+        if(!isset($this->_app) or empty($this->_app)){
+            self::__construct();
         }
+        return  $this->_app ;
     }
-
 
     /**
      * 挂载控制器
@@ -65,12 +54,13 @@ class App extends  BaseObject {
     public function run(){
         // 将设置注册到特定的页面
         add_action("admin_init", [$this, "registerSettings"]);
-        add_action("admin_init", [$this, "registerAjaxAction"]);
-
         // 注册菜单 = 也就是注册yii Controller
         add_action("admin_menu", [$this, "registerPage"]);
+        add_action("admin_init", [$this, "registerAjax"]);
 
-        // 将Yii2 视图事件挂载到wordpress钩子
+        // 注册api
+        add_action("rest_api_init", [$this,"registerRestfulApi"]);
+
         // 为资源包文件创建缓存快，
         add_action("admin_init", [$this, "beginPage"]);
         add_action("admin_head",[$this,"registerCsrfMetaTags"]);
@@ -78,7 +68,6 @@ class App extends  BaseObject {
         add_action("admin_body_open",[$this,"beginBody"]);
         add_action("admin_footer",[$this,"endBody"]);
         add_action("admin_footer",[$this,"endPage"]);
-//        add_action("admin_print_footer_scripts",[$this,"endPage"]);
     }
 
     /**
@@ -86,6 +75,7 @@ class App extends  BaseObject {
      */
     public function registerSettings(){
         $settings = $this->app->params["settings"];
+        logObject($settings['wechat']);
         foreach ($settings as $setting) {
             $option = new Settings($setting);
             $option->registerSettings();
@@ -104,35 +94,10 @@ class App extends  BaseObject {
     }
 
     /**
-     * 调用控制器显示视图
-     */
-    public function renderView(){
-        $request = $this->app->request;
-        $query =$request->queryParams;
-        $action= $query["page"];
-        $config = ['index.php'];
-        try {
-            if (!in_array($action, $config)) {
-                /** 注意: 此时返回的子视图文件html,前端资源包为写入
-                 * 需要使用Yii::$app->view->endPage()方法写入前端资源包,
-                 * wordpress的admin_print_footer_scripts钩子
-                 * 自动回调$plugins->endPage()完成资源写入页面
-                 */
-                echo $this->app->runAction($action);
-                $this->_controller = Yii::$app->controller;
-            }else{
-                return ;
-            }
-        } catch (Exception $exception) {
-            self::exception($exception,debug_backtrace());
-        }
-    }
-
-    /**
      * 注册ajax操作
      */
-    public function registerAjaxAction(){
-        $menus= $this->_admin->params["menus"] ;
+    public function registerAjax(){
+        $menus= $this->app->params["menus"] ;
         foreach ($menus as $menu) {
             $menuModel = new AjaxAction($menu);
             $menuModel->registerAjaxAction($this);
@@ -140,88 +105,191 @@ class App extends  BaseObject {
     }
 
     /**
-     * 执行ajax回调
+     * 调用控制器显示视图
      */
-    public function renderAjax(){
-        try{
-            $request = $this->_admin->request;
-            if($request->isAjax){
-                if($request->isGet){
-                    $action =$request->get("action","");
-                }else{
-                    $action = $request->post("action","");
-                }
-                $data = $this->app->runAction($action);
-                $this->sendJson("请求成功",1,$data);
+    public function renderView(){
+        $request = $this->app->request;
+        if($request->isAjax){
+            if($request->isGet){
+                $action =$request->get("action","");
+            }else{
+                $action = $request->post("action","");
             }
-        } catch (Exception $exception) {
-            $data =[
-                "code"=>$exception->getCode(),
-                "file"=>$exception->getFile(),
-                'line'=>$exception->getLine(),
-                "message"=>$exception->getMessage(),
-                "traceAsString"=>$exception->getTraceAsString(),
-                "trace"=>$exception->getTrace(),
-                "previous"=>$exception->getPrevious()
-            ];
-            $this->sendJson("失败",0,$data);
+            $data = $this->app->runAction($action);
+            $this->sendJson($data);
+        }else{
+            $query =$request->queryParams;
+            $action= $query["page"];
+            exit( $this->app->runAction($action));
+//            exit(  $action);
+        }
+    }
+
+    /**
+     * 注册RestfulApi
+     */
+    public function registerRestfulApi(){
+        /**
+         *  * - `'PUT,PATCH users/<id>' => 'user/update'`: update a user
+         * - `'DELETE users/<id>' => 'user/delete'`: delete a user
+         * - `'GET,HEAD users/<id>' => 'user/view'`: return the details/overview/options of a user
+         * - `'POST users' => 'user/create'`: create a new user
+         * - `'GET,HEAD users' => 'user/index'`: return a list/overview/options of users
+         * - `'users/<id>' => 'user/options'`: process all unhandled verbs of a user
+         * - `'users' => 'user/options'`: process all unhandled verbs of user collection
+         */
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
+            'methods' => "PUT,PATCH",
+            'callback' => [$this, "renderApi"],
+            'permission_callback' => function() { return ''; },
+        ]);
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
+            'methods' => "DELETE",
+            'callback' => [$this, "renderApi"],
+            'permission_callback' => function() { return ''; },
+        ]);
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
+            'methods' => "GET,HEAD",
+            'callback' => [$this, "renderApi"],
+            'permission_callback' => function() { return ''; },
+        ]);
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
+            'methods' => "POST",
+            'callback' => [$this, "renderApi"],
+            'permission_callback' => function() { return ''; },
+        ]);
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
+            'methods' => "GET,HEAD",
+            'callback' => [$this, "renderApi"],
+            'permission_callback' => function() { return ''; },
+        ]);
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
+            'methods' => "OPTIONS",
+            'callback' => [$this, "renderApi"],
+            'permission_callback' => function() { return ''; },
+        ]);
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
+            'methods' => "OPTIONS",
+            'callback' => [$this, "renderApi"],
+            'permission_callback' => function() { return ''; },
+        ]);
+        // 模块默认控制器
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<id>[\d]+)", [
+            'methods' => "PUT,PATCH",
+            'callback' => [$this, "renderApi"],
+            'permission_callback' => function() { return ''; },
+        ]);
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<id>[\d]+)", [
+            'methods' => "DELETE",
+            'callback' => [$this, "renderApi"],
+            'permission_callback' => function() { return ''; },
+        ]);
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<id>[\d]+)", [
+            'methods' => "GET,HEAD",
+            'callback' => [$this, "renderApi"],
+            'permission_callback' => function() { return ''; },
+        ]);
+        register_rest_route("crud", "api/(?P<module>[\w]+)", [
+            'methods' => "POST",
+            'callback' => [$this, "renderApi"],
+            'permission_callback' => function() { return ''; },
+        ]);
+        register_rest_route("crud", "api/(?P<module>[\w]+)", [
+            'methods' => "GET,HEAD",
+            'callback' => [$this, "renderApi"],
+            'permission_callback' => function() { return ''; },
+        ]);
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<id>[\d]+)", [
+            'methods' => "OPTIONS",
+            'callback' => [$this, "renderApi"],
+            'permission_callback' => function() { return ''; },
+        ]);
+        register_rest_route("crud", "api/(?P<module>[\w]+)", [
+            'methods' => "OPTIONS",
+            'callback' => [$this, "renderApi"],
+            'permission_callback' => function() { return ''; },
+        ]);
+    }
+
+    /**
+     * @param $request
+     * @throws \yii\base\InvalidRouteException
+     */
+    public function renderApi($request){
+        list($route ,$params) = $this->getRoute($request);
+        $data = $this->app->runAction($route ,$params);
+        exit( $data);
+    }
+
+    public function getRoute($request){
+        $params =$request->get_params();
+        $module = $controller =$id="";
+        if(isset($params['module'])){
+            $module = $params['module'];
+            unset( $params['module']);
+        }
+        if(isset($params['controller'])){
+            $controller = $params["controller"];
+            unset( $params['controller']);
+        }
+        if(isset($params['id'])){
+            $id = $params["id"];
         }
 
+        $method = Yii::$app->request->method;
+        switch ($method){
+            case 'GET':
+                $action = empty($id)?"index":"view";
+            case 'HEAD':
+                $action = empty($id)?"index":"view";
+            case 'POST':
+                $action = "create";
+            case 'PUT':
+                $action = "update";
+            case 'PATCH':
+                $action = "update";
+            case 'DELETE':
+                $action = "delete";
+            case 'OPTIONS':
+                $action = "options";
+        }
+
+        /**
+         *  * - `'PUT,PATCH users/<id>' => 'user/update'`: update a user
+         * - `'DELETE users/<id>' => 'user/delete'`: delete a user
+         * - `'GET,HEAD users/<id>' => 'user/view'`: return the details/overview/options of a user
+         * - `'POST users' => 'user/create'`: create a new user
+         * - `'GET,HEAD users' => 'user/index'`: return a list/overview/options of users
+         * - `'users/<id>' => 'user/options'`: process all unhandled verbs of a user
+         * - `'users' => 'user/options'`: process all unhandled verbs of user collection
+         */
+        exit(json_encode( $action ,true));
+//        return [];
     }
 
     /**------------------------------
      * 为视图定义资源包缓存快,将Yii2视图事件回调
      *------------------------------*/
-    public function registerCsrfMetaTags(){echo $this->app->view->registerCsrfMetaTags();}
-    public function beginPage(){$this->app->view->beginPage();}
-    public function head(){$this->app->view->head();}
-    public function beginBody(){$this->app->view->beginBody();}
-    public function endBody(){$this->app->view->endBody();}
-    public function endPage(){ isset($this->_controller) ?$this->_controller->getView()->endPage():""; }
-
-    /**
-     * @param Exception $exception
-     * @param $backtrace
-     * @param string $type
-     */
-    public static function exception(Exception $exception, $backtrace, $type ="html"){
-        $msg = $exception->getMessage();
-        $code = $exception->getCode();
-        $file = $exception->getFile().":".$exception->getLine();
-        if ($type == "html") {
-            $str = "<h1> Error: $code </h1>";
-            $str .= "<p>$msg</p>";
-            $str .="<p>$file</p>";
-            $str .= WpTableWidget::widget([
-                "columns" => [
-                    ["field" => "file", "title" => "文件"],
-                    ["field" => "line", "title" => "行号"],
-                    ["field" => "function", "title" => "函数名"],
-                    ["field" => "class", "title" => "类名"],
-                    ["field" => "args", "title" => "参数"]
-                ],
-                'data' => $backtrace]);
-            echo $str;
-        } else {
-            $json = [
-                'code' => $code,
-                "msg" => $msg,
-                "data" => $backtrace
-            ];
-            echo json_encode($json, true);
-        }
-        exit();
+    public function registerCsrfMetaTags(){
+        echo $this->app->view->registerCsrfMetaTags();
     }
+    public function beginPage(){
+        $this->app->view->beginPage();
+    }
+    public function head(){
+        $this->app->view->head();
+    }
+    public function beginBody(){
+        $this->app->view->beginBody();
+    }
+    public function endBody(){
+        $this->app->view->endBody();
+    }
+    public function endPage(){
+        $controller = $this->app->controller;
+        if(isset($controller) and !empty($controller)){
+            $controller->getView()->endPage();
+        }
 
-    /**
-     * @param $message
-     * @param $code
-     * @param string $data
-     */
-    public function sendJson($message, $code, $data = ""){
-        $data = getParams();
-        $data['time'] = time();
-        header('Content-Type:application/json; charset=utf-8');
-        exit(json_encode($data, true));
     }
 }

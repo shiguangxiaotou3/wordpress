@@ -49,8 +49,7 @@ class Crawlers extends Component{
      * @return string|null
      */
     public function getIp(){
-        global $crud;
-        return $crud->frontend->request->userIP;
+        return  Yii::$app->request->userIP;
     }
 
     /**
@@ -153,18 +152,18 @@ class Crawlers extends Component{
         $ip = $this->getIp();
         if ($this->ignore($ip)) {
             $ipinfo = $this->getIpinfo($ip);
+            $path =Yii::getAlias("@library/messages/city/zh-CN/city.php");
+            $data = require_once  $path;
+            if((isset($ipinfo['region']) and !empty($ipinfo['city']))){
+                if(!isset($data[$ipinfo['city']])){
+                    upDateConfig($path, [$ipinfo['city']=>""]);
+                }
 
-            if((isset($ipinfo['city']) and !empty($ipinfo['city']))){
-                upDateConfig(
-                    Yii::getAlias("@library/messages/city/zh-CN/city.php"),
-                    [$ipinfo['city']=>""]
-                );
             }
             if((isset($ipinfo['region']) and !empty($ipinfo['region']))){
-                upDateConfig(
-                    Yii::getAlias("@library/messages/region/zh-CN/region.php"),
-                    [$ipinfo['region']=>""]
-                );
+                if(!isset($data[$ipinfo['region']])){
+                    upDateConfig($path, [$ipinfo['region']=>""]);
+                }
             }
             $data = [
                 "time"=>time(),

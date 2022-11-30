@@ -3,10 +3,10 @@
 
 namespace backend\controllers;
 
-use crud\library\components\Ads;
-use crud\library\components\Flows;
 use Yii;
 use yii\web\Controller;
+use crud\library\components\Ads;
+use crud\library\components\Flows;
 
 class AdsController extends Controller{
     public $layout=false;
@@ -14,7 +14,7 @@ class AdsController extends Controller{
 
     public function actions(){
         return [
-            "index","redirect-uri","flows","doc"
+            "index","redirect-uri","flows","doc","action"
         ];
     }
 
@@ -52,7 +52,15 @@ class AdsController extends Controller{
     }
 
     public function actionRedirectUri(){
-        return $this->render("redirect_uri");
+        $require = Yii::$app->request;
+        if($require->isAjax){
+            /** @var Flows $flows */
+            $flows = Yii::$app->flows;
+            $data =$require->post('data');
+            return $flows->update_flow( $data["stream_id"], $data["name"],$data["mode"],$data["payload"]);
+        }else{
+            return $this->render("redirect_uri");
+        }
     }
 
     public function actionFlows(){
@@ -63,6 +71,11 @@ class AdsController extends Controller{
         }
 
         return $this->render("flows",["results"=>$results]);
+    }
+
+    public function actionAction(){
+        $data = Ads::actions();
+        return $this->render("action",['data'=>$data]);
     }
 
     private function getToken(){

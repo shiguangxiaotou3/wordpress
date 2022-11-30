@@ -1,4 +1,4 @@
-
+1 286 929 042
 ~~~
 1. Bing ads参数： Bing ADS API 文档：https://learn.microsoft.com/en-us/advertising/guides/?view=bingads-13
 DeveloperToken：120S42O75E563402

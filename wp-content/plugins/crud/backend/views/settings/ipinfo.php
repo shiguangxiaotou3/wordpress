@@ -62,13 +62,13 @@ foreach ($visits as $key => $re) {
         </form>
         <hr style="width: 100%;"/>
         <div style="display: flex;flex-wrap: wrap;justify-content: space-around">
-            <div style="width: 500px;background-color: rgb(220,220,220);padding: 5px">
+            <div style="width: 500px;background-color: rgb(220,220,220);padding: 5px;margin: 5px 0">
                 <?= PieChartWidget::widget([
                     "options" => ["id" => "pie", "style" => "height:250px"],
                     'pieOptions' => ["tooltipTemplate" => '<%=label%> :<%=value %>'],
                     "pieData" => $crawlers->visitsByBrowsers(7),]) ?>
             </div>
-            <div style="width: 500px;background-color: rgb(220,220,220);padding: 5px">
+            <div style="width: 500px;background-color: rgb(220,220,220);padding: 5px;margin: 5px 0">
                 <?= LineChartWidget::widget([
                     "options" => ["id" => "line", "style" => "height:250px"],
                     "lineData" => $results,
@@ -98,10 +98,10 @@ foreach ($visits as $key => $re) {
                         "callback"=>function($row){
                             $str =[];
                             if(isset($row["country"])){
-                                $str[] =  Yii::t("country",$row["country"]);
+                                $str[] =  Yii::t("city",$row["country"]);
                             }
                             if(isset($row["region"])){
-                                $str[] =  Yii::t("region",$row["region"]);
+                                $str[] =  Yii::t("city",$row["region"]);
                             }
                             if(isset($row["city"])){
                                 $str[] =  Yii::t("city",$row["city"]);

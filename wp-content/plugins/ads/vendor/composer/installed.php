@@ -1,0 +1,101 @@
+<?php return array(
+    'root' => array(
+        'name' => '__root__',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'c5a2ef0799659864338a8a0c89d40e18f5e17e33',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
+    ),
+    'versions' => array(
+        '__root__' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'c5a2ef0799659864338a8a0c89d40e18f5e17e33',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'bower-asset/inputmask' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
+        ),
+        'bower-asset/jquery' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
+        ),
+        'bower-asset/punycode' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
+        ),
+        'bower-asset/yii2-pjax' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
+        ),
+        'cebe/markdown' => array(
+            'pretty_version' => '1.2.1',
+            'version' => '1.2.1.0',
+            'reference' => '9bac5e971dd391e2802dca5400bbeacbaea9eb86',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../cebe/markdown',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'ezyang/htmlpurifier' => array(
+            'pretty_version' => 'v4.16.0',
+            'version' => '4.16.0.0',
+            'reference' => '523407fb06eb9e5f3d59889b3978d5bfe94299c8',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../ezyang/htmlpurifier',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'microsoft/bingads' => array(
+            'pretty_version' => 'v13.0.14',
+            'version' => '13.0.14.0',
+            'reference' => 'c9f305ecd53d38f3910d8a0a91fd3aca7cb0fb23',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../microsoft/bingads',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'paragonie/random_compat' => array(
+            'pretty_version' => 'v9.99.100',
+            'version' => '9.99.100.0',
+            'reference' => '996434e5492cb4c3edcb9168db6fbb1359ef965a',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../paragonie/random_compat',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'yiisoft/yii2' => array(
+            'pretty_version' => '2.0.47',
+            'version' => '2.0.47.0',
+            'reference' => '8ecf57895d9c4b29cf9658ffe57af5f3d0e25254',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../yiisoft/yii2',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'yiisoft/yii2-composer' => array(
+            'pretty_version' => '2.0.10',
+            'version' => '2.0.10.0',
+            'reference' => '94bb3f66e779e2774f8776d6e1bdeab402940510',
+            'type' => 'composer-plugin',
+            'install_path' => __DIR__ . '/../yiisoft/yii2-composer',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
+);
