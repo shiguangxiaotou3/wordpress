@@ -3,7 +3,7 @@
 
 namespace crud\components;
 
-
+use Exception;
 use yii\base\Component;
 
 class BaiduTranslate extends Component{
@@ -57,7 +57,13 @@ class BaiduTranslate extends Component{
         );
         $args['sign'] = $this->buildSign($str, $this->appId, $args['salt'], $this->appSecret);
         $ret = $this->call($this->url, $args);
-         return json_decode($ret, true);
+        $results = json_decode($ret, true);
+        if(isset( $results['error_code'])){
+            $message = self::error($results['error_code']);
+            throw new Exception($message['message'].". ".$message['description']);
+        }else{
+            return  $results;
+        }
     }
 
     /**
@@ -163,4 +169,31 @@ class BaiduTranslate extends Component{
         return $args;
     }
 
+    /**
+     * @param $code
+     * @return array|string
+     */
+    public static  function error($code){
+        $errors=[
+            ['code'=>52000,"message"=>"成功","description"=>""],
+            ['code'=> 52001,"message"=>"请求超时","description"=>"请重试"],
+            ['code'=> 52002,"message"=>"系统错误 ","description"=>"请重试"],
+            ['code'=>52003,"message"=>"未授权用户 ","description"=>"请检查appid是否正确或者服务是否开通"],
+            ['code'=> 54000 ,"message"=>"必填参数为空","description"=>"请检查是否少传参数"],
+            ['code'=> 54001,"message"=>"签名错误","description"=>"请检查您的签名生成方法"],
+            ['code'=> 54003 ,"message"=>"访问频率受限","description"=>"请降低您的调用频率，或进行身份认证后切换为高级版/尊享版"],
+            ['code'=> 54004,"message"=>"账户余额不足","description"=>"请前往管理控制台为账户充值"],
+            ['code'=>  54005,"message"=>"长query请求频繁","description"=>"请降低长query的发送频率，3s后再试"],
+            ['code'=>  58000,"message"=>"客户端IP非法","description"=>"检查个人资料里填写的IP地址是否正确，可前往开发者信息-基本信息修改"],
+            ['code'=> 58001 ,"message"=>"译文语言方向不支持","description"=>"检查译文语言是否在语言列表里"],
+            ['code'=> 58002,"message"=>"服务当前已关闭 ","description"=>"请前往管理控制台开启服务"],
+            ['code'=>90107  ,"message"=>"认证未通过或未生效","description"=>"请前往我的认证查看认证进度"],
+        ];
+        foreach ($errors as $error){
+            if($code == $error["code"]){
+                return $error;
+            }
+        }
+        return '';
+    }
 }

@@ -30,6 +30,7 @@ function dumpInfo($conf)
 
 /**
  * @param $str
+ * @param string $type
  */
 function logStr($str,$type="txt")
 {
