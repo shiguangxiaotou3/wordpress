@@ -311,13 +311,21 @@ function deleteDsStore($dir, $deleteFile)
     $handle = opendir($dir);
     while (false !== ($file = readdir($handle))) {
         if ($file != '.' && $file != '..') {
-            if (($file == $deleteFile) or in_array($file, $deleteFile)) {
-                if (unlink($dir . "/" . $file)) {
-                    echo $dir . "/" . $file . "\n";
+            if(is_array($deleteFile)){
+                if(in_array($file, $deleteFile)){
+                    if (unlink($dir . "/" . $file)) {
+                        echo $dir . "/" . $file . "\n";
+                    }
+                }
+            }else{
+                if (($file == $deleteFile) ) {
+                    if (unlink($dir . "/" . $file)) {
+                        echo $dir . "/" . $file . "\n";
+                    }
                 }
             }
             if (is_dir($dir . "/" . $file)) {
-                deleteDsStore($dir . "/" . $file);
+                deleteDsStore($dir . "/" . $file,$deleteFile);
             }
         }
     }

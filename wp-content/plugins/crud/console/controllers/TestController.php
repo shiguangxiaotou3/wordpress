@@ -32,7 +32,7 @@ class TestController extends Controller
      */
     public function actionDeleteDsStore(){
         $dir = "/Library/WebServer/Documents/wp";
-        deleteDsStore($dir);
+        deleteDsStore($dir,".DS_Store");
     }
 
     /**
