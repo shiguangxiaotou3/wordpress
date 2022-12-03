@@ -31,7 +31,6 @@ if(defined( 'ABSPATH' ) and !defined("DB_NAME")){
     define('DB_HOST', getDefineValueByName($config_str, 'DB_HOST'));
     define('DB_CHARSET', getDefineValueByName($config_str, 'DB_CHARSET'));
     define('DB_COLLATE', getDefineValueByName($config_str, "DB_COLLATE"));
-    define("DB_TABLE_PREFIX", getVarValueByVarName($config_str, "table_prefix"));
 }
 
 /**

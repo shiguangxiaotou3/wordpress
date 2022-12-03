@@ -1,71 +1,84 @@
 
 // +----------------------------------------------------------------------
-// | 调用文件: /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php
+// | 调用文件: /Library/WebServer/Documents/wp/wp-content/plugins/crud/console/controllers/TestController.php
 // +----------------------------------------------------------------------
-// | 调用行数: 第78行被调用
+// | 调用行数: 第114行被调用
 // +----------------------------------------------------------------------
-// | 调用时间: 2022-11-30 06:11:13
+// | 调用时间: 2022-12-01 03:12:46
 // +----------------------------------------------------------------------
 Array
 (
-    [option_group] => crud_group
-    [page] => wechat
-    [section_id] => wechat
-    [section_description] => 微信公众号基础配置
-    [fields] => Array
+    [name] => shiguangxiaotou/crud
+    [description] => 这是一个基于Yii2的MVC的wordpress插件
+    [keywords] => Array
         (
-            [0] => Array
+            [0] => wprdpress
+            [1] => yii2
+            [2] => plugins
+            [3] => MVC
+            [4] => project template
+        )
+
+    [homepage] => http://www.shiguangxiaotou.com
+    [type] => composer-plugin
+    [license] => BSD-3-Clause
+    [support] => Array
+        (
+            [issues] => http://www.shiguangxiaotou.com
+        )
+
+    [minimum-stability] => stable
+    [require] => Array
+        (
+            [php] => >=5.5
+            [yiisoft/yii2] => ^2.0
+            [erusev/parsedown] => ^1.7
+            [alibabacloud/alidns-20150109] => ^3.0
+            [google/cloud-translate] => ^1.12
+            [jaybizzle/crawler-detect] => ^1.2
+            [microsoft/bingads] => ^13.0
+        )
+
+    [require-dev] => Array
+        (
+            [yiisoft/yii2-debug] => ~2.1.0
+            [yiisoft/yii2-gii] => ~2.2.0
+            [yiisoft/yii2-faker] => ~2.0.0
+            [phpunit/phpunit] => ~9.5.0
+            [codeception/codeception] => ^5.0.0 || ^4.0
+            [codeception/lib-innerbrowser] => ^3.0 || ^1.1
+            [codeception/module-asserts] => ^3.0 || ^1.1
+            [codeception/module-yii2] => ^1.1
+            [codeception/module-filesystem] => ^3.0 || ^2.0 || ^1.1
+            [codeception/verify] => ^2.2
+            [symfony/browser-kit] => ^6.0 || >=2.7 <=4.2.4
+        )
+
+    [replace] => Array
+        (
+            [ext-mcrypt] => *
+            [bower-asset/jquery] => *
+            [bower-asset/inputmask] => *
+            [bower-asset/punycode] => *
+            [bower-asset/yii2-pjax] => *
+        )
+
+    [autoload] => Array
+        (
+            [psr-4] => Array
                 (
-                    [id] => appId
-                    [title] => appId
-                    [args] => Array
-                        (
-                            [tag] => text
-                            [defaultValue] => 
-                            [description] => 开发环境
-                            [options] => Array
-                                (
-                                    [class] => regular-text code
-                                )
-
-                        )
-
+                    [crud\] => wp-content/plugins/crud/library/
                 )
 
-            [1] => Array
+        )
+
+    [config] => Array
+        (
+            [vendor-dir] => wp-content/plugins/crud/vendor
+            [process-timeout] => 1800
+            [allow-plugins] => Array
                 (
-                    [id] => appSecret
-                    [title] => appSecret
-                    [args] => Array
-                        (
-                            [tag] => text
-                            [defaultValue] => 
-                            [description] => 开发环境
-                            [options] => Array
-                                (
-                                    [class] => regular-text code
-                                )
-
-                        )
-
-                )
-
-            [2] => Array
-                (
-                    [id] => token
-                    [title] => Token
-                    [args] => Array
-                        (
-                            [tag] => text
-                            [defaultValue] => 
-                            [description] => 开发环境
-                            [options] => Array
-                                (
-                                    [class] => regular-text code
-                                )
-
-                        )
-
+                    [yiisoft/yii2-composer] => 1
                 )
 
         )
@@ -74,84 +87,88 @@ Array
 
 
 // +----------------------------------------------------------------------
-// | 调用文件: /Library/WebServer/Documents/wp/wp-content/plugins/crud/backend/web/App.php
+// | 调用文件: /Library/WebServer/Documents/wp/wp-content/plugins/crud/console/controllers/TestController.php
 // +----------------------------------------------------------------------
-// | 调用行数: 第78行被调用
+// | 调用行数: 第115行被调用
 // +----------------------------------------------------------------------
-// | 调用时间: 2022-11-30 06:11:15
+// | 调用时间: 2022-12-01 03:12:19
 // +----------------------------------------------------------------------
 Array
 (
-    [option_group] => crud_group
-    [page] => wechat
-    [section_id] => wechat
-    [section_description] => 微信公众号基础配置
-    [fields] => Array
+    [name] => shiguangxiaotou/crud
+    [description] => 这是一个基于Yii2的MVC的wordpress插件
+    [keywords] => Array
         (
-            [0] => Array
+            [0] => wprdpress
+            [1] => yii2
+            [2] => plugins
+            [3] => MVC
+            [4] => project template
+        )
+
+    [homepage] => http://www.shiguangxiaotou.com
+    [type] => composer-plugin
+    [license] => BSD-3-Clause
+    [support] => Array
+        (
+            [issues] => http://www.shiguangxiaotou.com
+        )
+
+    [minimum-stability] => stable
+    [require] => Array
+        (
+            [php] => >=5.5
+            [yiisoft/yii2] => ^2.0
+            [erusev/parsedown] => ^1.7
+            [alibabacloud/alidns-20150109] => ^3.0
+            [google/cloud-translate] => ^1.12
+            [jaybizzle/crawler-detect] => ^1.2
+            [microsoft/bingads] => ^13.0
+        )
+
+    [require-dev] => Array
+        (
+            [yiisoft/yii2-debug] => ~2.1.0
+            [yiisoft/yii2-gii] => ~2.2.0
+            [yiisoft/yii2-faker] => ~2.0.0
+            [phpunit/phpunit] => ~9.5.0
+            [codeception/codeception] => ^5.0.0 || ^4.0
+            [codeception/lib-innerbrowser] => ^3.0 || ^1.1
+            [codeception/module-asserts] => ^3.0 || ^1.1
+            [codeception/module-yii2] => ^1.1
+            [codeception/module-filesystem] => ^3.0 || ^2.0 || ^1.1
+            [codeception/verify] => ^2.2
+            [symfony/browser-kit] => ^6.0 || >=2.7 <=4.2.4
+        )
+
+    [replace] => Array
+        (
+            [ext-mcrypt] => *
+            [bower-asset/jquery] => *
+            [bower-asset/inputmask] => *
+            [bower-asset/punycode] => *
+            [bower-asset/yii2-pjax] => *
+        )
+
+    [autoload] => Array
+        (
+            [psr-4] => Array
                 (
-                    [id] => appId
-                    [title] => appId
-                    [args] => Array
-                        (
-                            [tag] => text
-                            [defaultValue] => 
-                            [description] => 开发环境
-                            [options] => Array
-                                (
-                                    [class] => regular-text code
-                                )
-
-                        )
-
+                    [crud\] => wp-content/plugins/crud/library/
                 )
 
-            [1] => Array
+        )
+
+    [config] => Array
+        (
+            [vendor-dir] => wp-content/plugins/crud/vendor
+            [process-timeout] => 1800
+            [allow-plugins] => Array
                 (
-                    [id] => appSecret
-                    [title] => appSecret
-                    [args] => Array
-                        (
-                            [tag] => text
-                            [defaultValue] => 
-                            [description] => 开发环境
-                            [options] => Array
-                                (
-                                    [class] => regular-text code
-                                )
-
-                        )
-
-                )
-
-            [2] => Array
-                (
-                    [id] => token
-                    [title] => Token
-                    [args] => Array
-                        (
-                            [tag] => text
-                            [defaultValue] => 
-                            [description] => 开发环境
-                            [options] => Array
-                                (
-                                    [class] => regular-text code
-                                )
-
-                        )
-
+                    [yiisoft/yii2-composer] => 1
                 )
 
         )
 
 )
 
-
-// +----------------------------------------------------------------------
-// | 调用文件: /Library/WebServer/Documents/wp/wp-content/plugins/crud/library/components/BaiduTranslate.php
-// +----------------------------------------------------------------------
-// | 调用行数: 第61行被调用
-// +----------------------------------------------------------------------
-// | 调用时间: 2022-11-30 11:11:37
-// +----------------------------------------------------------------------
-{"error_code":"58000","error_msg":"INVALID_CLIENT_IP","data":{"client_ip":"27.19.47.143"}}

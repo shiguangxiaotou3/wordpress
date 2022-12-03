@@ -5,7 +5,8 @@ namespace backend\web;
 
 use crud\modules\wechat\Wechat;
 use Yii;
-use crud\App as BaseApp;
+use yii\base\BaseObject;
+use crud\Base;
 use crud\models\Menu;
 use crud\models\Settings;
 use yii\web\Application ;
@@ -18,7 +19,9 @@ use yii\helpers\ArrayHelper;
  * @property-read Application $app
  * @package crud\backend\web
  */
-class App extends  BaseApp {
+class App extends  BaseObject {
+
+    private $_modules=[];
 
     public $_app;
     /**
@@ -34,6 +37,7 @@ class App extends  BaseApp {
             require __DIR__ . '/../config/main-local.php',
             Wechat::config()
         );
+        $this->_modules = $config["modules"];
         $this->_app = new Application($config);
     }
 
@@ -75,7 +79,6 @@ class App extends  BaseApp {
      */
     public function registerSettings(){
         $settings = $this->app->params["settings"];
-        logObject($settings['wechat']);
         foreach ($settings as $setting) {
             $option = new Settings($setting);
             $option->registerSettings();
@@ -115,13 +118,11 @@ class App extends  BaseApp {
             }else{
                 $action = $request->post("action","");
             }
-            $data = $this->app->runAction($action);
-            $this->sendJson($data);
+            Base::sendJson($this->app->runAction($action));
         }else{
             $query =$request->queryParams;
             $action= $query["page"];
-            exit( $this->app->runAction($action));
-//            exit(  $action);
+            Base::sendHtml($this->app->runAction($action));
         }
     }
 
@@ -218,53 +219,63 @@ class App extends  BaseApp {
     public function renderApi($request){
         list($route ,$params) = $this->getRoute($request);
         $data = $this->app->runAction($route ,$params);
-        exit( $data);
+        Base::sendJson( $data);
     }
 
     public function getRoute($request){
-        $params =$request->get_params();
-        $module = $controller =$id="";
-        if(isset($params['module'])){
+        $params = $request->get_params();
+        $module = $controller = $action = "index";
+        $id = "";
+        if (isset($params['module'])) {
             $module = $params['module'];
-            unset( $params['module']);
+            unset($params['module']);
+        } else {
+            $module = "index";
         }
-        if(isset($params['controller'])){
+        if (isset($params['controller'])) {
             $controller = $params["controller"];
-            unset( $params['controller']);
+            unset($params['controller']);
+        } else {
+            $controller = "index";
         }
-        if(isset($params['id'])){
+        if (isset($params['id'])) {
             $id = $params["id"];
         }
-
         $method = Yii::$app->request->method;
-        switch ($method){
+        switch ($method) {
             case 'GET':
-                $action = empty($id)?"index":"view";
             case 'HEAD':
-                $action = empty($id)?"index":"view";
+                $action = empty($id) ? "index" : "view";
+                break;
             case 'POST':
                 $action = "create";
+                break;
+            case 'PATCH':
             case 'PUT':
                 $action = "update";
-            case 'PATCH':
-                $action = "update";
+                break;
             case 'DELETE':
                 $action = "delete";
+                break;
             case 'OPTIONS':
                 $action = "options";
+            default:
+                $action = "index";
         }
-
-        /**
-         *  * - `'PUT,PATCH users/<id>' => 'user/update'`: update a user
-         * - `'DELETE users/<id>' => 'user/delete'`: delete a user
-         * - `'GET,HEAD users/<id>' => 'user/view'`: return the details/overview/options of a user
-         * - `'POST users' => 'user/create'`: create a new user
-         * - `'GET,HEAD users' => 'user/index'`: return a list/overview/options of users
-         * - `'users/<id>' => 'user/options'`: process all unhandled verbs of a user
-         * - `'users' => 'user/options'`: process all unhandled verbs of user collection
-         */
-        exit(json_encode( $action ,true));
-//        return [];
+        if($this->is_module($module)){
+            if(empty($id)){
+                $route =  $module."/api/".$controller."/".$action;
+            }else{
+                $route =  $module."/api/".$controller."/".$action."/".$id;
+            }
+        }else{
+            if(empty($id)){
+                $route ="api/".$module."/".$controller."/".$action;
+            }else{
+                $route = "api/".$module."/".$controller."/".$action."/".$id;
+            }
+        }
+        return [$route,$params];
     }
 
     /**------------------------------
@@ -291,5 +302,14 @@ class App extends  BaseApp {
             $controller->getView()->endPage();
         }
 
+    }
+
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    private function is_module($id){
+        return in_array($id,array_keys( $this->_modules));
     }
 }

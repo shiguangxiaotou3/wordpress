@@ -1,7 +1,7 @@
 <?php
 
 
-namespace crud\modules\wechat\controllers;
+namespace crud\modules\wechat\controllers\api;
 
 use Yii;
 use yii\web\Controller;
@@ -21,7 +21,7 @@ class IndexController extends Controller
     {
         $wechat = Yii::$app->wechat;
         $data = $wechat->ValidateServer();
-        return is_array($data) ? json_encode($data, true) : $data;
+        exit(is_array($data) ? json_encode($data, true) : $data);
     }
 
     /**

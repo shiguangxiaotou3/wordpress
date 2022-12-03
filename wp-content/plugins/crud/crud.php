@@ -30,7 +30,7 @@ define("CRUD_URL", plugin_dir_url(__FILE__));
 defined("CRUD_DIR") or define("CRUD_DIR" ,__DIR__);
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'dev');
-
+defined('DB_TABLE_PREFIX') or define('DB_TABLE_PREFIX', 'wp_');
 
 require_once __DIR__ . "/library/debug.php";
 require_once __DIR__ . "/library/function.php";
@@ -41,7 +41,6 @@ require_once __DIR__ . '/common/config/bootstrap.php';
 register_activation_hook(__FILE__, "crud_activate");
 register_deactivation_hook(__FILE__, "crud_activate");
 date_default_timezone_set('Asia/Shanghai');
-
 global $crud;
 $crud = new backend\web\App();
 $crud->run();

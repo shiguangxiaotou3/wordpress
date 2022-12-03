@@ -10,6 +10,10 @@
  */
 
 namespace console\controllers;
+use crud\Base;
+use crud\models\Rely;
+use Darabonba\GatewaySpi\Models\InterceptorContext\request;
+use frontend\web\App;
 use Yii;
 use crud\library\components\Ads;
 use yii\console\Controller;
@@ -86,4 +90,26 @@ class TestController extends Controller
         file_put_contents($file,"<?php\nreturn [\n".join(",\n",$result)."\n];");
 
     }
+
+    /**
+     * http测试
+     */
+    public function actionHttp(){
+       $data =  Base::GET("https://www.baidu.com",[]);
+        var_dump($data);
+    }
+
+
+    /**
+     * 计算composer 依赖关系图
+     */
+    public function actionComposer(){
+        $model = new Rely();
+        $model->vendorDir = Yii::getAlias('@vendor');
+        $model->baseComposerJson = ABSPATH."composer.json";
+        $model->baseComposerLock = ABSPATH."composer.lock";
+        $json = $model->getJson();
+       var_dump($json);
+    }
+
 }

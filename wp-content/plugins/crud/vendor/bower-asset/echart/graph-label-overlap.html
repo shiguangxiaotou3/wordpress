@@ -1,0 +1,234 @@
+<!--
+	此示例下载自 https://echarts.apache.org/examples/zh/editor.html?c=graph-label-overlap
+-->
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+<head>
+  <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+  <div id="container" style="height: 100%"></div>
+
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="echarts.min.js"></script>
+  <!-- Uncomment this line if you want to dataTool extension
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/extension/dataTool.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to use gl extension
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to echarts-stat extension
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to use map
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"></script>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
+  -->
+  <!-- Uncomment these two lines if you want to use bmap extension
+  <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=YOUR_API_KEY"></script>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/extension/bmap.min.js"></script>
+  -->
+
+  <script type="text/javascript">
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, null, {
+      renderer: 'canvas',
+      useDirtyRect: false
+    });
+    var app = {};
+    var ROOT_PATH = 'https://echarts.apache.org/examples';
+    var graph ={
+      "nodes": [
+        {
+          "id": "0",
+          "name": "Myriel",
+          "symbolSize": 19.12381,
+          "x": -266.82776,
+          "y": 299.6904,
+          "value": 28.685715,
+          "category": 0
+        },
+        {
+          "id": "1",
+          "name": "Napoleon",
+          "symbolSize": 2.6666666666666665,
+          "x": -418.08344,
+          "y": 446.8853,
+          "value": 4,
+          "category": 0
+        },
+        {
+          "id": "2",
+          "name": "MlleBaptistine",
+          "symbolSize": 6.323809333333333,
+          "x": -212.76357,
+          "y": 245.29176,
+          "value": 9.485714,
+          "category": 1
+        },
+        {
+          "id": "3",
+          "name": "MmeMagloire",
+          "symbolSize": 6.323809333333333,
+          "x": -242.82404,
+          "y": 235.26283,
+          "value": 9.485714,
+          "category": 1
+        },
+        {
+          "id": "4",
+          "name": "CountessDeLo",
+          "symbolSize": 2.6666666666666665,
+          "x": -379.30386,
+          "y": 429.06424,
+          "value": 4,
+          "category": 0
+        },
+        {
+          "id": "5",
+          "name": "Geborand",
+          "symbolSize": 2.6666666666666665,
+          "x": -417.26337,
+          "y": 406.03506,
+          "value": 4,
+          "category": 0
+        },
+        {
+          "id": "6",
+          "name": "Champtercier",
+          "symbolSize": 2.6666666666666665,
+          "x": -332.6012,
+          "y": 485.16974,
+          "value": 4,
+          "category": 0
+        },
+        {
+          "id": "7",
+          "name": "Cravatte",
+          "symbolSize": 2.6666666666666665,
+          "x": -382.69568,
+          "y": 475.09113,
+          "value": 4,
+          "category": 0
+        },
+        {
+          "id": "8",
+          "name": "Count",
+          "symbolSize": 2.6666666666666665,
+          "x": -320.384,
+          "y": 387.17325,
+          "value": 4,
+          "category": 0
+        },
+        {
+          "id": "9",
+          "name": "OldMan",
+          "symbolSize": 2.6666666666666665,
+          "x": -344.39832,
+          "y": 451.16772,
+          "value": 4,
+          "category": 0
+        },
+
+      ],
+      "links": [
+        {
+          "source": "1",
+          "target": "0"
+        },
+        {
+          "source": "2",
+          "target": "0"
+        },
+        {
+          "source": "3",
+          "target": "0"
+        },
+        {
+          "source": "3",
+          "target": "2"
+        },
+        {
+          "source": "4",
+          "target": "0"
+        },
+        {
+          "source": "5",
+          "target": "0"
+        },
+        {
+          "source": "6",
+          "target": "0"
+        },
+        {
+          "source": "7",
+          "target": "0"
+        },
+        {
+          "source": "8",
+          "target": "0"
+        },
+        {
+          "source": "9",
+          "target": "0"
+        },
+
+      ],
+      "categories": [
+        {
+          "name": "A"
+        },
+      ]
+    }
+    var option= {
+      tooltip: {},
+      legend: [
+        {
+          data: graph.categories.map(function (a) {
+            return a.name;
+          })
+        }
+      ],
+      series: [
+        {
+          name: 'Les Miserables',
+          type: 'graph',
+          layout: 'none',
+          data: graph.nodes,
+          links: graph.links,
+          categories: graph.categories,
+          roam: true,
+          label: {
+            show: true,
+            position: 'right',
+            formatter: '{b}'
+          },
+          labelLayout: {
+            hideOverlap: true
+          },
+          scaleLimit: {
+            min: 0.4,
+            max: 2
+          },
+          lineStyle: {
+            color: 'source',
+            curveness: 0.3
+          }
+        }
+      ]
+    };
+
+
+    myChart.showLoading();
+    myChart.hideLoading();
+    myChart.setOption(option);
+
+
+    if (option && typeof option === 'object') {
+      myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+  </script>
+</body>
+</html>
