@@ -72,6 +72,16 @@ class App extends  BaseObject {
         add_action("admin_body_open",[$this,"beginBody"]);
         add_action("admin_footer",[$this,"endBody"]);
         add_action("admin_footer",[$this,"endPage"]);
+
+        // 向前台注册事件
+        // 需要去主题<html>和</html>埋点两个点beginPage和endPage
+        //add_action("get_template_part",[$this,"beginPage"]);
+        add_action("wp_head",[$this,"registerCsrfMetaTags"]);
+        add_action("wp_head",[$this,"head"]);
+        add_action("get_template_part_loop",[$this,"wp"]);
+        add_action("wp_body_open",[$this,"beginBody"]);
+        add_action("wp_footer",[$this,"endBody"]);
+        //add_action("wp_footer",[$this,"endPage"]);
     }
 
     /**
@@ -301,7 +311,6 @@ class App extends  BaseObject {
         if(isset($controller) and !empty($controller)){
             $controller->getView()->endPage();
         }
-
     }
 
 
@@ -311,5 +320,12 @@ class App extends  BaseObject {
      */
     private function is_module($id){
         return in_array($id,array_keys( $this->_modules));
+    }
+
+    /**
+     * 向前台注册全局aeesets
+     */
+    public function wp(){
+        $this->app->runAction('wp/index');
     }
 }

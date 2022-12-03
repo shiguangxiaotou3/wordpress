@@ -21,19 +21,20 @@ class Rely extends Model
     public $projectName="shiguangxiaotou/wordpress";
     public $data =[
         "nodes" => [
-            [
-                "id" => "0",
-                "name" => "shiguangxiaotou/wordpress",
-                "symbolSize" => 20,
-                "value" => "1.3.0",
-                "category" => 0
-            ],
+//            [
+//                "id" => "0",
+//                "name" => "shiguangxiaotou/wordpress",
+//                "symbolSize" => 20,
+//                "value" => "1.3.0",
+//                "category" => 0
+//            ],
         ],
-        "links" => [],
+        "links" => [
+//            "source" => $nodeId,
+//            "target" => $fatherId
+        ],
         "categories" => [
-            [
-                "name" => "A"
-            ]
+//            ['name'=>'adads']
         ]
     ];
 
@@ -56,34 +57,24 @@ class Rely extends Model
     }
 
     /**
-     * 获取拓展id
-     * @param $projectName
-     * @return int|mixed
-     */
-    public function getFatherId($projectName){
-        $fatherId =0;
-        foreach ($this->data['nodes'] as $node){
-            if($node['name'] == $projectName){
-                return $node['id'];
-            }
-        }
-        return  $fatherId;
-    }
-
-    /**
      * 获取composer.json的依赖包名称
      * @param $file
+     * @param bool $env
      * @return array
      */
-    public  function getRequire($file){
+    public static function getRequire($file,$env=true){
         $requires = $names=[];
         if(file_exists($file)){
             $json = file_get_contents($file);
             $arr =json_decode($json,true);
-            if($this->env){
+            if($env){
                 $requires = !empty($arr['require'])? $arr['require']:[];
             }else{
-                $requires = !empty($arr['require-dev'])? $arr['require-dev']:[];
+                $requires1 = !empty($arr['require'])? $arr['require']:[];
+                $requires2 = !empty($arr['require-dev'])? $arr['require-dev']:[];
+                $requires = array_merge($requires1,$requires2);
+//                $requires = !empty($arr['require-dev'])? $arr['require-dev']:[];
+//                logObject($requires2);
             }
             $names = array_keys($requires);
         }
@@ -92,20 +83,28 @@ class Rely extends Model
 
     /**
      * 递归获取所以第三方插件
+     * @param array $data
      * @param $projectName
      */
-    public  function getRely($projectName){
-        if(!in_array($projectName,$this->_require)){
-            array_push($this->_require,$projectName);
-        }
+    public  function getRely($projectName,&$data=[]){
         $tmp = self::getRequire($this->vendorDir.'/'.$projectName."/composer.json");
         if(!empty($tmp)) {
             foreach ($tmp as $value) {
-                self::getRely($value);
+                $data[$projectName][$value]=[] ;
+                $tmp2 =self::getRequire($this->vendorDir.'/'.$value."/composer.json");
+                if(!empty($tmp2)){
+                    self::getRely($value,$data[$projectName][$value]);
+                }
+
             }
         }
     }
 
+    /**
+     * 判断节点是否存在
+     * @param $projectName
+     * @return bool
+     */
     public function isset_node($projectName){
         foreach ($this->data['nodes'] as $node){
             if($node['name'] == $projectName){
@@ -115,24 +114,171 @@ class Rely extends Model
         return  false;
     }
 
-    public function getData(){
-        $base = $this->getRequire($this->baseComposerJson);
-        foreach ($base as $value){
-            $this->getRely($value);
+    /**
+     * 获取节点id
+     * @param $nodeName
+     * @return mixed
+     */
+    public  function getNodeId($nodeName){
+        foreach ($this->data['nodes'] as $node){
+            if($node['name'] == $nodeName){
+                return $node['id'];
+            }
         }
-        return $this->data;
     }
 
-    public function getJson(){
-      $projectNames = $this->getRequireAll();
+    /**
+     * 递归创建Echarts数据结构
+     * @param $fatherId
+     * @param $categoryId
+     * @param $nodeName
+     * @param $nodes
+     * @param $data
+     */
+    public  function  recursionNodes($fatherId,$categoryId,$nodeName,$nodes,&$data){
+        if(!$this->isset_node($nodeName)){
+            $nodeId =count($data['nodes']);
+            if($nodeId ==0){
+                $data['nodes'][]=[
+                    "id" => $nodeId,
+                    "name" => $nodeName,
+                    "symbolSize" => 20,
+                    "value" => $this->getVersion($nodeName),
+                    "category" => $categoryId
+                ];
+            }else{
+                $data['nodes'][]=[
+                    "id" => $nodeId,
+                    "name" => $nodeName,
+                    "value" => $this->getVersion($nodeName),
+                    "category" => $categoryId
+                ];
+            }
+
+            if($nodeId !==$fatherId){
+                $data['links'][]=[
+                    "source" => $nodeId,
+                    "target" => $fatherId
+                ];
+            }
+        }else{
+            $nodeId = $this->getNodeId($nodeName);
+            // 要现实复杂依赖关系,请取消注释
+//            if($nodeId !==$fatherId){
+//                $data['links'][]=[
+//                    "source" => $nodeId,
+//                    "target" => $fatherId
+//                ];
+//            }
+        }
+
+
+
+        if (!empty($nodes)){
+            $categoryId = count( $this->data["categories"]);
+            $this->data["categories"][]=["name"=>$nodeName];
+            foreach ($nodes as $name=>$v){
+                $this->recursionNodes($nodeId,$categoryId,$name,$v,$data);
+            }
+        }
 
     }
+
+
+    /**
+     * 解析依赖,并创建eCharts数据结构
+     * @return array
+     */
     public function getRequireAll(){
-        $base = $this->getRequire($this->baseComposerJson);
+        // 获取所有加载的拓展
+        $base = self::getRequire($this->baseComposerJson,$this->env);
+        $this->_require[$this->projectName]=[];
         foreach ($base as $value){
-            $this->getRely($value);
+            $this->_require[$this->projectName][$value]=[];
+            $this->getRely($value, $this->_require[$this->projectName][$value]);
         }
-        return $this->_require;
+        $results = $this->_require;
+        $nodeId = $categoriesId = 0;
+        foreach ($results as $key =>$value){
+            $this->recursionNodes($nodeId,$categoriesId,$key,$value,$this->data);
+            $categoriesId++;
+        }
+       return  $this->data;
+    }
+
+    /**
+     * 直接生成html文件
+     * @return string
+     */
+    public function renderHtml(){
+        $json_str = json_encode( $this->getRequireAll(),true);
+        return <<<HTML
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>Document</title>
+</head>
+<body>
+    <div id="container" style="width: 100%;height: 800px"></div>
+</body>
+<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/jquery"></script>
+<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+<script>
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, null, {
+        renderer: 'canvas',useDirtyRect: false
+    });
+    var graph = {$json_str}
+    var option= {
+      tooltip: {},
+      legend: [
+        {
+          data: graph.categories.map(function (a) {
+            return a.name;
+          })
+        }
+      ],
+      series: [
+        {
+          name: 'shiguangxiaotou/crud',
+          type: 'graph',
+          layout: 'force',
+          data: graph.nodes,
+          links: graph.links,
+          categories: graph.categories,
+          roam: true,
+          label: {
+            show: true,
+            position: 'right',
+            formatter: '{b}'
+          },
+          labelLayout: {
+            hideOverlap: true
+          },
+          scaleLimit: {
+            min: 2,
+            max: 10
+          },
+          lineStyle: {
+            color: 'source',
+            curveness: 0.3
+          }
+        }
+      ]
+    };
+    myChart.showLoading();
+    myChart.hideLoading();
+    myChart.setOption(option);
+    if (option && typeof option === 'object') {
+      myChart.setOption(option);
+    }
+    window.addEventListener('resize', myChart.resize);
+</script>
+</html>
+HTML;
     }
 
 }

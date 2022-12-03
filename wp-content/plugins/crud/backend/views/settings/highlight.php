@@ -14,13 +14,7 @@ HighlightAsset::addCssFile($this,"/styles/".$css);
 $this->registerJs('hljs.initHighlightingOnLoad();',View::POS_HEAD);
 
 
-/**
- * AssetBundle
- */
-$bundles = $this->getAssetManager()->bundles;
-foreach ($bundles as $name => $bundle){
-    $this->registerAssetFiles($name);
-}
+
 
 $php =<<<PHP
 function my_fun(\$a, \$b){

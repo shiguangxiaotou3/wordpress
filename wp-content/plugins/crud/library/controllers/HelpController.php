@@ -11,22 +11,7 @@ use yii\helpers\Console;
 class HelpController extends defaultController
 {
 
-//    public function actionList()
-//    {
-//        foreach ($this->getCommandDescriptions() as $command => $description) {
-//            $result = Yii::$app->createController($command);
-//            /** @var $controller Controller */
-//            list($controller, $actionID) = $result;
-//            $actions = $this->getActions($controller);
-//            $prefix = $controller->getUniqueId();
-//            if ($controller->createAction($controller->defaultAction) !== null) {
-//                $this->stdout("$prefix\n");
-//            }
-//            foreach ($actions as $action) {
-//                $this->stdout("$prefix/$action\n");
-//            }
-//        }
-//    }
+
     /**
      * Displays all available commands.
      */
