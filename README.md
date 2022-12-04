@@ -24,7 +24,6 @@ crud                        根
   |--|--|--App.php          应用实例类
   |-common                  公共应用
   |-console                 控制台应用
-  |-frontend                前台应用
   |-library                 公共工具类
   |-vendor                  第三方拓展
   |-crud.php                插件入口
@@ -54,8 +53,6 @@ $crud->run();
 ### 创建应用backend\web\App.php
 ~~~php
 <?php
-<?php
-
 namespace backend\web;
 
 
