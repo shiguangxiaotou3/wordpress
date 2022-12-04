@@ -6,7 +6,7 @@
     "project template"
   ],
   "homepage": "http://www.shiguangxiaotou.com",
-  "type": "composer-plugin",
+  "type": "project",
   "license": "MIT",
   "version":"1.0",
   "prefer-stable":true,
