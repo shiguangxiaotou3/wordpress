@@ -127,6 +127,27 @@ class Rely extends Model
         }
     }
 
+
+    /**
+     * 获取分类id,如何没有分组则创建一个
+     * @param $categoryName
+     * @return int
+     */
+    public function getCategoryId($categoryName){
+        $id =0;
+        foreach ($this->data['categories'] as $category){
+            if($category['name']==$categoryName){
+                return $id;
+            }
+            $id++;
+        }
+        $id =count($this->data['categories']);
+        $this->data['categories'][]=[
+            "name"=>$categoryName,
+        ];
+        return $id;
+    }
+
     /**
      * 递归创建Echarts数据结构
      * @param $fatherId
@@ -136,44 +157,50 @@ class Rely extends Model
      * @param $data
      */
     public  function  recursionNodes($fatherId,$categoryId,$nodeName,$nodes,&$data){
+        $tmp_link = $tmp_node= $categories=[];
         if(!$this->isset_node($nodeName)){
-            $nodeId =count($data['nodes']);
-            if($nodeId ==0){
-                $data['nodes'][]=[
-                    "id" => $nodeId,
-                    "name" => $nodeName,
-                    "symbolSize" => 20,
-                    "value" => $this->getVersion($nodeName),
-                    "category" => $categoryId
-                ];
-            }else{
-                $data['nodes'][]=[
-                    "id" => $nodeId,
-                    "name" => $nodeName,
-                    "value" => $this->getVersion($nodeName),
-                    "category" => $categoryId
-                ];
+            $nodeId= count($data['nodes']);
+            $tmp_node = [
+                "id" => $nodeId,
+                "name" => $nodeName,
+                "value" => $this->getVersion($nodeName),
+            ];
+            // 调整本项目标签大小
+            if(count( $data['nodes']) ==0){
+                $tmp_node['symbolSize'] =20;
             }
-
-            if($nodeId !==$fatherId){
+            $tmp_link_source = $nodeId;
+            $tmp_link_target = $fatherId;
+            // 把php拓展链接到php的子节点
+            if(substr($nodeName,0,4)=='ext-'){
+                $tmp_node['category'] =$this->getCategoryId('php');
+                $tmp_link_target = $this->getNodeId('php');
+            }else{
+                $tmp_node['category'] = $categoryId;
+            }
+            $data['nodes'][] =$tmp_node;
+            if($tmp_link_source !==$tmp_link_target){
                 $data['links'][]=[
-                    "source" => $nodeId,
-                    "target" => $fatherId
+                    'source'=>$tmp_link_source,
+                    'target'=>$tmp_link_target,
                 ];
             }
         }else{
             $nodeId = $this->getNodeId($nodeName);
             // 要现实复杂依赖关系,请取消注释
-//            if($nodeId !==$fatherId){
+//            $tmp_link_source = $nodeId;
+//            $tmp_link_target = $fatherId;
+//            if(substr($nodeName,0,4)=='ext-'){
+//                // 把php拓展链接到php的子节点
+//                $tmp_link_target = $this->getNodeId('php');
+//            }
+//            if($tmp_link_source !==$tmp_link_target){
 //                $data['links'][]=[
-//                    "source" => $nodeId,
-//                    "target" => $fatherId
+//                    'source'=>$tmp_link_source,
+//                    'target'=>$tmp_link_target,
 //                ];
 //            }
         }
-
-
-
         if (!empty($nodes)){
             $categoryId = count( $this->data["categories"]);
             $this->data["categories"][]=["name"=>$nodeName];
@@ -203,7 +230,7 @@ class Rely extends Model
             $this->recursionNodes($nodeId,$categoriesId,$key,$value,$this->data);
             $categoriesId++;
         }
-       return  $this->data;
+        return  $this->data;
     }
 
     /**
@@ -233,9 +260,17 @@ class Rely extends Model
     });
     var graph = {$json_str}
     var option= {
+         title: {
+            text: '依赖关系图'
+        },
       tooltip: {},
       legend: [
         {
+        type: 'scroll',
+        orient: 'vertical',
+        right: 10,
+        top: 20,
+        bottom: 20,
           data: graph.categories.map(function (a) {
             return a.name;
           })

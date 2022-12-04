@@ -7,11 +7,13 @@
   ],
   "homepage": "http://www.shiguangxiaotou.com",
   "type": "composer-plugin",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
+  "version":"1.0",
+  "prefer-stable":true,
+  "minimum-stability": "stable",
   "support": {
     "issues": "http://www.shiguangxiaotou.com"
   },
-  "minimum-stability": "stable",
   "require": {
     "php": ">=5.5",
     "yiisoft/yii2": "^2.0",
