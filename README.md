@@ -10,7 +10,6 @@
  这是一个基于Yii2的MVC的插件框架,部分功能可能有待完善.
  对于习惯了面向对象的开发模式开发者,很不习惯wordpress面向函数,面向勾子的编程模式。那么crud能解决你的痛点
 ~~~
-microsoft/bingads
 crud                        根
   |-backend                 应用目录
   |--|--assets              资源类
