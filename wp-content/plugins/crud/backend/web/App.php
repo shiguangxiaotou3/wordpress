@@ -36,8 +36,16 @@ class App extends  BaseObject {
             require __DIR__ . '/../config/main.php',
             require __DIR__ . '/../config/main-local.php',
             Wechat::config()
+        // Wechat::config(), 如果你加载了模块，请将模块的menu和settings加入到主配置中
+        // 为后续registerSettings、registerPage、registerAjax，
+        // registerRestfulApi调用
         );
         $this->_modules = $config["modules"];
+        // 注意: 千万不要执行Application::run(),yii2/soft当作容器在使用
+        // 决定运行那个控制器,不由yii2决定，而是wordpress的钩子回调决定。
+        // wordpress会在根据不同的情况,调用renderView或renderApi。
+        // 区别在于renderView用于处理用户的页面行为
+        // renderApi 单独处理RestfulApi
         $this->_app = new Application($config);
     }
 
@@ -59,8 +67,11 @@ class App extends  BaseObject {
         // 将设置注册到特定的页面
         add_action("admin_init", [$this, "registerSettings"]);
         // 注册菜单 = 也就是注册yii Controller
+        // 菜单的menu_slug = 路由，他将决定执行那个控制器,
+        // 例如menu_slug =>"settings",它将回调执行SettingsController::actionIndex
         add_action("admin_menu", [$this, "registerPage"]);
         add_action("admin_init", [$this, "registerAjax"]);
+        // 注册菜单 = 也就是注册yii Controller
 
         // 注册api
         add_action("rest_api_init", [$this,"registerRestfulApi"]);
@@ -121,6 +132,12 @@ class App extends  BaseObject {
      * 调用控制器显示视图
      */
     public function renderView(){
+        // 在后台中显示那个页面，由注册菜单式menu_slug值就是yii控制器id
+        // 例如：http://wp.myweb.com/wp-admin/admin.php?page=wechat
+        // 将回调执行$this->app->runAction("wechat/index")
+        // 对于ajax请求
+        // $.post("/wp-admin/admin-ajax.php",{action:"wechat/index"},function(){})
+        // action字段决定由那个控制器处理请求，因为wordpress的ajax统一由admin-ajax.php处理
         $request = $this->app->request;
         if($request->isAjax){
             if($request->isGet){
