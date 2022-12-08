@@ -92,9 +92,8 @@ class App extends  BaseObject {
             require __DIR__ . '/../config/main.php',
             require __DIR__ . '/../config/main-local.php',
             Wechat::config()
-        // Wechat::config(), 如果你加载了模块，请将模块的menu和settings加入到主配置中
-        // 为后续registerSettings、registerPage、registerAjax，
-        // registerRestfulApi调用
+        // 如果你加载了模块，请将模块的menu和settings加入到主配置中
+        // 为后续registerSettings、registerPage registerRestfulApi调用
         );
         $this->_modules = $config["modules"];
         // 注意: 千万不要执行Application::run(),yii2/soft当作容器在使用
@@ -117,7 +116,7 @@ class App extends  BaseObject {
     }
 
     /**
-     * 挂载控制器
+     * 挂载控制器、api或前台注册一下代码
      */
     public function run(){
         // 将设置注册到特定的页面
@@ -305,6 +304,11 @@ class App extends  BaseObject {
         Base::sendJson( $data);
     }
 
+    /**
+     * 获取api路由，默认控制器和方法都是index
+     * @param $request
+     * @return array
+     */
     public function getRoute($request){
         $params = $request->get_params();
         $module = $controller = $action = "index";
@@ -396,7 +400,7 @@ class App extends  BaseObject {
     }
 
     /**
-     * 向前台注册全局aeesets
+     * 向前台注册一些功能，代码或是前端资源包
      */
     public function wp(){
         $this->app->runAction('wp/index');
