@@ -26,7 +26,7 @@ crud                        根
   |--|--|--assset           资源包发布目录
   |--|--|--App.php          应用实例类
   |-common                  公共应用
-  |-console                 控制台应用
+  |-console                 控制台应用(控制台入口在你的项目根/cmmand)
   |-library                 公共工具类
   |-vendor                  第三方拓展
   |-crud.php                插件入口
