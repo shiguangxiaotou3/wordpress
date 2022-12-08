@@ -15,7 +15,7 @@ class AceAsset extends AppAsset {
         'src/ace.js',"src/ext-settings_menu.js"
     ];
     public $jsOptions=[
-        "position"=>View::POS_HEAD,
+//        "position"=>View::POS_HEAD,
     ];
     public $depends =['yii\web\JqueryAsset'];
 

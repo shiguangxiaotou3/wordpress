@@ -20,6 +20,7 @@ class PreCodeWidget extends Widget
     public $code;
     public $language='php';
     public $theme="monokai_sublime.css";
+    public $title ="Text";
     public $options =[];
     /**
      *
@@ -40,7 +41,7 @@ class PreCodeWidget extends Widget
         $this->view->registerCssFile($assetsPath."/styles/".$this->theme);
         $this->view->registerJs('hljs.initHighlightingOnLoad();',View::POS_HEAD);
         return Html::beginTag('pre',$this->options).
-            "<code class='language-".$this->language."'>".$this->code."</code>".
+            "<code class='language-".$this->language."' title='".$this->title."'>".$this->code."</code>".
             Html::endTag("pre");
 
     }

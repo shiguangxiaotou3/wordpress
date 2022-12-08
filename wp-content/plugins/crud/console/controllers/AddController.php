@@ -37,7 +37,7 @@ class AddController extends Controller
      */
     public function actionDeleteDsStore(){
         $dir = dirname(__DIR__,5);
-        deleteDsStore($dir,".DS_Store");
+        deleteDsStore($dir,[".DS_Store"]);
     }
 
     /**
@@ -99,7 +99,6 @@ class AddController extends Controller
         var_dump($data);
     }
 
-
     /**
      * 计算composer 依赖关系图
      */
@@ -110,6 +109,118 @@ class AddController extends Controller
         $model->baseComposerJson = ABSPATH."composer.json";
         $model->baseComposerLock = ABSPATH."composer.lock";
        file_put_contents('./test/index.html',$model->renderHtml());
+    }
+
+    /**
+     * 微信公众号测试
+     */
+    public function actionMenu(){
+        $wechat = Yii::$app->wechat;
+        $menus = [
+            "is_menu_open" => 1,
+            "selfmenu_info" => [
+                "button" => [
+                    [
+                        "type" => "click",
+                        "name" => "今日歌曲",
+                        "key" => "V1001_TODAY_MUSIC"
+                    ],
+                    [
+                        "name" => "菜单",
+                        "sub_button" => [
+                            "list" => [
+                                [
+                                    "type" => "view",
+                                    "name" => "搜索",
+                                    "url" => "http://www.soso.com/"
+                                ],
+                                [
+                                    "type" => "view",
+                                    "name" => "视频",
+                                    "url" => "http://v.qq.com/"
+                                ],
+                                [
+                                    "type" => "click",
+                                    "name" => "赞一下我们",
+                                    "key" => "V1001_GOOD"
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $menu2 =
+            [
+                "button" => [
+                    [
+                        "type" => "click",
+                        "name" => "今日歌曲",
+                        "key" => "V1001_TODAY_MUSIC"
+                    ],
+                    [
+                        "name" => "菜单",
+                        "sub_button" => [
+                            [
+                                "type" => "view",
+                                "name" => "搜索",
+                                "url" => "http://www.soso.com/"
+                            ],
+//                            [
+//                                "type" => "miniprogram",
+//                                "name" => "wxa",
+//                                "url" => "http://mp.weixin.qq.com",
+//                                "appid" => "wx286b93c14bbf93aa",
+//                                "pagepath" => "pages/lunar/index"
+//                            ],
+                            [
+                                "type" => "click",
+                                "name" => "赞一下我们",
+                                "key" => "V1001_GOOD"
+                            ]
+                        ]
+                    ]
+                ],
+//                "matchrule" => [
+//                    "tag_id" => "2",
+//                    "sex" => "1",
+//                    "country" => "中国",
+//                    "province" => "广东",
+//                    "city" => "广州",
+//                    "client_platform_type" => "2",
+//                    "language" => "zh_CN"
+//                ]
+            ];
+        $add = [
+            "button" => [
+                [
+                    "type" => "click",
+                    "name" => "今日歌曲",
+                    "key" => "V1001_TODAY_MUSIC"
+                ],
+                [
+                    "name" => "菜单",
+                    "sub_button" => [
+                        [
+                            "type" => "view",
+                            "name" => "搜索",
+                            "url" => "http://www.soso.com/"
+                        ],
+//                        [
+//                            "type" => "miniprogram",
+//                            "name" => "wxa",
+//                            "url" => "http://mp.weixin.qq.com",
+//                            "appid" => "wx286b93c14bbf93aa",
+//                            "pagepath" => "pages/lunar/index"
+//                        ],
+                        [
+                            "type" => "click",
+                            "name" => "赞一下我们",
+                            "key" => "V1001_GOOD"
+                        ]]
+                ]]
+        ];
+       var_dump($wechat->createMenu( $menu2  ));
     }
 
 }

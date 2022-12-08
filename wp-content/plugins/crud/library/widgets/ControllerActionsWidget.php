@@ -22,6 +22,7 @@ class ControllerActionsWidget extends Widget
     public $actions=[];
     public $defaultUrl="admin.php?page=";
     public $filter;
+    private $moduleId;
     private $controllerId;
     private $actionId;
 
@@ -31,6 +32,7 @@ class ControllerActionsWidget extends Widget
         if(empty($this->controller)){
             $this->controller = \Yii::$app->controller;
         }
+        $this->moduleId = $this->controller->module->id;
         $this->controllerId = $this->controller->id;
         $this->actionId = $this->controller->action->id;
         if (empty($this->actions)){
@@ -45,41 +47,50 @@ class ControllerActionsWidget extends Widget
      */
     public function run(){
         if(!empty($this->actions)){
-            $active_menu_slug = ($this->actionId =="index")
-                ? $this->controllerId
-                :$this->controllerId."/".$this->actionId;
-            $activeUrl = $this->defaultUrl.$active_menu_slug;
-            $links =[];
-            foreach ($this->actions as $action){
-                if(($action =="index") ){
-                    $menu_slug =  $this->controllerId;
-                    $label = self::get_page_title( $menu_slug );
-                    $label = empty($label) ? ucwords($action)  :$label ;
-                    $links[] =[
-                        "label"=> $label ,
-                        'url'=>$this->defaultUrl.$menu_slug,
-                        "options"=>[],
+            if ($this->moduleId == Yii::$app->id) {
+                $active_menu_slug = ($this->actionId == "index")
+                    ? $this->controllerId
+                    : $this->controllerId . "/" . $this->actionId;
+                $tmlUrl =$this->controllerId;
+            } else {
+                $active_menu_slug = ($this->actionId == "index")
+                    ? $this->moduleId . "/" . $this->controllerId
+                    : $this->moduleId . "/" . $this->controllerId . "/" . $this->actionId;
+                $tmlUrl =$this->moduleId . "/" . $this->controllerId;
+            }
+            $activeUrl = $this->defaultUrl . $active_menu_slug;
+            $links = [];
+            foreach ($this->actions as $action) {
+                if (($action == "index")) {
+                    $menu_slug = $tmlUrl;
+                    $label = self::get_page_title($menu_slug);
+                    $label = empty($label) ? ucwords($action) : $label;
+                    $links[] = [
+                        "label" => $label,
+                        'url' => $this->defaultUrl . $menu_slug,
+                        "options" => [],
                     ];
-                }elseif (!empty($this->filter) ){
+                } elseif (!empty($this->filter)) {
                     $function = $this->filter;
-                    if($function($action)){
-                        $menu_slug = $this->controllerId."/".$action;
-                        $label = self::get_page_title( $menu_slug );
-                        $label = empty($label) ? ucwords($action)  :$label ;
-                        $links[] =[
-                            "label"=> $label ,
-                            'url'=>$this->defaultUrl.$menu_slug,
-                            "options"=>[],
+                    if ($function($action)) {
+                        $menu_slug = $tmlUrl.'/'.$action;
+                        $label = self::get_page_title($menu_slug);
+                        $label = empty($label) ? ucwords($action) : $label;
+                        $links[] = [
+                            "label" => $label,
+                            'url' => $this->defaultUrl . $menu_slug,
+                            "options" => [],
                         ];
                     }
-                }else{
-                    $menu_slug = $this->controllerId."/".$action;
-                    $label = self::get_page_title( $menu_slug );
-                    $label = empty($label) ? ucwords($action)  :$label ;
-                    $links[] =[
-                        "label"=> $label ,
-                        'url'=>$this->defaultUrl.$menu_slug,
-                        "options"=>[],
+                } else {
+                    logObject(['$tmlUrl'=>$tmlUrl]);
+                    $menu_slug = $tmlUrl.'/'.$action;
+                    $label = self::get_page_title($menu_slug);
+                    $label = empty($label) ? ucwords($action) : $label;
+                    $links[] = [
+                        "label" => $label,
+                        'url' => $this->defaultUrl . $menu_slug,
+                        "options" => [],
                     ];
                 }
             }
@@ -89,7 +100,6 @@ class ControllerActionsWidget extends Widget
             ]);
         }
     }
-
 
     /**
      * @param $menu_slug

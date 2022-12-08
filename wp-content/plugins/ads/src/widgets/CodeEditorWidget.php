@@ -13,6 +13,7 @@ class CodeEditorWidget extends  Widget
     public $ext= AceAsset::EXT_SETTINGS_MENU;
     public $mode = AceAsset::MODE_PHP;
     public $theme= AceAsset::THEME_TWILIGHT;
+    public $text ="";
     public $options=[];
 
     public function run(){
@@ -40,6 +41,6 @@ JS;
 CSS;
         $this->view->registerCss( $css);
         $this->view->registerJs($js);
-        return Html::beginTag("pre",$this->options).Html::endTag("pre");
+        return Html::beginTag("pre",$this->options).$this->text.Html::endTag("pre");
     }
 }

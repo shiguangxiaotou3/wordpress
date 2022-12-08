@@ -31,15 +31,4 @@ return [
     'Upgrades the application by applying new migrations.' => '通过应用新的迁移来升级应用程序.',
     'Runs PHP built-in web server.' => '运行PHP内置web服务器.',
     'Adds new budgets to the account\'s shared budget library.' => '向帐户的共享预算库添加新的预算.',
-    "This is the command line version of Gii - a code generator."=>"这是Gii-a代码生成器的命令行版本.",
-    "Controller Generator" => "控制器生成器",
-    "CRUD Generator" => "CRUD发电机",
-    "Extension Generator" => "扩展生成器",
-    "Form Generator" => "表单生成器",
-    "Model Generator" => "模型生成器",
-    "Module Generator" => "模块生成器",
-    "To see the help of each command, enter:"=>'要查看每个命令的帮助,请输入:',
-    'The following commands are available:'=>"以下命令可用:",
-
-
 ];

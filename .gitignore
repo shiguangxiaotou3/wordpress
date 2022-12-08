@@ -3,8 +3,10 @@ wp-includes/*
 test/*
 .DS_Store
 .idea
+tset.js
 license.txt
 readme.html
+test.php
 index.php
 gii.php
 gii.sh
