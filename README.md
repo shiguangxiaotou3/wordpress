@@ -42,8 +42,8 @@ defined('YII_ENV') or define('YII_ENV', 'dev');
 require_once __DIR__ . "/library/debug.php";            //测试工具函数
 require_once __DIR__ . "/library/function.php";         //工具函数
 require_once __DIR__ . '/vendor/autoload.php';          //自动夹子啊
-require_once __DIR__ . '/vendor/yiisoft/yii2/Yii.php';  //Yii全局实例
-require_once __DIR__ . '/common/config/bootstrap.php';  //全局引导配置别名
+require_once __DIR__ . '/vendor/yiisoft/yii2/Yii.php';  //yii核心
+require_once __DIR__ . '/common/config/bootstrap.php';  //全局引导类
 
 register_activation_hook(__FILE__, "crud_activate");    //激活插件
 register_deactivation_hook(__FILE__, "crud_activate");  //禁用插件
