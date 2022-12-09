@@ -25,6 +25,9 @@ class Translate extends Module
     public function init(){
     }
 
+    /**
+     * @return array
+     */
     public static function config(){
         require __DIR__ . '/config/bootstrap.php';
         return ArrayHelper::merge(

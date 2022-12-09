@@ -16,6 +16,11 @@ class IndexController extends Controller
 {
     public $enableCsrfValidation=false;
     public $layout=false;
+
+    public function actions(){
+        return ['index'];
+    }
+
     /**
      * @return string
      */

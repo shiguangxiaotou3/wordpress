@@ -92,29 +92,5 @@ class Base  {
     }
 
 
-    public static function GET($url,$data){
-        $client = new Client(['timeout'  => 2.0]);
-        return $client->get($url);
-    }
 
-    public static function POST($url,$data){
-        $client = new Client(['timeout'  => 2.0]);
-        return $client->request('POST',$url,$data);
-    }
-    public static function PUT($url,$data){
-        $client = new Client(['timeout'  => 2.0]);
-        return $client->request('PUT',$url,$data);
-    }
-    public static function PATCH($url,$data){
-        $client = new Client(['timeout'  => 2.0]);
-        return $client->request('PATCH',$url,$data);
-    }
-    public static function HEAD($url,$data){
-        $client = new Client(['timeout'  => 2.0]);
-        return $client->request('HEAD',$url,$data);
-    }
-    public static function OPTIONS($url,$data){
-        $client = new Client(['timeout'  => 2.0]);
-        return $client->request('OPTIONS',$url,$data);
-    }
 }

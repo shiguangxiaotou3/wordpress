@@ -3,11 +3,13 @@
 
 namespace crud\modules\wechat;
 
+
 use Yii;
 use yii\base\Module;
 use yii\helpers\ArrayHelper;
+use crud\modules\ModuleImplements;
 
-class Wechat extends Module
+class Wechat extends Module implements ModuleImplements
 {
     /**
      * {@inheritdoc}
@@ -23,9 +25,6 @@ class Wechat extends Module
      * {@inheritdoc}
      */
     public function init(){
-//        $config =$this->config();
-//        parent::init();
-//        Yii::configure($this,$config);
     }
 
     public static function config(){

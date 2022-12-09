@@ -61,12 +61,7 @@ return [
             "menu_title" => "阿里云Dns解析",
             "menu_slug" => "settings/dns",
         ],
-        [
-            "parent_slug" => "settings",
-            "page_title" => "Google 翻译api",
-            "menu_title" => "Google 翻译api",
-            "menu_slug" => "settings/translate",
-        ],
+
         [
             "parent_slug" => "settings",
             "page_title" => "代码高亮",
@@ -170,7 +165,7 @@ return [
                             ["checked" => 1, "description" => "mail: SMTP服务", "options" => ["value" => "mail"]],
                             ["checked" => 1, "description" => "jvectormap: SVG地图插件", "options" => ["value" => "jvectormap"]],
                             ["checked" => 1, "description" => "dns: 阿里dns解析API", "options" => ["value" => "dns"]],
-                            ["checked" => 1, "description" => "translate: Google 翻译API", "options" => ["value" => "translate"]],
+//                            ["checked" => 1, "description" => "translate: Google 翻译API", "options" => ["value" => "translate"]],
                             ["checked" => 1, "description" => "highlight: 代码高亮显示", "options" => ["value" => "highlight"]],
                             ["checked" => 1, "description" => '机器人/蜘蛛/爬虫', "options" => ["value" => "crawlers"]],
                         ],
@@ -317,26 +312,7 @@ return [
             'args' => [],
 
         ],
-        "translate" => [
-            'option_group' => 'crud_group',
-            'page' => 'settings/translate',
-            'section_id' => 'translate',
-            "section_description" => 'Google Translate',
-            'fields' => [
-                [
-                    'id' => 'key',
-                    "title" => "Cloud key",
-                    'args' => [
-                        "tag" => "password",
-                        "defaultValue" => "",
-                        "description" => "",
-                        'options' => [
-                            "class" => "regular-text code"
-                        ]
-                    ],
-                ],
-            ]
-        ],
+
         "highlight" => [
             'option_group' => 'crud_group',
             'page' => 'settings/highlight',

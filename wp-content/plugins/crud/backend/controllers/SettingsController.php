@@ -17,7 +17,7 @@ class SettingsController extends Controller{
 
     public function actions(){
        return [
-           "index","translate","ipinfo","mail","dns",'jvectormap','highlight',"preCode","crawlers"
+           "index","ipinfo","mail","dns",'jvectormap','highlight',"preCode","crawlers"
        ];
     }
 
@@ -31,12 +31,6 @@ class SettingsController extends Controller{
         return $this->render('index');
     }
 
-    /**
-     * @return string
-     */
-    public function actionTranslate(){
-        return $this->render("translate");
-    }
 
     /**
      * @return string

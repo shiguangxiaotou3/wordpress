@@ -3,6 +3,7 @@
 
 namespace crud\modules\wechat\controllers\api;
 
+use crud\controllers\RestfulApiControllerImplements;
 use Yii;
 use yii\web\Controller;
 
@@ -217,6 +218,5 @@ class IndexController extends Controller
             'Articles' => $Articles
         ]);
     }
-
 
 }

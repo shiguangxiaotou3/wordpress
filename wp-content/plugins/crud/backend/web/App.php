@@ -3,7 +3,8 @@
 namespace backend\web;
 
 
-use crud\modules\wechat\Wechat;
+
+
 use Yii;
 use yii\base\BaseObject;
 use crud\Base;
@@ -12,6 +13,8 @@ use crud\models\Settings;
 use yii\web\Application ;
 use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
+use crud\modules\wechat\Wechat;
+use crud\modules\translate\Translate;
 
 
 /**
@@ -35,10 +38,10 @@ class App extends  BaseObject {
             require __DIR__ . '/../../common/config/main-local.php',
             require __DIR__ . '/../config/main.php',
             require __DIR__ . '/../config/main-local.php',
-            Wechat::config()
+            Wechat::config(),
+            Translate::config()
         );
-        logObject($config['components']['wechat']);
-        $this->_modules = $config["modules"];
+        $this->_modules = array_keys($config['modules']);;
         $this->_app = new Application($config);
     }
 
@@ -322,7 +325,7 @@ class App extends  BaseObject {
      * @return bool
      */
     private function is_module($id){
-        return in_array($id,array_keys( $this->_modules));
+        return in_array($id, $this->_modules);
     }
 
     /**

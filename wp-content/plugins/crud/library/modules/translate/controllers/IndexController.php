@@ -1,7 +1,7 @@
 <?php
 
 
-namespace crud\modules\wechat\controllers;
+namespace crud\modules\translate\controllers;
 
 use Yii;
 use yii\web\Controller;
@@ -13,7 +13,7 @@ class IndexController extends Controller
     public $layout = false;
 
     public function actions(){
-        return ['index','menu','event'];
+        return ['index','google','youdao','baidu'];
     }
 
     /**
@@ -24,20 +24,16 @@ class IndexController extends Controller
        return  $this->render("index");
     }
 
-    /**
-     * 菜单设置
-     * @return string
-     */
-    public function actionMenu(){
-        return  $this->render("menu");
+    public function actionGoogle(){
+        return  $this->render("google");
     }
 
-    /**
-     * 事件
-     * @return string
-     */
-    public function actionEvent(){
-        return  $this->render("event");
+    public function actionYoudao(){
+        return  $this->render("youdao");
+    }
+
+    public function actionBaidu(){
+        return  $this->render("baidu");
     }
 
 }

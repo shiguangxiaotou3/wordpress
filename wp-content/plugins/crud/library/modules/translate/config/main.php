@@ -6,14 +6,29 @@ $params = array_merge(
     require __DIR__ . '/params-local.php'
 );
 return [
-    'components' => [
-        "wechat"=>[
-            "class"=>"crud\modules\wechat\components\SubscriptionService",
-            "appId" =>get_option("crud_group_wechat_appId"),
-            "appSecret" =>get_option("crud_group_wechat_appSecret"),
-            "token" =>get_option("crud_group_wechat_token"),
-            "domain"=>get_option("crud_group_wechat_domain")
+    'modules' => [
+        'translate' => [
+            'class' => 'crud\modules\translate\Translate',
         ],
+    ],
+    'components' => [
+        'translate' => [
+            'class' => 'crud\modules\translate\components\TranslateComponent',
+        ],
+        "google" => [
+            'class' => 'crud\modules\translate\components\GoogleTranslate',
+            'translateKey' =>get_option("crud_group_translate_key"),
+        ],
+        "youdao"=>[
+            "class"=>'crud\modules\translate\components\YoudaoTranslate',
+            "appId"=>"27bb082802437b82",
+            "appSecret" =>"9gPGRT9Rfa7Yrtdpd6YJOjI3T8G0hwxD",
+        ],
+        "baidu"=>[
+            "class"=>'crud\modules\translate\components\BaiduTranslate',
+            "appId"=>"20221117001457698",
+            "appSecret" =>"ZGY6lha11ueLEpyHkuNO",
+        ]
     ],
     'params' => $params,
 ];

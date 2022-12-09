@@ -59,10 +59,6 @@ return [
             ],
         ],
     ],
-    'modules' => [
-        'wechat' => [
-            'class' => 'crud\modules\wechat\Wechat',
-        ],
-    ],
+
 ];
 

@@ -3,6 +3,7 @@
 
 namespace crud\modules\wechat\controllers\api;
 
+use crud\controllers\RestfulApiControllerImplements;
 use Yii;
 use Exception;
 use yii\web\Controller;
@@ -43,5 +44,4 @@ class MenuController extends Controller
         $cache->set("wechat_menus", $response );
         return $response;
     }
-
 }

@@ -3,85 +3,111 @@
 return [
     "menus" => [
         [
-            "parent_slug" =>  "index",
-            "page_title" => "微信公众号",
-            "menu_title" => "微信公众号",
-            "menu_slug" => "wechat/index",
+            "parent_slug" => "index",
+            "page_title" => "翻译",
+            "menu_title" => "翻译",
+            "menu_slug" => "translate/index",
         ],
         [
-            "parent_slug" =>  "wechat",
-            "page_title" => "菜单设置",
-            "menu_title" => "菜单设置",
-            "menu_slug" => "wechat/index/menu",
+            "parent_slug" => "translate/index",
+            "page_title" => "Google翻译",
+            "menu_title" => "Google翻译",
+            "menu_slug" => "translate/index/google",
         ],
         [
-            "parent_slug" =>  "wechat",
-            "page_title" => "事件推送",
-            "menu_title" => "事件推送",
-            "menu_slug" => "wechat/index/event",
+            "parent_slug" => "translate/index",
+            "page_title" => "有道翻译",
+            "menu_title" => "有道翻译",
+            "menu_slug" => "translate/index/youdao",
+        ],
+        [
+            "parent_slug" => "translate/index",
+            "page_title" => "百度翻译",
+            "menu_title" => "百度翻译",
+            "menu_slug" => "translate/index/baidu",
         ],
     ],
     'settings' => [
-        "wechat"=>[
+        "google" => [
             'option_group' => 'crud_group',
-            'page' => 'wechat',
-            'section_id' => 'wechat',
-            "section_description" => '微信公众号基础配置',
+            'page' => 'translate/index/google',
+            'section_id' => 'google',
+            "section_description" => 'Google Translate',
             'fields' => [
-
+                [
+                    'id' => 'key',
+                    "title" => "Cloud key",
+                    'args' => [
+                        "tag" => "password",
+                        "defaultValue" => "",
+                        "description" => "",
+                        'options' => [
+                            "class" => "regular-text code"
+                        ]
+                    ],
+                ],
+            ]
+        ],
+        "baidu" => [
+            'option_group' => 'crud_group',
+            'page' => 'translate/index/baidu',
+            'section_id' => 'baidu',
+            "section_description" => '百度翻译api配置',
+            'fields' => [
                 [
                     'id' => 'appId',
                     "title" => "appId",
                     'args' => [
                         "tag" => "text",
                         "defaultValue" => "",
-                        "description" => "开发环境",
+                        "description" => "",
                         'options' => [
                             "class" => "regular-text code"
-                        ],
-                    ],
-                ],
-                [
-                    'id' => 'domain',
-                    "title" => "domain",
-                    'args' => [
-                        "tag" => "dropDownList",
-                        "items"=>[
-                            'https://api.weixin.qq.com'=>'api.weixin.qq.com',
-                            'https://api2.weixin.qq.com'=>'api2.weixin.qq.com',
-                            'https://sh.api.weixin.qq.com'=>'sh.api.weixin.qq.com',
-                            'https://sz.api.weixin.qq.com'=>'sz.api.weixin.qq.com',
-                            'https://hk.api.weixin.qq.com'=>'hk.api.weixin.qq.com',
-                        ],
-                        "defaultValue" => "https://api.weixin.qq.com",
-                        "description" => "公众平台接口域名池",
-                        'options' => [
-                            "class" => "regular-text code"
-                        ],
+                        ]
                     ],
                 ],
                 [
                     'id' => 'appSecret',
                     "title" => "appSecret",
                     'args' => [
-                        "tag" => "text",
+                        "tag" => "password",
                         "defaultValue" => "",
-                        "description" => "开发环境",
+                        "description" => "",
                         'options' => [
                             "class" => "regular-text code"
-                        ],
+                        ]
                     ],
                 ],
+            ]
+        ],
+        "youdao" => [
+            'option_group' => 'crud_group',
+            'page' => 'translate/index/youdao',
+            'section_id' => 'youdao',
+            "section_description" => '有道翻译api配置',
+            'fields' => [
                 [
-                    'id' => 'token',
-                    "title" => "Token",
+                    'id' => 'appId',
+                    "title" => "appId",
                     'args' => [
                         "tag" => "text",
                         "defaultValue" => "",
-                        "description" => "开发环境",
+                        "description" => "",
                         'options' => [
                             "class" => "regular-text code"
-                        ],
+                        ]
+                    ],
+                ],
+                [
+                    'id' => 'appSecret',
+                    "title" => "appSecret",
+                    'args' => [
+                        "tag" => "password",
+                        "defaultValue" => "",
+                        "description" => "",
+                        'options' => [
+                            "class" => "regular-text code"
+                        ]
                     ],
                 ],
             ]

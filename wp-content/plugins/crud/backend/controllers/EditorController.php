@@ -11,6 +11,10 @@ class EditorController  extends Controller
     public $layout=false;
     public $enableCsrfValidation=false;
 
+    public function actions(){
+        return ['index'];
+    }
+
     public function actionIndex(){
         return $this->render('index');
     }

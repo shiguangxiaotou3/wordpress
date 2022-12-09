@@ -33,7 +33,6 @@ class YoudaoTranslate extends Component
         return $results;
     }
 
-
     /**
      * @param $str
      * @param string $from

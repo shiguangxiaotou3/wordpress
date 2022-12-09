@@ -83,7 +83,6 @@ class ControllerActionsWidget extends Widget
                         ];
                     }
                 } else {
-                    logObject(['$tmlUrl'=>$tmlUrl]);
                     $menu_slug = $tmlUrl.'/'.$action;
                     $label = self::get_page_title($menu_slug);
                     $label = empty($label) ? ucwords($action) : $label;
