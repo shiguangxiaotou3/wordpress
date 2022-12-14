@@ -57,6 +57,7 @@ return [
             ]
         ],
 
+
         'errorHandler' => [
             'errorAction' => 'index/error',
         ],

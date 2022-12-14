@@ -1,25 +1,25 @@
 <?php
 
-namespace library\models\wp;
+namespace crud\modules\wp\models;
 
 use Yii;
 
 /**
- * This is the model class for table "{{%termmeta}}".
+ * This is the model class for table "{{%commentmeta}}".
  *
  * @property int $meta_id
- * @property int $term_id
+ * @property int $comment_id
  * @property string|null $meta_key
  * @property string|null $meta_value
  */
-class WpTermmeta extends \yii\db\ActiveRecord
+class WpCommentmeta extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return '{{%termmeta}}';
+        return '{{%commentmeta}}';
     }
 
     /**
@@ -28,7 +28,7 @@ class WpTermmeta extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['term_id'], 'integer'],
+            [['comment_id'], 'integer'],
             [['meta_value'], 'string'],
             [['meta_key'], 'string', 'max' => 255],
         ];
@@ -41,7 +41,7 @@ class WpTermmeta extends \yii\db\ActiveRecord
     {
         return [
             'meta_id' => Yii::t('wp', 'Meta ID'),
-            'term_id' => Yii::t('wp', 'Term ID'),
+            'comment_id' => Yii::t('wp', 'Comment ID'),
             'meta_key' => Yii::t('wp', 'Meta Key'),
             'meta_value' => Yii::t('wp', 'Meta Value'),
         ];

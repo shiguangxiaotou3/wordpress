@@ -1,6 +1,6 @@
 <?php
 
-namespace library\models\wp;
+namespace crud\modules\wp\models;
 
 use Yii;
 

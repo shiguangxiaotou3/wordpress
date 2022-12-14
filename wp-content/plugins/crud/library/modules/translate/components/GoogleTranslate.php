@@ -103,14 +103,14 @@ class GoogleTranslate extends Component implements Translate
     {
         if (is_array($data)) {
             return $this->client->translateBatch($data["str"], [
-                "source" => $form,
+                "source" => $from,
                 "target" => $to,
                 "format" => $format,
                 "model" => $model
             ]);
         } else {
             return $this->client->translate($data, [
-                "source" => $form,
+                "source" => $from,
                 "target" => $to,
                 "format" => $format,
                 "model" => $model
@@ -120,11 +120,10 @@ class GoogleTranslate extends Component implements Translate
 
     public static function error($code)
     {
-        // TODO: Implement error() method.
+
     }
 
     public function language()
     {
-        // TODO: Implement language() method.
     }
 }

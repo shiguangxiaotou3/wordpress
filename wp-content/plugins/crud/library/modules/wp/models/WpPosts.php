@@ -1,6 +1,6 @@
 <?php
 
-namespace library\models\wp;
+namespace crud\modules\wp\models;
 
 use Yii;
 
@@ -33,6 +33,7 @@ use Yii;
  */
 class WpPosts extends \yii\db\ActiveRecord
 {
+
     /**
      * {@inheritdoc}
      */
@@ -40,6 +41,10 @@ class WpPosts extends \yii\db\ActiveRecord
     {
         return '{{%posts}}';
     }
+//    public static function primaryKey(){
+//        return 'ID';
+//    }
+
 
     /**
      * {@inheritdoc}

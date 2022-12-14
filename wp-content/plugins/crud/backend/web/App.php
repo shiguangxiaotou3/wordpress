@@ -5,6 +5,8 @@ namespace backend\web;
 
 
 
+use common\models\User;
+use crud\modules\wp\Wp;
 use Yii;
 use yii\base\BaseObject;
 use crud\Base;
@@ -39,7 +41,8 @@ class App extends  BaseObject {
             require __DIR__ . '/../config/main.php',
             require __DIR__ . '/../config/main-local.php',
             Wechat::config(),
-            Translate::config()
+            Translate::config(),
+            Wp::config()
         );
         $this->_modules = array_keys($config['modules']);;
         $this->_app = new Application($config);
@@ -65,7 +68,6 @@ class App extends  BaseObject {
         // 注册菜单 = 也就是注册yii Controller
         add_action("admin_menu", [$this, "registerPage"]);
         add_action("admin_init", [$this, "registerAjax"]);
-
         // 注册api
         add_action("rest_api_init", [$this,"registerRestfulApi"]);
 
@@ -155,77 +157,79 @@ class App extends  BaseObject {
          * - `'users/<id>' => 'user/options'`: process all unhandled verbs of a user
          * - `'users' => 'user/options'`: process all unhandled verbs of user collection
          */
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
+
+        register_rest_route("crud", "api/(?P<controller>[\w]+)/(?P<id>[\d]+)", [
             'methods' => "PUT,PATCH",
             'callback' => [$this, "renderApi"],
             'permission_callback' => function() { return ''; },
         ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
+        register_rest_route("crud", "api/(?P<controller>[\w]+)/(?P<id>[\d]+)", [
             'methods' => "DELETE",
             'callback' => [$this, "renderApi"],
             'permission_callback' => function() { return ''; },
         ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
+        register_rest_route("crud", "api/(?P<controller>[\w]+)/(?P<id>[\d]+)", [
             'methods' => "GET,HEAD",
             'callback' => [$this, "renderApi"],
             'permission_callback' => function() { return ''; },
         ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
+        register_rest_route("crud", "api/(?P<controller>[\w]+)", [
             'methods' => "POST",
             'callback' => [$this, "renderApi"],
             'permission_callback' => function() { return ''; },
         ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
+        register_rest_route("crud", "api/(?P<controller>[\w]+)", [
             'methods' => "GET,HEAD",
             'callback' => [$this, "renderApi"],
             'permission_callback' => function() { return ''; },
         ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
+        register_rest_route("crud", "api/(?P<controller>[\w]+)/(?P<id>[\d]+)", [
             'methods' => "OPTIONS",
             'callback' => [$this, "renderApi"],
             'permission_callback' => function() { return ''; },
         ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
+        register_rest_route("crud", "api/(?P<controller>[\w]+)", [
             'methods' => "OPTIONS",
             'callback' => [$this, "renderApi"],
             'permission_callback' => function() { return ''; },
         ]);
         // 模块默认控制器
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<id>[\d]+)", [
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
             'methods' => "PUT,PATCH",
             'callback' => [$this, "renderApi"],
             'permission_callback' => function() { return ''; },
         ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<id>[\d]+)", [
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
             'methods' => "DELETE",
             'callback' => [$this, "renderApi"],
             'permission_callback' => function() { return ''; },
         ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<id>[\d]+)", [
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
             'methods' => "GET,HEAD",
             'callback' => [$this, "renderApi"],
             'permission_callback' => function() { return ''; },
         ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)", [
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
             'methods' => "POST",
             'callback' => [$this, "renderApi"],
             'permission_callback' => function() { return ''; },
         ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)", [
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
             'methods' => "GET,HEAD",
             'callback' => [$this, "renderApi"],
             'permission_callback' => function() { return ''; },
         ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<id>[\d]+)", [
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
             'methods' => "OPTIONS",
             'callback' => [$this, "renderApi"],
             'permission_callback' => function() { return ''; },
         ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)", [
+        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
             'methods' => "OPTIONS",
             'callback' => [$this, "renderApi"],
             'permission_callback' => function() { return ''; },
         ]);
+
     }
 
     /**
@@ -234,29 +238,49 @@ class App extends  BaseObject {
      */
     public function renderApi($request){
         list($route ,$params) = $this->getRoute($request);
-        $data = $this->app->runAction($route ,$params);
-        Base::sendJson( $data);
+        try {
+            $data = $this->app->runAction($route ,$params);
+            Base::sendJson(   $data  );
+        }  catch  (Exception $exception){
+            Base::sendJson(
+                [
+                    'code'=>$exception->getCode(),
+                    'message'=>$exception->getMessage(),
+                    'trace'=>$exception->getTrace(),
+                    "file"=>$exception->getFile()
+                ]
+            );
+        }
     }
 
     public function getRoute($request){
         $params = $request->get_params();
-        $module = $controller = $action = "index";
-        $id = "";
-        if (isset($params['module'])) {
+        $module = $controller = $id ='';
+        if (isset($params['id'])) {
+            $id = $params["id"];
+        }
+        $action = $this->getMethod($id);
+
+        if (isset($params['module'])){
             $module = $params['module'];
             unset($params['module']);
-        } else {
-            $module = "index";
         }
         if (isset($params['controller'])) {
             $controller = $params["controller"];
             unset($params['controller']);
-        } else {
-            $controller = "index";
         }
-        if (isset($params['id'])) {
-            $id = $params["id"];
+
+        if(empty($module) && $this->is_module($controller)){
+            $route = $controller."/api/index/".$action;
+        }elseif(!empty($module) and !empty($controller) and !$this->is_module($controller)){
+            $route =$module."/api/".$controller."/".$action;
+        }else{
+            $route ="api/".$controller.'/'.$action;
         }
+        return [$route,$params];
+    }
+
+    public function getMethod($id){
         $method = Yii::$app->request->method;
         switch ($method) {
             case 'GET':
@@ -278,20 +302,7 @@ class App extends  BaseObject {
             default:
                 $action = "index";
         }
-        if($this->is_module($module)){
-            if(empty($id)){
-                $route =  $module."/api/".$controller."/".$action;
-            }else{
-                $route =  $module."/api/".$controller."/".$action."/".$id;
-            }
-        }else{
-            if(empty($id)){
-                $route ="api/".$module."/".$controller."/".$action;
-            }else{
-                $route = "api/".$module."/".$controller."/".$action."/".$id;
-            }
-        }
-        return [$route,$params];
+        return $action;
     }
 
     /**------------------------------

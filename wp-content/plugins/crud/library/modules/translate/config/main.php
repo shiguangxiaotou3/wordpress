@@ -17,6 +17,7 @@ return [
         ],
         "google" => [
             'class' => 'crud\modules\translate\components\GoogleTranslate',
+            'type'=>get_option("crud_group_translate_type"),
             'translateKey' =>get_option("crud_group_translate_key"),
         ],
         "youdao"=>[

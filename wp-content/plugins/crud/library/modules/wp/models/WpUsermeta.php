@@ -1,25 +1,25 @@
 <?php
 
-namespace library\models\wp;
+namespace crud\modules\wp\models;
 
 use Yii;
 
 /**
- * This is the model class for table "{{%postmeta}}".
+ * This is the model class for table "{{%usermeta}}".
  *
- * @property int $meta_id
- * @property int $post_id
+ * @property int $umeta_id
+ * @property int $user_id
  * @property string|null $meta_key
  * @property string|null $meta_value
  */
-class WpPostmeta extends \yii\db\ActiveRecord
+class WpUsermeta extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return '{{%postmeta}}';
+        return '{{%usermeta}}';
     }
 
     /**
@@ -28,7 +28,7 @@ class WpPostmeta extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['post_id'], 'integer'],
+            [['user_id'], 'integer'],
             [['meta_value'], 'string'],
             [['meta_key'], 'string', 'max' => 255],
         ];
@@ -40,8 +40,8 @@ class WpPostmeta extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'meta_id' => Yii::t('wp', 'Meta ID'),
-            'post_id' => Yii::t('wp', 'Post ID'),
+            'umeta_id' => Yii::t('wp', 'Umeta ID'),
+            'user_id' => Yii::t('wp', 'User ID'),
             'meta_key' => Yii::t('wp', 'Meta Key'),
             'meta_value' => Yii::t('wp', 'Meta Value'),
         ];

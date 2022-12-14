@@ -35,6 +35,23 @@ return [
             "section_description" => 'Google Translate',
             'fields' => [
                 [
+                    'id' => 'type',
+                    "title" => "type",
+                    'args' => [
+                        "tag" => "dropDownList",
+                        "items"=>[
+                            'baidu'=>'百度翻译',
+                            'youdao'=>'有道翻译',
+                            'google'=>'Google翻译',
+                        ],
+                        "defaultValue" => "baidu",
+                        "description" => "当前使用的api",
+                        'options' => [
+                            "class" => "regular-text code"
+                        ]
+                    ],
+                ],
+                [
                     'id' => 'key',
                     "title" => "Cloud key",
                     'args' => [
