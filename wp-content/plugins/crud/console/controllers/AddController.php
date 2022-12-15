@@ -12,6 +12,7 @@
 namespace console\controllers;
 use crud\Base;
 use crud\models\Rely;
+use crud\modules\translate\components\MicrosoftTranslate;
 use Darabonba\GatewaySpi\Models\InterceptorContext\request;
 use frontend\web\App;
 use Yii;
@@ -221,6 +222,26 @@ class AddController extends Controller
                 ]]
         ];
        var_dump($wechat->createMenu( $menu2  ));
+    }
+
+    /**
+     * 生成唯一的id
+     * @throws \yii\db\Exception
+     */
+    public  function actionUuid(){
+        echo Yii::$app->db->createCommand("select uuid() as uuid")->queryOne()['uuid'];
+    }
+
+    public function actionMicrosoft(){
+        /** @var MicrosoftTranslate $microsoft */
+        $microsoft = Yii::$app->microsoft;
+        $params= http_build_query([
+            'api-version'=> '3.0',
+            'from'=> "adas",
+            'to'=>  ['asd','aasd'],
+        ]);
+        $data =[ 'I would really like to drive your car around the block a few times!'=>'','hello word'=>''];
+        logObject($microsoft->translate($data));
     }
 
 }

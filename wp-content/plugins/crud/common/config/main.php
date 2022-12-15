@@ -13,6 +13,12 @@ return [
         "crawlers"=>[
             'class'=>"crud\components\Crawlers"
         ],
+        'user' => [
+            'class'=>'yii\web\User',
+            'identityClass' => 'common\models\User',
+            'enableAutoLogin' => true,
+//            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+        ],
         //翻译组件
         'i18n' => [
             'translations' => [

@@ -20,6 +20,7 @@ class GoogleTranslate extends Component implements Translate
 
     public $_translate;
     public $translateKey;
+    public $shortcut;
 
     public function getClient()
     {
@@ -118,12 +119,27 @@ class GoogleTranslate extends Component implements Translate
         }
     }
 
+    /**
+     * @param $code
+     * @return mixed|void
+     */
     public static function error($code)
     {
 
     }
 
+    /**
+     *
+     */
     public function language()
     {
+    }
+
+    /**
+     * @return mixed
+     */
+    public function shortcut()
+    {
+        return $this->shortcut;
     }
 }

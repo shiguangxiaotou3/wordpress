@@ -11,6 +11,7 @@ class YoudaoTranslate extends Component implements Translate
 {
     public $appId = "";
     public $appSecret = "";
+    public $shortcut;
     public $url = "https://openapi.youdao.com/api";
     const CURL_TIMEOUT = 2000;
 
@@ -24,7 +25,7 @@ class YoudaoTranslate extends Component implements Translate
      */
     public function Translate($data, $from = "auto", $to = "en", $format = "text", $model = "general")
     {
-        logObject(getParams());
+
         $results = [];
         if (is_array($data)) {
             foreach ($data as $key => $value) {
@@ -36,6 +37,10 @@ class YoudaoTranslate extends Component implements Translate
         return $results;
     }
 
+    /**
+     * @param $code
+     * @return array
+     */
     public static function error($code)
     {
         $data = [
@@ -180,7 +185,10 @@ class YoudaoTranslate extends Component implements Translate
         return  ['code' => 404, 'message' => '未知的错误'];
     }
 
-    public function language()
+    /**
+     * @return string[]
+     */
+    public function languages()
     {
         return [
             'auto'=>'自动识别',
@@ -508,6 +516,14 @@ class YoudaoTranslate extends Component implements Translate
         } else if ($strlen > $length) {
             $string = substr($string, 0, $length);
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function shortcut()
+    {
+        return $this->shortcut;
     }
 
 }

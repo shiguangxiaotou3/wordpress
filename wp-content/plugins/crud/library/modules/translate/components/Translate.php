@@ -6,6 +6,7 @@ namespace crud\modules\translate\components;
 interface Translate
 {
 
+
     /**
      * @param $data
      * @param string $from
@@ -24,6 +25,11 @@ interface Translate
     /**
      * @return mixed
      */
-    public function language();
+    public function languages();
 
+
+    /**
+     * @return mixed
+     */
+    public function shortcut();
 }

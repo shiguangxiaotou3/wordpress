@@ -9,8 +9,8 @@ use crud\widgets\PageHeaderWidget;
     <?= PageHeaderWidget::widget() ?>
     <form action="options.php" method="post">
         <?php
-        settings_fields("crud_group_baidu");
-        do_settings_sections("translate/index/baidu");
+        settings_fields("crud_group_microsoft");
+        do_settings_sections("translate/index/microsoft");
         submit_button();
         ?>
     </form>

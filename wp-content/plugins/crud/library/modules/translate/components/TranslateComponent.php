@@ -12,15 +12,12 @@ class TranslateComponent extends Component{
     const GOOGLE ="google";
     const YOUDAO ='youdao';
     const BAIDU ='baidu';
+    const MICROSOFT ='microsoft';
 
     public function translate($data,$from ="",$to="",$format = "text", $model = ""){
         try {
-            $type =$this->type;
-            if($type =="youdao"){
-                $data =Yii::$app->$type->translate($data,$from ,$to,$format , $model );
-            }else{
-                $data =Yii::$app->$type->translate($data,$from ,$to,$format , $model );
-            }
+            $type = $this->type;
+            $data = Yii::$app->$type->translate($data, $from, $to, $format, $model);
 
             return [
                 'code'=>1,
@@ -37,9 +34,12 @@ class TranslateComponent extends Component{
         }
     }
 
-
-    public function getlanguage(){
+    public function getLanguages(){
         $type =$this->type;
-        return Yii::$app->$type->language();
+        return Yii::$app->$type->languages();
+    }
+    public function getShortcut(){
+        $type =$this->type;
+        return Yii::$app->$type->shortcut();
     }
 }

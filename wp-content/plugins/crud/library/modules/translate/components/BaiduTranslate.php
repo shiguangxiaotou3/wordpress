@@ -13,6 +13,7 @@ class BaiduTranslate extends Component implements Translate
     public $url = "http://api.fanyi.baidu.com/api/trans/vip/translate";
     public $appId = "";
     public $appSecret = "";
+    public $shortcut;
     const CURL_TIMEOUT = 10;
 
     /**
@@ -21,7 +22,8 @@ class BaiduTranslate extends Component implements Translate
      * @param string $to
      * @param string $format
      * @param string $model
-     * @return array
+     * @return array|mixed
+     * @throws Exception
      */
     public function translate($data,$from ="auto",$to="en",$format = "text", $model = ""){
         $results =[];
@@ -48,6 +50,7 @@ class BaiduTranslate extends Component implements Translate
      * @param string $format
      * @param string $model
      * @return mixed
+     * @throws Exception
      */
     public function translateOne($str, $from ="en",$to="zh",$format = "text", $model = ""){
         $args = array(
@@ -199,7 +202,10 @@ class BaiduTranslate extends Component implements Translate
         return ['code'=>0  ,"message"=>"未知错误","description"=>""];
     }
 
-    public function language()
+    /**
+     * @return string[]
+     */
+    public function languages()
     {
         return [
             'auto'=>"自动检测",
@@ -407,5 +413,13 @@ class BaiduTranslate extends Component implements Translate
             'wyw'=>'中文(文言文)',
             'frm'=>'中古法语',
         ];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function shortcut()
+    {
+       return $this->shortcut;
     }
 }

@@ -48,6 +48,7 @@ class App extends  BaseObject {
         $this->_app = new Application($config);
     }
 
+
     /**
      * 获取app容器
      * @throws Yii\base\InvalidConfigException

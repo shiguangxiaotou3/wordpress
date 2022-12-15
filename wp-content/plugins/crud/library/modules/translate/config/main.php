@@ -14,21 +14,30 @@ return [
     'components' => [
         'translate' => [
             'class' => 'crud\modules\translate\components\TranslateComponent',
+            'type'=>get_option("crud_group_google_type"),
         ],
         "google" => [
             'class' => 'crud\modules\translate\components\GoogleTranslate',
-            'type'=>get_option("crud_group_translate_type"),
-            'translateKey' =>get_option("crud_group_translate_key"),
+            'translateKey' =>get_option("crud_group_google_key"),
+            'shortcut' =>get_option("crud_group_google_shortcut"),
         ],
         "youdao"=>[
             "class"=>'crud\modules\translate\components\YoudaoTranslate',
-            "appId"=>"27bb082802437b82",
-            "appSecret" =>"9gPGRT9Rfa7Yrtdpd6YJOjI3T8G0hwxD",
+            "appId"=>get_option("crud_group_youdao_appId"),
+            "appSecret" =>get_option("crud_group_youdao_appSecret"),
+            'shortcut' =>get_option("crud_group_youdao_shortcut"),
         ],
         "baidu"=>[
             "class"=>'crud\modules\translate\components\BaiduTranslate',
-            "appId"=>"20221117001457698",
-            "appSecret" =>"ZGY6lha11ueLEpyHkuNO",
+            "appId"=>get_option("crud_group_baidu_appId"),
+            "appSecret" =>get_option("crud_group_baidu_appSecret"),
+            'shortcut' =>get_option("crud_group_baidu_shortcut"),
+        ],
+        "microsoft"=>[
+            "class"=>'crud\modules\translate\components\MicrosoftTranslate',
+            "key"=>get_option("crud_group_microsoft_key"),
+            "location" =>get_option("crud_group_microsoft_location"),
+            'shortcut' =>get_option("crud_group_microsoft_shortcut"),
         ]
     ],
     'params' => $params,

@@ -13,7 +13,7 @@ class IndexController extends Controller
     public $layout = false;
 
     public function actions(){
-        return ['index','google','youdao','baidu'];
+        return ['index','google','youdao','baidu','microsoft'];
     }
 
     /**
@@ -35,5 +35,7 @@ class IndexController extends Controller
     public function actionBaidu(){
         return  $this->render("baidu");
     }
-
+    public function actionMicrosoft(){
+        return  $this->render("microsoft");
+    }
 }

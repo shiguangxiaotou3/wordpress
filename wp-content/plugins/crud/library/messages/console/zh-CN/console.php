@@ -36,5 +36,7 @@ return [
     'CRUD Generator'=>'CRUD生成器',
     'Extension Generator'=>'扩展生成器',
     'Form Generator'=>'表单生成器',
-    'Model Generator'=>'模型生成器'
+    'Model Generator'=>'模型生成器',
+    'To see the help of each command, enter:'=>'要查看每个命令的帮助,请输入:',
+    'The following commands are available:'=>'以下命令可用:'
 ];
