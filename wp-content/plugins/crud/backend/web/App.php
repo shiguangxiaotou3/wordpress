@@ -91,6 +91,14 @@ class App extends  BaseObject {
         add_action("wp_body_open",[$this,"beginBody"]);
         add_action("wp_footer",[$this,"endBody"]);
         //add_action("wp_footer",[$this,"endPage"]);
+
+        // 静止跟新
+        add_filter('pre_site_transient_update_core',    function(){return null;}); // 关闭核心提示
+        add_filter('pre_site_transient_update_plugins',  function(){return null;}); // 关闭插件提示
+        add_filter('pre_site_transient_update_themes',   function(){return null;}); // 关闭主题提示
+        remove_action('admin_init', '_maybe_update_core');    // 禁止 WordPress 检查更新
+        remove_action('admin_init', '_maybe_update_plugins'); // 禁止 WordPress 更新插件
+        remove_action('admin_init', '_maybe_update_themes');
     }
 
     /**
@@ -344,7 +352,7 @@ class App extends  BaseObject {
      * 向前台注册全局aeesets
      */
     public function wp(){
-        $this->app->runAction('wp/index');
+        $this->app->runAction('wp/index/index');
     }
 
     /**

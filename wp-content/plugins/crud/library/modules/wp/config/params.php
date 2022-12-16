@@ -1,10 +1,10 @@
 <?php
 
 return [
-    "menus" => [
-
-    ],
-    'settings' => [
-
-    ],
+//    "menus" => [
+//
+//    ],
+//    'settings' => [
+//
+//    ],
 ];

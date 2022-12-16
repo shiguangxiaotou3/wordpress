@@ -11,9 +11,9 @@ return [
             'class' => 'crud\modules\wp\Wp',
         ],
     ],
-    'components' => [
-
-    ],
+//    'components' => [
+//
+//    ],
     'params' => $params,
 ];
 
