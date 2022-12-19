@@ -3,7 +3,7 @@
 
 namespace crud\models;
 
-
+use Yii;
 use yii\base\Model;
 
 /**
@@ -14,7 +14,7 @@ class Rely extends Model
 {
 
     public $vendorDir = '';
-    public $baseComposerJson = '';
+    public $baseComposerJson =''  ;
     public $baseComposerLock='';
     public $env = true;
     public $_require=[];
@@ -37,6 +37,18 @@ class Rely extends Model
 //            ['name'=>'adads']
         ]
     ];
+
+    public function init(){
+        if(empty($this->baseComposerJson)){
+            $this->baseComposerJson = ABSPATH."composer.json";
+        }
+        if(empty($this->baseComposerLock)){
+            $this->baseComposerLock = ABSPATH."composer.lock";;
+        }
+        if (empty($this->vendorDir)){
+            $this->vendorDir=  Yii::getAlias('@vendor');
+        }
+    }
 
     /**
      * 获取已安装拓展包已安装版本
@@ -210,7 +222,6 @@ class Rely extends Model
         }
 
     }
-
 
     /**
      * 解析依赖,并创建eCharts数据结构

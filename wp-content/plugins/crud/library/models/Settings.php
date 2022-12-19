@@ -140,7 +140,7 @@ class Settings extends Model{
             }
             echo "<fieldset>".join("<br />",$item_html)."</fieldset>";
         }elseif ($tag == "textarea"){
-            $value = get_option($name);
+            $value = get_option($name, $defaultValue);
             echo Html::textarea( $name,$value, $options);
         }
 

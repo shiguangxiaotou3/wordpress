@@ -1,7 +1,7 @@
 <?php
 return [
     'Wuhan' => '武汉',
-    'Jinrongjie' => '金荣杰',
+    'Jinrongjie' => '金融街',
     'Seattle' => '西雅图',
     'Hangzhou' => '杭州',
     'Washington' => '华盛顿',

@@ -6,17 +6,23 @@ namespace backend\web;
 
 
 use common\models\User;
-use crud\modules\wp\Wp;
+
+use crud\modules\ads\Ads;
 use Yii;
-use yii\base\BaseObject;
+
 use crud\Base;
 use crud\models\Menu;
+use yii\web\Application;
+use yii\base\BaseObject;
 use crud\models\Settings;
-use yii\web\Application ;
+
 use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
+use crud\modules\wp\Wp;
+use crud\modules\editor\Editor;
 use crud\modules\wechat\Wechat;
 use crud\modules\translate\Translate;
+use crud\modules\base\Base as BaseModule;
 
 
 /**
@@ -40,14 +46,18 @@ class App extends  BaseObject {
             require __DIR__ . '/../../common/config/main-local.php',
             require __DIR__ . '/../config/main.php',
             require __DIR__ . '/../config/main-local.php',
+            // 加载模块配置
+            BaseModule::config(),
+            Editor::config(),
+            Wp::config(),
             Wechat::config(),
             Translate::config(),
-            Wp::config()
+            Ads::config()
+
         );
         $this->_modules = array_keys($config['modules']);;
         $this->_app = new Application($config);
     }
-
 
     /**
      * 获取app容器
@@ -66,9 +76,17 @@ class App extends  BaseObject {
     public function run(){
         // 将设置注册到特定的页面
         add_action("admin_init", [$this, "registerSettings"]);
+        // 重写url规则 向前台添加页面
+//        add_action('init', [$this,'updateRoute']);
+//        add_action('query_vars', [$this, "addQueryVars"]);
+//        add_action('template_redirect',[$this,'renderPublicPage']);
+//        add_filter( 'template_include', 'wpdocs_include_template_files_on_page' );
+//        add_filter( 'template_include', [$this,'renderPublicPage']);
+//        add_action("template_redirect", [$this,'renderPublicPage']);
         // 注册菜单 = 也就是注册yii Controller
         add_action("admin_menu", [$this, "registerPage"]);
         add_action("admin_init", [$this, "registerAjax"]);
+
         // 注册api
         add_action("rest_api_init", [$this,"registerRestfulApi"]);
 
@@ -360,5 +378,19 @@ class App extends  BaseObject {
      */
     public function statistics(){
         $this->app->crawlers->auto();
+    }
+
+    public function updateRoute(){
+        add_rewrite_rule('^crud','/crud','top');
+    }
+    public function addQueryVars($queryVars){
+        $queryVars[] ='crud';
+        return $queryVars;
+    }
+
+    public function renderPublicPage(){
+       $action = get_query_var('postname');
+       logObject($action);
+       return "asdas";
     }
 }

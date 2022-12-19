@@ -11,6 +11,7 @@
 
 namespace console\controllers;
 use crud\Base;
+use crud\models\Files;
 use crud\models\Rely;
 use crud\modules\translate\components\MicrosoftTranslate;
 use Darabonba\GatewaySpi\Models\InterceptorContext\request;
@@ -242,6 +243,25 @@ class AddController extends Controller
         ]);
         $data =[ 'I would really like to drive your car around the block a few times!'=>'','hello word'=>''];
         logObject($microsoft->translate($data));
+    }
+
+    /**
+     *
+     */
+    public function actionFile(){
+      $arr =  [
+            'index',
+            'test',
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+                'layout' => false
+            ]
+        ];
+      foreach ($arr as $item){
+          if (is_array($item)){
+              echo key($item)."\n";
+          }
+      }
     }
 
 }

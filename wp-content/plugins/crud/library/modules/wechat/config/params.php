@@ -4,8 +4,8 @@ return [
     "menus" => [
         [
             "parent_slug" =>  "index",
-            "page_title" => "微信公众号",
-            "menu_title" => "微信公众号",
+            "page_title" => "公众号",
+            "menu_title" => "公众号",
             "menu_slug" => "wechat/index",
         ],
         [

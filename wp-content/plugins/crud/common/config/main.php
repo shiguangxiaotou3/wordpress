@@ -10,9 +10,7 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        "crawlers"=>[
-            'class'=>"crud\components\Crawlers"
-        ],
+
         'user' => [
             'class'=>'yii\web\User',
             'identityClass' => 'common\models\User',

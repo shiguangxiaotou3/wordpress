@@ -17,8 +17,16 @@ class IndexController extends Controller
     public $enableCsrfValidation=false;
     public $layout=false;
 
-    public function actions(){
-        return ['index'];
+    public function actions()
+    {
+        return [
+            'index',
+            'test',
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+                'layout' => false
+            ]
+        ];
     }
 
     /**
@@ -36,19 +44,5 @@ class IndexController extends Controller
         return $this->render("test");
     }
 
-    /**
-     * @return string
-     */
-    public function actionError()
-    {
-        return $this->render("error");
-    }
 
-    /**
-     * @return string
-     */
-    public function actionSettings()
-    {
-        return $this->render("settings");
-    }
 }

@@ -30,7 +30,7 @@ class ControllerActionsWidget extends Widget
     public function init(){
         parent::init();
         if(empty($this->controller)){
-            $this->controller = \Yii::$app->controller;
+            $this->controller = Yii::$app->controller;
         }
         $this->moduleId = $this->controller->module->id;
         $this->controllerId = $this->controller->id;
@@ -47,20 +47,28 @@ class ControllerActionsWidget extends Widget
      */
     public function run(){
         if(!empty($this->actions)){
+            // 判断是否为加载的模块
             if ($this->moduleId == Yii::$app->id) {
-                $active_menu_slug = ($this->actionId == "index")
-                    ? $this->controllerId
-                    : $this->controllerId . "/" . $this->actionId;
+
+                if(($this->actionId == "index")){
+                    $active_menu_slug =$this->controllerId;
+                }else{
+                    $active_menu_slug =$this->controllerId . "/" . $this->actionId;
+                }
                 $tmlUrl =$this->controllerId;
             } else {
-                $active_menu_slug = ($this->actionId == "index")
-                    ? $this->moduleId . "/" . $this->controllerId
-                    : $this->moduleId . "/" . $this->controllerId . "/" . $this->actionId;
+                if($this->actionId == "index"){
+                    $active_menu_slug = $this->moduleId . "/" . $this->controllerId;
+                }else{
+                    $active_menu_slug = $this->moduleId . "/" . $this->controllerId . "/" . $this->actionId;
+                }
                 $tmlUrl =$this->moduleId . "/" . $this->controllerId;
             }
             $activeUrl = $this->defaultUrl . $active_menu_slug;
             $links = [];
-            foreach ($this->actions as $action) {
+            foreach ($this->actions as $key=> $action) {
+                $action = is_array($action) ? $key : $action;
+
                 if (($action == "index")) {
                     $menu_slug = $tmlUrl;
                     $label = self::get_page_title($menu_slug);
@@ -105,7 +113,6 @@ class ControllerActionsWidget extends Widget
      * @return mixed|string
      */
     public static function get_page_title($menu_slug){
-
         $data =Yii::$app->params['menus'];
         $title ="";
         foreach ($data as $datum){
