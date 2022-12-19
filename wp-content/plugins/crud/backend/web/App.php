@@ -8,6 +8,7 @@ namespace backend\web;
 use common\models\User;
 
 use crud\modules\ads\Ads;
+use crud\modules\seo\Seo;
 use Yii;
 
 use crud\Base;
@@ -52,7 +53,8 @@ class App extends  BaseObject {
             Wp::config(),
             Wechat::config(),
             Translate::config(),
-            Ads::config()
+            Ads::config(),
+            Seo::config()
 
         );
         $this->_modules = array_keys($config['modules']);;

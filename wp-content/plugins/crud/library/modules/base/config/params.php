@@ -30,8 +30,8 @@ return [
         ],
         [
             "parent_slug" => "base/index",
-            "page_title" => "Ip解析物理地址",
-            "menu_title" => "Ip解析物理地址",
+            "page_title" => "访问记录",
+            "menu_title" => "访问记录",
             "menu_slug" => "base/index/ipinfo",
         ],
         [

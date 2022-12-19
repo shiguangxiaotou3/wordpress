@@ -1,14 +1,30 @@
-User-agent:*
-Disallow:/wp-json
+User-agent: *
+Disallow: /wp-json
 
-User-agent:*
+User-agent: Applebot
+Allow: /
+Allow: /category
+Allow: /tag
+
+User-agent: Googlebot
+Allow: /
+Allow: /category
+Allow: /tag
+
+
+User-agent: Baiduspider
+Allow: /
+Allow: /category
+Allow: /tag
+
+User-agent: *
 Disallow:/wp-admin
 
-User-agent:*
-Allow:/
+User-agent: *
+Allow: /
 
-User-agent:*
-Allow:/?cat=*
+User-agent: *
+Allow: /?cat=*
 
-User-agent:*
-Allow:/?p=*
+User-agent: *
+Allow: /?p=*
