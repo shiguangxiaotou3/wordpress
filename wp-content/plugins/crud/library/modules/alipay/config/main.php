@@ -7,8 +7,8 @@ $params = array_merge(
 );
 return [
     'modules' => [
-        'ads' => [
-            'class' => 'crud\modules\ads\AliPay',
+        'alipay' => [
+            'class' => 'crud\modules\alipay\AliPay',
         ],
     ],
     'components' => [

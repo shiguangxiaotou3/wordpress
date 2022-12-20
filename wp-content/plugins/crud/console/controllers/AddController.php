@@ -264,4 +264,26 @@ class AddController extends Controller
       }
     }
 
+    public function actionAlipay(){
+        $path = ABSPATH . "test/src/request";
+        if (is_dir($path)) {
+            //打开
+            if ($dh = @opendir($path)) {
+                //读取
+                while (($file = readdir($dh)) !== false) {
+                    if ($file != '.' && $file != '..') {
+                        if(is_file($path.'/'.$file)){
+                            $str = file_get_contents($path.'/'.$file);
+                            $str = str_replace("<?php\n","<?php\n"."namespace Shiguangxiaotou\\Alipay\\Request;\n",$str);
+                            file_put_contents($path.'/'.$file,$str);
+                        }
+
+                    }
+                }
+                //关闭
+                closedir($dh);
+            }
+        }
+    }
+
 }

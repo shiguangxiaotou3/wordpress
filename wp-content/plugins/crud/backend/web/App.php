@@ -7,8 +7,8 @@ namespace backend\web;
 
 use common\models\User;
 
-use crud\modules\ads\Ads;
-use crud\modules\seo\Seo;
+
+
 use Yii;
 
 use crud\Base;
@@ -19,7 +19,10 @@ use crud\models\Settings;
 
 use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
+
 use crud\modules\wp\Wp;
+use crud\modules\seo\Seo;
+use crud\modules\alipay\AliPay;
 use crud\modules\editor\Editor;
 use crud\modules\wechat\Wechat;
 use crud\modules\translate\Translate;
@@ -53,7 +56,7 @@ class App extends  BaseObject {
             Wp::config(),
             Wechat::config(),
             Translate::config(),
-            Ads::config(),
+            AliPay::config(),
             Seo::config()
 
         );

@@ -13,6 +13,30 @@
 - crud插件具备yii2所有的核型功能:组件、模块化、按需加载、依赖注入容器、高度可拓展、Gii、数据迁移、rbac、小部件等。
 - 不再需要你关注底层东西和wordpress的钩子，处理你的业务逻辑
 - crud与yii2最大的不同是：不再需要路由解析，这部分工作由wordpress完成。所有的控制器都需要提前注册。
+### 安装
+~~~shell
+composer create-project shiguangxiaotou/wordpress:dev-master -vvv
+~~~
+
+~~~json
+{
+  "require-dev": {
+    "yiisoft/yii2-debug": "~2.1.0",
+    "yiisoft/yii2-gii": "~2.2.0",
+    "yiisoft/yii2-faker": "~2.0.0",
+    "phpunit/phpunit": "~9.5.0",
+    "codeception/codeception": "^5.0.0 || ^4.0",
+    "codeception/lib-innerbrowser": "^3.0 || ^1.1",
+    "codeception/module-asserts": "^3.0 || ^1.1",
+    "codeception/module-yii2": "^1.1",
+    "codeception/module-filesystem": "^3.0 || ^2.0 || ^1.1",
+    "codeception/verify": "^2.2",
+    "symfony/browser-kit": "^6.0 || >=2.7 <=4.2.4"
+  } 
+}
+
+~~~
+
 ~~~
 crud                        根
   |-backend                 应用目录
