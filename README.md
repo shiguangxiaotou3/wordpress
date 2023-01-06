@@ -55,6 +55,9 @@ crud                        根
   |-vendor                  第三方拓展
   |-crud.php                插件入口
 ~~~
+#### 依赖
+
+![依赖](https://www.shiguangxiaotou.com/wp-content/uploads/2023/01/截屏2023-01-07-02.33.19.png)
 
 #### 插件入口文件crud.php
 ~~~php
