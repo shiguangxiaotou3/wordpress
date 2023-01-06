@@ -3,6 +3,8 @@
 
 namespace crud\components;
 
+
+use Exception;
 use GuzzleHttp\Client;
 use yii\base\BaseObject;
 use GuzzleHttp\Exception\GuzzleException;
@@ -26,100 +28,106 @@ class Http extends BaseObject
         ]);
     }
 
-
     /**
      * @param $uri
      * @param array $options
-     * @return Psr\Http\Message\ResponseInterface
+     * @return array|false|mixed|string
      * @throws GuzzleException
      */
-    public function get($uri,$options=[]){
-        return $this->response( $this->_client->get($uri,$options));
+    public function get($uri, $options = [])
+    {
+        return $this->response($this->_client->get($uri, $options));
     }
 
     /**
      * @param $uri
      * @param array $options
-     * @return Psr\Http\Message\ResponseInterface
+     * @return array|false|mixed|string
      * @throws GuzzleException
      */
-    public function post($uri,$options=[]){
-        return $this->response( $this->_client->post($uri,$options));
+    public function post($uri, $options = [])
+    {
+        return $this->response($this->_client->post($uri, $options));
     }
 
     /**
      * @param $uri
      * @param array $options
-     * @return Psr\Http\Message\ResponseInterface
+     * @return array|false|mixed|string
      * @throws GuzzleException
      */
-    public function delete($uri,$options=[]){
-        return $this->response( $this->_client->delete($uri,$options));
+    public function delete($uri, $options = [])
+    {
+        return $this->response($this->_client->delete($uri, $options));
     }
 
     /**
      * @param $uri
      * @param array $options
-     * @return Psr\Http\Message\ResponseInterface
+     * @return array|false|mixed|string
      * @throws GuzzleException
      */
-    public function head($uri,$options=[]){
-        return $this->response( $this->_client->head($uri,$options));
+    public function head($uri, $options = [])
+    {
+        return $this->response($this->_client->head($uri, $options));
     }
 
     /**
      * @param $uri
      * @param array $options
-     * @return mixed
+     * @return array|false|mixed|string
      */
-    public function options($uri,$options=[]){
-        return $this->response( $this->_client->options($uri,$options));
+    public function options($uri, $options = [])
+    {
+        return $this->response($this->_client->options($uri, $options));
     }
 
     /**
      * @param $uri
      * @param array $options
-     * @return Psr\Http\Message\ResponseInterface
+     * @return array|false|mixed|string
      * @throws GuzzleException
      */
-    public function put($uri,$options=[]){
-        return $this->response( $this->_client->put($uri, $options));
+    public function put($uri, $options = [])
+    {
+        return $this->response($this->_client->put($uri, $options));
     }
 
     /**
      * @param $uri
      * @param array $options
-     * @return Psr\Http\Message\ResponseInterface
+     * @return array|false|mixed|string
      * @throws GuzzleException
      */
-    public function patch($uri,$options=[]){
-        return $this->response( $this->_client->patch($uri, $options));
+    public function patch($uri, $options = [])
+    {
+        return $this->response($this->_client->patch($uri, $options));
     }
-
 
     /**
      * 解析响应结果
      * @param $response
-     * @return array|mixed|string
-     * @throws \Exception
+     * @return array|false|mixed|string
      */
     public function response($response){
-        if ($response->getStatusCode() != 200) {
-            throw new \Exception(__('请求错误'), $response->getStatusCode());
+        try {
+            if ($response->getStatusCode() == 200) {
+                $types =$this->getResponseDataType($response->getHeader('content-type')[0]);
+                $data =$response->getBody()->getContents();
+                if(empty($data) or $data =="null" or $data =="NULL" ){
+                    return '';
+                }
+                if( in_array('application/json',$types)){
+                    return json_decode( $data,true);
+                }elseif (in_array( "application/xml",$types)){
+                    return  self::xmlParser($data);
+                }else{
+                    return  $data;
+                }
+            }
+        }catch (Exception $exception){
+            return false;
         }
-        $types =$this->getResponseDataType($response->getHeader('content-type')[0]);
-        $data =$response->getBody()->getContents();
-        if(empty($data) or $data =="null" or $data =="NULL" ){
-            return '';
-        }
-        if( in_array('application/json',$types)){
-            return json_decode( $data,true);
-        }elseif (in_array( "application/xml",$types)){
-            return  self::xmlParser($data);
-        }else{
-            return  $data;
-        }
-
     }
 
     /**

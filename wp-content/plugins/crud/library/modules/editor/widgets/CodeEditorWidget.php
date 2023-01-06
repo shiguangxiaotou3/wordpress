@@ -64,7 +64,12 @@ HTML;
      * @return string
      */
     public function getJs(){
-        $file = json_encode( $this->getFileInfo($this->basedir.$this->file));
+        $file =  $this->getFileInfo($this->basedir.$this->file);
+        if(isset($file) and !empty($file)){
+            $file = json_encode($file);
+        }else{
+            $file =false;
+        }
 return <<<JS
     function change_canvas_heigth(){
         var wpwrap_height = document.getElementById("wpwrap").offsetHeight;
@@ -84,6 +89,7 @@ return <<<JS
     var fileInfo = {$file};
     ace.require('{$this->ext}').init(editor);
     editor.setTheme("{$this->theme}");
+    editor.setValue('{$this->text}');
     if(fileInfo){
         editor.setValue(fileInfo.text);
         if(fileInfo.name !== ""){
@@ -98,7 +104,7 @@ return <<<JS
         if(fileInfo.permissions !== ""){
             $("#permissions").text(fileInfo.permissions );
         }
-        
+       
         if(fileInfo.is_writable == true){
             editor.setReadOnly(false);
             $("#is_writable").removeClass('button-primary-disabled');

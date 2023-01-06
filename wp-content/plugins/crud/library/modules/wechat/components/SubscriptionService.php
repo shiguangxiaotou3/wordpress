@@ -2,10 +2,14 @@
 
 
 namespace crud\modules\wechat\components;
-use  Exception;
-use crud\components\Http;
+
+
+
 use Yii;
+use Exception;
 use yii\base\Component;
+use crud\components\Http;
+use GuzzleHttp\Exception\GuzzleException;
 use crud\modules\wechat\models\ValidateServer;
 /**
  * 微信公众好组件
@@ -15,6 +19,8 @@ use crud\modules\wechat\models\ValidateServer;
  * @property Http $client
  * @property $menu
  * @property-read string $accessToken
+ * @property-read string $ticket
+ * @property-read array $jsConfig
  * @package crud\common\components\webxin
  */
 class SubscriptionService extends Component{
@@ -22,7 +28,6 @@ class SubscriptionService extends Component{
     public $appId ;
     public $appSecret ;
     public $token ;
-    public $_accessToken;
     private $_client;
     public $domain='https://api.weixin.qq.com';
 
@@ -46,25 +51,32 @@ class SubscriptionService extends Component{
 
     /**
      * 获取access token
-     * @return mixed
+     * @return false|mixed
+     * @throws GuzzleException
      */
     public function getAccessToken(){
         $cache = Yii::$app->cache;
-        $access_token =$cache->get("wechat_access_token");
-        if(empty($access_token)){
-            $data = $this->client->get("/cgi-bin/token",[
+        $access_token = $cache->get("wechat_access_token");
+        if($access_token ){
+            return $access_token;
+        }else{
+            $results = $this->response($this->client->get("/cgi-bin/token",[
                 'query'=>[
                     "grant_type"=>'client_credential',
                     'appid'=>$this->appId,
                     'secret'=>$this->appSecret,
                 ]
-            ]);
-            $cache->set("wechat_access_token",$data["access_token"],$data["expires_in"]);
+            ]));
+            if($results['code'] ==1 ){
+                $cache->set("wechat_access_token",$results['data']["access_token"],$results['data']["expires_in"]);
+                return $cache->get("wechat_access_token");
+            }
+            return false;
         }
-        return $cache->get("wechat_access_token");
     }
 
     /**
+     * 发送请求对象
      * @return Http
      */
     public function getClient(){
@@ -75,12 +87,12 @@ class SubscriptionService extends Component{
     }
 
     /**
-     * 获取菜单
-     * @return array|\crud\components\Psr\Http\Message\ResponseInterface|string
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * 获取公众号菜单
+     * @return array|false
+     * @throws GuzzleException
      */
     public function getMenu(){
-        return $this->response(  $this->client->get("/cgi-bin/get_current_selfmenu_info", [
+        return $this->response( $this->client->get("/cgi-bin/get_current_selfmenu_info", [
                 'query' => [
                     "access_token" => $this->accessToken,
                 ],
@@ -91,8 +103,9 @@ class SubscriptionService extends Component{
     /**
      * 创建菜单
      * @param array $options
-     * @return mixed
-     * @throws GuzzleHttp\Exception\GuzzleException
+     * @return array|mixed
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function setMenu($options=[]){
         return $this->response($this->client->post("/cgi-bin/menu/create", [
@@ -111,7 +124,7 @@ class SubscriptionService extends Component{
      * 创建自定义菜单
      * @param array $options
      * @return mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function setConditionalMenu($options=[]){
         return $this->response( $this->client->post("/cgi-bin/menu/addconditional", [
@@ -127,9 +140,9 @@ class SubscriptionService extends Component{
     }
 
     /**
+     * 处理请求结果,处理保存信息
      * @param $response
-     * @return mixed
-     * @throws Exception
+     * @return array|false
      */
     public function response($response){
         $error = [
@@ -308,6 +321,14 @@ class SubscriptionService extends Component{
             9001035 => "设备申请参数不合法",
             9001036 => "查询起始值 begin 不合法",
         ];
+        if(!$response){
+            return [
+                'code'=>0,
+                'message'=>'请求错误',
+                'time'=>time(),
+                'data'=>'',
+            ];
+        }
         if(isset( $response['errcode']) and $response['errcode'] !==0){
           $msg =  isset($error[$response['errcode']]) ? $error[$response['errcode']]:$response['errmsg'];
             return [
@@ -374,6 +395,89 @@ class SubscriptionService extends Component{
         if ($is_list)
             return '[' . $json . ']';
         return '{' . $json . '}';
+    }
+
+    /**
+     * 获取票据
+     * @return false|mixed
+     * @throws GuzzleException
+     */
+    public function getTicket(){
+        $cache = Yii::$app->cache;
+        $ticket =$cache->get("wechat_ticket");
+        if( $ticket){
+            return  $ticket;
+        }else{
+            $results = $this->response($this->client->get('/cgi-bin/ticket/getticket',[
+                'query' => [
+                    "access_token" => $this->accessToken,
+                    'type'=>'jsapi'
+                ]
+            ]));
+            if($results['code'] ==1 ){
+                $cache->set("wechat_ticket",$results['data']["ticket"],$results['data']["expires_in"]);
+                return $cache->get("wechat_ticket");
+            }
+            return false;
+        }
+    }
+
+    /**
+     * @param $url
+     * @param array $jsApiList
+     * @param bool $debug
+     * @return array
+     * @throws \yii\base\Exception
+     */
+    public function getJsConfig($url,$jsApiList=[], $debug=true){
+        $timestamp= time();
+        $nonceStr = Yii::$app->getSecurity()->generateRandomString();
+        $config =[
+            'noncestr'=>$nonceStr,
+            'jsapi_ticket'=>$this->ticket,
+            'timestamp'=>$timestamp,
+            'url'=>$url
+        ];
+        ksort($config);
+        return [
+            'debug'=>$debug,
+            'appId'=>$this->appId,
+            'timestamp'=> $timestamp , // 必填，生成签名的时间戳
+            'nonceStr'=> $nonceStr, // 必填，生成签名的随机串
+            'signature'=> sha1(http_build_query($config )),
+            'jsApiList'=>$jsApiList
+        ];
+    }
+
+    public function share(){
+        $view = Yii::$app->getView();
+        global  $wp;
+        $post =  get_post();
+
+        $home = home_url().'/favicon.ico';
+        if(isset($post) and !empty( $post)){
+            $title = json_encode($post->post_title);
+            $desc = json_encode($post->post_excerpt);
+            $url  =  urldecode(home_url(add_query_arg(array(),$wp->request)));
+            $json =json_encode($post);
+            $js = <<<JS
+console.log({$json});
+wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+    wx.updateAppMessageShareData({ 
+        title: '{$title}', // 分享标题
+        desc: '{$desc}', // 分享描述
+        link: '{$url}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号 JS 安全域名一致
+        imgUrl: '{$home}', // 分享图标
+        success: function () {
+            console.log('分享成功');
+            alert('分享成功')
+        }
+    })
+});
+JS;
+            $view->registerJs( $js);
+        }
+
     }
 
 }

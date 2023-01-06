@@ -2,14 +2,17 @@
   "name": "shiguangxiaotou/wordpress",
   "description": "这是一个基于Yii2的MVC的wordpress插件",
   "keywords": [
-   "wprdpress", "yii2","plugins", "MVC",
+    "wprdpress",
+    "yii2",
+    "plugins",
+    "MVC",
     "project template"
   ],
   "homepage": "http://www.shiguangxiaotou.com",
   "type": "project",
   "license": "MIT",
-  "version":"1.0",
-  "prefer-stable":true,
+  "version": "1.0",
+  "prefer-stable": true,
   "minimum-stability": "stable",
   "support": {
     "issues": "http://www.shiguangxiaotou.com"
@@ -21,9 +24,23 @@
     "alibabacloud/alidns-20150109": "^3.0",
     "google/cloud-translate": "^1.12",
     "jaybizzle/crawler-detect": "^1.2",
-    "microsoft/bingads": "^13.0"
+    "microsoft/bingads": "^13.0",
+    "shiguangxiaotou/alipay": "dev-master",
+    "qiniu/php-sdk": "^7.8"
   },
-
+  "require-dev": {
+    "yiisoft/yii2-debug": "~2.1.0",
+    "yiisoft/yii2-gii": "~2.2.0",
+    "yiisoft/yii2-faker": "~2.0.0",
+    "phpunit/phpunit": "~9.5.0",
+    "codeception/codeception": "^5.0.0 || ^4.0",
+    "codeception/lib-innerbrowser": "^3.0 || ^1.1",
+    "codeception/module-asserts": "^3.0 || ^1.1",
+    "codeception/module-yii2": "^1.1",
+    "codeception/module-filesystem": "^3.0 || ^2.0 || ^1.1",
+    "codeception/verify": "^2.2",
+    "symfony/browser-kit": "^6.0 || >=2.7 <=4.2.4"
+  },
   "replace": {
     "ext-mcrypt": "*",
     "bower-asset/jquery": "*",
@@ -33,7 +50,7 @@
   },
   "autoload": {
     "psr-4": {
-     "crud\\": "wp-content/plugins/crud/library/"
+      "crud\\": "wp-content/plugins/crud/library/"
     }
   },
   "config": {

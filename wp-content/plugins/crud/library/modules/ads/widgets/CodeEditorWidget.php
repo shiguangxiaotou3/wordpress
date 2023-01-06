@@ -67,6 +67,12 @@ HTML;
         $file = json_encode( $this->getFileInfo($this->basedir.$this->file));
 return <<<JS
     function change_canvas_heigth(){
+     var wpbody_height = document.getElementById("wpbody").offsetHeight;
+         var wpbody_content_height = document.getElementById("wpbody-content").offsetHeight;
+         if(wpbody_height - wpbody_content_height >0){
+              var canvas_heigth = document.getElementById("editor").offsetHeight;
+            document.getElementById("editor").style.height = canvas_heigth + (wpbody_height - wpbody_content_height) +"px"
+         }
         var wpwrap_height = document.getElementById("wpwrap").offsetHeight;
         var wpfooter_height =document.getElementById("wpfooter").offsetHeight;
         document.getElementById("wpbody-content").style.paddingBottom ='0';

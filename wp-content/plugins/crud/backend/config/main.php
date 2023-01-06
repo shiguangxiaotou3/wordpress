@@ -9,7 +9,7 @@ $params = array_merge(
 );
 return [
     'id' => 'backend',
-    'name' => 'ShiGuangXiaoTou',
+    'name' => '时光小偷的博客',
     'basePath' => dirname(__DIR__),
     'defaultRoute' => "index",
     'controllerNamespace' => 'backend\controllers',
@@ -56,7 +56,6 @@ return [
                 "<controller:[\w-]+>/<action:[\w-]+>"=>"<controller>/<action>",
             ]
         ],
-
 
         'errorHandler' => [
             'errorAction' => 'index/error',

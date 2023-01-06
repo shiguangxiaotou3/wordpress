@@ -25,6 +25,7 @@ class Wechat extends Module implements ModuleImplements
      * {@inheritdoc}
      */
     public function init(){
+        Yii::$app;
     }
 
     public static function config(){

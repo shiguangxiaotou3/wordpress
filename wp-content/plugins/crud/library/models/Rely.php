@@ -58,7 +58,9 @@ class Rely extends Model
     public function getVersion($projectName){
         $str_json = file_get_contents($this->baseComposerLock);
         $arr = json_decode($str_json,true);
-        $packages = ($this->env) ? $arr['packages']:$arr['packages-dev'];
+        $package = isset($arr['packages']) ? $arr['packages'] : [];
+        $package_dev = isset($arr['packages-dev']) ? $arr['packages-dev'] : [];
+        $packages = array_merge($package, $package_dev);
         $results ='';
         foreach ( $packages as $package){
             if($package['name']==$projectName){

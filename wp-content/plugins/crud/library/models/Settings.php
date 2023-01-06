@@ -105,12 +105,9 @@ class Settings extends Model{
      * 表单原生回调
      */
     public function fieldCallback($args){
-
-//        logObject($args);
         $tag = (isset($args['tag']) and !empty($args['tag'])) ? $args['tag'] : "text";
         $options = isset($args["options"]) ? $args["options"] : [];
         $name = $args["name"];
-        logObject($name);
         $defaultValue = isset($args['defaultValue']) ? $args['defaultValue'] : "";
         $description = (isset($args["description"]) and !empty($args["description"])) ? $args["description"] :"";
         if ($tag == "text") {

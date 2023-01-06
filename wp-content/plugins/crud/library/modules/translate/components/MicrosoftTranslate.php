@@ -151,7 +151,6 @@ class MicrosoftTranslate extends Component implements Translate
     public function languages($language = "zh-Hans"){
        $cache = Yii::$app->cache;
        $languages = $cache->get("microsoft_languages");
-       logObject($languages);
        if(empty($languages)){
            $options = array (
                'http' => array (

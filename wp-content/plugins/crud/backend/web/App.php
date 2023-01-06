@@ -3,35 +3,32 @@
 namespace backend\web;
 
 
-
-
-use common\models\User;
-
-
-
 use Yii;
-
 use crud\Base;
 use crud\models\Menu;
-use yii\web\Application;
 use yii\base\BaseObject;
+use yii\web\Application;
 use crud\models\Settings;
-
 use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
+use yii\base\InvalidConfigException;
+use PHPMailer\PHPMailer\PHPMailer as SMTP;
 
 use crud\modules\wp\Wp;
 use crud\modules\seo\Seo;
+use crud\modules\crud\Crud;
 use crud\modules\alipay\AliPay;
 use crud\modules\editor\Editor;
+use crud\modules\server\Server;
 use crud\modules\wechat\Wechat;
+use crud\modules\applets\Applets;
 use crud\modules\translate\Translate;
 use crud\modules\base\Base as BaseModule;
 
 
 /**
  * App对象基类
- * @property-read Application $app
+ * @property-read yii\web\Application $app
  * @package crud\backend\web
  */
 class App extends  BaseObject {
@@ -39,9 +36,11 @@ class App extends  BaseObject {
     private $_modules=[];
 
     public $_app;
+
     /**
      * 创建app对象
-     * @throws yii\base\InvalidConfigException
+     * App constructor.
+     * @throws InvalidConfigException
      */
     public function __construct(){
         require __DIR__ . '/../config/bootstrap.php';
@@ -50,23 +49,36 @@ class App extends  BaseObject {
             require __DIR__ . '/../../common/config/main-local.php',
             require __DIR__ . '/../config/main.php',
             require __DIR__ . '/../config/main-local.php',
-            // 加载模块配置
+            self::loadModulesConfig()
+        );
+        $this->_modules = array_keys($config['modules']);
+        $this->_app = new Application($config);
+    }
+
+    /**
+     * 加载模块配置
+     * @return array
+     */
+    public static function loadModulesConfig(){
+        // 加载模块配置
+        return ArrayHelper::merge(
             BaseModule::config(),
             Editor::config(),
             Wp::config(),
             Wechat::config(),
             Translate::config(),
             AliPay::config(),
-            Seo::config()
-
+            Seo::config(),
+            Crud::config(),
+            Server::config(),
+            Applets::config()
         );
-        $this->_modules = array_keys($config['modules']);;
-        $this->_app = new Application($config);
     }
 
     /**
      * 获取app容器
-     * @throws Yii\base\InvalidConfigException
+     * @return Application
+     * @throws InvalidConfigException
      */
     public function getApp(){
         if(!isset($this->_app) or empty($this->_app)){
@@ -79,41 +91,35 @@ class App extends  BaseObject {
      * 挂载控制器
      */
     public function run(){
+        // 前台应用注册钩子
+        add_action('init',function (){
+            /** @var Wp $wp */
+            $wp = $this->app->getModule('wp');
+            $wp->run();
+        });
+
         // 将设置注册到特定的页面
         add_action("admin_init", [$this, "registerSettings"]);
-        // 重写url规则 向前台添加页面
-//        add_action('init', [$this,'updateRoute']);
-//        add_action('query_vars', [$this, "addQueryVars"]);
-//        add_action('template_redirect',[$this,'renderPublicPage']);
-//        add_filter( 'template_include', 'wpdocs_include_template_files_on_page' );
-//        add_filter( 'template_include', [$this,'renderPublicPage']);
-//        add_action("template_redirect", [$this,'renderPublicPage']);
+        add_action("admin_init", [$this, "registerAjax"]);
         // 注册菜单 = 也就是注册yii Controller
         add_action("admin_menu", [$this, "registerPage"]);
-        add_action("admin_init", [$this, "registerAjax"]);
 
+        add_shortcode('post_parser', [$this,'renderView']);
         // 注册api
         add_action("rest_api_init", [$this,"registerRestfulApi"]);
 
-        // 为资源包文件创建缓存快，
+        // 向后台页面调用视图事件，添加前端资源包
         add_action("admin_init", [$this, "beginPage"]);
         add_action("admin_head",[$this,"registerCsrfMetaTags"]);
-        add_action("admin_head",[$this,"head"]);
         add_action("admin_head",[$this,"head"]);
         add_action("admin_body_open",[$this,"beginBody"]);
         add_action("admin_footer",[$this,"endBody"]);
         add_action("admin_footer",[$this,"endPage"]);
 
-        // 向前台注册事件
-        // 需要去主题<html>和</html>埋点两个点beginPage和endPage
-        //add_action("get_template_part",[$this,"beginPage"]);
-        add_action("wp_head",[$this,"registerCsrfMetaTags"]);
-        add_action("wp_head",[$this,"head"]);
-         add_action("wp_head",[$this,"statistics"]);
-        add_action("get_template_part_loop",[$this,"wp"]);
-        add_action("wp_body_open",[$this,"beginBody"]);
-        add_action("wp_footer",[$this,"endBody"]);
-        //add_action("wp_footer",[$this,"endPage"]);
+
+
+        // 配置邮箱
+        add_action('phpmailer_init',[$this,"smtp"]);
 
         // 静止跟新
         add_filter('pre_site_transient_update_core',    function(){return null;}); // 关闭核心提示
@@ -122,6 +128,30 @@ class App extends  BaseObject {
         remove_action('admin_init', '_maybe_update_core');    // 禁止 WordPress 检查更新
         remove_action('admin_init', '_maybe_update_plugins'); // 禁止 WordPress 更新插件
         remove_action('admin_init', '_maybe_update_themes');
+
+    }
+
+    /**
+     * 配置发送邮箱
+     * @param SMTP $mail
+     */
+    public function smtp($mail){
+
+        // 发件人呢称
+        $mail->FromName = get_option('crud_group_mail_blogname','');
+        // smtp 服务器地址
+        $mail->Host = get_option('crud_group_mail_host',"smtp.qq.com");
+        // 端口号
+        $mail->Port =get_option('crud_group_mail_port',465);
+        // 账户
+        $mail->Username =get_option('crud_group_mail_username','');
+        // 密码
+        $mail->Password =get_option('crud_group_mail_password','');
+        // 收件人
+        $mail->From =get_option('crud_group_mail_username','');;
+        $mail->SMTPAuth =true;
+        $mail->SMTPSecure =get_option('crud_group_mail_encryption',"ssl");
+        $mail->isSMTP();
     }
 
     /**
@@ -162,17 +192,24 @@ class App extends  BaseObject {
      */
     public function renderView(){
         $request = $this->app->request;
+        $query =$request->queryParams;
         if($request->isAjax){
             if($request->isGet){
                 $action =$request->get("action","");
             }else{
                 $action = $request->post("action","");
             }
+            unset( $query['action']);
             Base::sendJson($this->app->runAction($action));
         }else{
-            $query =$request->queryParams;
-            $action= $query["page"];
-            Base::sendHtml($this->app->runAction($action));
+            try{
+                $action= $query["page"];
+                unset( $query['page']);
+                Base::sendHtml($this->app->runAction($action,$query));
+            }catch (\Exception $exception){
+                Base::sendHtml($this->app->runAction("index/error",$query));
+            }
+
         }
     }
 
@@ -265,6 +302,7 @@ class App extends  BaseObject {
     }
 
     /**
+     * 注册api配置
      * @param $request
      * @throws \yii\base\InvalidRouteException
      */
@@ -284,7 +322,6 @@ class App extends  BaseObject {
             );
         }
     }
-
     public function getRoute($request){
         $params = $request->get_params();
         $module = $controller = $id ='';
@@ -311,7 +348,6 @@ class App extends  BaseObject {
         }
         return [$route,$params];
     }
-
     public function getMethod($id){
         $method = Yii::$app->request->method;
         switch ($method) {
@@ -360,8 +396,8 @@ class App extends  BaseObject {
         if(isset($controller) and !empty($controller)){
             $controller->getView()->endPage();
         }
+//        exit;
     }
-
 
     /**
      * @param $id
@@ -371,31 +407,5 @@ class App extends  BaseObject {
         return in_array($id, $this->_modules);
     }
 
-    /**
-     * 向前台注册全局aeesets
-     */
-    public function wp(){
-        $this->app->runAction('wp/index/index');
-    }
 
-    /**
-     * 访问量统计
-     */
-    public function statistics(){
-        $this->app->crawlers->auto();
-    }
-
-    public function updateRoute(){
-        add_rewrite_rule('^crud','/crud','top');
-    }
-    public function addQueryVars($queryVars){
-        $queryVars[] ='crud';
-        return $queryVars;
-    }
-
-    public function renderPublicPage(){
-       $action = get_query_var('postname');
-       logObject($action);
-       return "asdas";
-    }
 }

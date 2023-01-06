@@ -14,8 +14,7 @@ use crud\Base;
 use crud\models\Files;
 use crud\models\Rely;
 use crud\modules\translate\components\MicrosoftTranslate;
-use Darabonba\GatewaySpi\Models\InterceptorContext\request;
-use frontend\web\App;
+use Shiguangxiaotou\Alipay\Request\AlipayTradePrecreateRequest;
 use Yii;
 use crud\library\components\Ads;
 use yii\console\Controller;
@@ -97,7 +96,7 @@ class AddController extends Controller
      * http测试
      */
     public function actionHttp(){
-       $data =  Base::GET("https://www.baidu.com",[]);
+        $data =  Base::GET("https://www.baidu.com",[]);
         var_dump($data);
     }
 
@@ -110,7 +109,7 @@ class AddController extends Controller
 //        $model->env = false;
         $model->baseComposerJson = ABSPATH."composer.json";
         $model->baseComposerLock = ABSPATH."composer.lock";
-       file_put_contents('./test/index.html',$model->renderHtml());
+        file_put_contents('./test/index.html',$model->renderHtml());
     }
 
     /**
@@ -192,7 +191,7 @@ class AddController extends Controller
 //                    "client_platform_type" => "2",
 //                    "language" => "zh_CN"
 //                ]
-            ];
+        ];
         $add = [
             "button" => [
                 [
@@ -222,7 +221,7 @@ class AddController extends Controller
                         ]]
                 ]]
         ];
-       var_dump($wechat->createMenu( $menu2  ));
+        var_dump($wechat->createMenu( $menu2  ));
     }
 
     /**
@@ -249,7 +248,7 @@ class AddController extends Controller
      *
      */
     public function actionFile(){
-      $arr =  [
+        $arr =  [
             'index',
             'test',
             'error' => [
@@ -257,13 +256,16 @@ class AddController extends Controller
                 'layout' => false
             ]
         ];
-      foreach ($arr as $item){
-          if (is_array($item)){
-              echo key($item)."\n";
-          }
-      }
+        foreach ($arr as $item){
+            if (is_array($item)){
+                echo key($item)."\n";
+            }
+        }
     }
 
+    /**
+     * 阿里支付sdk加命名空间
+     */
     public function actionAlipay(){
         $path = ABSPATH . "test/src/request";
         if (is_dir($path)) {
@@ -285,5 +287,26 @@ class AddController extends Controller
             }
         }
     }
+
+    /**
+     * google 翻译
+     */
+    public function actionGoogleTranslate(){
+        /** @var crud\modules\translate\components\GoogleTranslate  $api */
+        $api = Yii::$app->google;
+        $DATA =$api->languages();
+        print_r($DATA);
+    }
+
+
+    /**
+     * 阿里支付测试
+     */
+    public function actionPal(){
+        $request = new AlipayTradePrecreateRequest ();
+//        $pal = Yii::$app->alibaba;
+//        $pal->test();
+    }
+
 
 }

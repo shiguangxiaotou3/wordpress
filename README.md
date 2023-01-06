@@ -78,20 +78,33 @@ $crud = new backend\web\App();
 $crud->run();
 ~~~
 ### 创建应用backend\web\App.php
+
 ~~~php
 <?php
 namespace backend\web;
 
 
-use crud\modules\wechat\Wechat;
 use Yii;
-use yii\base\BaseObject;
 use crud\Base;
 use crud\models\Menu;
+use yii\base\BaseObject;
+use yii\web\Application;
 use crud\models\Settings;
-use yii\web\Application ;
 use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
+use yii\base\InvalidConfigException;
+use PHPMailer\PHPMailer\PHPMailer as SMTP;
+
+use crud\modules\wp\Wp;
+use crud\modules\seo\Seo;
+use crud\modules\crud\Crud;
+use crud\modules\alipay\AliPay;
+use crud\modules\editor\Editor;
+use crud\modules\server\Server;
+use crud\modules\wechat\Wechat;
+use crud\modules\applets\Applets;
+use crud\modules\translate\Translate;
+use crud\modules\base\Base as BaseModule;
 
 
 /**
@@ -104,9 +117,11 @@ class App extends  BaseObject {
     private $_modules=[];
 
     public $_app;
-    /**
+    
+     /**
      * 创建app对象
-     * @throws yii\base\InvalidConfigException
+     * App constructor.
+     * @throws InvalidConfigException
      */
     public function __construct(){
         require __DIR__ . '/../config/bootstrap.php';
@@ -115,16 +130,9 @@ class App extends  BaseObject {
             require __DIR__ . '/../../common/config/main-local.php',
             require __DIR__ . '/../config/main.php',
             require __DIR__ . '/../config/main-local.php',
-            Wechat::config()
-        // 如果你加载了模块，请将模块的menu和settings加入到主配置中
-        // 为后续registerSettings、registerPage registerRestfulApi调用
+            self::loadModulesConfig()
         );
-        $this->_modules = $config["modules"];
-        // 注意: 千万不要执行Application::run(),yii2/soft当作容器在使用
-        // 决定运行那个控制器,不由yii2决定，而是wordpress的钩子回调决定。
-        // wordpress会在根据不同的情况,调用renderView或renderApi。
-        // 区别在于renderView用于处理用户的页面行为
-        // renderApi 单独处理RestfulApi
+        $this->_modules = array_keys($config['modules']);
         $this->_app = new Application($config);
     }
 
@@ -138,24 +146,49 @@ class App extends  BaseObject {
         }
         return  $this->_app ;
     }
-
+    
+     /**
+     * 加载模块配置
+     * @return array
+     */
+    public static function loadModulesConfig(){
+        // 加载模块配置
+        return ArrayHelper::merge(
+            BaseModule::config(),
+            Editor::config(),
+            Wp::config(),
+            Wechat::config(),
+            Translate::config(),
+            AliPay::config(),
+            Seo::config(),
+            Crud::config(),
+            Server::config(),
+            Applets::config()
+        );
+    }
+    
     /**
      * 挂载控制器、api或前台注册一下代码
      */
     public function run(){
+        // 前台应用注册钩子
+        add_action('init',function (){
+            /** @var Wp $wp */
+            $wp = $this->app->getModule('wp');
+            $wp->run();
+        });
+
         // 将设置注册到特定的页面
         add_action("admin_init", [$this, "registerSettings"]);
-        // 注册菜单 = 也就是注册yii Controller
-        // 菜单的menu_slug = 路由，他将决定执行那个控制器,
-        // 例如menu_slug =>"settings",它将回调执行SettingsController::actionIndex
-        add_action("admin_menu", [$this, "registerPage"]);
         add_action("admin_init", [$this, "registerAjax"]);
         // 注册菜单 = 也就是注册yii Controller
-       
+        add_action("admin_menu", [$this, "registerPage"]);
+
+        add_shortcode('post_parser', [$this,'renderView']);
         // 注册api
         add_action("rest_api_init", [$this,"registerRestfulApi"]);
 
-        // 为资源包文件创建缓存快，
+        // 向后台页面调用视图事件，添加前端资源包
         add_action("admin_init", [$this, "beginPage"]);
         add_action("admin_head",[$this,"registerCsrfMetaTags"]);
         add_action("admin_head",[$this,"head"]);
@@ -163,17 +196,20 @@ class App extends  BaseObject {
         add_action("admin_footer",[$this,"endBody"]);
         add_action("admin_footer",[$this,"endPage"]);
 
-        // 向前台注册事件
-        // 需要去主题<html>和</html>埋点两个点beginPage和endPage
-        //add_action("get_template_part",[$this,"beginPage"]);
-        add_action("wp_head",[$this,"registerCsrfMetaTags"]);
-        add_action("wp_head",[$this,"head"]);
-        add_action("get_template_part_loop",[$this,"wp"]);
-        add_action("wp_body_open",[$this,"beginBody"]);
-        add_action("wp_footer",[$this,"endBody"]);
-        //add_action("wp_footer",[$this,"endPage"]);
-    }
 
+
+        // 配置邮箱
+        add_action('phpmailer_init',[$this,"smtp"]);
+
+        // 静止跟新
+        add_filter('pre_site_transient_update_core',    function(){return null;}); // 关闭核心提示
+        add_filter('pre_site_transient_update_plugins',  function(){return null;}); // 关闭插件提示
+        add_filter('pre_site_transient_update_themes',   function(){return null;}); // 关闭主题提示
+        remove_action('admin_init', '_maybe_update_core');    // 禁止 WordPress 检查更新
+        remove_action('admin_init', '_maybe_update_plugins'); // 禁止 WordPress 更新插件
+        remove_action('admin_init', '_maybe_update_themes');
+    }
+    
     /**
      * 注册设置
      */
@@ -413,8 +449,6 @@ class App extends  BaseObject {
             $controller->getView()->endPage();
         }
     }
-
-
     /**
      * @param $id
      * @return bool
@@ -424,10 +458,26 @@ class App extends  BaseObject {
     }
 
     /**
-     * 向前台注册一些功能，代码或是前端资源包
+     * 配置发送邮箱
+     * @param SMTP $mail
      */
-    public function wp(){
-        $this->app->runAction('wp/index');
+    public function smtp($mail){
+
+        // 发件人呢称
+        $mail->FromName = get_option('crud_group_mail_blogname','');
+        // smtp 服务器地址
+        $mail->Host = get_option('crud_group_mail_host',"smtp.qq.com");
+        // 端口号
+        $mail->Port =get_option('crud_group_mail_port',465);
+        // 账户
+        $mail->Username =get_option('crud_group_mail_username','');
+        // 密码
+        $mail->Password =get_option('crud_group_mail_password','');
+        // 收件人
+        $mail->From =get_option('crud_group_mail_username','');;
+        $mail->SMTPAuth =true;
+        $mail->SMTPSecure =get_option('crud_group_mail_encryption',"ssl");
+        $mail->isSMTP();
     }
 }
 

@@ -40,4 +40,8 @@ class IndexController extends Controller
         return  $this->render("event");
     }
 
+    public function actionShare(){
+        return  $this->render("share");
+    }
+
 }

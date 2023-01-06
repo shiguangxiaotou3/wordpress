@@ -1,9 +1,11 @@
 <?php
 /** @var $this yii\web\View */
 
-use crud\assets\AceAsset;
-use crud\widgets\CodeEditorWidget;
+
+
 use crud\widgets\PageHeaderWidget;
+use crud\modules\editor\assets\AceAsset;
+use crud\modules\editor\widgets\CodeEditorWidget;
 ?>
 
 

@@ -12,6 +12,7 @@ return [
         ],
     ],
     'components' => [
+
     ],
     'params' => $params,
 ];

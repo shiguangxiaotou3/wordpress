@@ -15,7 +15,7 @@ use crud\widgets\PageHeaderWidget;
     <div style="width: 50%">
         <form action="options.php" method="post">
             <?php
-            settings_fields("crud_group_ads");
+            settings_fields("crud_group_alibaba");
             do_settings_sections("alipay/index/alibaba");
             submit_button();
             ?>
