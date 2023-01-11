@@ -4,8 +4,10 @@
 namespace crud;
 
 use Yii;
-use GuzzleHttp\Client;
 use yii\web\Response;
+
+
+
 
 /**
  * @property Application $app
@@ -21,7 +23,7 @@ class Base  {
         $response->format =Response::FORMAT_HTML;
         $response->data = $data;
         $response->send();
-//        exit();
+
     }
 
     /**
@@ -61,7 +63,7 @@ class Base  {
         $response= Yii::$app->response;
         $response->format =Response::FORMAT_XML;
         $response->data = $data;
-        $response->send();
+         $response->send();
     }
 
     /**

@@ -3,10 +3,13 @@
 
 namespace crud\modules\wechat\controllers\api;
 
-use crud\controllers\RestfulApiControllerImplements;
 use Yii;
 use Exception;
 use yii\web\Controller;
+use crud\controllers\RestfulApiControllerImplements;
+
+
+
 
 class MenuController extends Controller
 {
@@ -20,7 +23,7 @@ class MenuController extends Controller
         $cache =Yii::$app->cache;
         $menus = $cache->get("wechat_menus");
         if(empty($menus)){
-            $wechat = Yii::$app->wechat;
+            $wechat = Yii::$app->subscription;
             $menus =$wechat->menu;
             if($menus['code']== 1){
                 $cache->set("wechat_menus",$menus);
@@ -33,7 +36,7 @@ class MenuController extends Controller
      * 创建菜单
      */
     public function actionCreate(){
-        $wechat = Yii::$app->wechat;
+        $wechat = Yii::$app->subscription;
         $menu =Yii::$app->request->post();
         if(isset($menu["matchrule"])){
             $response =$wechat->setConditionalMenu($menu);

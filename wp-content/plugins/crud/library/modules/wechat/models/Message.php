@@ -3,8 +3,11 @@
 
 namespace  crud\modules\wechat\models;
 
-
 use yii\base\Model;
+
+
+
+
 
 class Message extends Model{
 

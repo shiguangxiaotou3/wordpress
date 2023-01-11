@@ -13,6 +13,9 @@ namespace <?= $generator->getControllerNamespace() ?>;
 
 use yii\web\Controller;
 
+
+
+
 /**
  * Default controller for the `<?= $generator->moduleID ?>` module
  */

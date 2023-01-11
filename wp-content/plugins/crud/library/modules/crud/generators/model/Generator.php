@@ -8,18 +8,21 @@
 namespace crud\modules\crud\generators\model;
 
 use Yii;
-use yii\base\InvalidConfigException;
-use yii\base\NotSupportedException;
-use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
-use yii\db\Connection;
-use yii\db\Exception;
 use yii\db\Schema;
+use yii\db\Exception;
+use yii\db\Connection;
+use yii\db\ActiveQuery;
 use yii\db\TableSchema;
-use crud\modules\crud\CodeFile;
+use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
+use crud\modules\crud\CodeFile;
+use yii\base\NotSupportedException;
+use yii\base\InvalidConfigException;
 use crud\modules\crud\Generator as BaseGenerator;
+
+
+
 /**
  * This generator will generate one or multiple ActiveRecord classes for the specified database table.
  *

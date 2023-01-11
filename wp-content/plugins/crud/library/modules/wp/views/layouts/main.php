@@ -5,6 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $content string */
 
+dump(Yii::$app->urlManager);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

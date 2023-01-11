@@ -5,6 +5,9 @@ namespace crud\assets;
 
 use crud\assets\AppAsset;
 
+
+
+
 class JvectormapAsset  extends AppAsset {
 
     public $sourcePath =  "@bower/jvectormap-maps-data/dist";

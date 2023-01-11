@@ -9,6 +9,9 @@ namespace crud\modules\crud;
 
 use yii\web\AssetBundle;
 
+
+
+
 /**
  * This declares the asset files required by Gii.
  *

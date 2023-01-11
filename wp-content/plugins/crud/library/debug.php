@@ -84,3 +84,22 @@ function logHook($hook_name){
     $time=time().".txt";
     file_put_contents(CRUD_DIR."/library/hook/". $time, $hook_name . "\r\n", FILE_APPEND);
 }
+
+/**
+ * 接口测试
+ * 脚本退出时执行回调函数
+ * @param $title
+ * @param array $data
+ * @param string $email
+ */
+function testDebug($title, $data=[], $email = "757402123@qq.com")
+{
+    if (YII_DEBUG) {
+        if (function_exists('wp_mail')) {
+            register_shutdown_function(function () use ($email, $title, $data) {
+                wp_mail($email, $title, print_r($data, true));
+            });
+        }
+    }
+
+}

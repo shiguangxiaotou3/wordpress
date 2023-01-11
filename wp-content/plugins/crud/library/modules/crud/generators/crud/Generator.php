@@ -8,14 +8,17 @@
 namespace crud\modules\crud\generators\crud;
 
 use Yii;
-use yii\db\ActiveRecord;
-use yii\db\BaseActiveRecord;
 use yii\db\Schema;
-use crud\modules\crud\CodeFile;
+use yii\web\Controller;
+use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii\helpers\VarDumper;
-use yii\web\Controller;
+use yii\db\BaseActiveRecord;
+use crud\modules\crud\CodeFile;
 use crud\modules\crud\Generator as BaseGenerator;
+
+
+
 
 /**
  * Generates CRUD controller and views.

@@ -5,8 +5,10 @@ use crud\modules\wp\assets\WebSlidesAsset;
 
 /** @var $this yii\web\View */
 /** @var $content string */
+
 WebSlidesAsset::register($this);
-//$this->registerCss(".logo a{background:url('https://www.shiguangxiaotou.com/favicon.ico')}");
+$host =get_home_url();
+$this->registerCss(".logo a{background:url('".$host."/favicon.ico')}");
 ?>
 
 <?php $this->beginPage() ?>
@@ -26,10 +28,10 @@ WebSlidesAsset::register($this);
         <nav role="navigation">
             <p class="logo"><a href="/" title="<?= Yii::$app->name ?>">home</a></p>
             <ul>
-                <li><?= Html::a('首页',["/wp/index/index"]) ?></li>
-                <li><?= Html::a('文档',["/wp/index/docs"]) ?></li>
-                <li><?= Html::a('Api',["/wp/index/api"]) ?></li>
-                <li><?= Html::a('关于',["/wp/index/about"]) ?></li>
+                <li><?= Html::a('首页','/crud') ?></li>
+                <li><?= Html::a('文档','/crud/index/docs') ?></li>
+                <li><?= Html::a('Api','/crud/index/api') ?></li>
+                <li><?= Html::a('关于','/crud/index/about') ?></li>
                 <li><?= Html::a('返回主页','/') ?></li>
             </ul>
         </nav>

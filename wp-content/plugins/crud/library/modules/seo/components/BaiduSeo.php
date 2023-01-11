@@ -3,9 +3,12 @@
 
 namespace crud\modules\seo\components;
 
-
-use crud\modules\translate\components\Translate;
 use yii\base\Component;
+use crud\modules\translate\components\Translate;
+
+
+
+
 
 class BaiduSeo extends Component implements SeoInterface
 {

@@ -12,6 +12,12 @@ return [
         ],
     ],
     'components' => [
+        'appletsServer'=>[
+            'class'=> 'crud\modules\applets\components\AppletsServer',
+            "appId" => get_option("crud_group_applets_appId"),
+            "appSecret" => get_option("crud_group_applets_appSecret"),
+        ]
+
     ],
     'params' => $params,
 ];

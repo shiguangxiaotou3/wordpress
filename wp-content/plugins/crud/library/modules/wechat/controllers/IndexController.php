@@ -6,11 +6,12 @@ namespace crud\modules\wechat\controllers;
 use Yii;
 use yii\web\Controller;
 
+
+
+
 class IndexController extends Controller
 {
-
-
-    public $layout = false;
+    public $layout=false;
 
     public function actions(){
         return ['index','menu','event'];

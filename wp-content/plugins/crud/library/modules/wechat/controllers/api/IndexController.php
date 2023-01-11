@@ -3,9 +3,13 @@
 
 namespace crud\modules\wechat\controllers\api;
 
-use crud\controllers\RestfulApiControllerImplements;
 use Yii;
+use crud\Base;
 use yii\web\Controller;
+use crud\controllers\RestfulApiControllerImplements;
+
+
+
 
 class IndexController extends Controller
 {
@@ -20,9 +24,11 @@ class IndexController extends Controller
      */
     public function actionIndex()
     {
-        $wechat = Yii::$app->wechat;
-        $data = $wechat->ValidateServer();
-        exit(is_array($data) ? json_encode($data, true) : $data);
+        $wechat = Yii::$app->subscription;
+        $echostr = $wechat->ValidateServer();
+        if($echostr ){
+            exit($echostr);
+        }
     }
 
     /**
@@ -31,9 +37,14 @@ class IndexController extends Controller
     public function actionCreate()
     {
         $msg = Yii::$app->request->post();
-        $this->_ToUserName = $msg["ToUserName"];
-        $this->_FromUserName = $msg["FromUserName"];
-        return $this->sandEcho($msg);
+        if(isset($msg["ToUserName"]) and isset($msg["FromUserName"])){
+            $this->_ToUserName = $msg["ToUserName"];
+            $this->_FromUserName = $msg["FromUserName"];
+            return $this->sandEcho($msg);
+        }else{
+            Base::error('你谁啊');
+        }
+
     }
 
     /**

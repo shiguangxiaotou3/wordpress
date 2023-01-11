@@ -8,7 +8,7 @@ $params = array_merge(
 return [
     'modules' => [
         'ads' => [
-            'class' => 'crud\modules\ads\AliPay',
+            'class' => 'crud\modules\ads\Ads',
         ],
     ],
     'components' => [

@@ -5,9 +5,14 @@ namespace crud\modules\translate;
 
 use Yii;
 use yii\base\Module;
+use yii\base\Application;
 use yii\helpers\ArrayHelper;
+use yii\base\BootstrapInterface;
 
-class Translate extends Module
+
+
+
+class Translate extends Module implements BootstrapInterface
 {
     /**
      * {@inheritdoc}
@@ -34,5 +39,10 @@ class Translate extends Module
             require __DIR__ . '/config/main.php',
             require __DIR__ . '/config/main-local.php'
         );
+    }
+
+    public function bootstrap($app)
+    {
+        // TODO: Implement bootstrap() method.
     }
 }

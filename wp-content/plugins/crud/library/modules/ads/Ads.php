@@ -3,13 +3,16 @@
 
 namespace crud\modules\ads;
 
-
 use Yii;
 use yii\base\Module;
 use yii\helpers\ArrayHelper;
 use crud\modules\ModuleImplements;
 
-class Ads extends Module implements ModuleImplements
+
+
+
+
+class Ads extends Module
 {
     /**
      * {@inheritdoc}
@@ -27,6 +30,9 @@ class Ads extends Module implements ModuleImplements
     public function init(){
     }
 
+    /**
+     * @return array
+     */
     public static function config(){
         require __DIR__ . '/config/bootstrap.php';
         return ArrayHelper::merge(

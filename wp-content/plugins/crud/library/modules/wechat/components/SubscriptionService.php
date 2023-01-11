@@ -3,14 +3,22 @@
 
 namespace crud\modules\wechat\components;
 
-
-
 use Yii;
 use Exception;
+use yii\web\View;
 use yii\base\Component;
 use crud\components\Http;
+use yii\helpers\ArrayHelper;
+use yii\base\InvalidConfigException;
 use GuzzleHttp\Exception\GuzzleException;
+use crud\modules\wechat\assets\WeChatAssets;
 use crud\modules\wechat\models\ValidateServer;
+
+
+
+
+
+
 /**
  * 微信公众好组件
  * @property string $appId 
@@ -45,7 +53,7 @@ class SubscriptionService extends Component{
         if($model->validate() and  $model->checkSignature()){
             return $model->echostr;
         }else{
-            return $model->getErrors();
+            return false;
         }
     }
 
@@ -338,8 +346,12 @@ class SubscriptionService extends Component{
                 'data'=>'',
             ];
         }else{
-            unset($response['errcode']);
-            unset($response['errmsg']);
+            if(isset($response['errcode'])){
+                unset($response['errcode']);
+            }
+            if(isset($response['errmsg'])){
+                unset($response['errmsg']);
+            }
             return [
                 'code'=>1,
                 'message'=>  "Ok",
@@ -449,17 +461,45 @@ class SubscriptionService extends Component{
         ];
     }
 
-    public function share(){
-        $view = Yii::$app->getView();
-        global  $wp;
-        $post =  get_post();
+    /**
+     * 返回授权url
+     * @param $redirect_uri
+     * @param string $scope
+     * @return string
+     */
+    public function authorizationUrl($redirect_uri, $scope = "snsapi_userinfo")
+    {
+        $url = "https://open.weixin.qq.com/connect/oauth2/authorize";
+        $query = http_build_query([
+            'appid' => $this->appId,
+            'redirect_uri' => $redirect_uri,
+            'response_type' => 'code',
+            'scope' => $scope,
+            'state' => 'STATE',
+        ]);
+        return $url . "?" . $query . "#wechat_redirect";
+    }
 
-        $home = home_url().'/favicon.ico';
-        if(isset($post) and !empty( $post)){
+    /**
+     * 注册分享js
+     */
+    public function share()
+    {
+        /** @var View $view */
+        $view = Yii::$app->getView();
+        global $wp;
+        $post = get_post();
+        try {
+            $view->registerJsFile('https://res.wx.qq.com/open/js/jweixin-1.6.0.js');
+        } catch (InvalidConfigException $e) {
+        }
+        $view->registerJs(WeChatAssets::registerConfig(['updateAppMessageShareData'],true));
+        $home = home_url() . '/favicon.ico';
+        if (isset($post) and !empty($post)) {
             $title = json_encode($post->post_title);
             $desc = json_encode($post->post_excerpt);
-            $url  =  urldecode(home_url(add_query_arg(array(),$wp->request)));
-            $json =json_encode($post);
+            $url = urldecode(home_url(add_query_arg(array(), $wp->request)));
+            $json = json_encode($post);
             $js = <<<JS
 console.log({$json});
 wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
@@ -475,9 +515,154 @@ wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
     })
 });
 JS;
-            $view->registerJs( $js);
+            $view->registerJs($js);
         }
 
+    }
+
+    /**
+     * 获取授权用户信息
+     * @param $code
+     * @return mixed
+     * @throws GuzzleException
+     */
+    public function getUserAccessTokenByCode($code)
+    {
+        $cache = Yii::$app->cache;
+        $res = $this->client->get("/sns/oauth2/access_token", [
+            'query' => [
+                'appid' => $this->appId,
+                'secret' => $this->appSecret,
+                'code' => $code,
+                'grant_type' => 'authorization_code',
+            ],
+        ]);
+        $data = $this->response(json_decode($res, true));
+        //参数	描述
+        //access_token	网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同
+        //expires_in	access_token接口调用凭证超时时间，单位（秒）
+        //refresh_token	用户刷新access_token
+        //openid	用户唯一标识，请注意，在未关注公众号时，用户访问公众号的网页，也会产生一个用户和公众号唯一的OpenID
+        //scope	用户授权的作用域，使用逗号（,）分隔
+        //is_snapshotuser	是否为快照页模式虚拟账号，只有当用户是快照页模式虚拟账号时返回，值为1
+        //unionid 户统一标识（针对一个微信开放平台帐号下的应用，同一用户的 unionid 是唯一的），只有当 scope 为"snsapi_userinfo"时返回
+
+        if ($data['code'] == 1) {
+            $data['data']['expires_in'] = time() + $data['data']['expires_in'];
+            $cache->set('wechat_' . $data['data']['openid'], $data['data'], 24 * 60 * 60 * 30);
+            return $data['data'];
+        }else{
+            return false;
+        }
+
+
+    }
+
+    /**
+     * 刷新用户的access_token
+     * @param $openid
+     * @return false
+     * @throws GuzzleException
+     */
+    public function refreshUserToken($openid)
+    {
+        $cache = Yii::$app->cache;
+        $refresh_token = $cache->get('wechat_' . $openid);
+        if ($refresh_token) {
+            $res = $this->client->get("/sns/oauth2/refresh_token", [
+                'query' => [
+                    'appid' => $this->appId,
+                    'grant_type' => 'refresh_token',
+                    'refresh_token' => $refresh_token['refresh_token'],
+                ],
+            ]);
+            $data = $this->response(json_decode($res, true));
+            if ($data['code'] == 1) {
+                $data['data']['expires_in'] = time() + $data['data']['expires_in'];
+                unset($refresh_token['access_token']);
+                unset($refresh_token['expires_in']);
+                unset($refresh_token['refresh_token']);
+                $refresh_token = ArrayHelper::merge($refresh_token, $data['data']);
+                wp_mail('757402123@qq.com', '刷新access_token', print_r($refresh_token, true));
+                $cache->get('wechat_' . $openid, $refresh_token, 24 * 60 * 60 * 30);
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 获取用户信息
+     * @param $openid
+     * @return false|mixed
+     * @throws GuzzleException
+     */
+    public function getUserInfo($openid)
+    {
+        $cache = Yii::$app->cache;
+        $refresh_token = $cache->get('wechat_' . $openid);
+        if ($refresh_token) {
+            if (time() > $refresh_token['expires_in']) {
+                $this->refreshUserToken($openid);
+                $refresh_token = $cache->get('wechat_' . $openid);
+            }
+            $res = $this->client->get("/sns/userinfo", [
+                'query' => [
+                    'access_token' => $refresh_token['access_token'],
+                    'openid' => $openid,
+                    'lang' => 'zh_CN'
+                ],
+            ]);
+            $data = $this->response(json_decode($res, true));
+            if ($data['code'] == 1) {
+                wp_mail('757402123@qq.com', '用户信息', print_r($data['data'], true));
+                return $data['data'];
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 通过accessToken 获取用户信息
+     * @param $accessToken
+     * @param $openid
+     * @return array|false
+     * @throws GuzzleException
+     */
+    public function getUserInfoByAccessToken($accessToken, $openid)
+    {
+        $res = $this->client->get("/sns/userinfo", [
+            "headers" => [
+                'content-type' => 'application/json',
+            ],
+            'query' => [
+                'access_token' => $accessToken,
+                'openid' => $openid,
+                'lang' => 'zh_CN'
+            ],
+        ]);
+        $data = $this->response(json_decode($res, true));
+        if ($data['code'] == 1) {
+            wp_mail('757402123@qq.com', '用户信息', print_r($data['data'], true));
+            return $data['data'];
+        } else {
+            return false;
+        }
+
+    }
+
+    /**
+     * @param $code
+     * @return false|mixed
+     */
+    public function getUserInfoByCode($code){
+        $accessToken = $this-> getUserAccessTokenByCode($code);
+        if($accessToken){
+            return $this->getUserInfo($accessToken['openid']);
+        }
     }
 
 }

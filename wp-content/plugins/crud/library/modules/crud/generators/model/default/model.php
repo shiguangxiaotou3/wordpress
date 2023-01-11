@@ -21,6 +21,9 @@ namespace <?= $generator->ns ?>;
 
 use Yii;
 
+
+
+
 /**
  * This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
  *

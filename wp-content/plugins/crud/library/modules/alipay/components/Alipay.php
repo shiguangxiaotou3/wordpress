@@ -3,13 +3,16 @@
 
 namespace crud\modules\alipay\components;
 
-
 use yii\base\BaseObject;
-
+use Shiguangxiaotou\Alipay\AopClient;
 use Shiguangxiaotou\Alipay\AlipayConfig;
 use Shiguangxiaotou\Alipay\AopCertClient;
-use Shiguangxiaotou\Alipay\AopClient;
 use Shiguangxiaotou\Alipay\Request\AlipayTradePrecreateRequest;
+
+
+
+
+
 
 defined("ALIPAY_DIR") or define("ALIPAY_DIR" ,dirname( __DIR__));
 class Alipay extends BaseObject

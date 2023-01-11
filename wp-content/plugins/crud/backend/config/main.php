@@ -1,6 +1,5 @@
 <?php
 
-
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -20,7 +19,6 @@ return [
         'controller'=>[
             'class'=>" yii\web\Controller",
             'layout'=>false,
-
         ],
         "assetManager"=>[
             'class' => 'yii\web\AssetManager',

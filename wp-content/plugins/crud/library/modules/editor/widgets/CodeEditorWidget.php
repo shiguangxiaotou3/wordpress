@@ -3,12 +3,15 @@
 
 namespace crud\modules\editor\widgets;
 
-
-
-use crud\models\Files;
 use yii\base\Widget;
 use yii\helpers\Html;
+use crud\models\Files;
 use crud\modules\editor\assets\AceAsset;
+
+
+
+
+
 
 /**
  * Class CodeEditorWidget
@@ -21,6 +24,7 @@ class CodeEditorWidget extends  Widget
     public $mode = AceAsset::MODE_PHP;
     public $theme= AceAsset::THEME_TOMORROW_NIGHT_BRIGHT;
     public $text ="";
+    public $loadFile =false;
     public $options=[];
     public $basedir =CRUD_DIR;
     public $file ="/library/debug.php";

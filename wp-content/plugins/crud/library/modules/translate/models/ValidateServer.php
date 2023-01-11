@@ -3,8 +3,11 @@
 
 namespace crud\modules\wechat\models;;
 
-
 use yii\base\Model;
+
+
+
+
 
 /**
  * 开发者服务器验证模型
@@ -39,7 +42,8 @@ class ValidateServer extends Model{
      */
     public function checkSignature(){
         if($this->tmpSignature === $this->signature){
-            return true;
+            logObject('相等');
+            return $this->tmpSignature;
         }else{
             return  false;
         }

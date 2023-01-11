@@ -3,10 +3,13 @@
 
 namespace crud\modules\wechat\models;
 
-
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use yii\base\BaseObject;
+use GuzzleHttp\Exception\GuzzleException;
+
+
+
+
 
 
 /**

@@ -8,12 +8,11 @@ $params = array_merge(
 return [
     'modules' => [
         'wp' => [
-            'class' => 'crud\modules\wp\Wp',
+            'class' => "crud\modules\wp\Wp"
         ],
     ],
-//    'components' => [
-//
-//    ],
+    'components' => [
+    ],
     'params' => $params,
 ];
 

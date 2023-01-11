@@ -3,9 +3,11 @@
 
 namespace crud\models;
 
-
 use yii\base\Model;
 use yii\helpers\Html;
+
+
+
 
 /**
  * 设置api
@@ -103,6 +105,7 @@ class Settings extends Model{
 
     /**
      * 表单原生回调
+     * @param $args
      */
     public function fieldCallback($args){
         $tag = (isset($args['tag']) and !empty($args['tag'])) ? $args['tag'] : "text";
@@ -156,7 +159,7 @@ class Settings extends Model{
 
     /**
      * 批量删除设置
-     * @param $options
+     * @param $sections
      */
     public static function delSettings($sections){
         foreach ($sections as $section){

@@ -86,42 +86,24 @@ $crud->run();
 <?php
 namespace backend\web;
 
-
 use Yii;
-use crud\Base;
-use crud\models\Menu;
-use yii\base\BaseObject;
+use crud\modules\wp\Wp;
 use yii\web\Application;
-use crud\models\Settings;
 use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
+use yii\base\InvalidRouteException;
 use yii\base\InvalidConfigException;
 use PHPMailer\PHPMailer\PHPMailer as SMTP;
-
-use crud\modules\wp\Wp;
-use crud\modules\seo\Seo;
-use crud\modules\crud\Crud;
-use crud\modules\alipay\AliPay;
-use crud\modules\editor\Editor;
-use crud\modules\server\Server;
-use crud\modules\wechat\Wechat;
-use crud\modules\applets\Applets;
-use crud\modules\translate\Translate;
-use crud\modules\base\Base as BaseModule;
 
 
 /**
  * App对象基类
- * @property-read Application $app
+ * @property-read yii\web\Application $app
  * @package crud\backend\web
  */
-class App extends  BaseObject {
+class App extends  Application {
 
-    private $_modules=[];
-
-    public $_app;
-    
-     /**
+    /**
      * 创建app对象
      * App constructor.
      * @throws InvalidConfigException
@@ -133,65 +115,84 @@ class App extends  BaseObject {
             require __DIR__ . '/../../common/config/main-local.php',
             require __DIR__ . '/../config/main.php',
             require __DIR__ . '/../config/main-local.php',
-            self::loadModulesConfig()
+            $this->loadModulesConfig()
         );
-        $this->_modules = array_keys($config['modules']);
-        $this->_app = new Application($config);
+        parent::__construct($config);
     }
 
     /**
-     * 获取app容器
-     * @throws Yii\base\InvalidConfigException
-     */
-    public function getApp(){
-        if(!isset($this->_app) or empty($this->_app)){
-            self::__construct();
-        }
-        return  $this->_app ;
-    }
-    
-     /**
-     * 加载模块配置
-     * @return array
+     * 引导模块初始化
+     *
+     * backend\web\App初始化之后,执行所配置模块的init()方法
+     * 例如：crud\modules\wp\Wp::init()方法优先级大于backend\web\App::run()方法
+     * 请不要在init()调用global $crud; 此时初始化未完成
+     * 请不要将模块id和组件id重名
+     * @return string[]
      */
     public static function loadModulesConfig(){
-        // 加载模块配置
+        // +----------------------------------------------------------------------
+        // ｜子模块引导配置
+        // +----------------------------------------------------------------------
+        // ｜App实例化时候会根据bootstrap配置项调用模块的bootstrap(),引导wordpress挂载
+        // ｜例如:['bootstrap'=>['wp']] =>crud\modules\wp\Wp::bootstrap()
+        // +----------------------------------------------------------------------
+        $config = [
+            'bootstrap'=>['wechat','wp'],
+        ];
         return ArrayHelper::merge(
-            BaseModule::config(),
-            Editor::config(),
             Wp::config(),
-            Wechat::config(),
-            Translate::config(),
-            AliPay::config(),
-            Seo::config(),
-            Crud::config(),
-            Server::config(),
-            Applets::config()
+            $config
         );
     }
-    
+
     /**
-     * 挂载控制器、api或前台注册一下代码
+     * 核心:将Yii2操作、事件等挂载到wordpress钩子上
      */
     public function run(){
-        // 前台应用注册钩子
-        add_action('init',function (){
-            /** @var Wp $wp */
-            $wp = $this->app->getModule('wp');
-            $wp->run();
-        });
+        // +----------------------------------------------------------------------
+        // ｜配置wp模块和公共api路由
+        // +----------------------------------------------------------------------
+        // ｜http://youdomain.com/crud/ => wp/index/index
+        // ｜http://youdomain.com/crud/<controller>/ => wp/<controller>/index
+        // ｜http://youdomain.com/crud/<controller>/<action>/ => wp/<controller>/<action>
+        // ｜http://youdomain.com/crud/<controller>/<action>/<id>/ => wp/<controller>/<action>/<id>
+        add_action('init', function (){
+            add_rewrite_rule('^crud[/]?$',
+                'index.php?crud=index/index','top');
 
-        // 将设置注册到特定的页面
+            add_rewrite_rule('^crud[/]([\w]+)[/]?$',
+                'index.php?crud=$matches[1]/index','top');
+
+            add_rewrite_rule('^crud[/]([\w]+)/([\w]+)[/]?$',
+                'index.php?crud=$matches[1]/$matches[2]','top');
+
+            add_rewrite_rule('^crud[/]([\w]+)[/]([\w]+)[/]([0-9]+)[/]?$',
+                'index.php?crud=$matches[1]/$matches[2]&id=$matches[3]','top');
+        });
+        add_filter('query_vars',function ($public_query_vars){
+            $public_query_vars[] = 'crud';
+            $public_query_vars[] = 'id';
+            $public_query_vars[] = 'api';
+            return $public_query_vars;
+        });
+        add_action("template_redirect", [$this,"templateRedirect"]);
+
+        // +----------------------------------------------------------------------
+        // ｜后台页面、设置、菜单，挂载到wordpress钩子中
+        // +----------------------------------------------------------------------
         add_action("admin_init", [$this, "registerSettings"]);
-        add_action("admin_init", [$this, "registerAjax"]);
-        // 注册菜单 = 也就是注册yii Controller
         add_action("admin_menu", [$this, "registerPage"]);
 
-        add_shortcode('post_parser', [$this,'renderView']);
-        // 注册api
+
+        // +----------------------------------------------------------------------
+        // ｜Ajax、RestfulApi、路由配置、解析规则，挂载到wordpress钩子中
+        // +----------------------------------------------------------------------
+        add_action("admin_init", [$this, "registerAjax"]);
         add_action("rest_api_init", [$this,"registerRestfulApi"]);
 
-        // 向后台页面调用视图事件，添加前端资源包
+        // +----------------------------------------------------------------------
+        // ｜将yii\web\View事件挂载到wordpress钩子中
+        // +----------------------------------------------------------------------
         add_action("admin_init", [$this, "beginPage"]);
         add_action("admin_head",[$this,"registerCsrfMetaTags"]);
         add_action("admin_head",[$this,"head"]);
@@ -199,75 +200,60 @@ class App extends  BaseObject {
         add_action("admin_footer",[$this,"endBody"]);
         add_action("admin_footer",[$this,"endPage"]);
 
-
-
-        // 配置邮箱
+        // +----------------------------------------------------------------------
+        // ｜配置邮箱
+        // +----------------------------------------------------------------------
         add_action('phpmailer_init',[$this,"smtp"]);
 
-        // 静止跟新
+        // +----------------------------------------------------------------------
+        // ｜过滤评论
+        // +----------------------------------------------------------------------
+        add_action('preprocess_comment',[$this,'preprocessComment']);
+
+        // +----------------------------------------------------------------------
+        // ｜静止自动更新
+        // +----------------------------------------------------------------------
         add_filter('pre_site_transient_update_core',    function(){return null;}); // 关闭核心提示
         add_filter('pre_site_transient_update_plugins',  function(){return null;}); // 关闭插件提示
         add_filter('pre_site_transient_update_themes',   function(){return null;}); // 关闭主题提示
         remove_action('admin_init', '_maybe_update_core');    // 禁止 WordPress 检查更新
         remove_action('admin_init', '_maybe_update_plugins'); // 禁止 WordPress 更新插件
         remove_action('admin_init', '_maybe_update_themes');
+
     }
-    
+
+    // +----------------------------------------------------------------------
+    // ｜后台页面、设置、菜单等，注册和回调
+    // +----------------------------------------------------------------------
     /**
      * 注册设置
+     * @param string $moduleId
      */
-    public function registerSettings(){
-        $settings = $this->app->params["settings"];
-        foreach ($settings as $setting) {
-            $option = new Settings($setting);
-            $option->registerSettings();
-        }
-    }
+    public function registerSettings($moduleId=''){}
 
     /**
      * 注册菜单和页面
+     * @param string $moduleId
      */
-    public function registerPage(){
-        $menus= $this->app->params["menus"] ;
-        foreach ($menus as $menu) {
-            $menuModel = new Menu($menu);
-            $menuModel->registerMenu($this);
-        }
-    }
-
-    /**
-     * 注册ajax操作
-     */
-    public function registerAjax(){
-        $menus= $this->app->params["menus"] ;
-        foreach ($menus as $menu) {
-            $menuModel = new AjaxAction($menu);
-            $menuModel->registerAjaxAction($this);
-        }
-    }
+    public function registerPage($moduleId=''){}
 
     /**
      * 调用控制器显示视图
+     * @throws InvalidRouteException
      */
-    public function renderView(){
-        // 在后台中显示那个页面，由注册菜单式menu_slug值就是yii控制器id
-        // 例如：http://wp.myweb.com/wp-admin/admin.php?page=wechat
-        // 将回调执行$this->app->runAction("wechat/index")
-        // 对于ajax请求
-        // $.post("/wp-admin/admin-ajax.php",{action:"wechat/index"},function(){})
-        // action字段决定由那个控制器处理请求，因为wordpress的ajax统一由admin-ajax.php处理
-        $request = $this->app->request;
-        if($request->isAjax){
-            if($request->isGet){
-                $action =$request->get("action","");
-            }else{
-                $action = $request->post("action","");
-            }
-            Base::sendJson($this->app->runAction($action));
-        }else{
-            $query =$request->queryParams;
-            $action= $query["page"];
-            Base::sendHtml($this->app->runAction($action));
+    public function renderView(){}
+
+    // +----------------------------------------------------------------------
+    // ｜Ajax、RestfulApi、路由配置、解析规则，注册、配置和回调
+    // +----------------------------------------------------------------------
+    /**
+     * 注册控制器ajax操作
+     */
+    public function registerAjax(){
+        $menus= $this->params["menus"] ;
+        foreach ($menus as $menu) {
+            $menuModel = new AjaxAction($menu);
+            $menuModel->registerAjaxAction($this);
         }
     }
 
@@ -284,204 +270,62 @@ class App extends  BaseObject {
          * - `'users/<id>' => 'user/options'`: process all unhandled verbs of a user
          * - `'users' => 'user/options'`: process all unhandled verbs of user collection
          */
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
-            'methods' => "PUT,PATCH",
-            'callback' => [$this, "renderApi"],
-            'permission_callback' => function() { return ''; },
-        ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
-            'methods' => "DELETE",
-            'callback' => [$this, "renderApi"],
-            'permission_callback' => function() { return ''; },
-        ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
-            'methods' => "GET,HEAD",
-            'callback' => [$this, "renderApi"],
-            'permission_callback' => function() { return ''; },
-        ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
-            'methods' => "POST",
-            'callback' => [$this, "renderApi"],
-            'permission_callback' => function() { return ''; },
-        ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
-            'methods' => "GET,HEAD",
-            'callback' => [$this, "renderApi"],
-            'permission_callback' => function() { return ''; },
-        ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
-            'methods' => "OPTIONS",
-            'callback' => [$this, "renderApi"],
-            'permission_callback' => function() { return ''; },
-        ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
-            'methods' => "OPTIONS",
-            'callback' => [$this, "renderApi"],
-            'permission_callback' => function() { return ''; },
-        ]);
-        // 模块默认控制器
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<id>[\d]+)", [
-            'methods' => "PUT,PATCH",
-            'callback' => [$this, "renderApi"],
-            'permission_callback' => function() { return ''; },
-        ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<id>[\d]+)", [
-            'methods' => "DELETE",
-            'callback' => [$this, "renderApi"],
-            'permission_callback' => function() { return ''; },
-        ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<id>[\d]+)", [
-            'methods' => "GET,HEAD",
-            'callback' => [$this, "renderApi"],
-            'permission_callback' => function() { return ''; },
-        ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)", [
-            'methods' => "POST",
-            'callback' => [$this, "renderApi"],
-            'permission_callback' => function() { return ''; },
-        ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)", [
-            'methods' => "GET,HEAD",
-            'callback' => [$this, "renderApi"],
-            'permission_callback' => function() { return ''; },
-        ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<id>[\d]+)", [
-            'methods' => "OPTIONS",
-            'callback' => [$this, "renderApi"],
-            'permission_callback' => function() { return ''; },
-        ]);
-        register_rest_route("crud", "api/(?P<module>[\w]+)", [
-            'methods' => "OPTIONS",
-            'callback' => [$this, "renderApi"],
-            'permission_callback' => function() { return ''; },
-        ]);
-    }
+
+
+        }
 
     /**
+     * 将RestfulApi解析到指定的控制器
      * @param $request
-     * @throws \yii\base\InvalidRouteException
+     * @throws InvalidRouteException
      */
-    public function renderApi($request){
-        list($route ,$params) = $this->getRoute($request);
-        $data = $this->app->runAction($route ,$params);
-        Base::sendJson( $data);
-    }
-
-    /**
-     * 获取api路由，默认控制器和方法都是index
-     * @param $request
-     * @return array
-     */
-    public function getRoute($request){
-        $params = $request->get_params();
-        $module = $controller = $action = "index";
-        $id = "";
-        if (isset($params['module'])) {
-            $module = $params['module'];
-            unset($params['module']);
-        } else {
-            $module = "index";
-        }
-        if (isset($params['controller'])) {
-            $controller = $params["controller"];
-            unset($params['controller']);
-        } else {
-            $controller = "index";
-        }
-        if (isset($params['id'])) {
-            $id = $params["id"];
-        }
-        $method = Yii::$app->request->method;
-        switch ($method) {
-            case 'GET':
-            case 'HEAD':
-                $action = empty($id) ? "index" : "view";
-                break;
-            case 'POST':
-                $action = "create";
-                break;
-            case 'PATCH':
-            case 'PUT':
-                $action = "update";
-                break;
-            case 'DELETE':
-                $action = "delete";
-                break;
-            case 'OPTIONS':
-                $action = "options";
-            default:
-                $action = "index";
-        }
-        if($this->is_module($module)){
-            if(empty($id)){
-                $route =  $module."/api/".$controller."/".$action;
-            }else{
-                $route =  $module."/api/".$controller."/".$action."/".$id;
-            }
-        }else{
-            if(empty($id)){
-                $route ="api/".$module."/".$controller."/".$action;
-            }else{
-                $route = "api/".$module."/".$controller."/".$action."/".$id;
-            }
-        }
-        return [$route,$params];
-    }
-
-    /**------------------------------
-     * 为视图定义资源包缓存快,将Yii2视图事件回调
-     *------------------------------*/
-    public function registerCsrfMetaTags(){
-        echo $this->app->view->registerCsrfMetaTags();
-    }
-    public function beginPage(){
-        $this->app->view->beginPage();
-    }
-    public function head(){
-        $this->app->view->head();
-    }
-    public function beginBody(){
-        $this->app->view->beginBody();
-    }
-    public function endBody(){
-        $this->app->view->endBody();
-    }
-    public function endPage(){
-        $controller = $this->app->controller;
-        if(isset($controller) and !empty($controller)){
-            $controller->getView()->endPage();
-        }
-    }
-    /**
-     * @param $id
-     * @return bool
-     */
-    private function is_module($id){
-        return in_array($id,array_keys( $this->_modules));
-    }
+    public function renderApi($request){}
 
     /**
      * 配置发送邮箱
      * @param SMTP $mail
      */
-    public function smtp($mail){
+    public function smtp($mail){}
 
-        // 发件人呢称
-        $mail->FromName = get_option('crud_group_mail_blogname','');
-        // smtp 服务器地址
-        $mail->Host = get_option('crud_group_mail_host',"smtp.qq.com");
-        // 端口号
-        $mail->Port =get_option('crud_group_mail_port',465);
-        // 账户
-        $mail->Username =get_option('crud_group_mail_username','');
-        // 密码
-        $mail->Password =get_option('crud_group_mail_password','');
-        // 收件人
-        $mail->From =get_option('crud_group_mail_username','');;
-        $mail->SMTPAuth =true;
-        $mail->SMTPSecure =get_option('crud_group_mail_encryption',"ssl");
-        $mail->isSMTP();
+    // +----------------------------------------------------------------------
+    // ｜yii\web\View事件的回调(用于在视图中加载前端资源包)
+    // +----------------------------------------------------------------------
+    public function beginPage(){}
+    public function registerCsrfMetaTags(){}
+    public function head(){}
+    public function beginBody(){}
+    public function endBody(){}
+    public function endPage(){}
+
+    /**
+     * 过滤评论
+     */
+    public function preprocessComment(){}
+
+    /**
+     * 显示前台页面
+     * @throws InvalidRouteException
+     */
+    public function templateRedirect(){
+        global $wp_query;
+        $query_vars = $wp_query->query_vars;
+        if (isset($query_vars['crud']) and !empty($query_vars['crud'])) {
+            $route=$query_vars['crud'];
+            unset($query_vars['crud']);
+            $params=$query_vars;
+            $module =Yii::$app->getModule('wp');
+            $response = Yii::$app->response;
+            $response->format ='html';
+            $response->setStatusCode(200);
+            $response->data =$module->runAction($route,$params);
+            exit($response->send());
+        }
+        if(isset($query_vars['api'])){
+            dump($query_vars);
+            die();
+        }
     }
 }
+
 
 ~~~

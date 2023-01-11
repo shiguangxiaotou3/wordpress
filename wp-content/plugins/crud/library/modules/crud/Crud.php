@@ -7,16 +7,19 @@
 
 namespace crud\modules\crud;
 
-
 use Yii;
 use yii\base\Module;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\Application;
 use yii\helpers\IpHelper;
+use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
 use crud\modules\ModuleImplements;
 use yii\web\ForbiddenHttpException;
+
+
+
+
 
 /**
  * This is the main module class for the Gii module.
@@ -46,7 +49,7 @@ use yii\web\ForbiddenHttpException;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class Crud extends Module implements BootstrapInterface,ModuleImplements
+class Crud extends Module implements BootstrapInterface
 {
     /**
      * {@inheritdoc}
@@ -87,7 +90,11 @@ class Crud extends Module implements BootstrapInterface,ModuleImplements
      */
     public $newDirMode = 0777;
 
-
+    /**
+     * {@inheritdoc}
+     */
+    public function init(){
+    }
     /**
      * {@inheritdoc}
      */
@@ -213,6 +220,9 @@ class Crud extends Module implements BootstrapInterface,ModuleImplements
 //        return parent::defaultVersion();
     }
 
+    /**
+     * @return array
+     */
     public static function config()
     {
         require __DIR__ . '/config/bootstrap.php';

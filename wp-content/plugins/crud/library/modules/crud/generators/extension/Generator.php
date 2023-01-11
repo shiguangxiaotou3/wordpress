@@ -10,6 +10,9 @@ namespace crud\modules\crud\generators\extension;
 use Yii;
 use crud\modules\crud\CodeFile;
 use crud\modules\crud\Generator as BaseGenerator;
+
+
+
 /**
  * This generator will generate the skeleton files needed by an extension.
  *

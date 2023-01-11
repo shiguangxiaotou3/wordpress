@@ -3,9 +3,12 @@
 
 namespace crud\modules\translate\components;
 
-
-use yii\base\Component;
 use Yii;
+use yii\base\Component;
+
+
+
+
 class TranslateComponent extends Component{
 
     public $type =self::BAIDU;

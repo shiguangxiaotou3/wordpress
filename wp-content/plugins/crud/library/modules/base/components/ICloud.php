@@ -3,10 +3,13 @@
 
 namespace crud\modules\base\components;
 
-
-use yii\base\Component;
 use Qiniu\Auth;
+use yii\base\Component;
 use Qiniu\Storage\UploadManager;
+
+
+
+
 class ICloud extends Component
 {
     public $accessKey ="your accessKey";

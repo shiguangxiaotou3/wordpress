@@ -9,13 +9,13 @@ return [
             "menu_slug" => "wechat/index",
         ],
         [
-            "parent_slug" =>  "wechat",
+            "parent_slug" => "wechat/index",
             "page_title" => "菜单设置",
             "menu_title" => "菜单设置",
             "menu_slug" => "wechat/index/menu",
         ],
         [
-            "parent_slug" =>  "wechat",
+            "parent_slug" =>  "wechat/index",
             "page_title" => "事件推送",
             "menu_title" => "事件推送",
             "menu_slug" => "wechat/index/event",

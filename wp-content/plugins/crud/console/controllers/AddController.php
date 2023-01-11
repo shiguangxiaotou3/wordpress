@@ -10,14 +10,19 @@
  */
 
 namespace console\controllers;
+
+
+use Yii;
 use crud\Base;
-use crud\models\Files;
 use crud\models\Rely;
+
+use yii\console\Controller;
+
+use crud\modules\ads\components\Ads;
 use crud\modules\translate\components\MicrosoftTranslate;
 use Shiguangxiaotou\Alipay\Request\AlipayTradePrecreateRequest;
-use Yii;
-use crud\library\components\Ads;
-use yii\console\Controller;
+use crud\modules\translate\components\GoogleTranslate;
+
 /**
  * 测试应用
  */
@@ -28,9 +33,7 @@ class AddController extends Controller
      * 测试
      */
     public function actionIndex(){
-        /** @var Ads $ads */
-        $ads = \Yii::$app->ads;
-        print_r( $ads-> GetCustomerInfo($ads->customerId));
+       print_r(get_option('rewrite_rules'));
     }
 
     /**
@@ -292,12 +295,11 @@ class AddController extends Controller
      * google 翻译
      */
     public function actionGoogleTranslate(){
-        /** @var crud\modules\translate\components\GoogleTranslate  $api */
+        /** @var GoogleTranslate  $api */
         $api = Yii::$app->google;
         $DATA =$api->languages();
         print_r($DATA);
     }
-
 
     /**
      * 阿里支付测试
@@ -306,6 +308,52 @@ class AddController extends Controller
         $request = new AlipayTradePrecreateRequest ();
 //        $pal = Yii::$app->alibaba;
 //        $pal->test();
+    }
+
+    /**
+     * @param string $basePath
+     */
+    public function actionUseSort($basePath =""){
+        if (empty($basePath)) {
+            $basePath = Yii::getAlias("@backend");
+        }
+        $handle = opendir($basePath);
+        while (false !== ($file = readdir($handle))) {
+            if ($file != '.' && $file != '..') {
+                if (is_dir($basePath . "/" . $file)) {
+                    echo "目录:" . $basePath . "/" . $file . "\n";
+                    $this->actionUseSort($basePath . "/" . $file);
+                }
+                if (is_file($basePath . "/" . $file)) {
+                    $fileName = explode('.', $file);
+                    if ($fileName[1] == "php") {
+                        echo "文件:" . $basePath . "/" . $file . "\n";
+                        $text = file_get_contents($basePath . "/" . $file);
+                        preg_match_all("/\nnamespace(.)*;/", $text, $namespace);
+                        if (isset($namespace[0][0]) and !empty($namespace[0][0])) {
+                            $namespace = str_replace(PHP_EOL, "", $namespace[0][0]);
+                            preg_match_all("/\nuse(.)*;/", $text, $uses);
+                            if (isset($uses[0]) and !empty($uses[0])) {
+                                sort($uses[0]);
+                                $tmp = [];
+                                foreach ($uses[0] as $item) {
+                                    $text = str_replace($item, "", $text);
+                                    $item = str_replace(PHP_EOL, "", $item);
+                                    $tmp[$item] = strlen($item);
+                                }
+                                asort($tmp);
+                                $newStr = $namespace . PHP_EOL;
+                                foreach ($tmp as $key => $value) {
+                                    $newStr .= PHP_EOL . $key;
+                                }
+                                $newStr = str_replace($namespace, $newStr, $text);
+                                file_put_contents($basePath . "/" . $file, $newStr);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 

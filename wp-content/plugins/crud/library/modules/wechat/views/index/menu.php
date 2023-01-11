@@ -14,10 +14,11 @@ use crud\modules\editor\widgets\CodeEditorWidget;
     <button id="submit" class="button button-primary">保存更改</button>
     <?= CodeEditorWidget::widget([
         "mode"=>AceAsset::MODE_JSON,
-            "options" => [
-                "id"=>"editor",
-                "style"=>"width: 100%;min-height: 500px;margin-top: 6.5px"
-            ]
+        "options" => [
+            "id"=>"editor",
+            "style"=>"width: 100%;min-height: 500px;margin-top: 6.5px"
+        ],
+        'file'=>false
     ]);?>
 </div>
 <?php
@@ -35,8 +36,9 @@ $js =<<<JS
 
     $.get("/wp-json/crud/api/wechat/menu",function(response){
         if(response.code ==1){
-            editor.insert(JSON.stringify(  response.data,null,2));
+            editor.insert(JSON.stringify(response.data,null,2));
         }else{
+            console.log(response);
             alert(response.message);
         }
     },"json");

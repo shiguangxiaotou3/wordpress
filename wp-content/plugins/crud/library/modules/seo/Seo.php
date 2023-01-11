@@ -3,13 +3,18 @@
 
 namespace crud\modules\seo;
 
-
 use Yii;
 use yii\base\Module;
+use yii\base\Application;
 use yii\helpers\ArrayHelper;
+use yii\base\BootstrapInterface;
 use crud\modules\ModuleImplements;
 
-class Seo extends Module implements ModuleImplements
+
+
+
+
+class Seo extends Module implements BootstrapInterface
 {
     /**
      * {@inheritdoc}
@@ -33,5 +38,10 @@ class Seo extends Module implements ModuleImplements
             require __DIR__ . '/config/main.php',
             require __DIR__ . '/config/main-local.php'
         );
+    }
+
+    public function bootstrap($app)
+    {
+        // TODO: Implement bootstrap() method.
     }
 }
