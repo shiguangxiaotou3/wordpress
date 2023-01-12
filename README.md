@@ -2,7 +2,7 @@
     <a href="https://https://github.com/shiguangxiaotou3/wordpress" target="_blank">
         <img src="https://www.shiguangxiaotou.com/favicon.ico" height="100px">
     </a>
-    <h1 align="center">wordpress plugin CRUD for MVC </h1>
+    <h1 align="center">Wordpress plugins CRUD for MVC </h1>
     <br>
 </p>
 
@@ -46,7 +46,7 @@ crud                        根
   |--|--models              模型
   |--|--runtime             临时数据缓存目录
   |--|--views               视图
-  |--|--web                 入口文件目录
+  |--|--web                 应用入口文件
   |--|--|--assset           资源包发布目录
   |--|--|--App.php          应用实例类
   |-common                  公共应用
@@ -59,7 +59,7 @@ crud                        根
 
 ![依赖](https://www.shiguangxiaotou.com/wp-content/uploads/2023/01/截屏2023-01-07-02.33.19.png)
 
-#### 插件入口文件crud.php
+#### 入口文件crud.php
 ~~~php
 define("CRUD_URL", plugin_dir_url(__FILE__));
 defined("CRUD_DIR") or define("CRUD_DIR" ,__DIR__);
@@ -68,7 +68,7 @@ defined('YII_ENV') or define('YII_ENV', 'dev');
 
 require_once __DIR__ . "/library/debug.php";            //测试工具函数
 require_once __DIR__ . "/library/function.php";         //工具函数
-require_once __DIR__ . '/vendor/autoload.php';          //自动夹子啊
+require_once __DIR__ . '/vendor/autoload.php';          //自动加载
 require_once __DIR__ . '/vendor/yiisoft/yii2/Yii.php';  //yii核心
 require_once __DIR__ . '/common/config/bootstrap.php';  //全局引导类
 

@@ -173,7 +173,7 @@ function toUnderScore($str, $interval = "_")
  * @param string $interval
  * @return string|string[]
  */
-function toScoreUnder($str, $flags = true, $interval = "_")
+function toScoreUnder($str, $interval = "_",$flags = true)
 {
     $results = str_replace($interval, " ", $str);
     // 大驼峰

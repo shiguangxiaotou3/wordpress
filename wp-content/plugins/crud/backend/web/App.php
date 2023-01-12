@@ -159,6 +159,20 @@ class App extends  Application {
         remove_action('admin_init', '_maybe_update_plugins'); // 禁止 WordPress 更新插件
         remove_action('admin_init', '_maybe_update_themes');
 
+        // +----------------------------------------------------------------------
+        // ｜中国地区头像代理
+        // +----------------------------------------------------------------------
+        add_filter('get_avatar', function ($avatar) {
+            return str_replace([
+                'www.gravatar.com',
+                '0.gravatar.com',
+                '1.gravatar.com',
+                '2.gravatar.com',
+                'secure.gravatar.com',
+                'cn.gravatar.com'
+            ], 'wpcdn.shiguangxiaotou.com', $avatar);
+        });
+
     }
 
     // +----------------------------------------------------------------------

@@ -1,16 +1,13 @@
 wp-admin/*
 wp-includes/*
 google46c5f9f7f0f3280b.html
-test/*
+test
+robots.txt
 .DS_Store
 .idea
-tset.js
 license.txt
 readme.html
-test.php
 index.php
-gii.php
-gii.sh
 LICENSE
 push.sh
 direct
@@ -29,5 +26,3 @@ wp-settings.php
 wp-signup.php
 wp-trackback.php
 xmlrpc.php
-server.php
-test.sh
