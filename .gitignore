@@ -5,6 +5,7 @@ test
 robots.txt
 .DS_Store
 .idea
+/*.php
 license.txt
 readme.html
 index.php
@@ -12,17 +13,3 @@ LICENSE
 push.sh
 direct
 config.md
-wp-activate.php
-wp-blog-header.php
-wp-comments-post.php
-wp-config.php
-wp-config-sample.php
-wp-cron.php
-wp-links-opml.php
-wp-load.php
-wp-login.php
-wp-mail.php
-wp-settings.php
-wp-signup.php
-wp-trackback.php
-xmlrpc.php
