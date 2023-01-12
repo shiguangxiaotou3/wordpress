@@ -2,14 +2,11 @@ wp-admin/*
 wp-includes/*
 google46c5f9f7f0f3280b.html
 test
-robots.txt
 .DS_Store
 .idea
-/*.php
-license.txt
+*.php
+*.txt
 readme.html
-index.php
 LICENSE
-push.sh
 direct
 config.md
