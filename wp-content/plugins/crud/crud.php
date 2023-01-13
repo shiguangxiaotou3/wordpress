@@ -6,17 +6,17 @@
  * 该文件还包括插件使用的所有依赖项,
  * 注册激活和停用功能, 并定义启动插件的函数.
  *
- * @link              http://example.com
+ * @link              https://www.shiguangxiaotou.com/
  * @since             1.0.0
  * @package           CRUD
  *
  * @wordpress-plugin
- * Plugin Name:       CRUD
- * Plugin URI:        http://example.com/plugin-name-uri/
- * Description:       我的插件生成器
+ * Plugin Name:       Crud
+ * Plugin URI:        https://www.shiguangxiaotou.com/
+ * Description:       很多php开发者早习惯了面向对象和MVC模式,很不习惯wordpress面向函数、勾子的编程模式。那么crud能解决你的痛点crud插件不光是一个插件，也可以用来开发主题、api和进程守护程序。crud插件具备yii2所有的核型功能:组件、模块化、按需加载、依赖注入容器、高度可拓展、Gii、数据迁移、rbac、小部件等。不再需要你关注底层东西和wordpress的钩子，只需处理你的业务逻辑。crud与yii2最大的不同是：不再需要路由解析，这部分工作由wordpress完成。所有的控制器都需要提前注册。
  * Version:           1.0.0
  * Author:            ShiGuangXiaoTou
- * Author URI:        http://www.shiguangxiaotou.com/
+ * Author URI:        https://www.shiguangxiaotou.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       plugin-name

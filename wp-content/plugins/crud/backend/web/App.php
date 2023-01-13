@@ -66,7 +66,7 @@ class App extends  Application {
         // ｜例如:['bootstrap'=>['wp']] =>crud\modules\wp\Wp::bootstrap()
         // +----------------------------------------------------------------------
         $config = [
-            'bootstrap'=>['wechat','wp'],
+            'bootstrap'=>['wechat','wp','crud'],
         ];
         return ArrayHelper::merge(
             BaseModule::config(),
@@ -96,22 +96,21 @@ class App extends  Application {
         // ｜http://youdomain.com/crud/<controller>/<action>/ => wp/<controller>/<action>
         // ｜http://youdomain.com/crud/<controller>/<action>/<id>/ => wp/<controller>/<action>/<id>
         add_action('init', function (){
-            add_rewrite_rule('^crud[/]?$',
-                'index.php?crud=index/index','top');
+            add_rewrite_rule("^crud$",
+                'index.php?crud=index/index',"top");
+//
+            add_rewrite_rule("^crud/([\w]+)$",
+                'index.php?crud=$matches[1]/index',"top");
+//
+            add_rewrite_rule("^crud/([\w]+)/([\w]+)$",
+                'index.php?crud=$matches[1]/$matches[2]',"top");
 
-            add_rewrite_rule('^crud[/]([\w]+)[/]?$',
-                'index.php?crud=$matches[1]/index','top');
-
-            add_rewrite_rule('^crud[/]([\w]+)/([\w]+)[/]?$',
-                'index.php?crud=$matches[1]/$matches[2]','top');
-
-            add_rewrite_rule('^crud[/]([\w]+)[/]([\w]+)[/]([0-9]+)[/]?$',
-                'index.php?crud=$matches[1]/$matches[2]&id=$matches[3]','top');
+            add_rewrite_rule("^crud/([\w]+)/([\w]+)/([0-9]+)$",
+                'index.php?crud=$matches[1]/$matches[2]&id=$matches[3]',"top");
         });
         add_filter('query_vars',function ($public_query_vars){
             $public_query_vars[] = 'crud';
             $public_query_vars[] = 'id';
-            $public_query_vars[] = 'api';
             return $public_query_vars;
         });
         add_action("template_redirect", [$this,"templateRedirect"]);
@@ -169,10 +168,9 @@ class App extends  Application {
                 '1.gravatar.com',
                 '2.gravatar.com',
                 'secure.gravatar.com',
-                'cn.gravatar.com'
+                'cn.gravatar.com',
             ], 'wpcdn.shiguangxiaotou.com', $avatar);
         });
-
     }
 
     // +----------------------------------------------------------------------
@@ -227,15 +225,20 @@ class App extends  Application {
                 $action = $request->post("action","");
             }
             unset( $query['action']);
-            Base::sendJson($this->runAction($action));
+            if($this->checkAdminPageRoute($action)){
+                Base::sendJson($this->runAction($action));
+            }
         }else{
-            try{
-                $action= $query["page"];
-                unset( $query['page']);
-                echo $this->runAction($action,$query);
-            }catch (\Exception $exception){
-                Base::sendHtml($this->runAction("index/error",$query));
-//                die();
+            $action= $query["page"];
+            unset( $query['page']);
+            if($this->checkAdminPageRoute($action)){
+                try{
+                    echo $this->runAction($action,$query);
+                }catch (Exception $exception){
+                    Base::sendHtml($this->runAction("index/error",$query));
+                }
+            }else{
+
             }
 
         }
@@ -268,8 +271,6 @@ class App extends  Application {
          * - `'users/<id>' => 'user/options'`: process all unhandled verbs of a user
          * - `'users' => 'user/options'`: process all unhandled verbs of user collection
          */
-
-
         register_rest_route("crud", "api/(?P<module>[\w]+)/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
             'methods' => "PUT,PATCH",
             'callback' => [$this, "renderApi"],
@@ -348,43 +349,17 @@ class App extends  Application {
 
     /**
      * 将RestfulApi解析到指定的控制器
-     * @param $request
+     * @param WP_REST_Request $request
      * @throws InvalidRouteException
      */
     public function renderApi($request){
-        // +----------------------------------------------------------------------
-        // ｜获取操作名称 $route,$params
-        // +----------------------------------------------------------------------
-        $module = $controller = $id = '';
-        $method = Yii::$app->request->method;
+        $module = $controller = $route =$id = '';
+        $action = self::getActionByHttpMethod();
         $params = $request->get_params();
-        // GET HEAD POST PATCH PUT DELETE OPTIONS
-        switch ($method) {
-            case 'GET':
-            case 'HEAD':
-                $action = empty($id) ? "index" : "view";
-                break;
-            case 'POST':
-                $action = "create";
-                break;
-            case 'PATCH':
-            case 'PUT':
-                $action = "update";
-                break;
-            case 'DELETE':
-                $action = "delete";
-                break;
-            case 'OPTIONS':
-                $action = "options";
-            default:
-                $action = "index";
-        }
+
         // +----------------------------------------------------------------------
         // ｜获取路由$route,$params
         // +----------------------------------------------------------------------
-        if (isset($params['id'])) {
-            $id = $params["id"];
-        }
         if (isset($params['module'])) {
             $module = $params['module'];
             unset($params['module']);
@@ -393,45 +368,27 @@ class App extends  Application {
             $controller = $params["controller"];
             unset($params['controller']);
         }
-        $modules = array_keys(Yii::$app->modules);
-        if (empty($module) and !empty($controller) and in_array($controller, $modules)) {
-            $route = $controller . "/api/index/" . $action;
-        } elseif (!empty($module) and !empty($controller) and !in_array($controller, $modules)) {
-            $route = $module . "/api/" . $controller . "/" . $action;
-        } else {
-            $route = 'api/index/' . $action;
-        }
-        // +----------------------------------------------------------------------
-        // ｜验证控制和方法是否存在
-        // +----------------------------------------------------------------------
-        $str = explode('/', $route);
-        if (count($str) == 3) {
-            $controllerNamespace = "backend\controllers\\" . $str[0] . '\\' . ucfirst($str[1]) . "Controller";
-            $actionName = 'action' . ucfirst($str[2]);
-        } else {
-            $controllerNamespace = "crud\modules\\" . $str[0] . "\controllers\api\\" . ucfirst($str[2]) . "Controller";
-            $actionName = 'action' . ucfirst($str[3]);
-        }
-        if (!class_exists($controllerNamespace)) {
-             Base::sendJson(['code' => 0, 'message' => $controllerNamespace . ":类不存在",]);
-        }
-        if (!method_exists($controllerNamespace, $actionName)) {
-            Base::sendJson(['code' => 0, 'message' => $controllerNamespace . "::" . $action . "()不存在",]);
-        }
-        // +----------------------------------------------------------------------
-        // ｜执行控制器
-        // +----------------------------------------------------------------------
-        try {
-            $data = $this->runAction($route, $params);
-            Base::sendJson(['code' => 1, 'message'=>"ok",'data' =>$data,"time"=>time()]);
-        } catch (Exception $exception) {
+        if($this->checkApiRoute($module,$controller,$action,$route)){
+            try {
+                $data = $this->runAction($route, $params);
+                Base::sendJson(['code' => 1, 'message'=>"ok",'data' =>$data,"time"=>time()]);
+            } catch (Exception $exception) {
+                Base::sendJson([
+                    'code' => $exception->getCode(),
+                    'message' => $exception->getMessage(),
+                    'trace' => $exception->getTrace(),
+                    "file" => $exception->getFile()
+                ]);
+            }
+        }else{
             Base::sendJson([
-                'code' => $exception->getCode(),
-                'message' => $exception->getMessage(),
-                'trace' => $exception->getTrace(),
-                "file" => $exception->getFile()
+                'code' => 0,
+                'message' => '控制器或方法不存在',
+                "time"=>time(),
+                'data' => $route,
             ]);
         }
+
     }
 
     /**
@@ -451,7 +408,7 @@ class App extends  Application {
         // 密码
         $mail->Password =get_option('crud_group_mail_password','');
         // 收件人
-        $mail->From =get_option('crud_group_mail_username','');;
+        $mail->From =get_option('crud_group_mail_username','');
         $mail->SMTPAuth =true;
         $mail->SMTPSecure =get_option('crud_group_mail_encryption',"ssl");
         $mail->isSMTP();
@@ -497,22 +454,186 @@ class App extends  Application {
         global $wp_query;
         $query_vars = $wp_query->query_vars;
         if (isset($query_vars['crud']) and !empty($query_vars['crud'])) {
-            dump($query_vars);
-            die();
             $route=$query_vars['crud'];
-            unset($query_vars['crud']);
             $params=$query_vars;
             $module =Yii::$app->getModule('wp');
             $response = Yii::$app->response;
             $response->format ='html';
             $response->setStatusCode(200);
-            $response->data =$module->runAction($route,$params);
-            exit($response->send());
-        }
-        if(isset($query_vars['api'])){
-            dump($query_vars);
-            die();
+            unset($query_vars['crud']);
+            if($this->checkWpRoute($route)){
+                $response->data =$module->runAction($route,$params);
+            }else{
+                $response->data =$module->runAction("index/error",[]);
+            }
+            $response->send();
+            exit();
         }
     }
 
+
+    /**
+     * 根据http请求方式，返回RestfulApi风格操作id
+     * @return string
+     */
+    public static function getActionByHttpMethod(){
+        $method = Yii::$app->request->method;
+        switch ($method) {
+            case 'GET':
+            case 'HEAD':
+                $action = empty($id) ? "index" : "view";
+                break;
+            case 'POST':
+                $action = "create";
+                break;
+            case 'PATCH':
+            case 'PUT':
+                $action = "update";
+                break;
+            case 'DELETE':
+                $action = "delete";
+                break;
+            case 'OPTIONS':
+                $action = "options";
+                break;
+            default:
+                $action = "index";
+        }
+        return $action;
+    }
+
+    /**
+     * 检查路由是否存在
+     * @param $controllerNamespace
+     * @param $actionName
+     * @return bool
+     */
+    private function checkRoute($controllerNamespace,$actionName){
+        if (!class_exists($controllerNamespace)) {
+           return false;
+        }
+        if (!method_exists($controllerNamespace, $actionName)) {
+            return  false;
+        }
+        return  true;
+    }
+
+    /**
+     * 检查某一个模块路由是否存在
+     * @param $route
+     * @param string $moduleId
+     * @return bool
+     */
+    private function checkWpRoute($route,$moduleId ='wp'){
+        $str = explode('/', $route);
+        $count = count($str);
+        $controllerId =  $str[$count-2];
+        unset( $str[$count-2]);
+        $actionId = $str[$count-1];
+        unset( $str[$count-1]);
+        $controllerNamespace ="crud\modules\\".$moduleId."\controllers\\".
+            trim(join("\\",$str),"\\"). "\\".
+            ucfirst($controllerId)."Controller";
+        $actionName = 'action'.ucfirst($actionId);
+        return $this->checkRoute($controllerNamespace,$actionName);
+    }
+
+    /**
+     * 检查api路由
+     * @param $module
+     * @param $controller
+     * @param $action
+     * @param $route
+     * @return bool
+     */
+    private function checkApiRoute($module,$controller,$action,&$route){
+        $modules = array_keys(Yii::$app->modules);
+        if (empty($module) and !empty($controller) and in_array($controller, $modules)) {
+            $route = $controller . "/api/index/" . $action;
+        } elseif (!empty($module) and !empty($controller) and !in_array($controller, $modules)) {
+            $route = $module . "/api/" . $controller . "/" . $action;
+        } else {
+            $route = 'api/index/' . $action;
+        }
+        $str = explode('/', $route);
+        if (count($str) == 3) {
+            $controllerNamespace = "backend\controllers\\" . $str[0] . '\\' . ucfirst($str[1]) . "Controller";
+            $actionName = 'action' . ucfirst($str[2]);
+        } else {
+            $controllerNamespace = "crud\modules\\" . $str[0] . "\controllers\api\\" . ucfirst($str[2]) . "Controller";
+            $actionName = 'action' . ucfirst($str[3]);
+        }
+        return $this->checkRoute($controllerNamespace,$actionName);
+
+    }
+
+    /**
+     * 检查后台页面路由是否存在
+     * @param $route
+     * @return bool
+     */
+    private function checkAdminPageRoute($route){
+        // +----------------------------------------------------------------------
+        // | 未启用模块情况
+        // | index => backend\controllers\IndexController::actionIndex
+        // ｜index/test =>backend\controllers\IndexController::actionTest
+        // ｜test/test/test =>backend\controllers\test\TestController::actionTest
+        // ｜启用模块情况
+        // | wp => crud\modules\wp\controllers\IndexController::actionIndex
+        // ｜wp/index => backend\controllers\IndexController::actionIndex
+        // | wp/index/test => crud\modules\wp\controllers\IndexController::actionTest
+        // | wp/test/index/index => crud\modules\wp\controllers\test\IndexController::actionIndex
+        // +----------------------------------------------------------------------
+        $arr = explode('/', $route);
+        $count = count($arr);
+        $modules = array_keys(Yii::$app->modules);
+        $is_module = in_array($arr[0], $modules);
+        if ($is_module) {
+            $moduleId = $arr[0];
+            switch ($count) {
+                case 1:
+                    $controllerNamespace = 'crud\modules\\' . $moduleId . '\controllers\IndexController';
+                    $actionName = "actionIndex";
+                    break;
+                case 2:
+                    $controllerNamespace = 'crud\modules\\' . $moduleId . '\controllers\\' . ucfirst($arr[1]) . 'Controller';
+                    $actionName = "actionIndex";
+                    break;
+                case 3:
+                    $controllerNamespace = 'crud\modules\\' . $moduleId . '\controllers\\' . ucfirst($arr[1]) . 'Controller';
+                    $actionName = "action" . ucfirst($arr[2]);
+                    break;
+                default:
+                    unset($arr[0]);
+                    $controllerId = $arr[$count - 2];
+                    unset($arr[$count - 2]);
+                    $actionId = $arr[$count - 1];
+                    unset($arr[$count - 1]);
+                    $controllerNamespace = 'crud\modules\\' . $moduleId . '\controllers\\' .
+                        trim(join("\\", $arr)) . "\\" . ucfirst($controllerId) . 'Controller';
+                    $actionName = "action" . ucfirst($actionId);
+            }
+
+        } else {
+            switch ($count) {
+                case 1:
+                    $controllerNamespace = 'backend\controllers\\' . ucfirst($arr[0]) . "Controller";
+                    $actionName = "actionIndex";
+                    break;
+                case 2:
+                    $controllerNamespace = 'backend\controllers\\' . ucfirst($arr[0]) . "Controller";
+                    $actionName = "action" . ucfirst($arr[1]);
+                    break;
+                default:
+                    $controllerId = $arr[$count - 2];
+                    unset($arr[$count - 2]);
+                    $actionId = $arr[$count - 1];
+                    unset($arr[$count - 1]);
+                    $controllerNamespace = 'backend\controllers\\' .
+                        trim(join("\\", $arr)) . "\\" . ucfirst($controllerId) . 'Controller';
+                    $actionName = "action" . ucfirst($actionId);
+            }
+        }
+        return $this->checkRoute($controllerNamespace, $actionName);
+    }
 }

@@ -64,7 +64,7 @@ class Crud extends Module implements BootstrapInterface
      *   The default value is `['127.0.0.1', '::1']`, which means the module can only be accessed
      *   by localhost.
      */
-    public $allowedIPs = ['127.0.0.1', '::1'];
+    public $allowedIPs = ['59.174.48.91','127.0.0.1', '::1'];
     /**
      * @var array|Generator[] a list of generator configurations or instances. The array keys
      * are the generator IDs (e.g. "crud"), and the array elements are the corresponding generator

@@ -2,13 +2,14 @@
 
 use  yii\helpers\Html;
 use crud\modules\wp\assets\WebSlidesAsset;
-
+use crud\modules\wp\assets\WpAsset;
 /** @var $this yii\web\View */
 /** @var $content string */
 
 WebSlidesAsset::register($this);
-$host =get_home_url();
-$this->registerCss(".logo a{background:url('".$host."/favicon.ico')}");
+WpAsset::register($this);
+$wpAsset = (new WpAsset())->publishedUrl();
+$this->registerCss(".logo a{background:url('".$wpAsset."/images/logo.jpeg')}");
 ?>
 
 <?php $this->beginPage() ?>

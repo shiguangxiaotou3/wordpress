@@ -59,7 +59,6 @@ class Wp extends Module implements BootstrapInterface
             // +----------------------------------------------------------------------
             // ｜将yii\web\View事件挂载到wordpress钩子中
             // +----------------------------------------------------------------------
-            logObject(get_class($this));
             add_action("wp_head",[$this,"statistics"]);
             add_action("get_template_part_loop",[$this,"wpInit"]);
 
