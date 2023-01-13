@@ -227,6 +227,13 @@ class App extends  Application {
             unset( $query['action']);
             if($this->checkAdminPageRoute($action)){
                 Base::sendJson($this->runAction($action));
+            }else{
+                Base::sendJson([
+                    'code' => 0,
+                    'message' => '控制器或方法不存在',
+                    "time"=>time(),
+                    'data' => $action,
+                ]);
             }
         }else{
             $action= $query["page"];
@@ -238,7 +245,7 @@ class App extends  Application {
                     Base::sendHtml($this->runAction("index/error",$query));
                 }
             }else{
-
+                Base::sendHtml($this->runAction("index/error", new  Exception('找不到路由'.$action)));
             }
 
         }
