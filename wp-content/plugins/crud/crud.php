@@ -23,10 +23,6 @@
  * Domain Path:       /languages
  */
 
-/**
- * @const string CRUD_URL
- */
-define("CRUD_URL", plugin_dir_url(__FILE__));
 defined("CRUD_DIR") or define("CRUD_DIR" ,__DIR__);
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'dev');

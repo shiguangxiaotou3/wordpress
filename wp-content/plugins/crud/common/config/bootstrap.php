@@ -1,4 +1,5 @@
 <?php
+Yii::setAlias('@uploads',dirname(__DIR__,4)."/uploads" );
 Yii::setAlias('@crud', dirname(dirname(__DIR__ )). '/');
 Yii::setAlias('@vendor', dirname(dirname(__DIR__))."/vendor" );
 Yii::setAlias('@backend', dirname(dirname(__DIR__ )). '/backend');
@@ -9,14 +10,13 @@ Yii::setAlias('@library', dirname(dirname(__DIR__) ). '/library');
 Yii::setAlias('@bower' , dirname(dirname(__DIR__))."/vendor/bower-asset" );
 Yii::setAlias('@npm', dirname(dirname(__DIR__))."/vendor/npm-asset" );
 
-
 /**
  * 由于插件的控制台模块是一个单独的模块，
- * 不想加载多余的wordpress文件,但是有需要操作数据库,
+ * 不想加载多余的wordpress文件,但是又需要操作数据库,
  * 所以只能通过读写文件的方式(wp-config.php)，获取数据库dsn
  */
 if ( ! defined( 'ABSPATH' ) ) {
-    define( 'ABSPATH',  dirname(dirname( dirname(dirname(dirname(__DIR__ ))))) . '/' );
+    define( 'ABSPATH',  dirname(__DIR__ ,5) . '/' );
 }
 
 /**
@@ -42,7 +42,6 @@ if(!function_exists("get_option")){
         $conn = new PDO($dsn,DB_USER,DB_PASSWORD);
         $results = $conn->query("SELECT * FROM wp_options WHERE option_name ='".$option."'");
         $value = $default;
-        //serialize(mixed
         foreach ($results as $row){
             if(isset($row["option_value"])){
                 $value = $row["option_value"];

@@ -6,8 +6,11 @@ namespace crud\modules\wechat\components;
 use crud\modules\wechat\components\SubscriptionService;
 
 
-
-
+/**
+ * Class SubscribeSettings
+ * @property-read
+ * @package crud\modules\wechat\components
+ */
 class SubscribeSettings extends SubscriptionService{
 
     //选用模板

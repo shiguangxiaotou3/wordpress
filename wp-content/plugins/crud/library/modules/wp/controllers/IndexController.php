@@ -5,10 +5,6 @@ namespace crud\modules\wp\controllers;
 
 use yii\web\Controller;
 
-
-
-
-
 class IndexController extends Controller
 {
     public $layout ='webslides';
@@ -32,7 +28,24 @@ class IndexController extends Controller
      */
     public function actionInit(){
         $this->layout =false;
-        logObject("执行了");
         return $this->render("init");
+    }
+
+    /**
+     * @return string
+     */
+    public function actionError(){
+        return $this->render("error");
+    }
+
+    /**
+     * @return string
+     */
+    public function actionDocs(){
+        return $this->render("docs");
+    }
+
+    public function actionIcons(){
+        return $this->render("icons");
     }
 }
