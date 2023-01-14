@@ -3,7 +3,7 @@
         <img src="https://www.shiguangxiaotou.com/favicon.ico" height="100px">
     </a>
     <h1 align="center">Wordpress plugins CRUD for MVC </h1>
-    <br>
+    <br/>
 </p>
 
 ### CRUD 是一个wordpress插件
