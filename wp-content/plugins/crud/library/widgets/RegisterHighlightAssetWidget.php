@@ -7,8 +7,6 @@ use yii\web\View;
 use yii\base\Widget;
 use crud\assets\HighlightAsset;
 
-
-
 class RegisterHighlightAssetWidget extends Widget
 {
 

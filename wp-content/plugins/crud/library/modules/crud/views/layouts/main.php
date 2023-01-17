@@ -2,7 +2,7 @@
 
 use yii\widgets\Menu;
 use yii\helpers\Html;
-
+use crud\assets\CrudAsset;
 /** @var yii\web\View $this */
 /** @var string $content */
 
@@ -12,7 +12,7 @@ margin-left: 25px;
 }
 CSS;
 $this->registerCss($css );
-$asset = yii\gii\GiiAsset::register($this);
+$asset = CrudAsset::register($this);
 ?>
 <div class="wrap">
     <h1 class='wp-heading-inline'>

@@ -8,13 +8,12 @@
 namespace crud\modules\crud;
 
 use Yii;
+use yii\db\Exception;
 use yii\web\View;
 use yii\base\Model;
 use ReflectionClass;
 use yii\helpers\VarDumper;
 use yii\base\InvalidConfigException;
-
-
 
 
 /**
@@ -221,6 +220,7 @@ abstract class Generator extends Model
 
     /**
      * Loads sticky attributes from an internal file and populates them into the generator.
+     * 从内部文件加载粘性属性并将其填充到生成器中
      * @internal
      */
     public function loadStickyAttributes()
@@ -276,7 +276,7 @@ abstract class Generator extends Model
      */
     public function save($files, $answers, &$results)
     {
-        $lines = ['Generating code using template "' . $this->getTemplatePath() . '"...'];
+        $lines = [Yii::t('console','Generating code using template "') . $this->getTemplatePath() . '"...'];
         $hasError = false;
         foreach ($files as $file) {
             $relativePath = $file->getRelativePath();
@@ -292,8 +292,8 @@ abstract class Generator extends Model
                 $lines[] = "   skipped $relativePath";
             }
         }
-        $lines[] = "done!\n";
-        $results = implode("\n", $lines);
+        $lines[] = Yii::t('console',"done!").PHP_EOL;
+        $results = implode(PHP_EOL, $lines);
 
         return !$hasError;
     }
@@ -356,6 +356,7 @@ abstract class Generator extends Model
      */
     public function validateClass($attribute, $params)
     {
+
         $class = $this->$attribute;
         try {
             if (class_exists($class)) {
@@ -370,6 +371,7 @@ abstract class Generator extends Model
         } catch (\Exception $e) {
             $this->addError($attribute, "Class '$class' does not exist or has syntax error.");
         }
+
     }
 
     /**
@@ -382,7 +384,7 @@ abstract class Generator extends Model
     {
         $class = ltrim($this->$attribute, '\\');
         if (($pos = strrpos($class, '\\')) === false) {
-            $this->addError($attribute, "The class name must contain fully qualified namespace name.");
+            $this->addError($attribute, Yii::t('console',"The class name must contain fully qualified namespace name."));
         } else {
             $ns = substr($class, 0, $pos);
             $path = Yii::getAlias('@' . str_replace('\\', '/', $ns), false);

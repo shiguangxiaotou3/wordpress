@@ -20,12 +20,7 @@ return [
             'class'=>" yii\web\Controller",
             'layout'=>false,
         ],
-        "assetManager"=>[
-            // 定义资源包发布目录， you project/wp-content/uploads/assets
-            'class' => 'yii\web\AssetManager',
-            "basePath" => '@uploads/assets',
-            "baseUrl" => '/wp-content/uploads/assets',
-        ],
+
         'request' => [
             'csrfParam' => '_csrf-backend',
             'parsers' => [

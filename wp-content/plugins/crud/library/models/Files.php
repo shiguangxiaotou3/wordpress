@@ -135,10 +135,17 @@ class Files extends Model
      */
     public static function getGroup($path)
     {
-
         return filegroup($path);
     }
 
+    /**
+     * 所属组名称
+     * @param $path
+     * @return false|int
+     */
+    public static function getGroupName($path){
+       return posix_getgrgid(self::getGroup($path));
+    }
     /**
      * 所有者
      * @param $path
@@ -150,6 +157,15 @@ class Files extends Model
         return fileowner( $path);
     }
 
+    /**
+     * 所有者名称
+     * @param $path
+     * @return false|int
+     */
+    public static function getOwnerName($path)
+    {
+        return posix_getpwuid(self::getOwner( $path));
+    }
     /**
      * 获取文件所有者信息
      * @param $path
@@ -176,6 +192,7 @@ class Files extends Model
         if(is_dir($path)){
             return [
                 'name'=>'',
+                'size'=>filesize($path),
                 'group'=>self::getGroup($path),
                 'owner'=>self::getOwner($path),
                 'ownerName'=>posix_getpwuid(fileowner($path))['name'],
@@ -189,6 +206,7 @@ class Files extends Model
             $text =file_get_contents($path);
             return [
                 'name'=>basename($path),
+                'size'=>filesize($path),
                 'group'=>self::getGroup($path),
                 'owner'=>self::getOwner($path),
                 'ownerName'=>posix_getpwuid(fileowner($path))['name'],
@@ -200,5 +218,29 @@ class Files extends Model
             ];
         }
         return  false ;
+    }
+
+    /**
+     * 获取当前目录下的子目录和文件
+     * @param $path
+     * @return array[]
+     */
+    public static function dirList($path){
+        if(is_dir($path)){
+            $data =['dir'=>[],'files'=>[]];
+            if ($handle = opendir($path)) {
+                while (false !== ($item = readdir($handle))) {
+                    if ($item != "." && $item != "..") {
+                        if(is_dir("$path/$item")){
+                            $data['dir'][]= $item;
+                        }else{
+                            $data['files'][]= $item;
+                        }
+                    }
+                }
+                closedir($handle);
+                return $data;
+            }
+        }
     }
 }

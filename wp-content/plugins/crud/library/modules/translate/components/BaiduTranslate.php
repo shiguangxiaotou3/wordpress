@@ -7,10 +7,6 @@ use Exception;
 use yii\base\Component;
 use crud\modules\translate\components\Translate;
 
-
-
-
-
 class BaiduTranslate extends Component implements Translate
 {
     public $url = "http://api.fanyi.baidu.com/api/trans/vip/translate";

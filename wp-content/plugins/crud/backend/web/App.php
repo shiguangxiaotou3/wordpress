@@ -2,6 +2,7 @@
 
 namespace backend\web;
 
+use Darabonba\GatewaySpi\Models\InterceptorContext\request;
 use Yii;
 use Exception;
 use crud\Base;
@@ -24,6 +25,7 @@ use yii\base\InvalidConfigException;
 use crud\modules\translate\Translate;
 use crud\modules\base\Base as BaseModule;
 use PHPMailer\PHPMailer\PHPMailer as SMTP;
+use yii\web\Response;
 
 
 /**
@@ -41,6 +43,9 @@ class App extends Application
      */
     public function __construct()
     {
+        // +----------------------------------------------------------------------
+        // ｜
+        // +----------------------------------------------------------------------
         require __DIR__ . '/../config/bootstrap.php';
         $config = ArrayHelper::merge(
             require __DIR__ . '/../../common/config/main.php',
@@ -69,17 +74,18 @@ class App extends Application
         // ｜App实例化时候会根据bootstrap配置项调用模块的bootstrap(),引导wordpress挂载
         // ｜例如:['bootstrap'=>['wp']] =>crud\modules\wp\Wp::bootstrap()
         // +----------------------------------------------------------------------
-
+        // ｜特别说明
+        // ｜子模块bootstrap()方法配置的wp钩子优先挂载backend\web\App::run()方法中配置的钩子
+        // +----------------------------------------------------------------------
         return ArrayHelper::merge(
             [
-                'bootstrap' => ['wechat', 'wp', 'crud'],
+                'bootstrap' => ['wechat', 'wp','base' ,'crud'],
             ],
             BaseModule::config(),
             Wp::config(),
             Wechat::config(),
             Ads::config(),
             AliPay::config(),
-            Editor::config(),
             Seo::config(),
             Server::config(),
             Translate::config(),
@@ -94,39 +100,10 @@ class App extends Application
     public function run()
     {
         // +----------------------------------------------------------------------
-        // ｜配置wp模块和公共api路由
-        // +----------------------------------------------------------------------
-        // ｜http://youdomain.com/crud/ => wp/index/index
-        // ｜http://youdomain.com/crud/<controller>/ => wp/<controller>/index
-        // ｜http://youdomain.com/crud/<controller>/<action>/ => wp/<controller>/<action>
-        // ｜http://youdomain.com/crud/<controller>/<action>/<id>/ => wp/<controller>/<action>/<id>
-        add_action('init', function () {
-            add_rewrite_rule("^crud$",
-                'index.php?crud=index/index', "top");
-
-            add_rewrite_rule("^crud/([\w]+)$",
-                'index.php?crud=$matches[1]/index', "top");
-
-            add_rewrite_rule("^crud/([\w]+)/([\w]+)$",
-                'index.php?crud=$matches[1]/$matches[2]', "top");
-
-            add_rewrite_rule("^crud/([\w]+)/([\w]+)/([0-9]+)$",
-                'index.php?crud=$matches[1]/$matches[2]&id=$matches[3]', "top");
-        });
-        add_filter('query_vars', function ($public_query_vars) {
-            $public_query_vars[] = 'crud';
-            $public_query_vars[] = 'id';
-
-            return $public_query_vars;
-        });
-        add_action("template_redirect", [$this, "templateRedirect"]);
-
-        // +----------------------------------------------------------------------
         // ｜后台页面、设置、菜单，挂载到wordpress钩子中
         // +----------------------------------------------------------------------
         add_action("admin_init", [$this, "registerSettings"]);
         add_action("admin_menu", [$this, "registerPage"]);
-
 
         // +----------------------------------------------------------------------
         // ｜Ajax、RestfulApi、路由配置、解析规则，挂载到wordpress钩子中
@@ -153,6 +130,11 @@ class App extends Application
         // ｜过滤评论
         // +----------------------------------------------------------------------
         add_action('preprocess_comment', [$this, 'preprocessComment']);
+
+        // +----------------------------------------------------------------------
+        // ｜在插件旁边显示设置按钮
+        // +----------------------------------------------------------------------
+//        add_filter('plugin_action_links', [$this, 'addSettingsButton'], 10, 2);
 
         // +----------------------------------------------------------------------
         // ｜静止自动更新
@@ -235,37 +217,19 @@ class App extends Application
     {
         $request = $this->request;
         $query = $request->queryParams;
-        if ($request->isAjax) {
-            if ($request->isGet) {
-                $action = $request->get("action", "");
-            } else {
-                $action = $request->post("action", "");
-            }
-            unset($query['action']);
-            if ($this->checkAdminPageRoute($action)) {
-                Base::sendJson($this->runAction($action));
-            } else {
-                Base::sendJson([
-                    'code' => 0,
-                    'message' => '控制器或方法不存在',
-                    "time" => time(),
-                    'data' => $action,
-                ]);
+        $action = $query["page"];
+        unset($query['page']);
+        if ($this->checkAdminPageRoute($action)) {
+            try {
+                Base::sendHtml($this->runAction($action, $query));
+            } catch (Exception $exception) {
+                Base::sendHtml($this->runAction("index/error", $exception));
+                return;
             }
         } else {
-            $action = $query["page"];
-            unset($query['page']);
-            if ($this->checkAdminPageRoute($action)) {
-                try {
-                    echo $this->runAction($action, $query);
-                } catch (Exception $exception) {
-                    Base::sendHtml($this->runAction("index/error", $query));
-                }
-            } else {
-                Base::sendHtml($this->runAction("index/error", new  Exception('找不到路由' . $action)));
-            }
-
+            Base::sendHtml($this->runAction("index/error",  new  Exception('找不到路由' . $action)));
         }
+
     }
 
     // +----------------------------------------------------------------------
@@ -280,6 +244,32 @@ class App extends Application
         foreach ($menus as $menu) {
             $menuModel = new AjaxAction($menu);
             $menuModel->registerAjaxAction($this);
+        }
+    }
+
+    /**
+     * ajax和回调
+     */
+    public function renderAjax()
+    {
+        try {
+            $request = $this->request;
+            $query = $request->queryParams;
+            $action = $query["action"];
+            unset($query['action']);
+            if ($this->checkAdminPageRoute($action)) {
+                $response =Yii::$app->response;
+                $response->format= Response::FORMAT_JSON;
+                $response->data =[
+                    'code'=>1,
+                    "message"=>"ok",
+                    "data"=> $this->runAction($action, $query)
+                ];
+                exit($response->send());
+            }
+        } catch (Exception $exception) {
+            print_r($query);
+            print_r($exception);
         }
     }
 
@@ -479,32 +469,27 @@ class App extends Application
     {
         $this->getView()->beginPage();
     }
-
     public function registerCsrfMetaTags()
     {
         $this->getView()->registerCsrfMetaTags();
     }
-
     public function head()
     {
         $this->getView()->head();
     }
-
     public function beginBody()
     {
         $this->getView()->beginBody();
     }
-
     public function endBody()
     {
         $this->getView()->endBody();
     }
-
     public function endPage()
     {
         $controller = $this->controller;
         if (isset($controller) and !empty($controller)) {
-            $controller->getView()->endPage();
+            exit( $controller->getView()->endPage());
         }
     }
 
@@ -517,34 +502,18 @@ class App extends Application
     }
 
     /**
-     * 显示前台页面
-     * @throws InvalidRouteException
+     * 显示设置按钮
+     * @param $links
+     * @param $file
+     * @return mixed
      */
-    public function templateRedirect()
-    {
-        global $wp_query;
-        $query_vars = $wp_query->query_vars;
-        if (isset($query_vars['crud']) and !empty($query_vars['crud'])) {
-//	        dump( $query_vars);
-//	        die();
-            $route = $query_vars['crud'];
-            $params = $query_vars;
-
-            $module = Yii::$app->getModule('wp');
-            $response = Yii::$app->response;
-            $response->format = 'html';
-            $response->setStatusCode(200);
-            unset($query_vars['crud']);
-            if ($this->checkWpRoute($route)) {
-                $response->data = $module->runAction($route, $params);
-            } else {
-                $response->data = $module->runAction("index/error", []);
-            }
-            $response->send();
-            exit();
-        }
+    public function addSettingsButton($links, $file){
+       if($file =='crud/crud.php'){
+           $links[] = '<a href="admin.php?page=base/index">设置</a>';
+           $links[] = '<a href="https://www.shiguangxiaotou.com/crud" target="_blank">文档</a>';
+       }
+        return $links;
     }
-
 
     /**
      * 根据http请求方式，返回RestfulApi风格操作id
@@ -586,7 +555,7 @@ class App extends Application
      *
      * @return bool
      */
-    private function checkRoute($controllerNamespace, $actionName)
+    public function checkRoute($controllerNamespace, $actionName)
     {
         if (!class_exists($controllerNamespace)) {
             return false;
@@ -596,31 +565,6 @@ class App extends Application
         }
 
         return true;
-    }
-
-    /**
-     * 检查某一个模块路由是否存在
-     *
-     * @param $route
-     * @param string $moduleId
-     *
-     * @return bool
-     */
-    private function checkWpRoute($route, $moduleId = 'wp')
-    {
-        $str = explode('/', $route);
-        $count = count($str);
-        $controllerId = $str[$count - 2];
-        unset($str[$count - 2]);
-        $actionId = $str[$count - 1];
-        unset($str[$count - 1]);
-        $namespace = trim(join("\\", $str));
-        $controllerNamespace = "crud\modules\\" . $moduleId . "\controllers\\" .
-            ($namespace != "" ? $namespace . "\\" : "") .
-            ucfirst($controllerId) . "Controller";
-        $actionName = 'action' . ucfirst($actionId);
-
-        return $this->checkRoute($controllerNamespace, $actionName);
     }
 
     /**
@@ -729,7 +673,6 @@ class App extends Application
                     $actionName = "action" . ucfirst($actionId);
             }
         }
-
         return $this->checkRoute($controllerNamespace, $actionName);
     }
 }

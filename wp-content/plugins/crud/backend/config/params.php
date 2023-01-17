@@ -26,6 +26,12 @@ return [
         ],
         [
             "parent_slug" => "index/index",
+            "page_title" => "模块加载",
+            "menu_title" => "模块加载",
+            "menu_slug" =>  "index/modules",
+        ],
+        [
+            "parent_slug" => "index/index",
             "page_title" => "错误",
             "menu_title" => "错误",
             "menu_slug" =>  "index/error",

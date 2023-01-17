@@ -10,7 +10,12 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-
+        "assetManager"=>[
+            // 定义资源包发布目录， you project/wp-content/uploads/assets
+            'class' => 'yii\web\AssetManager',
+            "basePath" => '@uploads/assets',
+            "baseUrl" => '/wp-content/uploads/assets',
+        ],
         'user' => [
             'class'=>'yii\web\User',
             'identityClass' => 'common\models\User',

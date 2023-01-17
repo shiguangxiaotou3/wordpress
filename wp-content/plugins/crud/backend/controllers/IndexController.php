@@ -22,6 +22,7 @@ class IndexController extends Controller
         return [
             'index',
             'test',
+            'modules',
             'error' => [
                 'class' => 'yii\web\ErrorAction',
                 'layout' => false
@@ -44,5 +45,12 @@ class IndexController extends Controller
         return $this->render("test");
     }
 
+    /**
+     * @return string
+     */
+    public function actionModules()
+    {
+        return $this->render("modules");
+    }
 
 }

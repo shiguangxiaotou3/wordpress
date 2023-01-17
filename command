@@ -3,7 +3,7 @@
 
 $config = require "wp-content/plugins/crud/console/web/App.php";
 use yii\console\Application;
-use \yii\base\InvalidConfigException;
+use yii\base\InvalidConfigException;
 
 try {
     $application = new Application($config);

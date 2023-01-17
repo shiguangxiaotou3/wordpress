@@ -26,11 +26,11 @@ $options =[
     <?php
 
 
+    try {
         $domains = Yii::$app->dns->domains;
         if( $domains){
             echo WpTableWidget::widget([
                 'columns' => [
-
                     ["field" => "domainName", "title" => '名称'],
                     ["field" => "createTime", "title" => '创建时间'],
                     ["field" => "recordCount", "title" => '解析记录数'],
@@ -39,6 +39,10 @@ $options =[
                 "data" => $domains
             ]);
         }
+    }catch (Exception $exception){
+
+    }
+
 
     ?>
 </div>

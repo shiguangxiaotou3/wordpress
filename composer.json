@@ -26,7 +26,8 @@
     "jaybizzle/crawler-detect": "^1.2",
     "microsoft/bingads": "^13.0",
     "shiguangxiaotou/alipay": "dev-master",
-    "qiniu/php-sdk": "^7.8"
+    "qiniu/php-sdk": "^7.8",
+    "aliyuncs/oss-sdk-php": "^2.6"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

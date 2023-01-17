@@ -8,16 +8,12 @@
 namespace crud\modules\crud\controllers;
 
 use Yii;
+use yii\db\Exception;
 use yii\web\Response;
 use yii\web\Controller;
 use crud\modules\crud\Crud;
 use crud\modules\crud\Generator;
 use yii\web\NotFoundHttpException;
-
-
-
-
-
 
 /**
  * @author Qiang Xue <qiang.xue@gmail.com>
@@ -48,40 +44,45 @@ class DefaultController extends Controller
 
     public function actionIndex()
     {
-//        $this->layout =false;//  'main';
-        $this->layout ='main';//  'main';
-    echo Yii::$app->runtimePath;
+        $this->layout ='main';
         return $this->render('index');
     }
 
     public function actionView($id)
     {
-        /** @var Generator $generator */
-        $generator = $this->loadGenerator($id);
-        $params = ['generator' => $generator, 'id' => $id];
+        try {
+            $generator = $this->loadGenerator($id);
 
-        $preview = Yii::$app->request->post('preview');
-        $generate = Yii::$app->request->post('generate');
-        $answers = Yii::$app->request->post('answers');
-//        if ($preview !== null || $generate !== null) {
-        logObject(Yii::$app->request->post());
-            if ($generator->validate()) {
-                logObject('验证成功');
-                $generator->saveStickyAttributes();
-                $files = $generator->generate();
-                if ($generate !== null && !empty($answers)) {
-                    $params['hasError'] = !$generator->save($files, (array) $answers, $results);
-                    $params['results'] = $results;
-                } else {
-                    $params['files'] = $files;
-                    $params['answers'] = $answers;
+            $params = ['generator' => $generator, 'id' => $id];
+
+            $preview = Yii::$app->request->post('preview');
+            $generate = Yii::$app->request->post('generate');
+            $answers = Yii::$app->request->post('answers');
+            if ($preview !== null || $generate !== null) {
+
+//                logObject(Yii::$app->request->post());
+                if ($generator->validate()) {
+
+////                    logObject( "asd");
+//                    $generator->saveStickyAttributes();
+//                    $files = $generator->generate();
+//                    if ($generate !== null && !empty($answers)) {
+//                        $params['hasError'] = !$generator->save($files, (array) $answers, $results);
+//                        $params['results'] = $results;
+//                    } else {
+//                        $params['files'] = $files;
+//                        $params['answers'] = $answers;
+//                    }
+                }else{
+                    logObject($generator->errors);
                 }
-            }else{
-                logObject($generator->errors);
             }
-//        }
 //        dump(Yii::$app->request->post());
-        return $this->render('view', $params);
+            return $this->render('view', $params);
+        }catch (Exception $exception){
+
+        }
+
     }
 
     public function actionPreview($id, $file)
@@ -137,6 +138,7 @@ class DefaultController extends Controller
 
     /**
      * Loads the generator with the specified ID.
+     * 使用指定的ID加载生成器
      * @param string $id the ID of the generator to be loaded.
      * @return Generator the loaded generator
      * @throws NotFoundHttpException

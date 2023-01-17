@@ -1,10 +1,7 @@
 <?php
 
 
-namespace crud\modules\editor\assets;
-
-use crud\assets\AppAsset;
-
+namespace crud\assets;
 
 
 class AceAsset extends AppAsset {

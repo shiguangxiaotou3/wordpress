@@ -5,7 +5,6 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $content string */
 
-dump(Yii::$app->urlManager);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -19,7 +18,19 @@ dump(Yii::$app->urlManager);
 </head>
 <body>
 <?php $this->beginBody() ?>
+<nav class="nav">
+    <div class="nav-item">
+        <a href="/">首页</a>
+        <a href="/crud/">wp模块</a>
+    </div>
+</nav>
 <?= $content ?>
+<div class="footer">
+    <div >
+        <p>Posted by: <a href="https://github.com/shiguangxiaotou3" target="_blank"><i>ShiGuangXiaoTou</i></a></p>
+        <span style="float: right"><?= date("Y-m-d") ?></span>
+    </div>
+</div>
 <?php $this->endBody() ?>
 </body>
 </html>

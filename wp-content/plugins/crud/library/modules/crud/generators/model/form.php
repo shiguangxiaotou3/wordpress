@@ -11,26 +11,27 @@ echo $form->field($generator, 'db');
 echo $form->field($generator, 'useTablePrefix')->checkbox();
 echo $form->field($generator, 'useSchemaName')->checkbox();
 echo $form->field($generator, 'tableName')->textInput([
-    'value'=>"wp_links",
+//    'value'=>"wp_links",
     'autocomplete' => 'off',
     'data' => [
         'table-prefix' => $generator->getTablePrefix(),
-        'action' => Url::to(['default/action', 'id' => 'model', 'name' => 'GenerateClassName'])
+        'action' =>"/wp-admin/admin-ajax.php?action=crud/default/action&".
+        http_build_query(['id' => 'model', 'name' => 'GenerateClassName'])
     ]
 ]);
 echo $form->field($generator, 'standardizeCapitals')->checkbox();
 echo $form->field($generator, 'singularize')->checkbox();
-echo $form->field($generator, 'modelClass')->textInput(['value'=>"Links"]);
-echo $form->field($generator, 'ns');
+echo $form->field($generator, 'modelClass');//->textInput(['value'=>"Links"]);
+echo $form->field($generator, 'ns');//->textInput(['value'=>"backend\models"]);
 echo $form->field($generator, 'baseClass');
 echo $form->field($generator, 'generateRelations')->dropDownList([
-    Generator::RELATIONS_NONE => 'No relations',
-    Generator::RELATIONS_ALL => 'All relations',
-    Generator::RELATIONS_ALL_INVERSE => 'All relations with inverse',
+    Generator::RELATIONS_NONE => Yii::t('console', 'No relations'),
+    Generator::RELATIONS_ALL => Yii::t('console','All relations'),
+    Generator::RELATIONS_ALL_INVERSE =>Yii::t('console', 'All relations with inverse'),
 ]);
 echo $form->field($generator, 'generateJunctionRelationMode')->dropDownList([
-    Generator::JUNCTION_RELATION_VIA_TABLE => 'Via Table',
-    Generator::JUNCTION_RELATION_VIA_MODEL => 'Via Model',
+    Generator::JUNCTION_RELATION_VIA_TABLE =>  Yii::t('console','Via Table'),
+    Generator::JUNCTION_RELATION_VIA_MODEL => Yii::t('console', 'Via Model'),
 ]);
 echo $form->field($generator, 'generateRelationsFromCurrentSchema')->checkbox();
 echo $form->field($generator, 'useClassConstant')->checkbox();

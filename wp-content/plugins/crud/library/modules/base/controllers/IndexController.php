@@ -3,6 +3,7 @@
 
 namespace crud\modules\base\controllers;
 
+use crud\models\Files;
 use Yii;
 use yii\web\Controller;
 
@@ -16,7 +17,8 @@ class IndexController extends Controller
 
     public function actions(){
         return [
-            "index","ipinfo","mail","dns",'jvectormap','highlight',"crawlers"
+            "index","ipinfo","mail","dns",'jvectormap','highlight',
+            "crawlers",'oss','editor','icons'
         ];
     }
 
@@ -29,7 +31,6 @@ class IndexController extends Controller
 
         return $this->render('index');
     }
-
 
     /**
      * @return string
@@ -62,8 +63,6 @@ class IndexController extends Controller
         return $this->render("highlight");
     }
 
-
-
     /**
      * @return string
      */
@@ -71,8 +70,48 @@ class IndexController extends Controller
         return $this->render("jvectormap");
     }
 
+    /**
+     * 爬虫检测
+     * @return string
+     */
     public function actionCrawlers(){
         return $this->render("crawlers");
+    }
+
+    /**
+     * 阿里云Oss
+     * @return string
+     */
+    public function actionOss(){
+        return $this->render("oss");
+    }
+
+    /**
+     * 阿里云Oss
+     * @return string
+     */
+    public function actionEditor(){
+        $request=  Yii::$app->request;
+        if($request->isAjax){
+            $baseDir = $request->get("baseDir");
+            if(empty($baseDir)){
+                $baseDir =CRUD_DIR;
+            }
+            $type = $request->get('type');
+            if( $type == "List"){
+                return Files::dirList($baseDir);
+            }
+
+        }
+        return $this->render("editor");
+    }
+
+    public function actionList(){
+
+    }
+
+    public function actionIcons(){
+        return $this->render("icons");
     }
 
 }

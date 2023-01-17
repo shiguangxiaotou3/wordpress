@@ -1,7 +1,0 @@
-<?php
-/**
- *
- * @package crud
- */
-
-return [];

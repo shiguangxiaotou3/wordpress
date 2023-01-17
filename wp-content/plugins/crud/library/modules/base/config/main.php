@@ -22,6 +22,15 @@ return [
             "accessKeyId" => get_option("crud_group_dns_accessKeyId", ""),
             "accessKeySecret" => get_option("crud_group_dns_accessSecret", ""),
         ],
+        "aliyuncsOss" => [
+            'class' => "crud\modules\base\components\AliyuncsOss",
+             "accessKeyId"=>get_option("crud_group_aliyuncsOss_accessKeyId"),
+            "accessKeySecret"=>get_option("crud_group_aliyuncsOss_accessKeySecret"),
+            "endpoint"=>get_option("crud_group_aliyuncsOss_endpoint"),
+            "isCName"=>get_option("crud_group_aliyuncsOss_isCName"),
+            "securityToken"=>get_option("crud_group_aliyuncsOss_securityToken"),
+            "requestProxy"=>get_option("crud_group_aliyuncsOss_requestProxy"),
+        ],
     ],
     'params' => $params,
 ];

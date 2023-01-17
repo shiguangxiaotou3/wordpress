@@ -64,6 +64,24 @@ return [
             "menu_title" => "爬虫检测",
             "menu_slug" => "base/index/crawlers",
         ],
+        [
+            "parent_slug" => "base/index",
+            "page_title" => "阿里云Oss",
+            "menu_title" =>"阿里云Oss",
+            "menu_slug" => "base/index/oss",
+        ],
+        [
+            "parent_slug" => "base/index",
+            "page_title" => "编辑器",
+            "menu_title" =>"编辑器",
+            "menu_slug" => "base/index/editor",
+        ],
+        [
+            "parent_slug" => "base/index",
+            "page_title" => "Icons",
+            "menu_title" => "Icons",
+            "menu_slug" => "base/index/icons",
+        ]
     ],
     'settings' => [
         "switch" => [
@@ -87,6 +105,9 @@ return [
                             ["checked" => 1, "description" => "dns: 阿里dns解析API", "options" => ["value" => "dns"]],
                             ["checked" => 1, "description" => "highlight: 代码高亮显示", "options" => ["value" => "highlight"]],
                             ["checked" => 1, "description" => '机器人/蜘蛛/爬虫', "options" => ["value" => "crawlers"]],
+                            ["checked" => 1, "description" => "阿里云Oss", "options" => ["value" => "oss"]],
+                            ["checked" => 1, "description" => "编辑器", "options" => ["value" => "editor"]],
+                            ["checked" => 1, "description" => "Icons", "options" => ["value" => "icons"]],
                         ],
                     ]
                 ]
@@ -319,6 +340,77 @@ return [
                 ],
             ]
         ],
-
+        "aliyuncsOss" => [
+            'option_group' => 'crud_group',
+            'page' => 'base/index/oss',
+            'section_id' => 'aliyuncsOss',
+            "section_description" => "阿里云Oss",
+            'fields' => [
+                [
+                    'id' => 'accessKeyId',
+                    "title" => "accessKeyId",
+                    'args' => [
+                        "tag" => "text",
+                        "defaultValue" => '',
+                        "description" => "",
+                        'options' => [
+                            "class" => "regular-text code",
+                        ]
+                    ],
+                ],
+                [
+                    'id' => 'accessKeySecret',
+                    "title" => "accessKeySecret",
+                    'args' => [
+                        "tag" => "password",
+                        "description" => "",
+                        'options' => [
+                            "class" => "regular-text code",
+                        ]
+                    ],
+                ],
+                [
+                    'id' => 'endpoint',
+                    "title" => "endpoint",
+                    'args' => [
+                        "tag" => "dropDownList",
+                        "items" => [
+                            'oss-cn-hangzhou.aliyuncs.com' => '华东1(杭州)',
+                            'oss-cn-shanghai.aliyuncs.com' => '华东2(上海)',
+                            'oss-cn-nanjing.aliyuncs.com' => '华东5(南京-本地地域)',
+                            'oss-cn-fuzhou.aliyuncs.com' => '华东6(福州-本地地域)',
+                            'oss-cn-qingdao.aliyuncs.com' => '华北1(青岛)',
+                            'oss-cn-beijing.aliyuncs.com' => '华北2(北京)',
+                            'oss-cn-zhangjiakou.aliyuncs.com' => '华北3(张家口)',
+                            'oss-cn-huhehaote.aliyuncs.com' => '华北5(呼和浩特)',
+                            'oss-cn-wulanchabu.aliyuncs.com' => '华北6(乌兰察布)',
+                            'oss-cn-shenzhen.aliyuncs.com' => '华南1(深圳)',
+                            'oss-cn-heyuan.aliyuncs.com' => '华南2(河源)',
+                            'oss-cn-guangzhou.aliyuncs.com' => '华南3(广州)',
+                            'oss-cn-chengdu.aliyuncs.com' => '西南1(成都)',
+                            'oss-cn-hongkong.aliyuncs.com' => '中国香港',
+                            'oss-us-west-1.aliyuncs.com' => '美国(硅谷)',
+                            'oss-us-east-1.aliyuncs.com' => '美国(弗吉尼亚)',
+                            'oss-ap-northeast-1.aliyuncs.com' => '日本(东京)',
+                            'oss-ap-northeast-2.aliyuncs.com' => '韩国(首尔)',
+                            'oss-ap-southeast-1.aliyuncs.com' => '新加坡*',
+                            'oss-ap-southeast-2.aliyuncs.com' => '澳大利亚(悉尼)',
+                            'oss-ap-southeast-3.aliyuncs.com' => '马来西亚(吉隆坡)',
+                            'oss-ap-southeast-5.aliyuncs.com' => '印度尼西亚(雅加达)',
+                            'oss-ap-southeast-6.aliyuncs.com' => '菲律宾(马尼拉)',
+                            'oss-ap-southeast-7.aliyuncs.com' => '泰国(曼谷)',
+                            'oss-ap-south-1.aliyuncs.com' => '印度(孟买)',
+                            'oss-eu-central-1.aliyuncs.com' => '德国(法兰克福)',
+                            'oss-eu-west-1.aliyuncs.com' => '英国(伦敦)',
+                            'oss-me-east-1.aliyuncs.com' => '阿联酋(迪拜)',
+                        ],
+                        "description" => "访问域名",
+                        'options' => [
+                            "class" => "regular-text code",
+                        ]
+                    ],
+                ],
+            ]
+        ],
     ],
 ];

@@ -11,21 +11,20 @@ use Yii;
 use yii\base\Module;
 use yii\helpers\Json;
 use yii\web\Application;
+
 use yii\helpers\IpHelper;
 use yii\helpers\ArrayHelper;
+use yii\console\Application as ConsoleApp;
 use yii\base\BootstrapInterface;
 use crud\modules\ModuleImplements;
 use yii\web\ForbiddenHttpException;
-
-
-
-
+use yii\base\NotSupportedException;
 
 /**
  * This is the main module class for the Gii module.
- *
+ * 这是Gii模块的主模块类
  * To use Gii, include it as a module in the application configuration like the following:
- *
+ * 要使用Gii,请将其作为模块包含在应用程序配置中,如下所示：
  * ~~~
  * return [
  *     'bootstrap' => ['gii'],
@@ -100,7 +99,8 @@ class Crud extends Module implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        if ($app instanceof \yii\web\Application) {
+        if ($app instanceof Application) {
+//            add_filter('status_header', [$this,"statusHeader"] );
             $app->getUrlManager()->addRules([
                 [
                     'class' => 'yii\web\UrlRule',
@@ -118,7 +118,7 @@ class Crud extends Module implements BootstrapInterface
                     'route' => $this->id . '/<controller>/<action>'
                 ],
             ], false);
-        } elseif ($app instanceof \yii\console\Application) {
+        } elseif ($app instanceof ConsoleApp) {
             $app->controllerMap[$this->id] = [
                 'class' => 'crud\modules\crud\console\GenerateController',
                 'generators' => array_merge($this->coreGenerators(), $this->generators),
@@ -135,7 +135,7 @@ class Crud extends Module implements BootstrapInterface
         if (!parent::beforeAction($action)) {
             return false;
         }
-
+//        Yii::$app->request->enableCsrfValidation = false;
         if (Yii::$app instanceof  Application && !$this->checkAccess()) {
             throw new ForbiddenHttpException(Yii::t("console", 'You are not allowed to access this page.'));
         }
@@ -155,6 +155,7 @@ class Crud extends Module implements BootstrapInterface
 
     /**
      * Resets potentially incompatible global settings done in app config.
+     * 重置在应用程序配置中完成的可能不兼容的全局设置
      */
     protected function resetGlobalSettings()
     {
@@ -165,6 +166,8 @@ class Crud extends Module implements BootstrapInterface
 
     /**
      * @return int whether the module can be accessed by the current user
+     * 当前用户是否可以访问该模块
+     * @throws NotSupportedException
      */
     protected function checkAccess()
     {
@@ -184,14 +187,15 @@ class Crud extends Module implements BootstrapInterface
                 return true;
             }
         }
-        Yii::warning('Access to Gii is denied due to IP address restriction. The requested IP is ' . $ip, __METHOD__);
+        Yii::warning(Yii::t('','Access to Gii is denied due to IP address restriction. The requested IP is ') . $ip, __METHOD__);
 
         return false;
     }
 
     /**
      * Returns the list of the core code generator configurations.
-     * @return array the list of the core code generator configurations.
+     * 返回核心代码生成器配置的列表
+     * @return array 核心代码生成器配置列表.
      */
     protected function coreGenerators()
     {
@@ -230,5 +234,19 @@ class Crud extends Module implements BootstrapInterface
             require __DIR__ . '/config/main.php',
             require __DIR__ . '/config/main-local.php'
         );
+    }
+
+    /**
+     * Filters an HTTP status header.
+     * 过滤HTTP状态标头。
+     * @since 2.2.0
+     *
+     * @param string $status_header HTTP status header.                 HTTP状态标头。
+     * @param int    $code          HTTP status code.                   HTTP状态代码。
+     * @param string $description   Description for the status code.    状态代码的说明
+     * @param string $protocol      Server protocol.                    服务器协议.
+     */
+    public function statusHeader($status_header, $code, $description, $protocol){
+
     }
 }

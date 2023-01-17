@@ -18,6 +18,7 @@ interface Translate
     public function translate($data,$from ="en",$to="zh-CHS",$format = "text", $model = "");
 
     /**
+     * @param $code
      * @return mixed
      */
     public static function error($code);

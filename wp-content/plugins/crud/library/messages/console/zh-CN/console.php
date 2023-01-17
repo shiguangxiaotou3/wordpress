@@ -40,9 +40,19 @@ return [
     'Model Generator' => '模型生成器',
     'To see the help of each command, enter:' => '要查看每个命令的帮助,请输入:',
     'The following commands are available:' => '以下命令可用:',
-    'Code not generated. Please fix the following errors:\n\n' => '未生成代码.请修复以下错误\n\n',
-    'No code to be generated.\n' => '没有要生成的代码.\n',
+    'Code not generated. Please fix the following errors:' => '未生成代码.请修复以下错误',
+    'No code to be generated.' => '没有要生成的代码.',
+    'The class name must contain fully qualified namespace name.'=>"类名必须包含完全限定的命名空间名称.",
     'The following files will be generated:\n' => '将生成以下文件:\n',
+    'Via Table' => '通过表',
+    'Via Model' => '通过模型',
+    'No relations' => '没有关系',
+    'All relations' => '所有关系',
+    'All relations with inverse' => '所有与逆的关系',
+    'Ready to generate the selected files?'=>"准备好生成所选文件了吗？",
+    'The following files will be generated:'=>"将生成以下文件:",
+    '[new]'=>'[新的]',
+    'done!'=>'完成!',
     '[unchanged]' => '[未更改]',
     '[changed]' => '[改变]',
     "Do you want to overwrite this file?" => '是否要覆盖此文件?',
@@ -54,11 +64,12 @@ return [
     'This generator helps you to quickly generate a new controller class with one or several controller actions and their corresponding views.'
     => '此生成器帮助您快速生成新的控制器类一个或多个控制器动作及其相应视图',
     'Module Generator' => "模块生成器",
-    '\nSome errors occurred while generating the files.' => '\n生成文件时出现一些错误',
-    '\nFiles were generated successfully!\n' => '\n文件生成成功!\n',
-    '\nNo file was generated.\n' => '\n未生成文件.\n',
-    '\nReady to generate the selected files?' => '\n准备好生成所选文件了吗?',
-    '\nNo files were chosen to be generated.\n' => '\n未选择要生成的文件.\n',
+    "Some errors occurred while generating the files." => "生成文件时出现一些错误",
+    "Files were generated successfully!" => "文件生成成功!",
+    'No file was generated.' => '未生成文件.',
+    'Generating code using template "'=>'使用模板生成代码"',
+//    "No files were chosen to be generated." => "\n未选择要生成的文件.\n",
+    'No files were chosen to be generated.'=>"未选择要生成的文件.",
     'Preview is not available for this file type.' => '预览不适用于此文件类型.',
     'Only word characters and backslashes are allowed, and the class name must end with "Controller".'
     => '只允许使用单词字符和反斜杠,类名必须以"Controller"结尾',
@@ -244,8 +255,6 @@ return [
     => '这是新控制器类将从中扩展的类.请确保该类存在并且可以自动加载.',
     'A code template must be selected.'=>'必须选择代码模板',
 
-
-
     'This is the <code>BaseActiveRecord</code> class associated with the table that CRUD will be built upon.You should provide a fully qualified class name, e.g., <code>app\models\Post</code>.'
     => '这是与CRUD将基于的表关联的<code>BaseActiveRecord</code>类。您应该提供一个完全限定的类名，例如，<code>app\models\Post</code>',
     'This is the name of the controller class to be generated. You should provide a fully qualified namespaced class (e.g. <code>app\controllers\PostController</code>),and class name should be in CamelCase with an uppercase first letter. Make sure the class is using the same namespace as specified by your application\'s controllerNamespace property.'
@@ -259,7 +268,9 @@ return [
     'This is the name of the search model class to be generated. You should provide a fully qualified namespaced class name, e.g., <code>app\models\PostSearch</code>.'
     => '这是要生成的搜索模型类的名称。您应该提供一个完全限定的同名类名，例如，<code>app\models\PostSearch</code>',
     'This indicates whether the generator should wrap the <code>GridView</code> or <code>ListView</code> widget on the index page with <code>yii\widgets\Pjax</code> widget. Set this to <code>true</code> if you want to get sorting, filtering and pagination without page refreshing.'
-    =>'这指示生成器是否应将索引页上的＜code＞GridView＜/code＞或＜code＞ListView＜/code＞小部件与＜code＞yii\widgets\Pjax＜/code>小部件包装在一起。如果您想在不刷新页面的情况下进行排序、过滤和分页，请将其设置为<code>true</code>。'
+    =>'这指示生成器是否应将索引页上的＜code＞GridView＜/code＞或＜code＞ListView＜/code＞小部件与＜code＞yii\widgets\Pjax＜/code>小部件包装在一起。如果您想在不刷新页面的情况下进行排序、过滤和分页，请将其设置为<code>true</code>。',
+
+    'Access to Gii is denied due to IP address restriction. The requested IP is '=>'由于IP地址限制,对Gii的访问被拒绝.请求的IP是:',
 
 
 ];

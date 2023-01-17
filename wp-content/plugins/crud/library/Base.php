@@ -23,7 +23,6 @@ class Base  {
         $response->format =Response::FORMAT_HTML;
         $response->data = $data;
         $response->send();
-
     }
 
     /**

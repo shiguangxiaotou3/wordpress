@@ -1,27 +1,19 @@
 <?php
 
-/**
- *
- *
- * @name AddController.php
- * @author 时光小偷
- * @package wordpress
- * @time  2022-9-27 2:51
- */
-
 namespace console\controllers;
-
 
 use Yii;
 use crud\Base;
 use crud\models\Rely;
-
 use yii\console\Controller;
-
+use crud\modules\wp\assets\WpAsset;
 use crud\modules\ads\components\Ads;
+use crud\modules\translate\components\GoogleTranslate;
 use crud\modules\translate\components\MicrosoftTranslate;
 use Shiguangxiaotou\Alipay\Request\AlipayTradePrecreateRequest;
-use crud\modules\translate\components\GoogleTranslate;
+use Exception;
+use yii\helpers\Console;
+
 
 /**
  * 测试应用
@@ -356,5 +348,194 @@ class AddController extends Controller
         }
     }
 
+    /**
+     * 阿里云oss上传测试
+     * @param $basePath
+     * @param string $dir
+     * @param $oss
+     */
+    public function actionUploadAliyuncsOss($basePath='',$dir='',$oss=''){
 
+        $this->getFiles('','',$arr);
+        $oss = Yii::$app->aliyuncsOss;
+        foreach ($arr as $key =>$value){
+           $results= $oss->uploadFile("shiguangxiaotou", $key ,$value);
+           if($results){
+               echo "上传：".$key.PHP_EOL;
+           }
+        }
+    }
+
+
+    private function getFiles($basePath,$dir,&$arr){
+        if(empty($basePath)){
+            $basePath = Yii::getAlias("@uploads");
+        }
+        if(empty($dir)){
+            $prefix =$basePath;
+        }else{
+            $prefix =$basePath."/".$dir;
+        }
+        $handle = opendir($prefix);
+        while (false !== ($file = readdir($handle))) {
+            if ($file != '.' && $file != '..') {
+                $s =   trim(  str_replace($basePath,"",$prefix."/".$file),'/');
+                if(is_file($prefix."/".$file)){
+                    $arr[$s] = $prefix."/".$file;
+                }elseif(is_dir($prefix."/".$file) and  $file != "assets"){
+                    $this->getFiles($basePath, $s,$arr);
+                }
+            }
+        }
+        closedir($handle);
+    }
+
+    /**
+     *
+     * 删除资源文件
+     * @param string $basedir
+     * @param string $dirName
+     */
+    public function actionDeleteAssets($basedir = '', $dirName = "")
+    {
+        if (empty($dirName)) {
+            $dirName = Yii::getAlias('@uploads/assets');
+        }
+        if (empty($basedir)) {
+            $basedir = Yii::getAlias('@uploads/assets');
+        }
+        if ($handle = opendir($dirName)) {
+            while (false !== ($item = readdir($handle))) {
+                if ($item != "." && $item != "..") {
+                    if (is_dir("$dirName/$item")) {
+                        $this->actionDeleteAssets($basedir, "$dirName/$item");
+                    } else {
+                        if (unlink("$dirName/$item")) {
+                            $this->success("删除文件成功:$dirName/$item");
+                        } else {
+                            $this->error("删除文件失败:$dirName/$item");
+                        }
+                    }
+                }
+            }
+            closedir($handle);
+            if ($basedir != $dirName) {
+                if (rmdir($dirName)) {
+                    $this->success("删除目录成功:" . $dirName);
+                } else {
+                    $this->error("删除目录失败： $dirName/$item");
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 控制台打印变量
+     * @param $var
+     * @param int $type
+     */
+    private function consoleEcho($var,$type =33){
+        if(! empty($var)){
+            if(is_string($var) or is_numeric($var)){
+                $this->stdout(PHP_EOL. $var,$type);
+            }
+            if(is_object($var)){
+                $arr = get_object_vars($var);
+                $this->stdout(PHP_EOL. print_r($arr ,true),$type);
+            }
+            if(is_array($var)){
+                $this->stdout(PHP_EOL. print_r($var,true),$type);
+            }
+        }else{
+            $this->stdout(PHP_EOL. "空 啥也没有",$type);
+        }
+
+    }
+
+
+    private function error($var){
+        $this->consoleEcho($var,31);
+    }
+    private function success($var){
+        $this->consoleEcho($var,32);
+
+    }
+
+    public function actionDeleteTest(){
+        $fire ="/Library/WebServer/Documents/wp/wp-content/plugins/crud/library/a.txt";
+        if (unlink( $fire)) {
+            $this->success("删除文件成功: $fire");
+        } else {
+            $this->error("删除文件失败: $fire");
+        }
+        touch($fire);
+        chmod($fire,0777);
+//        file_put_contents($fire,'','','');
+    }
+
+
+    public function actionSearchStr($dirName=''){
+        if(empty($dirName)){
+//            $dirName = Yii::getAlias("@vendor/yiisoft");
+            $dirName = Yii::getAlias("@crud");
+        }
+//        $str= 'Cannot declare class yii\db\ActiveRecord, because the name is already in use';
+        $str ="/Cannot\ declare\ class\ (.)*\,\ because\ the\ name\ is\ already\ in\ use/";
+//        $str ="/Cannot\ declare\ class/";
+//        $str ="/because\ the\ name\ is\ already\ in\ use/";
+        if ($handle = opendir($dirName)) {
+            while (false !== ($item = readdir($handle))) {
+                if ($item != "." && $item != "..") {
+                    if(is_file("$dirName/$item")){
+                        $this->error("搜索文件:$dirName/$item");
+                        $fileStr = file_get_contents("$dirName/$item");
+                        preg_match_all( $str,$fileStr,$arr);
+                        if(isset($arr[0]) and !empty($arr[0])){
+                            $this->success($arr[0]);
+                            $this->success("$dirName/$item");
+                            die();
+                        }
+                    }else{
+                        $this->error("$dirName/$item");
+                        $this->actionSearchStr($dirName."/".$item);
+                    }
+                }
+            }
+        }
+    }
 }
+// foreground color control codes
+//前景颜色控制代码
+//        const FG_BLACK = 30;
+//        const FG_RED = 31;
+//        const FG_GREEN = 32;
+//        const FG_YELLOW = 33;
+//        const FG_BLUE = 34;
+//        const FG_PURPLE = 35;
+//        const FG_CYAN = 36;
+//        const FG_GREY = 37;
+// background color control codes
+//背景色控制代码
+//        const BG_BLACK = 40;
+//        const BG_RED = 41;
+//        const BG_GREEN = 42;
+//        const BG_YELLOW = 43;
+//        const BG_BLUE = 44;
+//        const BG_PURPLE = 45;
+//        const BG_CYAN = 46;
+//        const BG_GREY = 47;
+// fonts style control codes
+// 字体样式控制代码
+//        const RESET = 0;
+//        const NORMAL = 0;
+//        const BOLD = 1;
+//        const ITALIC = 3;
+//        const UNDERLINE = 4;
+//        const BLINK = 5;
+//        const NEGATIVE = 7;
+//        const CONCEALED = 8;
+//        const CROSSED_OUT = 9;
+//        const FRAMED = 51;
+//        const ENCIRCLED = 52;
+//        const OVERLINED = 53;

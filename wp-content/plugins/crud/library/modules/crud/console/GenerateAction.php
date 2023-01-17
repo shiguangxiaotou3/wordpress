@@ -44,7 +44,7 @@ class GenerateAction extends \yii\base\Action
 
     protected function displayValidationErrors()
     {
-        $this->controller->stdout( Yii::t('console',"Code not generated. Please fix the following errors:\n\n"), Console::FG_RED);
+        $this->controller->stdout( Yii::t('console',"Code not generated. Please fix the following errors:").PHP_EOL.PHP_EOL, Console::FG_RED);
         foreach ($this->generator->errors as $attribute => $errors) {
             echo ' - ' . $this->controller->ansiFormat($attribute, Console::FG_CYAN) . ': ' . implode('; ', $errors) . "\n";
         }
@@ -59,7 +59,7 @@ class GenerateAction extends \yii\base\Action
             echo Yii::t('console',"No code to be generated.\n");
             return;
         }
-        echo Yii::t('console',"The following files will be generated:\n");
+        echo Yii::t('console',"The following files will be generated:")."\n";
         $skipAll = $this->controller->interactive ? null : !$this->controller->overwrite;
         $answers = [];
         foreach ($files as $file) {
@@ -100,26 +100,25 @@ class GenerateAction extends \yii\base\Action
                     }
                 }
             } else {
-                echo '        ' . $this->controller->ansiFormat('[new]', Console::FG_GREEN);
+                echo '        ' . $this->controller->ansiFormat(Yii::t('console','[new]'), Console::FG_GREEN);
                 echo $this->controller->ansiFormat(" $path\n", Console::FG_CYAN);
                 $answers[$file->id] = true;
             }
         }
 
         if (!array_sum($answers)) {
-            $this->controller->stdout(Yii::t('console',"\nNo files were chosen to be generated.\n"), Console::FG_CYAN);
+            $this->controller->stdout(PHP_EOL.Yii::t('console',"No files were chosen to be generated.").PHP_EOL, Console::FG_CYAN);
             return;
         }
 
-        if (!$this->controller->confirm(Yii::t('console',"\nReady to generate the selected files?"), true)) {
-            $this->controller->stdout(Yii::t('console',"\nNo file was generated.\n"), Console::FG_CYAN);
+        if (!$this->controller->confirm("\n".Yii::t('console',"Ready to generate the selected files?"), true)) {
+            $this->controller->stdout(PHP_EOL.Yii::t('console',"No file was generated.").PHP_EOL, Console::FG_CYAN);
             return;
         }
-
         if ($this->generator->save($files, (array) $answers, $results)) {
-            $this->controller->stdout(Yii::t('console',"\nFiles were generated successfully!\n"), Console::FG_GREEN);
+            $this->controller->stdout(Yii::t('console',"Files were generated successfully!").PHP_EOL, Console::FG_GREEN);
         } else {
-            $this->controller->stdout(Yii::t('console',"\nSome errors occurred while generating the files."), Console::FG_RED);
+            $this->controller->stdout(PHP_EOL.Yii::t('console',"Some errors occurred while generating the files.").PHP_EOL, Console::FG_RED);
         }
         echo preg_replace('%<span class="error">(.*?)</span>%', '\1', $results) . "\n";
     }

@@ -18,7 +18,7 @@ $modelFullClassName = $modelClassName;
 if ($generator->ns !== $generator->queryNs) {
     $modelFullClassName = '\\' . $generator->ns . '\\' . $modelFullClassName;
 }
-
+logObject($generator->queryNs."/".$className);
 echo "<?php\n";
 ?>
 
