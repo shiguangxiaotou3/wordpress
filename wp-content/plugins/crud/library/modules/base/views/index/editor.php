@@ -54,7 +54,7 @@ margin: 4px 0px 5px 5px;
 }
 #editorMenu >ul >li{
     cursor: pointer;
-    line-height: 44px;
+    line-height: 30px;
     /*border: 0;*/
     /*border-radius: 0;*/
     /*background-color: transparent;*/
@@ -79,7 +79,7 @@ margin: 4px 0px 5px 5px;
     white-space: nowrap;
 }
 .menuitem > .dashicons{
- margin:12px 12px;
+ margin:5px 5px;
 }
 CSS;
 $this->registerCss($css);
@@ -89,7 +89,7 @@ $this->registerCss($css);
     <h1>编辑器</h1>
     <hr class='wp-header-end' />
     <ul class="subsubsub" id="basePath">
-        <li><span class="dashicons dashicons-admin-multisite"></span></li>
+        <li><span class="dashicons dashicons-admin-home"></span></li>
     </ul>
     <form class="search-form search-plugins" method="get">
         <p class="search-box" style="">
@@ -101,32 +101,21 @@ $this->registerCss($css);
     </form>
     <hr style='width: 100%;' />
     <?= CodeEditorWidget::widget(["options" => ["id" => "editor", "style" => "margin: 6.5px 0;width: 100%;min-height: 500px"]]); ?>
-    <div class="menu" id="editorMenu">
+    <div class="menu" id="editorMenu" style="display: none">
         <ul>
             <li>
                 <label  class="menuitem" data-action="upload" title="" tabindex="0">
                     <span class="dashicons dashicons-admin-page"></span>
-                    <span class="displayname" >上传文件</span>
+                    <span class="displayname" >新建文件</span>
                 </label>
             </li>
             <li>
                 <label  class="menuitem" data-action="upload" title="" tabindex="0">
                     <span  class="dashicons dashicons-admin-page"></span>
-                    <span class="displayname">上传文件</span>
+                    <span class="displayname">新建目录</span>
                 </label>
             </li>
-            <li>
-                <label  class="menuitem" data-action="upload" title="" tabindex="0">
-                    <span  class="dashicons dashicons-admin-page"></span>
-                    <span class="displayname">上传文件</span>
-                </label>
-            </li>
-            <li>
-                <label  class="menuitem" data-action="upload" title="" tabindex="0">
-                    <span  class="dashicons dashicons-admin-page"></span>
-                    <span class="displayname">上传文件asdadsas</span>
-                </label>
-            </li>
+
         </ul>
     </div>
 </div>

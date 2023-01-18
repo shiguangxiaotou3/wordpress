@@ -234,7 +234,10 @@ class Files extends Model
                         if(is_dir("$path/$item")){
                             $data['dir'][]= $item;
                         }else{
-                            $data['files'][]= $item;
+                            if(substr($item,0,1) !="."){
+                                $data['files'][]= $item;
+                            }
+
                         }
                     }
                 }

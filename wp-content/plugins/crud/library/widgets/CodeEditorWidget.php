@@ -52,8 +52,8 @@ class CodeEditorWidget extends  Widget
                 </button>
             </li>
             
-             <li style="float: right;margin-right: 5px">
-                <span class="button button-primary-disabled" >
+             <li style="float: right;margin-right: 5px;">
+                <span class="button button-primary-disabled " >
                     <kbd>Ctrl</kbd>+<kbd>q</kbd>
                 </span>
             </li>
@@ -149,6 +149,8 @@ return <<<JS
     
     const app = new App({
         data:{
+            "Nav":"basePath",
+            "Box":"editorMenu",
             'Editor':"",
             "BaseDir":"{$this->basedir}",
             "Id":"{$this->options["id"]}",
@@ -156,6 +158,7 @@ return <<<JS
             'Theme':"{$this->theme}",
             "Mode":"{$this->mode}",
             "Value":'{$this->text}',
+            'ActiveDir':"{$this->basedir}",
             "Action":"/wp-admin/admin-ajax.php?action=base/index/editor",
             "FileList":[],
             "Group":0,
@@ -166,6 +169,35 @@ return <<<JS
             "Is_executable":true  
         },
         watch:{
+            FileList:{
+                deep:true,
+                handler:function(newVale,oldValue){
+                    let elDir = this.$("#"+this.getNav());
+                    let box = this.$("#"+this.getBox());
+                    let activeDir = this.getActiveDir();
+                    let dirs = newVale.dir;
+                    let files = newVale.files;
+                    for(var i =0 ;i<= dirs.length -1;i++){
+                        this.$("#"+this.getBox() +" ul").append(`
+                        <li>
+                            <label  class="menuitem" data-dir='`+ activeDir +"/" + dirs[i] +`' data-action="upload" title="" tabindex="0">
+                                <span  class="dashicons dashicons-portfolio" style='color: #ffdb99'></span>
+                                <span class="displayname">`+ dirs[i]+`</span>
+                            </label>
+                        </li>`);
+                    }
+                    console.log(files.length);
+                    for(var x =0 ;x<= files.length-1;x++){
+                        this.$("#"+this.getBox() +" ul").append(`
+                        <li>
+                            <label  class="menuitem" data-dir='`+ activeDir +"/" + files[x] +`' data-action="upload" title="" tabindex="0">
+                                <span  class="dashicons dashicons-media-code" style='color: #2271b1;'></span>
+                                <span class="displayname">`+ files[x]+`</span>
+                            </label>
+                        </li>`);
+                    }
+                }  
+            },
             Group:{
                 deep:true,
                 handler:function(newVale,oldValue){
@@ -234,18 +266,20 @@ return <<<JS
             this.$("#setting").click(function (){
                 editor.showSettingsMenu();
             });
-	        this.$("#plugin-search-input").change(
-	            function(){
-	                var newSelect=document.createElement("select"); 
-	                newSelect.id="mySelect"; 
-	                document.body.appendChild(newSelect); 
-	            }
-	            // function createSelect(){ 
-                // var newSelect=document.createElement("select"); 
-                // newSelect.id="mySelect"; 
-                // document.body.appendChild(newSelect); 
-                // }
-	        );
+            this.$("#"+this.getNav()+" li").click((e)=>{
+                let x = e.clientX;
+                let y = e.clientY;
+                let el = "#"+this.getBox();
+                console.log(x,y, el);
+                console.log(this);
+                this.$("#"+this.getBox()).top =y +"px";
+                this.$("#"+this.getBox()).let =x +"px";
+                this.$("#"+this.getBox()).css({"left": x+"px","top": y+"px","z-index":"100"}).show();
+                console.log(e)
+            });
+            this.$("#"+this.getNav()+" li").onBlur((e)=>{
+                this.$("#"+this.getBox()).show();
+            });
         },
         mounted:{
             // 重新跟新窗口
