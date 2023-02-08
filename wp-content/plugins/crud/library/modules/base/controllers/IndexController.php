@@ -15,12 +15,12 @@ class IndexController extends Controller
 
     public $enableCsrfValidation=false;
 
-    public function actions(){
-        return [
-            "index","ipinfo","mail","dns",'jvectormap','highlight',
-            "crawlers",'oss','editor','icons'
-        ];
-    }
+//    public function actions(){
+//        return [
+//            "index","ipinfo","mail","dns",'jvectormap','highlight',
+//            "crawlers",'oss','editor','icons'
+//        ];
+//    }
 
     public $layout=false;
 

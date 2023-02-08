@@ -14,8 +14,9 @@ use yii\web\Controller;
  */
 class IndexController extends Controller
 {
-    public $enableCsrfValidation=false;
-    public $layout=false;
+    public $enableCsrfValidation = false;
+
+    public $layout = false;
 
     public function actions()
     {
@@ -25,7 +26,8 @@ class IndexController extends Controller
             'modules',
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-                'layout' => false
+//                'view'=>'error',
+//                'layout' => false
             ]
         ];
     }
@@ -52,5 +54,4 @@ class IndexController extends Controller
     {
         return $this->render("modules");
     }
-
 }

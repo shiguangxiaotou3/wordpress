@@ -12,7 +12,6 @@ use crud\widgets\ControllerActionsWidget;
 
 class PageHeaderWidget extends Widget
 {
-    public $controllerOptions=[];
     public $searchOptions=[];
     public $searchResponse='';
     public $buttons=[];
@@ -20,7 +19,7 @@ class PageHeaderWidget extends Widget
     public function run(){
         $parent_title = get_admin_page_parent();
         $title = esc_html( get_admin_page_title() );
-        $ui = ControllerActionsWidget::widget($this->controllerOptions);
+        $ui = ControllerActionsWidget::widget();
         $search = SearchWidget::widget($this->searchOptions);
         $searchResponse ="";
         $buttons = join(' ',$this->buttons);

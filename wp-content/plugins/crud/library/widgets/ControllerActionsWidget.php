@@ -8,27 +8,23 @@ use yii\base\Widget;
 use yii\web\Controller;
 use crud\model\SettingsSwitch;
 
-
-
-
 /**
  * 生产控制器菜单
  * @package crud\common\widgets
  */
-class ControllerActionsWidget extends Widget
-{
+class ControllerActionsWidget extends Widget{
 
     /**
      * @var Controller $controller
      */
-    public $controller;
-    public $actions=[];
-    public $defaultUrl="admin.php?page=";
-    public $filter;
-    private $moduleId;
-    private $controllerId;
-    private $actionId;
+    public $controller ;
+    public $actions = [];
+    public $defaultUrl = "admin.php?page=";
+    public $filter ;
 
+    private $moduleId ;
+    private $controllerId ;
+    private $actionId ;
 
     public function init(){
         parent::init();
@@ -41,7 +37,6 @@ class ControllerActionsWidget extends Widget
         if (empty($this->actions)){
             $this->actions = $this->controller->actions();
         }
-
     }
 
     /**
@@ -52,7 +47,6 @@ class ControllerActionsWidget extends Widget
         if(!empty($this->actions)){
             // 判断是否为加载的模块
             if ($this->moduleId == Yii::$app->id) {
-
                 if(($this->actionId == "index")){
                     $active_menu_slug =$this->controllerId;
                 }else{
@@ -71,7 +65,6 @@ class ControllerActionsWidget extends Widget
             $links = [];
             foreach ($this->actions as $key=> $action) {
                 $action = is_array($action) ? $key : $action;
-
                 if (($action == "index")) {
                     $menu_slug = $tmlUrl;
                     $label = self::get_page_title($menu_slug);
@@ -124,5 +117,9 @@ class ControllerActionsWidget extends Widget
             }
         }
         return  '';
+    }
+
+    public static function getPage(){
+
     }
 }

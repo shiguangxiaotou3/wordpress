@@ -65,6 +65,7 @@ function dump($res){
     print_r($res);
     echo "</pre>";
 }
+
 /**
  * @param int $flags
  */
@@ -74,7 +75,6 @@ function my_debug_backtrace($flags = FILE_APPEND)
     $str = print_r($arr, true);
     file_put_contents(DEBUG_FILE, str_replace("xxxx", "", $str), $flags);
 }
-
 
 /**
  * 记录请求执行的钩子名称

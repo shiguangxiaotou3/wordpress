@@ -6,18 +6,12 @@ use crud\assets\HighlightAsset;
 use crud\widgets\PageHeaderWidget;
 use crud\widgets\RegisterHighlightAssetWidget;
 RegisterHighlightAssetWidget::widget();
-$options =[
-    'controllerOptions'=>[
-        "filter" =>function($action){return SettingsSwitch::getSwitch($action);}
-    ]
-];
 HighlightAsset::register($this)->registerAssetFiles($this);
 
 ?>
 
-
 <div class="wrap">
-    <?= PageHeaderWidget::widget($options) ?>
+    <?= PageHeaderWidget::widget() ?>
     <form action="options.php" method="post">
         <?php
         settings_fields("crud_group_crawlers");

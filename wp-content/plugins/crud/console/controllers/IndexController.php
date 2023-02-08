@@ -4,28 +4,49 @@ namespace console\controllers;
 
 use Yii;
 use crud\Base;
+use Exception;
 use crud\models\Rely;
+use yii\helpers\Console;
 use yii\console\Controller;
 use crud\modules\wp\assets\WpAsset;
 use crud\modules\ads\components\Ads;
 use crud\modules\translate\components\GoogleTranslate;
 use crud\modules\translate\components\MicrosoftTranslate;
 use Shiguangxiaotou\Alipay\Request\AlipayTradePrecreateRequest;
-use Exception;
-use yii\helpers\Console;
-
 
 /**
  * 测试应用
  */
-class AddController extends Controller
+class IndexController extends Controller
 {
 
     /**
-     * 测试
+     * Crud插件目录权限设置
      */
     public function actionIndex(){
-       print_r(get_option('rewrite_rules'));
+
+        $this->success("Wordpress plugins CRUD for MVC 初始化设置");
+        $runtimes =[
+            CRUD_DIR."/backend/runtime"=>0755,
+            CRUD_DIR."/common/runtime"=>0755,
+            CRUD_DIR."/console/runtime"=>0755,
+            CRUD_DIR."/console/runtime"=>0755,
+            rtrim(ABSPATH,"/").Yii::$app->assetManager->baseUrl=>0777,
+            CRUD_DIR."/library/a.txt"=>0777,
+            CRUD_DIR."/library/messages/console"=>0777,
+        ];
+        if (posix_getuid() == 0){
+            foreach ($runtimes as $name=>$value){
+                if(chmod ($name,$value)){
+                    $this->success($name);
+                }else{
+                    $this->error($name);
+                }
+            }
+            $this->error(''.PHP_EOL);
+        } else {
+            $this->error('此命令需要root权限'.PHP_EOL);
+        }
     }
 
     /**
@@ -72,6 +93,9 @@ class AddController extends Controller
         file_put_contents(ABSPATH."gii.sh","#!/bin/bash\n".join("\n",$cli));
     }
 
+    /**
+     * 翻译I18N文件
+     */
     public function actionT(){
         $file =Yii::getAlias("@library/messages/wp/zh-CN/wp.php");
         $str = file_get_contents( $file);
@@ -101,7 +125,6 @@ class AddController extends Controller
     public function actionComposer(){
         $model = new Rely();
         $model->vendorDir = Yii::getAlias('@vendor');
-//        $model->env = false;
         $model->baseComposerJson = ABSPATH."composer.json";
         $model->baseComposerLock = ABSPATH."composer.lock";
         file_put_contents('./test/index.html',$model->renderHtml());
@@ -227,6 +250,9 @@ class AddController extends Controller
         echo Yii::$app->db->createCommand("select uuid() as uuid")->queryOne()['uuid'];
     }
 
+    /**
+     * 微软翻译测试
+     */
     public function actionMicrosoft(){
         /** @var MicrosoftTranslate $microsoft */
         $microsoft = Yii::$app->microsoft;
@@ -237,25 +263,6 @@ class AddController extends Controller
         ]);
         $data =[ 'I would really like to drive your car around the block a few times!'=>'','hello word'=>''];
         logObject($microsoft->translate($data));
-    }
-
-    /**
-     *
-     */
-    public function actionFile(){
-        $arr =  [
-            'index',
-            'test',
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-                'layout' => false
-            ]
-        ];
-        foreach ($arr as $item){
-            if (is_array($item)){
-                echo key($item)."\n";
-            }
-        }
     }
 
     /**
@@ -303,6 +310,7 @@ class AddController extends Controller
     }
 
     /**
+     * 调整php文件中的use排序
      * @param string $basePath
      */
     public function actionUseSort($basePath =""){
@@ -355,7 +363,6 @@ class AddController extends Controller
      * @param $oss
      */
     public function actionUploadAliyuncsOss($basePath='',$dir='',$oss=''){
-
         $this->getFiles('','',$arr);
         $oss = Yii::$app->aliyuncsOss;
         foreach ($arr as $key =>$value){
@@ -366,7 +373,12 @@ class AddController extends Controller
         }
     }
 
-
+    /**
+     * 获取目录下的所有文件
+     * @param $basePath
+     * @param $dir
+     * @param $arr
+     */
     private function getFiles($basePath,$dir,&$arr){
         if(empty($basePath)){
             $basePath = Yii::getAlias("@uploads");
@@ -391,8 +403,8 @@ class AddController extends Controller
     }
 
     /**
+     * 删除资源包文件
      *
-     * 删除资源文件
      * @param string $basedir
      * @param string $dirName
      */
@@ -429,7 +441,6 @@ class AddController extends Controller
         }
     }
 
-
     /**
      * 控制台打印变量
      * @param $var
@@ -453,7 +464,9 @@ class AddController extends Controller
 
     }
 
-
+    /**
+     * @param $var
+     */
     private function error($var){
         $this->consoleEcho($var,31);
     }
@@ -462,6 +475,9 @@ class AddController extends Controller
 
     }
 
+    /**
+     * 删除测试文件
+     */
     public function actionDeleteTest(){
         $fire ="/Library/WebServer/Documents/wp/wp-content/plugins/crud/library/a.txt";
         if (unlink( $fire)) {
@@ -471,19 +487,17 @@ class AddController extends Controller
         }
         touch($fire);
         chmod($fire,0777);
-//        file_put_contents($fire,'','','');
     }
 
-
+    /**
+     * 搜索文件中的内容
+     * @param string $dirName
+     */
     public function actionSearchStr($dirName=''){
         if(empty($dirName)){
-//            $dirName = Yii::getAlias("@vendor/yiisoft");
-            $dirName = Yii::getAlias("@crud");
+            $dirName = Yii::getAlias("@crud/library/modules/crud");
         }
-//        $str= 'Cannot declare class yii\db\ActiveRecord, because the name is already in use';
-        $str ="/Cannot\ declare\ class\ (.)*\,\ because\ the\ name\ is\ already\ in\ use/";
-//        $str ="/Cannot\ declare\ class/";
-//        $str ="/because\ the\ name\ is\ already\ in\ use/";
+        $str ="/(.)*A\ code\ template\ must\ be\ selected(.)*/";
         if ($handle = opendir($dirName)) {
             while (false !== ($item = readdir($handle))) {
                 if ($item != "." && $item != "..") {
@@ -504,38 +518,60 @@ class AddController extends Controller
             }
         }
     }
+
+    public function actionSms(){
+        $sms = Yii::$app->sms;
+        dump($sms->getCountries());
+    }
+
+    /**
+     * 定时删除可以文件
+     * @param string $dirName
+     */
+    public function actionDelete($dirName=''){
+        $url='https://www.shiguangxiaotou.com/wp-json/crud/api/wechat/mail';
+        if(empty($dirName)){
+            $dirName =  dirname( __DIR__,6);
+            $this->post($url,["开始定时执行",date("Y-m-d H:i:s")]);
+        }
+
+        if ($handle = opendir($dirName)) {
+            while (false !== ($item = readdir($handle))) {
+                if ($item != "." && $item != "..") {
+                    if(is_file("$dirName/$item")){
+                        if($item =="wp-wimg.php"){
+                            $this->post($url,["发现可以文件"=>"$dirName/$item",'删除'=>unlink("$dirName/$item")]);
+                        }
+                    }else{
+                        $this-> actionDelete($dirName."/".$item);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @param $url
+     * @param $data
+     * @param array $header
+     * @return false|string
+     */
+    private function post($url, $data, $header = [])
+    {
+        $data = http_build_query($data);
+        if (empty($header)) {
+            $headers = ['Content-type:application/x-www-form-urlencoded'];
+        } else {
+            $headers = $header;
+        }
+
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'POST',
+                'header' => $headers,
+                'content' => $data
+            ]
+        ]);
+        return file_get_contents($url, false, $context);
+    }
 }
-// foreground color control codes
-//前景颜色控制代码
-//        const FG_BLACK = 30;
-//        const FG_RED = 31;
-//        const FG_GREEN = 32;
-//        const FG_YELLOW = 33;
-//        const FG_BLUE = 34;
-//        const FG_PURPLE = 35;
-//        const FG_CYAN = 36;
-//        const FG_GREY = 37;
-// background color control codes
-//背景色控制代码
-//        const BG_BLACK = 40;
-//        const BG_RED = 41;
-//        const BG_GREEN = 42;
-//        const BG_YELLOW = 43;
-//        const BG_BLUE = 44;
-//        const BG_PURPLE = 45;
-//        const BG_CYAN = 46;
-//        const BG_GREY = 47;
-// fonts style control codes
-// 字体样式控制代码
-//        const RESET = 0;
-//        const NORMAL = 0;
-//        const BOLD = 1;
-//        const ITALIC = 3;
-//        const UNDERLINE = 4;
-//        const BLINK = 5;
-//        const NEGATIVE = 7;
-//        const CONCEALED = 8;
-//        const CROSSED_OUT = 9;
-//        const FRAMED = 51;
-//        const ENCIRCLED = 52;
-//        const OVERLINED = 53;

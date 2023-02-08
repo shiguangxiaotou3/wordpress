@@ -7,11 +7,7 @@ use crud\models\SettingsSwitch;
 use crud\assets\HighlightAsset;
 use crud\widgets\PageHeaderWidget;
 
-$options =[
-    'controllerOptions'=>[
-        "filter" =>function($action){return SettingsSwitch::getSwitch($action);}
-    ]
-];
+
 
 $css = get_option("crud_group_highlight_theme","monokai_sublime.css");
 HighlightAsset::register($this);
@@ -47,7 +43,7 @@ jQuery(function ($) {
 JS;
 ?>
 <div class="wrap">
-    <?= PageHeaderWidget::widget($options) ?>
+    <?= PageHeaderWidget::widget() ?>
     <form action="options.php" method="post">
         <?php
         settings_fields("crud_group_highlight");

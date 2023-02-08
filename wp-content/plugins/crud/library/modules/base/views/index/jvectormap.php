@@ -7,11 +7,7 @@ use crud\library\widgets\JvectormapVisitorsWidget;
 use crud\library\widgets\JvectormapMarkersWidget;
 
 
-$options =[
-    'controllerOptions'=>[
-        "filter" =>function($action){return SettingsSwitch::getSwitch($action);}
-    ]
-];
+
 $css = <<<CSS
  .map{
     display: flex;
@@ -31,7 +27,7 @@ $crawlers = Yii::$app->crawlers;
 
 
 <div class="wrap">
-    <?= PageHeaderWidget::widget($options) ?>
+    <?= PageHeaderWidget::widget() ?>
     <form action="options.php" method="post">
     <?php
         settings_fields("crud_group_jvectormap");

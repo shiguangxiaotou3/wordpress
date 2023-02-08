@@ -25,6 +25,7 @@ $this->registerCss(".logo a{background:url('".$wpAsset."/images/logo.jpeg')}");
     </head>
     <body>
     <?php $this->beginBody() ?>
+
     <header role="banner">
         <nav role="navigation">
             <p class="logo"><a href="/" title="<?= Yii::$app->name ?>">home</a></p>
@@ -39,6 +40,7 @@ $this->registerCss(".logo a{background:url('".$wpAsset."/images/logo.jpeg')}");
         </nav>
     </header>
     <main role="main">
+
         <article id="webslides" class="vertical">
             <?= $content ?>
         </article>

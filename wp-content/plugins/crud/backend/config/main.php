@@ -30,6 +30,10 @@ return [
                 'application/xml' => 'crud\components\XmlRequestParser',
             ],
         ],
+         //重写response
+        'response'=>[
+            'class'=>"crud\components\Response"
+        ],
         "cache" => [
             'class' => "yii\caching\FileCache",
             "cachePath" => "@runtime/cache"

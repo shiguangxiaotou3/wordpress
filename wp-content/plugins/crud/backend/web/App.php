@@ -2,6 +2,8 @@
 
 namespace backend\web;
 
+use crud\modules\sms\Sms;
+use crud\modules\test\Test;
 use Darabonba\GatewaySpi\Models\InterceptorContext\request;
 use Yii;
 use Exception;
@@ -26,7 +28,6 @@ use crud\modules\translate\Translate;
 use crud\modules\base\Base as BaseModule;
 use PHPMailer\PHPMailer\PHPMailer as SMTP;
 use yii\web\Response;
-
 
 /**
  * App对象基类
@@ -79,8 +80,9 @@ class App extends Application
         // +----------------------------------------------------------------------
         return ArrayHelper::merge(
             [
-                'bootstrap' => ['wechat', 'wp','base' ,'crud'],
+                'bootstrap' => ['wechat', 'wp','base' ],
             ],
+//            Test::config(),
             BaseModule::config(),
             Wp::config(),
             Wechat::config(),
@@ -90,7 +92,8 @@ class App extends Application
             Server::config(),
             Translate::config(),
             Applets::config(),
-            Crud::config()
+           Sms::config()
+//            Crud::config()
         );
     }
 
@@ -134,7 +137,7 @@ class App extends Application
         // +----------------------------------------------------------------------
         // ｜在插件旁边显示设置按钮
         // +----------------------------------------------------------------------
-//        add_filter('plugin_action_links', [$this, 'addSettingsButton'], 10, 2);
+        add_filter('plugin_action_links', [$this, 'addSettingsButton'], 10, 2);
 
         // +----------------------------------------------------------------------
         // ｜静止自动更新
@@ -157,14 +160,15 @@ class App extends Application
         // +----------------------------------------------------------------------
         add_filter('get_avatar', function ($avatar) {
             return str_replace([
-                'www.gravatar.com',
-                '0.gravatar.com',
-                '1.gravatar.com',
-                '2.gravatar.com',
-                'secure.gravatar.com',
-                'cn.gravatar.com',
-            ], 'wpcdn.shiguangxiaotou.com', $avatar);
+                'https://www.gravatar.com',
+                'https://0.gravatar.com',
+                'https://1.gravatar.com',
+                'https://2.gravatar.com',
+                'https://secure.gravatar.com',
+                'https://cn.gravatar.com',
+            ], 'http://103.215.125.122', $avatar);
         });
+
     }
 
     // +----------------------------------------------------------------------
@@ -219,16 +223,16 @@ class App extends Application
         $query = $request->queryParams;
         $action = $query["page"];
         unset($query['page']);
-        if ($this->checkAdminPageRoute($action)) {
-            try {
-                Base::sendHtml($this->runAction($action, $query));
-            } catch (Exception $exception) {
-                Base::sendHtml($this->runAction("index/error", $exception));
-                return;
-            }
-        } else {
-            Base::sendHtml($this->runAction("index/error",  new  Exception('找不到路由' . $action)));
-        }
+        Yii::$app->run();
+//        if ($this->checkAdminPageRoute($action)) {
+//            try {
+                Base::sendHtml( $this->runAction($action, $query) );
+//            } catch (Exception $exception) {
+//                Base::sendHtml($this->runAction("index/error", $exception));
+//            }
+//        } else {
+//            Base::sendHtml($this->runAction("index/error",  new  Exception('找不到路由' . $action)));
+//        }
 
     }
 
@@ -258,14 +262,7 @@ class App extends Application
             $action = $query["action"];
             unset($query['action']);
             if ($this->checkAdminPageRoute($action)) {
-                $response =Yii::$app->response;
-                $response->format= Response::FORMAT_JSON;
-                $response->data =[
-                    'code'=>1,
-                    "message"=>"ok",
-                    "data"=> $this->runAction($action, $query)
-                ];
-                exit($response->send());
+                exit($this->runAction($action, $query));
             }
         } catch (Exception $exception) {
             print_r($query);
@@ -609,6 +606,11 @@ class App extends Application
      */
     private function checkAdminPageRoute($route)
     {
+        try {
+
+        }catch (\Exception $exception){
+            $r =["msg"=>$exception->getMessage(),"你他妈会不会"=>""];
+        }
         // +----------------------------------------------------------------------
         // | 未启用模块情况
         // | index => backend\controllers\IndexController::actionIndex

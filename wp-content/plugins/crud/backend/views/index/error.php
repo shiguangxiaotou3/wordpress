@@ -15,9 +15,7 @@ use yii\helpers\Html;
     <?= PageHeaderWidget::widget() ?>
     <h3><?= $name ?></h3>
 
-    <p>
-        <?= nl2br(Html::encode($message)) ?>
-    </p>
+    <p><?= nl2br(Html::encode($message)) ?></p>
 
     <p>
         Web服务器处理您的请求时发生上述错误.

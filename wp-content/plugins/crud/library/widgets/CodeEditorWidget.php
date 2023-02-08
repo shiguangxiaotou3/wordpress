@@ -150,7 +150,7 @@ return <<<JS
     const app = new App({
         data:{
             "Nav":"basePath",
-            "Box":"editorMenu",
+            "Menu":"editorMenu",
             'Editor':"",
             "BaseDir":"{$this->basedir}",
             "Id":"{$this->options["id"]}",
@@ -160,7 +160,7 @@ return <<<JS
             "Value":'{$this->text}',
             'ActiveDir':"{$this->basedir}",
             "Action":"/wp-admin/admin-ajax.php?action=base/index/editor",
-            "FileList":[],
+            "FileList":{},
             "Group":0,
             "OwnerName":"",
             "Permissions":0755,
@@ -172,31 +172,8 @@ return <<<JS
             FileList:{
                 deep:true,
                 handler:function(newVale,oldValue){
-                    let elDir = this.$("#"+this.getNav());
-                    let box = this.$("#"+this.getBox());
-                    let activeDir = this.getActiveDir();
-                    let dirs = newVale.dir;
-                    let files = newVale.files;
-                    for(var i =0 ;i<= dirs.length -1;i++){
-                        this.$("#"+this.getBox() +" ul").append(`
-                        <li>
-                            <label  class="menuitem" data-dir='`+ activeDir +"/" + dirs[i] +`' data-action="upload" title="" tabindex="0">
-                                <span  class="dashicons dashicons-portfolio" style='color: #ffdb99'></span>
-                                <span class="displayname">`+ dirs[i]+`</span>
-                            </label>
-                        </li>`);
-                    }
-                    console.log(files.length);
-                    for(var x =0 ;x<= files.length-1;x++){
-                        this.$("#"+this.getBox() +" ul").append(`
-                        <li>
-                            <label  class="menuitem" data-dir='`+ activeDir +"/" + files[x] +`' data-action="upload" title="" tabindex="0">
-                                <span  class="dashicons dashicons-media-code" style='color: #2271b1;'></span>
-                                <span class="displayname">`+ files[x]+`</span>
-                            </label>
-                        </li>`);
-                    }
-                }  
+                   this. RefreshFileList(newVale);
+                }
             },
             Group:{
                 deep:true,
@@ -262,24 +239,25 @@ return <<<JS
 	        this.setEditor(editor);
 	        window.onload =function () {
                 editor.resize();
-            },
+            }
+            
+            let nav = "#"+this.getNav();
+            // 打卡设置选择
             this.$("#setting").click(function (){
                 editor.showSettingsMenu();
             });
-            this.$("#"+this.getNav()+" li").click((e)=>{
-                let x = e.clientX;
-                let y = e.clientY;
-                let el = "#"+this.getBox();
-                console.log(x,y, el);
-                console.log(this);
-                this.$("#"+this.getBox()).top =y +"px";
-                this.$("#"+this.getBox()).let =x +"px";
-                this.$("#"+this.getBox()).css({"left": x+"px","top": y+"px","z-index":"100"}).show();
-                console.log(e)
+	        // 点击打开文件列表
+            this.$(nav +" li").click((e)=>{
+                
             });
-            this.$("#"+this.getNav()+" li").onBlur((e)=>{
-                this.$("#"+this.getBox()).show();
-            });
+            // // 鼠标移入
+            // this.$("#"+this.getNav()+" li").mouseover((e)=>{
+            //      this.$("#"+this.getBox()).show();
+            // });
+            // // 鼠标移出
+            //  this.$("#"+this.getNav()+" li").mouseover((e)=>{
+            //      this.$("#"+this.getBox()).hide();
+            // });
         },
         mounted:{
             // 重新跟新窗口
@@ -294,23 +272,75 @@ return <<<JS
                    var canvas_heigth = document.getElementById("editor").offsetHeight;
                    document.getElementById("editor").style.height = canvas_heigth + h +"px"
                 }
+            },
+            // 获取当下目录的文件列表
+            ApiGetFileList:function(callBack){
+                this.$.ajax({
+                    url:this.getAction(),
+                    dataType:"json",
+                    data:{'baseDir':this.getBaseDir(),'type':"List"},
+                    success:(res)=>{
+                        callBack(res);
+                    },
+                    error:function(res){
+                        console.log(res);
+                    }
+                });
+            },
+            // 显示菜单
+            ShowMenu:function(e,offsetX,offsetY){
+                let x = e.clientX;
+                let y = e.clientY;
+                let elMenu = "#"+this.getMenu();
+                this.$(elMenu).top =y + offsetX+"px";
+                this.$(elMenu).let =x + offsetY +"px";
+                this.$( elMenu).css({"left": x+"px","top": y+"px","z-index":"100"}).show();
+            },
+            // 新增文件
+            PushFileList:function(){
+                
+            },
+            // 跟新文件
+            UpDateFileList:function(){
+                
+            },
+            DeleteFileList:function(){
+                
+            },
+            RefreshFileList:function (newVale){
+                let elDir = this.$("#"+this.getNav());
+                let elmenu = this.$("#"+this.getMenu());
+                this.$(elmenu  +" ul").remove()
+                let activeDir = this.getActiveDir();
+                let dirs = newVale.dir;
+                let files = newVale.files;
+                for(var i =0 ;i<= dirs.length -1;i++){
+                    this.$(elmenu +" ul").append(`
+                    <li>
+                        <label  class="menuitem" data-dir='`+ activeDir +"/" + dirs[i] +`' data-action="upload" title="" tabindex="0">
+                            <span  class="dashicons dashicons-portfolio" style='color: #ffdb99'></span>
+                            <span class="displayname">`+ dirs[i]+`</span>
+                        </label>
+                    </li>`);
+                }
+                for(var x =0 ;x<= files.length-1;x++){
+                    this.$(elmenu  +" ul").append(`
+                    <li>
+                        <label  class="menuitem" data-dir='`+ activeDir +"/" + files[x] +`' data-action="upload" title="" tabindex="0">
+                            <span  class="dashicons dashicons-media-code" style='color: #2271b1;'></span>
+                            <span class="displayname">`+ files[x]+`</span>
+                        </label>
+                    </li>`);
+                }
             }
         },
         run:function (){
-            // console.log(this.getAction(),this.getBaseDir());
-            this.$.ajax({
-                url:this.getAction(),
-                dataType:"json",
-                data:{'baseDir':this.getBaseDir(),'type':"List"},
-                success:(res)=>{
-                    this.setFileList(res.data);
-                     // console.log(res);
-                    console.log(res);
-                },
-                error:function(res){
-                    console.log(res);
-                }
-            });
+            if(this.getFileList() == ""){
+                this.ApiGetFileList( (res)=>{
+                    console.log(res.data);
+                      // this.setFileList(res.data);
+                });
+            }
         }
     }, jQuery);
     window.app = app;

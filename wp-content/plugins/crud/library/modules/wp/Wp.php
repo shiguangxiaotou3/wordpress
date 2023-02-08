@@ -5,6 +5,8 @@ namespace crud\modules\wp;
 
 use Yii;
 use yii\base\Module;
+use yii\db\Exception;
+use yii\debug\panels\DumpPanel;
 use yii\web\Application;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
@@ -140,8 +142,7 @@ class Wp extends Module implements BootstrapInterface
      * 访问量统计
      */
     public function statistics(){
-//        Yii::$app->crawlers->auto();
-//        $this->crawlers->auto();
+        Yii::$app->crawlers->auto();
     }
 
     /**

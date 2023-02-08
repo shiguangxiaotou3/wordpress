@@ -8,7 +8,6 @@
 namespace crud\modules\crud;
 
 use Yii;
-use yii\db\Exception;
 use yii\web\View;
 use yii\base\Model;
 use ReflectionClass;
@@ -182,7 +181,6 @@ abstract class Generator extends Model
     public function defaultTemplate()
     {
         $class = new ReflectionClass($this);
-
         return dirname($class->getFileName()) . '/default';
     }
 

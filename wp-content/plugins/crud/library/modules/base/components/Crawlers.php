@@ -10,9 +10,6 @@ use yii\base\Component;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 
-
-
-
 /**
  *
  * @property-read  string $path
@@ -175,65 +172,74 @@ class Crawlers extends Component
      */
     public function auto()
     {
-        $ip = $this->getIp();
+        try{
+            $ip = $this->getIp();
+            if ($this->ignore($ip)) {
+                $ipinfo = $this->getIpinfo($ip);
+                $path = Yii::getAlias("@library/messages/city/zh-CN/city.php");
+                $data = require $path;
+                if ((isset($ipinfo['city']) and !empty($ipinfo['city']))) {
+                    if (!isset($data[$ipinfo['city']])) {
+                        upDateConfig($path, [$ipinfo['city'] => ""]);
+                    }
+                }
+                if ((isset($ipinfo['region']) and !empty($ipinfo['region']))) {
+                    if (!isset($data[$ipinfo['region']])) {
+                        upDateConfig($path, [$ipinfo['region'] => ""]);
+                    }
+                }
+                if ((isset($ipinfo['country']) and !empty($ipinfo['country']))) {
+                    if (!isset($data[$ipinfo['country']])) {
+                        upDateConfig($path, [$ipinfo['country'] => ""]);
+                    }
+                }
+                $data = [
+                    "ip" => $ip,
+                    "time" => time(),
+                    "city" => isset($ipinfo['city']) ? $ipinfo["city"] : "",
+                    "region" => isset($ipinfo["region"]) ? $ipinfo["region"] : "",
+                    "country" => isset($ipinfo["country"]) ? $ipinfo["country"] : "",
+                    "loc" => isset($ipinfo["loc"]) ? $ipinfo["loc"] : "",
+                    "browser" => $this->getBrowser(),
+                    'referer' => $this->getReferer(),
+                    "isCrawler" => $this->isCrawler(),
+                    "matches" => $this->getMatches(),
+                    'dome' => isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "",
+                    "url" => isset($_SERVER["HTTP_SELF"]) ? $_SERVER["HTTP_SELF"] : "",
+                    "args" => isset($_SERVER["QUERY_STRING"]) ? $_SERVER["QUERY_STRING"] : "",
+                    'action' => Yii::$app->request->baseUrl,
+                ];
+                $tmp = $data;
+                $tmp['city'] = Yii::t("city", $data["city"]);
+                $tmp['region'] = Yii::t("city", $data["region"]);
+                $tmp['country'] = Yii::t("city", $data["country"]);
+                $tmp['User-Agent'] = $_SERVER['HTTP_USER_AGENT'];
 
-        if ($this->ignore($ip)) {
-            $ipinfo = $this->getIpinfo($ip);
-            $path = Yii::getAlias("@library/messages/city/zh-CN/city.php");
-            $data = require $path;
-            if ((isset($ipinfo['city']) and !empty($ipinfo['city']))) {
-                if (!isset($data[$ipinfo['city']])) {
-                    upDateConfig($path, [$ipinfo['city'] => ""]);
+                logObject($tmp);
+                unset($tmp);
+                $this->updateRecords($data);
+                // 统计客户端浏览器类型
+                if (!empty($data["browser"]) and $data["browser"] !== "unknown") {
+                    $this->updateBrowsers($data['browser']);
+                }
+                // 统计客户端来路信息
+                if ($data["referer"] !== get_option("siteurl")) {
+
+                }
+
+                // 统计机器人
+                if (!empty($data['Matches'])) {
+                    $this->updateMatches($data['Matches'], $ip);
+                }
+                if(!empty($data['country']) and $data['country'] !="CN"){
+                    exit( "你谁啊");
+
                 }
             }
-            if ((isset($ipinfo['region']) and !empty($ipinfo['region']))) {
-                if (!isset($data[$ipinfo['region']])) {
-                    upDateConfig($path, [$ipinfo['region'] => ""]);
-                }
-            }
-            if ((isset($ipinfo['country']) and !empty($ipinfo['country']))) {
-                if (!isset($data[$ipinfo['country']])) {
-                    upDateConfig($path, [$ipinfo['country'] => ""]);
-                }
-            }
-            $data = [
-                "ip" => $ip,
-                "time" => time(),
-                "city" => isset($ipinfo['city']) ? $ipinfo["city"] : "",
-                "region" => isset($ipinfo["region"]) ? $ipinfo["region"] : "",
-                "country" => isset($ipinfo["country"]) ? $ipinfo["country"] : "",
-                "loc" => isset($ipinfo["loc"]) ? $ipinfo["loc"] : "",
-                "browser" => $this->getBrowser(),
-                'referer' => $this->getReferer(),
-                "isCrawler" => $this->isCrawler(),
-                "matches" => $this->getMatches(),
-                'dome' => isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "",
-                "url" => isset($_SERVER["HTTP_SELF"]) ? $_SERVER["HTTP_SELF"] : "",
-                "args" => isset($_SERVER["QUERY_STRING"]) ? $_SERVER["QUERY_STRING"] : "",
-                'action' => Yii::$app->request->baseUrl,
-            ];
-            $tmp = $data;
-            $tmp['city'] = Yii::t("city", $data["city"]);
-            $tmp['region'] = Yii::t("city", $data["region"]);
-            $tmp['country'] = Yii::t("city", $data["country"]);
-            $tmp['User-Agent'] = $_SERVER['HTTP_USER_AGENT'];
-            logObject($tmp);
-            unset($tmp);
-            $this->updateRecords($data);
-            // 统计客户端浏览器类型
-            if (!empty($data["browser"]) and $data["browser"] !== "unknown") {
-                $this->updateBrowsers($data['browser']);
-            }
-            // 统计客户端来路信息
-            if ($data["referer"] !== get_option("siteurl")) {
-
-            }
-
-            // 统计机器人
-            if (!empty($data['Matches'])) {
-                $this->updateMatches($data['Matches'], $ip);
-            }
+        }catch (Exception $exception){
+            logObject($exception);
         }
+
     }
 
     /**
@@ -287,7 +293,11 @@ class Crawlers extends Component
     {
         $dir = $this->path . "/visits/" . self::getDayUnix();
         if (!is_dir($dir)) {
-            mkdir($dir, 0777);
+            try{
+                mkdir($dir, 0777);
+            }catch (Exception $exception){
+                new Exception("没有操作权限");
+            }
         }
         return $dir;
     }

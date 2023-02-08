@@ -99,15 +99,16 @@ return [
                             "class" => "regular-text code"
                         ],
                         'switch' => [
-                            ["checked" => 1, "description" => "ipInfo: ip地址解析物理地址", "options" => ["value" => "ipinfo"]],
-                            ["checked" => 1, "description" => "mail: SMTP服务", "options" => ["value" => "mail"]],
-                            ["checked" => 1, "description" => "jvectormap: SVG地图插件", "options" => ["value" => "jvectormap"]],
-                            ["checked" => 1, "description" => "dns: 阿里dns解析API", "options" => ["value" => "dns"]],
-                            ["checked" => 1, "description" => "highlight: 代码高亮显示", "options" => ["value" => "highlight"]],
-                            ["checked" => 1, "description" => '机器人/蜘蛛/爬虫', "options" => ["value" => "crawlers"]],
-                            ["checked" => 1, "description" => "阿里云Oss", "options" => ["value" => "oss"]],
-                            ["checked" => 1, "description" => "编辑器", "options" => ["value" => "editor"]],
-                            ["checked" => 1, "description" => "Icons", "options" => ["value" => "icons"]],
+                            ["checked" => 1, "description" => "ipInfo: ip地址解析物理地址", "options" => ["value" => "base/index/ipinfo"]],
+                            ["checked" => 1, "description" => "mail: SMTP服务", "options" => ["value" => "base/index/mail"]],
+                            ["checked" => 1, "description" => "jvectormap: SVG地图插件", "options" => ["value" => "base/index/jvectormap"]],
+                            ["checked" => 1, "description" => "dns: 阿里dns解析API", "options" => ["value" => "base/index/dns"]],
+                            ["checked" => 1, "description" => "highlight: 代码高亮显示", "options" => ["value" => "base/index/highlight"]],
+                            ["checked" => 1, "description" => '机器人/蜘蛛/爬虫', "options" => ["value" => "base/index/crawlers"]],
+                            ["checked" => 1, "description" => "阿里云Oss", "options" => ["value" => "base/index/oss"]],
+                            ["checked" => 1, "description" => "编辑器", "options" => ["value" => "base/index/editor"]],
+                            ["checked" => 1, "description" => "Icons", "options" => ["value" => "base/index/icons"]],
+                            ["checked" => 1, "description" => "虚拟电话号码", "options" => ["value" => "base/index/icons"]],
                         ],
                     ]
                 ]
@@ -250,7 +251,6 @@ return [
             'args' => [],
 
         ],
-
         "highlight" => [
             'option_group' => 'crud_group',
             'page' => 'base/index/highlight',

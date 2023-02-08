@@ -8,9 +8,6 @@ use yii\helpers\Console;
 use yii\console\Controller;
 use yii\console\controllers\HelpController as defaultController;
 
-
-
-
 class HelpController extends defaultController
 {
 
@@ -28,7 +25,6 @@ class HelpController extends defaultController
             return;
         }
 
-           ;
         $this->stdout("\n". Yii::t("console","The following commands are available:")."\n\n", Console::BOLD);
         $maxLength = 0;
         foreach ($commands as $command => $description) {

@@ -3,8 +3,8 @@
 
 namespace crud\components;
 
-
-class Request
+use yii\web\Response;
+class Request extends Response
 {
 
 }

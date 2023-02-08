@@ -14,6 +14,7 @@ use yii\web\Controller;
 use crud\modules\crud\Crud;
 use crud\modules\crud\Generator;
 use yii\web\NotFoundHttpException;
+use crud\modules\crud\generators\model\Generator  as modelGenerator;
 
 /**
  * @author Qiang Xue <qiang.xue@gmail.com>
@@ -50,38 +51,40 @@ class DefaultController extends Controller
 
     public function actionView($id)
     {
-        try {
-            $generator = $this->loadGenerator($id);
 
-            $params = ['generator' => $generator, 'id' => $id];
+        logObject(Yii::$app->request->post(''));
+        $generator = $this->loadGenerator($id);
+        logObject($generator);
+        $params = ['generator' => $generator, 'id' => $id];
 
-            $preview = Yii::$app->request->post('preview');
-            $generate = Yii::$app->request->post('generate');
-            $answers = Yii::$app->request->post('answers');
-            if ($preview !== null || $generate !== null) {
-
-//                logObject(Yii::$app->request->post());
-                if ($generator->validate()) {
-
-////                    logObject( "asd");
-//                    $generator->saveStickyAttributes();
-//                    $files = $generator->generate();
-//                    if ($generate !== null && !empty($answers)) {
-//                        $params['hasError'] = !$generator->save($files, (array) $answers, $results);
-//                        $params['results'] = $results;
-//                    } else {
-//                        $params['files'] = $files;
-//                        $params['answers'] = $answers;
-//                    }
-                }else{
-                    logObject($generator->errors);
+        $preview = Yii::$app->request->post('preview');
+        $generate = Yii::$app->request->post('generate');
+        $answers = Yii::$app->request->post('answers');
+        if ($preview !== null || $generate !== null) {
+            dump( $generator->getErrors());
+//            $model = new modelGenerator();
+//            $model->load(Yii::$app->request->post());
+//            if($model->validate()){
+//
+//            }else{
+//                dump($model->getErrors());
+//                die();
+//            }
+            if ($generator->validate()) {
+                $generator->saveStickyAttributes();
+                $files = $generator->generate();
+                if ($generate !== null && !empty($answers)) {
+                    $params['hasError'] = !$generator->save($files, (array) $answers, $results);
+                    $params['results'] = $results;
+                } else {
+                    $params['files'] = $files;
+                    $params['answers'] = $answers;
                 }
+            }else{
+                logObject($generator->errors);
             }
-//        dump(Yii::$app->request->post());
-            return $this->render('view', $params);
-        }catch (Exception $exception){
-
         }
+        return $this->render('view', $params);
 
     }
 
@@ -146,11 +149,12 @@ class DefaultController extends Controller
     protected function loadGenerator($id)
     {
         if (isset($this->module->generators[$id])) {
+
             $this->generator = $this->module->generators[$id];
             $this->generator->loadStickyAttributes();
             $this->generator->load(Yii::$app->request->post());
-
             return $this->generator;
+
         }
         throw new NotFoundHttpException("Code generator not found: $id");
     }

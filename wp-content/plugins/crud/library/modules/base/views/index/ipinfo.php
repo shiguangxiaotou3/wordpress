@@ -10,11 +10,6 @@ use crud\widgets\BarChartWidget;
 use crud\widgets\LineChartWidget;
 use crud\widgets\PageHeaderWidget;
 
-$options =[
-    'controllerOptions'=>[
-        "filter" =>function($action){return SettingsSwitch::getSwitch($action);}
-    ]
-];
 
 
 ChartAsset::register($this);
@@ -43,7 +38,7 @@ foreach ($visits as $key => $re) {
 }
 ?>
     <div class="wrap">
-        <?= PageHeaderWidget::widget($options) ?>
+        <?= PageHeaderWidget::widget() ?>
         <form action="options.php" method="post">
             <?php
             settings_fields("crud_group_ipinfo");

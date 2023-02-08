@@ -4,17 +4,10 @@
 use crud\models\SettingsSwitch;
 use crud\widgets\PageHeaderWidget;
 use crud\modules\base\components\AliyuncsOss;
-$options =[
-    'controllerOptions'=>[
-        "filter" =>function($action){return SettingsSwitch::getSwitch($action);}
-    ]
-];
 
 ?>
-
-
 <div class="wrap">
-    <?= PageHeaderWidget::widget($options) ?>
+    <?= PageHeaderWidget::widget() ?>
     <form action="options.php" method="post">
         <?php
         settings_fields("crud_group_aliyuncsOss");
