@@ -4,7 +4,6 @@ Yii::setAlias('@uploads',dirname(__DIR__,4)."/uploads" );
 Yii::setAlias('@crud', dirname(dirname(__DIR__ )));
 Yii::setAlias('@vendor', dirname(dirname(__DIR__))."/vendor" );
 Yii::setAlias('@backend', dirname(dirname(__DIR__ )). '/backend');
-Yii::setAlias('@frontend', dirname(dirname(__DIR__)) . '/frontend');
 Yii::setAlias('@common',dirname(__DIR__));
 Yii::setAlias('@console', dirname(dirname(__DIR__)) . '/console');
 Yii::setAlias('@library', dirname(dirname(__DIR__) ). '/library');

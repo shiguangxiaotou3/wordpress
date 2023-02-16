@@ -4,13 +4,11 @@
 namespace crud\modules\translate\components;
 
 use Yii;
+use Exception;
 use yii\web\Request;
 use yii\base\Component;
 use Google\Cloud\Translate\V2\TranslateClient;
 use crud\modules\translate\components\Translate;
-
-
-
 
 
 /**
@@ -43,16 +41,21 @@ class GoogleTranslate extends Component implements Translate
      */
     public function languages()
     {
-        $cache = Yii::$app->cache;
-        if (!$cache->get("iso")) {
-            $languages = $this->client->languages();
-            $iso = [];
-            foreach ($languages as $language) {
-                $iso[] = $language;
+        try {
+            $cache = Yii::$app->cache;
+            if (!$cache->get("iso")) {
+                $languages = $this->client->languages();
+                $iso = [];
+                foreach ($languages as $language) {
+                    $iso[] = $language;
+                }
+                $cache->set("iso", $iso);
             }
-            $cache->set("iso", $iso);
+            return $cache->get("iso");
+        }catch (\Exception $exception){
+            return [];
         }
-        return $cache->get("iso");
+
     }
 
     /**

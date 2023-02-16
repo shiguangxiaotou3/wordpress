@@ -63,7 +63,7 @@ class Crud extends Module implements BootstrapInterface
      *   The default value is `['127.0.0.1', '::1']`, which means the module can only be accessed
      *   by localhost.
      */
-    public $allowedIPs = ['59.174.48.91','127.0.0.1','119.98.220.193' ,'::1'];
+    public $allowedIPs = ['59.174.48.91','127.0.0.1','119.98.220.193','119.98.220.12' ,'::1'];
     /**
      * @var array|Generator[] a list of generator configurations or instances. The array keys
      * are the generator IDs (e.g. "crud"), and the array elements are the corresponding generator
@@ -135,7 +135,6 @@ class Crud extends Module implements BootstrapInterface
         if (!parent::beforeAction($action)) {
             return false;
         }
-//        Yii::$app->request->enableCsrfValidation = false;
         if (Yii::$app instanceof  Application && !$this->checkAccess()) {
             throw new ForbiddenHttpException(Yii::t("console", 'You are not allowed to access this page.'));
         }

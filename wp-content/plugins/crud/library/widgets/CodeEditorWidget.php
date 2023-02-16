@@ -435,7 +435,6 @@ JS;
         return Files::fileInfo($path);
     }
 
-
     public function icons(){
         return [
         ];

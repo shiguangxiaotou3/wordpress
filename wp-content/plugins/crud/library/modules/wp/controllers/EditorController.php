@@ -14,4 +14,10 @@ class EditorController extends Controller{
     public function actionIndex(){
         return $this->render("index");
     }
+    public function actionExt(){
+        return $this->render("ext");
+    }
+    public function actionCrud(){
+        return $this->render("crud");
+    }
 }

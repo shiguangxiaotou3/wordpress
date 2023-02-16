@@ -6,10 +6,6 @@ namespace crud\widgets;
 use yii\base\Widget;
 use yii\helpers\Html;
 
-
-
-
-
 /**
  * Class LinksWidget
  * @package crud\common\widgets
@@ -17,9 +13,11 @@ use yii\helpers\Html;
 class LinksWidget extends  Widget
 {
     public $activeUrl;
-    public $activeClass='current';
+    public $linkDefaultClass="nav-tab";
+    public $linkActiveClass='nav-tab-active';
     public $links=[];
-    public $options =["class"=>"subsubsub"];
+    //<nav class="nav-tab-wrapper wp-clearfix" aria-label="次要菜单">
+    public $options =["class"=>"nav-tab-wrapper wp-clearfix"];
     public function init(){
         parent::init();
         if (empty($this->links)){
@@ -33,22 +31,18 @@ class LinksWidget extends  Widget
                 $link["options"]=["aria-current"=>"page"];
             }
             if($link['url'] == $this->activeUrl){
-                if(isset($link['options']["class"])){
-                    $link['options']["class"] .="".$this->activeClass;
-                }else{
-                    $link['options']["class"] =$this->activeClass;
-                }
+                $link['options']["class"] =  $this->linkDefaultClass ." ".$this->linkActiveClass;
+            }else{
+                $link['options']["class"] =  $this->linkDefaultClass ;
             }
             $a_text = isset($link['label']) ? $link['label']:"全部" ;
-            $count = isset($link['count'])? Html::beginTag('span')." (".$link['count'].") "
+            $count = isset($link['count']) ? Html::beginTag('span')." (".$link['count'].") "
                 .Html::endTag("span"):"";
-            $li[] = Html::beginTag("li").
-                Html::a($a_text.$count
-                    ,$link['url'],$link['options']).
-                Html::endTag("li");
+            $li[] = Html::a($a_text.$count,$link['url'],$link['options']);
+
         }
 
-        return Html::beginTag("ul",$this->options).join(" | ",$li).Html::endTag("ul");
+        return Html::beginTag("ul",$this->options).join($li).Html::endTag("ul");
     }
 
 }

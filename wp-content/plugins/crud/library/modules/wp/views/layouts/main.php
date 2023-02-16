@@ -21,7 +21,9 @@ use yii\helpers\Html;
 <nav class="nav">
     <div class="nav-item">
         <a href="/">首页</a>
-        <a href="/crud/">wp模块</a>
+        <a href="/crud/editor">支付在线文档</a>
+        <a href="/crud/editor/crud">插件文档</a>
+        <a href="/crud/editor/ext">php拓展</a>
     </div>
 </nav>
 <?= $content ?>

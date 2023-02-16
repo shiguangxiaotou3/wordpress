@@ -132,10 +132,7 @@ class Wp extends Module implements BootstrapInterface
      * 向前台注册全局aeesets
      */
     public function wpInit(){
-        try {
-            $this->runAction('index/init');
-        } catch (InvalidRouteException $e) {
-        }
+        $this->runAction('index/init');
     }
 
     /**

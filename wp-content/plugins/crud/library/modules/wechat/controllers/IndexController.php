@@ -11,11 +11,6 @@ use yii\web\Controller;
 
 class IndexController extends Controller
 {
-    public $layout=false;
-
-    public function actions(){
-        return ['index','menu','event'];
-    }
 
     /**
      * 验证开发者服务器

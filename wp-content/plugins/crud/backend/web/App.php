@@ -2,32 +2,31 @@
 
 namespace backend\web;
 
-use crud\modules\sms\Sms;
-use crud\modules\test\Test;
-use Darabonba\GatewaySpi\Models\InterceptorContext\request;
+
 use Yii;
-use Exception;
 use crud\Base;
+use Exception;
+use yii\web\Response;
 use crud\models\Menu;
 use crud\modules\wp\Wp;
 use yii\web\Application;
+use crud\modules\sms\Sms;
 use crud\models\Settings;
 use crud\modules\ads\Ads;
-use crud\modules\seo\Seo;
-use crud\modules\crud\Crud;
 use crud\models\AjaxAction;
+use crud\modules\crud\Crud;
 use yii\helpers\ArrayHelper;
+use crud\modules\market\Market;
+use crud\modules\wechat\Wechat;
 use crud\modules\editor\Editor;
 use crud\modules\alipay\AliPay;
 use crud\modules\server\Server;
-use crud\modules\wechat\Wechat;
 use crud\modules\applets\Applets;
 use yii\base\InvalidRouteException;
 use yii\base\InvalidConfigException;
 use crud\modules\translate\Translate;
 use crud\modules\base\Base as BaseModule;
 use PHPMailer\PHPMailer\PHPMailer as SMTP;
-use yii\web\Response;
 
 /**
  * App对象基类
@@ -45,7 +44,7 @@ class App extends Application
     public function __construct()
     {
         // +----------------------------------------------------------------------
-        // ｜
+        // ｜ 应用初始化
         // +----------------------------------------------------------------------
         require __DIR__ . '/../config/bootstrap.php';
         $config = ArrayHelper::merge(
@@ -80,20 +79,19 @@ class App extends Application
         // +----------------------------------------------------------------------
         return ArrayHelper::merge(
             [
-                'bootstrap' => ['wechat', 'wp','base' ],
+                'bootstrap' => ['wechat', 'wp','base','crud',"market" ],
             ],
-//            Test::config(),
+            Crud::config(),
             BaseModule::config(),
             Wp::config(),
             Wechat::config(),
             Ads::config(),
             AliPay::config(),
-            Seo::config(),
             Server::config(),
             Translate::config(),
             Applets::config(),
-           Sms::config()
-//            Crud::config()
+            Sms::config(),
+            Market::config()
         );
     }
 
@@ -158,16 +156,16 @@ class App extends Application
         // +----------------------------------------------------------------------
         // ｜中国地区头像代理
         // +----------------------------------------------------------------------
-        add_filter('get_avatar', function ($avatar) {
-            return str_replace([
-                'https://www.gravatar.com',
-                'https://0.gravatar.com',
-                'https://1.gravatar.com',
-                'https://2.gravatar.com',
-                'https://secure.gravatar.com',
-                'https://cn.gravatar.com',
-            ], 'http://103.215.125.122', $avatar);
-        });
+//        add_filter('get_avatar', function ($avatar) {
+//            return str_replace([
+//                'https://www.gravatar.com',
+//                'https://0.gravatar.com',
+//                'https://1.gravatar.com',
+//                'https://2.gravatar.com',
+//                'https://secure.gravatar.com',
+//                'https://cn.gravatar.com',
+//            ], 'http://103.215.125.122', $avatar);
+//        });
 
     }
 
@@ -233,7 +231,6 @@ class App extends Application
 //        } else {
 //            Base::sendHtml($this->runAction("index/error",  new  Exception('找不到路由' . $action)));
 //        }
-
     }
 
     // +----------------------------------------------------------------------
@@ -606,11 +603,6 @@ class App extends Application
      */
     private function checkAdminPageRoute($route)
     {
-        try {
-
-        }catch (\Exception $exception){
-            $r =["msg"=>$exception->getMessage(),"你他妈会不会"=>""];
-        }
         // +----------------------------------------------------------------------
         // | 未启用模块情况
         // | index => backend\controllers\IndexController::actionIndex

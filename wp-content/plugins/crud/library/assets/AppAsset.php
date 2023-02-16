@@ -13,7 +13,7 @@ use yii\base\InvalidConfigException;
  * @property-read  $sourcePath
  * @package crud\assets
  */
-class AppAsset extends AssetBundle
+class AppAsset extends WpAsset
 {
 
     /**

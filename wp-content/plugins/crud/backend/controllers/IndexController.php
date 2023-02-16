@@ -1,12 +1,8 @@
 <?php
 
-
-
 namespace backend\controllers;
 
-
 use yii\web\Controller;
-
 
 /**
  * Class IndexController
@@ -26,8 +22,6 @@ class IndexController extends Controller
             'modules',
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-//                'view'=>'error',
-//                'layout' => false
             ]
         ];
     }

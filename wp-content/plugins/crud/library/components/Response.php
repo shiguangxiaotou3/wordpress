@@ -5,9 +5,9 @@ namespace crud\components;
 
 use yii\web\HeadersAlreadySentException;
 use yii\web\Response  as YiiResponse;
+
 class Response extends YiiResponse
 {
-
     public function send()
     {
         if ($this->isSent) {

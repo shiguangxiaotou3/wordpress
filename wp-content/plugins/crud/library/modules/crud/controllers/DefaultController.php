@@ -51,10 +51,8 @@ class DefaultController extends Controller
 
     public function actionView($id)
     {
-
-        logObject(Yii::$app->request->post(''));
         $generator = $this->loadGenerator($id);
-        logObject($generator);
+
         $params = ['generator' => $generator, 'id' => $id];
 
         $preview = Yii::$app->request->post('preview');

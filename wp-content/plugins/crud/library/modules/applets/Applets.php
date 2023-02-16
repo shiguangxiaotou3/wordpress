@@ -10,10 +10,6 @@ use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
 use crud\modules\ModuleImplements;
 
-
-
-
-
 class Applets extends Module implements BootstrapInterface
 {
     /**

@@ -20,6 +20,7 @@ return [
             'class' => 'crud\modules\translate\components\GoogleTranslate',
             'translateKey' =>get_option("crud_group_google_key"),
             'shortcut' =>get_option("crud_group_google_shortcut"),
+//            'uil' =>get_option("crud_group_google_uli"),
         ],
         "youdao"=>[
             "class"=>'crud\modules\translate\components\YoudaoTranslate',

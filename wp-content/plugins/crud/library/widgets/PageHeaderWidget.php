@@ -7,9 +7,6 @@ use yii\base\Widget;
 use crud\widgets\SearchWidget;
 use crud\widgets\ControllerActionsWidget;
 
-
-
-
 class PageHeaderWidget extends Widget
 {
     public $searchOptions=[];
@@ -20,22 +17,13 @@ class PageHeaderWidget extends Widget
         $parent_title = get_admin_page_parent();
         $title = esc_html( get_admin_page_title() );
         $ui = ControllerActionsWidget::widget();
-        $search = SearchWidget::widget($this->searchOptions);
-        $searchResponse ="";
         $buttons = join(' ',$this->buttons);
-        if(!empty( $this->searchResponse)){
-            $searchResponse ="<hr style='width: 100%;' />";
-        }
         return "
         <h1 class='wp-heading-inline'>
-            ".$parent_title."
-            <small>".$title."</small>
-            {$buttons}
+            ".$title."
         </h1>
+         {$buttons}
         <hr class='wp-header-end' />
-        ".$ui.$search.settings_errors()."
-        <hr style='width: 100%;' />
-        ".$searchResponse;
-
+        ".$ui.settings_errors();
     }
 }

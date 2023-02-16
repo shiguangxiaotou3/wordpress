@@ -4,14 +4,16 @@
 
 
 use crud\widgets\PageHeaderWidget;
-use crud\modules\editor\assets\AceAsset;
-use crud\modules\editor\widgets\CodeEditorWidget;
+use crud\assets\AceAsset;
+use crud\widgets\CodeEditorWidget;
 ?>
 
 
 <div class="wrap">
-    <?= PageHeaderWidget::widget() ?>
-    <button id="submit" class="button button-primary">保存更改</button>
+    <?= PageHeaderWidget::widget(['buttons' =>
+        ['<button id="submit" class="page-title-action hide-if-no-customize">保存更改</button>']])
+    ?>
+
     <?= CodeEditorWidget::widget([
         "mode"=>AceAsset::MODE_JSON,
         "options" => [

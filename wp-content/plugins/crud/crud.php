@@ -36,4 +36,3 @@ date_default_timezone_set('Asia/Shanghai');
 global $crud;
 $crud = new backend\web\App();
 $crud->run();
-

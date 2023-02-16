@@ -31,12 +31,10 @@ class ControllerActionsWidget extends Widget{
         if(empty($this->controller)){
             $this->controller = Yii::$app->controller;
         }
+        $this->actions = $this->getControllerActions();
         $this->moduleId = $this->controller->module->id;
         $this->controllerId = $this->controller->id;
         $this->actionId = $this->controller->action->id;
-        if (empty($this->actions)){
-            $this->actions = $this->controller->actions();
-        }
     }
 
     /**
@@ -45,6 +43,7 @@ class ControllerActionsWidget extends Widget{
      */
     public function run(){
         if(!empty($this->actions)){
+
             // 判断是否为加载的模块
             if ($this->moduleId == Yii::$app->id) {
                 if(($this->actionId == "index")){
@@ -119,7 +118,22 @@ class ControllerActionsWidget extends Widget{
         return  '';
     }
 
-    public static function getPage(){
-
+    public  function getControllerActions(){
+        $actions = get_class_methods(get_class($this->controller));
+        $result=[];
+        foreach ($actions as $action){
+            if((substr($action ,0,6) =="action") and $action !="actions"){
+                $result[]= toUnderScore( str_replace("action","",$action),"-");
+            }
+        }
+        $append =$this->controller->actions();
+        foreach ($append as $key=>$value){
+            if(is_array($value)){
+                $result[] = $key;
+            }else{
+                $result[] = $value;
+            }
+        }
+        return array_unique($result);
     }
 }

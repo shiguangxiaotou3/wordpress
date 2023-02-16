@@ -14,13 +14,8 @@ use GuzzleHttp\Exception\GuzzleException;
 use crud\modules\wechat\assets\WeChatAssets;
 use crud\modules\wechat\models\ValidateServer;
 
-
-
-
-
-
 /**
- * 微信公众好组件
+ * 微信公众号组件
  * @property string $appId 
  * @property string $appSecret
  * @property string $token

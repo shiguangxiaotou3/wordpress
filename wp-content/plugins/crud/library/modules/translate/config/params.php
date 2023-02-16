@@ -57,7 +57,7 @@ return [
                             "class" => "regular-text code"
                         ]
                     ],
-                ],//shortcut
+                ],
                 [
                     'id' => 'key',
                     "title" => "Cloud key",
@@ -82,6 +82,7 @@ return [
                         ]
                     ],
                 ],
+
             ]
         ],
         "baidu" => [

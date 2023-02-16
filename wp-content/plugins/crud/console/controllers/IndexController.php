@@ -111,13 +111,6 @@ class IndexController extends Controller
 
     }
 
-    /**
-     * http测试
-     */
-    public function actionHttp(){
-        $data =  Base::GET("https://www.baidu.com",[]);
-        var_dump($data);
-    }
 
     /**
      * 计算composer 依赖关系图
@@ -254,15 +247,41 @@ class IndexController extends Controller
      * 微软翻译测试
      */
     public function actionMicrosoft(){
+        set_time_limit(0);
         /** @var MicrosoftTranslate $microsoft */
         $microsoft = Yii::$app->microsoft;
-        $params= http_build_query([
-            'api-version'=> '3.0',
-            'from'=> "adas",
-            'to'=>  ['asd','aasd'],
-        ]);
-        $data =[ 'I would really like to drive your car around the block a few times!'=>'','hello word'=>''];
-        logObject($microsoft->translate($data));
+        $data = json_decode( file_get_contents(ABSPATH."test/data.json"),true);
+        $mic = include ABSPATH."test/data.php";
+        $str ="## PHP常用拓展".PHP_EOL;
+        foreach ($data as $row){
+            $str .="#### ".$row["text"].PHP_EOL;
+            $str .= "`https://www.php.net/manual/en/".$row["link"]."`".PHP_EOL;
+            if(isset($row["describe"]) and  is_array($row["describe"])){
+                foreach ($row["describe"] as $value){
+                    if(isset($mic[$value])){
+                        $value = $mic[$value];
+                    }
+                    $replace=[
+                        "（"=>"(",
+                        "）"=>")",
+                        "“"=>"\"",
+                        "。"=>".",
+                        "，"=>",",
+                        "："=>":",
+                        "”"=>"\"",
+                        "   "=>"",
+                        PHP_EOL=>"",
+                    ];
+                    foreach ($replace as $key=>$item){
+                        $value= str_replace($key,$item,$value);
+                    }
+                    $value= htmlToMarkdown($value);
+                    $str .=$value.PHP_EOL;
+                }
+            }
+            $str .=PHP_EOL;
+        }
+        file_put_contents(ABSPATH."test/data3.md",$str);
     }
 
     /**
@@ -300,14 +319,6 @@ class IndexController extends Controller
         print_r($DATA);
     }
 
-    /**
-     * 阿里支付测试
-     */
-    public function actionPal(){
-        $request = new AlipayTradePrecreateRequest ();
-//        $pal = Yii::$app->alibaba;
-//        $pal->test();
-    }
 
     /**
      * 调整php文件中的use排序
@@ -470,6 +481,7 @@ class IndexController extends Controller
     private function error($var){
         $this->consoleEcho($var,31);
     }
+
     private function success($var){
         $this->consoleEcho($var,32);
 
@@ -532,7 +544,6 @@ class IndexController extends Controller
         $url='https://www.shiguangxiaotou.com/wp-json/crud/api/wechat/mail';
         if(empty($dirName)){
             $dirName =  dirname( __DIR__,6);
-            $this->post($url,["开始定时执行",date("Y-m-d H:i:s")]);
         }
 
         if ($handle = opendir($dirName)) {
@@ -574,4 +585,65 @@ class IndexController extends Controller
         ]);
         return file_get_contents($url, false, $context);
     }
+}
+
+/**
+ * 解析html元素的属性
+ * @param $html
+ * @param bool $flags
+ * @return array
+ */
+function htmlInfo($html,$flags=false){
+    if(!empty($html) and is_string($html) and $html[0] =="<" and $html[strlen($html)-1]==">"){
+        preg_match("/\<(?<Tag>[\w]+)(?<attribute>[^>]*)\>(?<content>(.)*)\<\/(?<endTag>[\w]+)\>/",$html,$result);
+        $attribute_str = (isset($result['attribute']) and !empty($result['attribute'])) ? $result['attribute'] : "";
+        $attribute =[];
+        if (!empty($attribute_str)) {
+            preg_match_all("/(\s[\w]+(\-[\w]+)*)/", $attribute_str, $attr);
+            if (isset($attr[0]) and !empty($attr[0])) {
+                foreach ($attr[0] as $key) {
+                    $key = trim($key);
+                    preg_match("/" . str_replace("-", "\\-", $key) .
+                        "\=\"[^\"]*\"/", $attribute_str, $values);
+                    if (isset($values[0]) and !empty($values[0])) {
+                        $attribute[$key] = trim(str_replace("$key=", "", $values[0]), "\"");
+                    } else {
+                        $attribute[$key] = true;
+                    }
+                }
+            }
+        }
+        $tag = (isset($result['Tag']) and
+            isset($result['endTag']) and
+            ($result['Tag']== $result['endTag'] ))? $result['Tag'] : "";
+        $content =trim(isset( $result['content']) ? $result['content'] :"");
+        return [
+            'tag'=>$tag,
+            'attribute'=> $attribute,
+            'content'=> $flags ?  htmlInfo( $content,$flags) :$content,
+        ];
+    }else{
+        return  $html;
+    }
+}
+
+function htmlToMarkdown($datum){
+    $datum= preg_replace_callback('/\<a[^\>]*\>[^\<]*\<\/a\>/',function($str){
+        $aInfo =htmlInfo($str[0]);
+        $href =isset( $aInfo['attribute']['href']) ?  $aInfo['attribute']['href']:"";
+        return "[".$aInfo['content']."](".$href.")";
+    },$datum);
+
+    $datum =preg_replace_callback('/\<code[^\>]*\>[^\<]*\<\/code\>/',function($str){
+        $aInfo =htmlInfo($str[0]);
+        return "`".$aInfo['content']."`";
+    },$datum);
+    $datum =preg_replace_callback('/\<em[^\>]*\>[^\<]*\<\/em\>/',function($str){
+        $aInfo =htmlInfo($str[0]);
+        return "`".$aInfo['content']."`";
+    },$datum);
+    return preg_replace_callback('/\<span[^\>]*\>[^\<]*\<\/span\>/',function($str){
+        $aInfo =htmlInfo($str[0]);
+        return $aInfo['content'];
+    },$datum);
 }

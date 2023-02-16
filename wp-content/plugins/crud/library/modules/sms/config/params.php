@@ -11,24 +11,23 @@ return [
         ],
     ],
     'settings' => [
-        "switch" => [
-
-            'fields' => [
-                [
-                    "id" => "switch",
-                    "title" => "服务",
-                    'args' => [
-                        "tag" => "switch",
-                        "options" => [
-                            "class" => "regular-text code"
-                        ],
-                        'switch' => [
-                            ["checked" => 1, "description" => "虚拟电话号码", "options" => ["value" => "base/index/icons"]],
-                        ],
-                    ]
-                ]
-            ]
-        ],
+//        "switch" => [
+//            'fields' => [
+//                [
+//                    "id" => "switch",
+//                    "title" => "服务",
+//                    'args' => [
+//                        "tag" => "switch",
+//                        "options" => [
+//                            "class" => "regular-text code"
+//                        ],
+//                        'switch' => [
+//                            ["checked" => 1, "description" => "虚拟电话号码", "options" => ["value" => "base/index/icons"]],
+//                        ],
+//                    ]
+//                ]
+//            ]
+//        ],
         "sms"=>[
             'option_group' => 'crud_group',
             'page' => 'wechat',

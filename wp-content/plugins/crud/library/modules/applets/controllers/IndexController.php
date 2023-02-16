@@ -14,10 +14,6 @@ class IndexController extends Controller
 
     public $layout = false;
 
-    public function actions(){
-        return ['index','login'];
-    }
-
     /**
      * 验证开发者服务器
      * @return false|string

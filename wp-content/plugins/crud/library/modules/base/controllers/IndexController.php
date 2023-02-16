@@ -7,20 +7,10 @@ use crud\models\Files;
 use Yii;
 use yii\web\Controller;
 
-
-
-
 class IndexController extends Controller
 {
 
     public $enableCsrfValidation=false;
-
-//    public function actions(){
-//        return [
-//            "index","ipinfo","mail","dns",'jvectormap','highlight',
-//            "crawlers",'oss','editor','icons'
-//        ];
-//    }
 
     public $layout=false;
 
@@ -28,7 +18,6 @@ class IndexController extends Controller
      * @return string
      */
     public function actionIndex(){
-
         return $this->render('index');
     }
 
@@ -106,9 +95,6 @@ class IndexController extends Controller
         return $this->render("editor");
     }
 
-    public function actionList(){
-
-    }
 
     public function actionIcons(){
         return $this->render("icons");

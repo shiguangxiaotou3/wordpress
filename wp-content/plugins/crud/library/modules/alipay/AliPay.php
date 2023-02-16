@@ -8,12 +8,6 @@ use yii\base\Module;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
 
-
-
-
-
-
-
 class AliPay extends Module implements BootstrapInterface
 {
     /**
