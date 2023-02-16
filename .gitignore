@@ -13,7 +13,7 @@ LICENSE
 direct
 config.md
 loginLinux.sh
-index.php
+
 wp-activate.php
 wp-blog-header.php
 wp-comments-post.php
