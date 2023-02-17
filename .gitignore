@@ -5,6 +5,7 @@ test/*
 .idea/*
 deploy
 wp-content/plugins/api
+snoopy
 test.php
 .DS_Store
 google46c5f9f7f0f3280b.html
@@ -13,7 +14,7 @@ LICENSE
 direct
 config.md
 loginLinux.sh
-
+index.php
 wp-activate.php
 wp-blog-header.php
 wp-comments-post.php

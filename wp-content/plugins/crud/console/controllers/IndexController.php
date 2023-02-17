@@ -561,6 +561,15 @@ class IndexController extends Controller
         }
     }
 
+    public function actionIp(){
+        $str = Yii::getAlias("@library/ip.txt");
+        $arr = unserialize(file_get_contents($str));
+        foreach ($arr as $value){
+            $crawlers = Yii::$app->crawlers;
+            print_r($crawlers->getIpinfo($value));
+        }
+    }
+
     /**
      * @param $url
      * @param $data

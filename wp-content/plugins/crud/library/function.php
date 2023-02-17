@@ -469,3 +469,56 @@ function htmlInfo($html,$flags=true){
         return  $html;
     }
 }
+
+/**
+ * 读取或者解压.gz文件
+ * @param $fileName
+ * @param false $unGZ
+ * @param string $newFileName
+ * @param int $bufferSize
+ * @return bool|string
+ */
+function getGzFileContent($fileName, $unGZ = false, $newFileName = "", $bufferSize = 4096)
+{
+    if (file_exists($fileName)) {
+        if ($unGZ) {
+            if (empty($newFileName)) {
+                $newFileName = str_replace('.gz', '', $fileName);
+            }
+            if (!file_exists($newFileName)) {
+                $gzFile = gzopen($fileName, 'rb');
+                $newFile = fopen($newFileName, 'wb');
+                while (!gzeof($gzFile)) {
+                    fwrite($newFile, gzread($gzFile, $bufferSize));
+                }
+                fclose($newFile);
+                gzclose($gzFile);
+                return true;
+            }
+        } else {
+            $str = "";
+            $gzFile = gzopen($fileName, 'rb');
+            while (!gzeof($gzFile)) {
+                $str .= gzread($gzFile, $bufferSize);
+            }
+            gzclose($gzFile);
+            return $str;
+        }
+    }
+    return false;
+}
+
+/**
+ * 获取文件编码类型和编码格式
+ * @param $fileName
+ * @return false|mixed
+ */
+function getFileFormat($fileName){
+    if (file_exists($fileName)) {
+        $finfo = finfo_open(FILEINFO_MIME);
+        $results =finfo_file($finfo , $fileName);
+        finfo_close($finfo);
+       return $results;
+    }
+    return false;
+}

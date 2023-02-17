@@ -411,7 +411,8 @@ class App extends Application
         if ($this->checkApiRoute($module, $controller, $action, $route)) {
             try {
                 $data = $this->runAction($route, $params);
-                Base::sendJson(['code' => 1, 'message' => "ok", 'data' => $data, "time" => time()]);
+                $responseDate =['code' => 1, 'message' => "ok", 'data' => $data, "time" => time()];
+                Base::sendJson( $responseDate );
             } catch (Exception $exception) {
                 Base::sendJson([
                     'code' => $exception->getCode(),

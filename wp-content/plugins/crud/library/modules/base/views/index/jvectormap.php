@@ -35,8 +35,13 @@ $crawlers = Yii::$app->crawlers;
         submit_button();
     ?>
     </form>
-    <div class="map" style="">
-        <?php
+    <div style="display: flex;">
+        <div id="showJvectormap" style="margin: 10px; width: 480px ;height:270px; background-color: rgb(220,220,220);"> </div>
+        <textarea id="ips_text" style="margin: 10px; width: 480px ;height:270px; " class="large-text code" placeholder="ip地址查询.多个ip','隔开"></textarea>
+    </div>
+    <button id="select" class="button button-primary">查询</button>
+    <div class="map">
+    <?php
         echo JvectormapVisitorsWidget::widget([
             "jvectormapOptions" => ["backgroundColor" => '#1d1f21'],
             "options" => ["id" => 'world_visitors', "class" => "map_item"],
@@ -47,7 +52,6 @@ $crawlers = Yii::$app->crawlers;
             "options" => ["id" => 'world_markers', "class" => "map_item"],
             "markersData" => $crawlers->JvectormapMarkers(7),
         ]);
-
         echo JvectormapMarkersWidget::widget([
             "jvectormapOptions" => ["backgroundColor" => '#1d1f21'],
             "options" => ["id" => 'cn_markers', "class" => "map_item"],
@@ -55,9 +59,71 @@ $crawlers = Yii::$app->crawlers;
             "mapName" => "cn_merc",
             "markersData" => $crawlers->JvectormapMarkers(7, "CN"),
         ]);
-         ?>
+    ?>
     </div>
 </div>
 
+<?php
 
+$js =<<<JS
+
+ showJvectormap("showJvectormap","");
+  $("#select").on("click" ,function(){
+      let ips = $("#ips_text").val();
+      if((ips !== "") && (ips !== undefined)){
+        $.get("/wp-json/crud/api/base/index",{'ips':ips},function(res,status,xhr){
+          if(res.code ==1){
+             $('#showJvectormap').children().remove();
+            showJvectormap("showJvectormap",res.data);
+          }else{
+            console.log(res,status,xhr);
+            alert(res.message)
+          }
+         }
+        )
+      }
+  });
+function showJvectormap(id,markers){
+   let  options ={
+    map              : 'world-merc',
+    normalizeFunction: 'polynomial',
+    hoverOpacity     : 0.7,
+    hoverColor       : false,
+    backgroundColor  : '#1d1f21',
+    regionStyle      : {
+      initial      : {
+        fill            : 'rgba(210, 214, 222, 1)',
+        'fill-opacity'  : 1,
+        stroke          : 'none',
+        'stroke-width'  : 0,
+        'stroke-opacity': 1
+      },
+      hover        : {
+        'fill-opacity': 0.7,
+        cursor        : 'pointer'
+      },
+      selected     : {
+        fill: 'yellow'
+      },
+      selectedHover: {}
+    },
+    markerStyle      : {
+      initial: {
+        fill  : '#00a65a',
+        stroke: '#111'
+      }
+    },
+    markers          : "",
+     onMarkerTipShow: function(event, label, index){
+        label.html('<b>'+data.metro.names[index]+'</b><br/>'+'<b>Population:</b>'+data.metro.population[val][index]+'</br>'+'<b>Unemployment rate: </b>'+data.metro.unemployment[val][index]+'%');
+    },
+    onRegionTipShow: function(event, label, code){
+        label.html('<b>'+label.html()+'</b></br>'+'<b>Unemployment rate: </b>'+data.states[val][code]+'%');}
+};
+   options.markers =markers;
+   $('#'+id).vectorMap( options);
+}
+
+JS;
+$this->registerJs($js);
 
