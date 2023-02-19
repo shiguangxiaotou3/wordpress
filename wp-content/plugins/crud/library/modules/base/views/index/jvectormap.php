@@ -5,8 +5,9 @@ use crud\models\SettingsSwitch;
 use crud\widgets\PageHeaderWidget;
 use crud\library\widgets\JvectormapVisitorsWidget;
 use crud\library\widgets\JvectormapMarkersWidget;
+use crud\assets\JvectormapAsset;
 
-
+JvectormapAsset::register($this);
 
 $css = <<<CSS
  .map{
@@ -67,7 +68,7 @@ $crawlers = Yii::$app->crawlers;
 
 $js =<<<JS
 
- showJvectormap("showJvectormap","");
+  showJvectormap("showJvectormap","");
   $("#select").on("click" ,function(){
       let ips = $("#ips_text").val();
       if((ips !== "") && (ips !== undefined)){
@@ -83,7 +84,7 @@ $js =<<<JS
         )
       }
   });
-function showJvectormap(id,markers){
+  function showJvectormap(id,markers){
    let  options ={
     map              : 'world-merc',
     normalizeFunction: 'polynomial',

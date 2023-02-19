@@ -88,13 +88,8 @@ class Wp extends Module implements BootstrapInterface
             // +----------------------------------------------------------------------
             // ｜将yii\web\View事件挂载到wordpress钩子中
             // +----------------------------------------------------------------------
-            add_action("wp_head",[$this,"statistics"]);
             add_action("get_template_part_loop",[$this,"wpInit"]);
 
-            add_action("wp_head",[Yii::$app,"registerCsrfMetaTags"]);
-            add_action("wp_head",[Yii::$app,"head"]);
-            add_action("wp_body_open",[Yii::$app,"beginBody"]);
-            add_action("wp_footer",[Yii::$app,"endBody"]);
         }
         // 控制台应用引导 yii\console\Application
         if ($app instanceof ConsoleApplication) {

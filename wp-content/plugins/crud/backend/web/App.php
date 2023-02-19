@@ -115,12 +115,15 @@ class App extends Application
         // +----------------------------------------------------------------------
         // ｜将yii\web\View事件挂载到wordpress钩子中
         // +----------------------------------------------------------------------
-        add_action("admin_init", [$this, "beginPage"]);
-        add_action("admin_head", [$this, "registerCsrfMetaTags"]);
-        add_action("admin_head", [$this, "head"]);
-        add_action("admin_body_open", [$this, "beginBody"]);
-        add_action("admin_footer", [$this, "endBody"]);
-        add_action("admin_footer", [$this, "endPage"]);
+        // | 通过重写yii\web\AssetBundle::register()
+        // +----------------------------------------------------------------------
+        // | 资源报文件请集成子crud\assets\WpAsset 或其子类
+        //add_action("admin_init", [$this, "beginPage"]);
+        //add_action("admin_print_styles", [$this, "registerCsrfMetaTags"]);
+        //add_action("admin_head", [$this, "head"]);
+        //add_action("admin_body_open", [$this, "beginBody"]);
+        //add_action("admin_footer", [$this, "endBody"]);
+        //add_action("admin_footer", [$this, "endPage"]);
 
         // +----------------------------------------------------------------------
         // ｜配置邮箱
@@ -222,15 +225,15 @@ class App extends Application
         $action = $query["page"];
         unset($query['page']);
         Yii::$app->run();
-//        if ($this->checkAdminPageRoute($action)) {
+        if ($this->checkAdminPageRoute($action)) {
 //            try {
                 Base::sendHtml( $this->runAction($action, $query) );
 //            } catch (Exception $exception) {
 //                Base::sendHtml($this->runAction("index/error", $exception));
 //            }
-//        } else {
-//            Base::sendHtml($this->runAction("index/error",  new  Exception('找不到路由' . $action)));
-//        }
+        } else {
+            Base::sendHtml($this->runAction("index/error",  new  Exception('找不到路由' . $action)));
+        }
     }
 
     // +----------------------------------------------------------------------
@@ -670,4 +673,7 @@ class App extends Application
         }
         return $this->checkRoute($controllerNamespace, $actionName);
     }
+
+
+
 }

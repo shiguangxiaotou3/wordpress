@@ -262,3 +262,5 @@ $js= <<<JS
   });
 JS;
 $this->registerJs($js);
+//$arr =wp_styles();
+//dump( $arr  );

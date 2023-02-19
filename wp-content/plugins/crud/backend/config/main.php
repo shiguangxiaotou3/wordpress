@@ -20,7 +20,9 @@ return [
             'class'=>" yii\web\Controller",
             'layout'=>false,
         ],
-
+        "view"=>[
+            "class"=>"crud\components\View"
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
             'parsers' => [
@@ -31,9 +33,9 @@ return [
             ],
         ],
         // 重写response
-//        'response'=>[
-//            'class'=>"crud\components\Response"
-//        ],
+        'response'=>[
+            'class'=>"crud\components\Response"
+        ],
         "cache" => [
             'class' => "yii\caching\FileCache",
             "cachePath" => "@runtime/cache"

@@ -54,17 +54,9 @@ class Market extends Module implements BootstrapInterface
           // +----------------------------------------------------------------------
           // ｜商场 子模块加载完毕引导
           // +----------------------------------------------------------------------
-          add_action('admin_enqueue_scripts', [$this ,"registerMedia"]);
-        }
-    }
 
-    /**
-     * 注册js
-     */
-    public function registerMedia()
-    {
-        logObject("执行了");
-        wp_enqueue_media();
+
+        }
     }
 
 }
