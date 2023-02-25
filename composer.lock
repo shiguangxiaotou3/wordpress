@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e4d712f2b2439f00ef01dc021bb0b11f",
+    "content-hash": "55c758e870c3e8753f50971687784cdd",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -2426,12 +2426,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/shiguangxiaotou3/alipay.git",
-                "reference": "27186e86318250db1fe87d9787119b99b990b740"
+                "reference": "da613b79de9d0675934ea58e7fb34c76ae58509c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shiguangxiaotou3/alipay/zipball/27186e86318250db1fe87d9787119b99b990b740",
-                "reference": "27186e86318250db1fe87d9787119b99b990b740",
+                "url": "https://api.github.com/repos/shiguangxiaotou3/alipay/zipball/da613b79de9d0675934ea58e7fb34c76ae58509c",
+                "reference": "da613b79de9d0675934ea58e7fb34c76ae58509c",
                 "shasum": ""
             },
             "default-branch": true,
@@ -2455,7 +2455,7 @@
                 "issues": "https://github.com/shiguangxiaotou3/alipay/issues",
                 "source": "https://github.com/shiguangxiaotou3/alipay/tree/master"
             },
-            "time": "2023-02-25T00:24:12+00:00"
+            "time": "2023-02-25T02:01:28+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -6750,8 +6750,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.5",
-        "ext-pdo": "*"
+        "php": ">=5.5"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"

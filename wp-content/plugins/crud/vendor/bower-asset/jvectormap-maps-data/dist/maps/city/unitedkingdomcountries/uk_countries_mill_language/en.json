@@ -1,9 +1,0 @@
-{
-    "insets":{"width":900,"top":0,"height":1321.8358675166648,"bbox":[{"y":-7779509.309284119,"x":-960172.2795569702},{"y":-6079572.623565425,"x":197265.68588508634}],"left":0},
-    "names":[
-         {"code":"NIR","name":"Northern Ireland"},
-         {"code":"SCT","name":"Scotland"},
-         {"code":"WLS","name":"Wales"},
-         {"code":"ENG","name":"England"}
-    ] 
-}
