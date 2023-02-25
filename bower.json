@@ -1,0 +1,23 @@
+{
+  "name": "wordpress",
+  "description": "<p align=\"center\">     <a href=\"https://https://github.com/shiguangxiaotou3/wordpress\" target=\"_blank\">         <img src=\"https://www.shiguangxiaotou.com/favicon.ico\" height=\"100px\">     </a>     <h1 align=\"center\">Wordpress plugins CRUD for MVC </h1>     <br/> </p>",
+  "main": "index.js",
+  "license": "MIT",
+  "homepage": "https://githubb.com/shiguangxiaotou3/wordpress#readme",
+  "private": false,
+  "keywords": [
+    "wprdpress",
+    "yii2",
+    "plugins",
+    "MVC",
+    "project template"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "wp-content/plugins/crud/vendor/bower-asset",
+    "test",
+    "tests"
+  ]
+}

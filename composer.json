@@ -69,6 +69,8 @@
       "sudo chmod -R 777 wp-content/uploads/assets",
       "sudo mkdir -p wp-content/uploads/runtime",
       "sudo chmod -R 777 wp-content/uploads/runtime",
+      "sudo mkdir -p wp-content/plugins/crud/vendor/bower-asset",
+      "sudo mkdir -p wp-content/plugins/crud/vendor/npm-asset",
       "bower install chart.js",
       "bower install jquery"
     ],
