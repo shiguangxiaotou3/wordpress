@@ -18,7 +18,7 @@
     "issues": "http://www.shiguangxiaotou.com"
   },
   "require": {
-    "php": ">=5.5",
+    "php": ">=7.4",
     "yiisoft/yii2": "^2.0",
     "erusev/parsedown": "^1.7",
     "alibabacloud/alidns-20150109": "^3.0",

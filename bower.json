@@ -17,6 +17,7 @@
     "node_modules",
     "bower_components",
     "wp-content/plugins/crud/vendor/bower-asset",
+    "wp-content/plugins/crud/vendor/npm-asset",
     "test",
     "tests"
   ]
