@@ -4,16 +4,13 @@
 namespace crud\modules\base;
 
 use Yii;
+use crud\Base as BaseModule;
 use yii\base\Module;
-use crud\models\Menu;
 use yii\web\Application;
-use crud\models\Settings;
-use crud\models\AjaxAction;
-use crud\Base  as BaseModel;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
 use crud\modules\ModuleImplements;
-use yii\base\InvalidRouteException;
+
 
 class Base extends Module  implements BootstrapInterface
 {
@@ -62,7 +59,6 @@ class Base extends Module  implements BootstrapInterface
 //            add_filter( 'the_content', [$this, 'imageDisplayProcessing'] );
         }
     }
-
 
     /**
      * 替换文章的媒体文件

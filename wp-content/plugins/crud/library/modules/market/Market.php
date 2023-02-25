@@ -54,9 +54,8 @@ class Market extends Module implements BootstrapInterface
           // +----------------------------------------------------------------------
           // ｜商场 子模块加载完毕引导
           // +----------------------------------------------------------------------
-
+//            add_action("rest_api_init", [$this, "registerRestfulApi"]);
 
         }
     }
-
 }

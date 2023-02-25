@@ -3,20 +3,13 @@
 
 namespace crud\modules\wechat;
 
+use backend\web\App;
 use Yii;
 use crud\Base;
 use yii\base\Module;
-use crud\models\Menu;
 use yii\web\Application;
-use crud\models\Settings;
-use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
-use yii\base\InvalidRouteException;
-
-
-
-
 
 
 class Wechat extends Module implements BootstrapInterface
@@ -62,9 +55,9 @@ class Wechat extends Module implements BootstrapInterface
 //            add_action('login_init',[$this,'getUserInfo']);
 //            add_action("template_redirect",[$this,"ValidateServer"]);
 //            add_action('the_content',[$this,'WechatShare']);
+            add_action("rest_api_init", [$this, "registerApi"]);
         }
     }
-
 
     /**
      * 显示微信登录按钮
@@ -115,4 +108,14 @@ class Wechat extends Module implements BootstrapInterface
         wp_set_current_user( $userId);
         wp_set_auth_cookie( $userId);
     }
+
+    /**
+     * 注册RestfulApi
+     */
+    public function registerApi()
+    {
+       App::addRestfulApi($this->id);
+
+    }
+
 }

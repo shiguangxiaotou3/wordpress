@@ -11,7 +11,7 @@ use crud\components\Http;
 use yii\helpers\ArrayHelper;
 use yii\base\InvalidConfigException;
 use GuzzleHttp\Exception\GuzzleException;
-use crud\modules\wechat\assets\WeChatAssets;
+use crud\modules\wechat\assets\MarketAssets;
 use crud\modules\wechat\models\ValidateServer;
 
 /**
@@ -488,7 +488,7 @@ class SubscriptionService extends Component{
             $view->registerJsFile('https://res.wx.qq.com/open/js/jweixin-1.6.0.js');
         } catch (InvalidConfigException $e) {
         }
-        $view->registerJs(WeChatAssets::registerConfig(['updateAppMessageShareData'],true));
+        $view->registerJs(MarketAssets::registerConfig(['updateAppMessageShareData'],true));
         $home = home_url() . '/favicon.ico';
         if (isset($post) and !empty($post)) {
             $title = json_encode($post->post_title);

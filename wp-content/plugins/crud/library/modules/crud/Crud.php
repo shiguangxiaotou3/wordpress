@@ -7,11 +7,12 @@
 
 namespace crud\modules\crud;
 
+use crud\Base;
 use Yii;
 use yii\base\Module;
 use yii\helpers\Json;
 use yii\web\Application;
-
+use backend\web\App;
 use yii\helpers\IpHelper;
 use yii\helpers\ArrayHelper;
 use yii\console\Application as ConsoleApp;
@@ -100,6 +101,7 @@ class Crud extends Module implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app instanceof Application) {
+//            add_action("rest_api_init", [$this, "registerRestfulApi"]);
 //            add_filter('status_header', [$this,"statusHeader"] );
             $app->getUrlManager()->addRules([
                 [
@@ -248,4 +250,5 @@ class Crud extends Module implements BootstrapInterface
     public function statusHeader($status_header, $code, $description, $protocol){
 
     }
+
 }

@@ -1,16 +1,12 @@
 <?php
 
 
-namespace crud\modules\alipay\controllers;
+namespace crud\modules\pay\controllers;
 
 use Yii;
 use yii\web\Controller;
 use crud\modules\ads\components\Ads;
 use crud\modules\ads\components\Flows;
-
-
-
-
 
 class IndexController extends Controller
 {

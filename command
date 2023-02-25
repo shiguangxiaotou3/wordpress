@@ -14,4 +14,3 @@ try {
 } catch (InvalidConfigException $e) {
     exit($e->getMessage());
 }
-

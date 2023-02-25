@@ -509,22 +509,22 @@ class IndexController extends Controller
         if(empty($dirName)){
             $dirName ="/". trim(ABSPATH,"/");
         }
-        $str ="/\$this->reset()/";
+        $str ="/WP_REST_Server/";
         if ($handle = opendir($dirName)) {
             while (false !== ($item = readdir($handle))) {
                 if ($item != "." && $item != "..") {
                     if(in_array($item,[/*"admin-header.php",'admin-filters.php'*/]) ==false  ){
                         if(is_file("$dirName/$item")){
-                            $this->error("搜索文件:$dirName/$item");
+//                            $this->error("搜索文件:$dirName/$item");
                             $fileStr = file_get_contents("$dirName/$item");
                             preg_match_all( $str,$fileStr,$arr);
                             if(isset($arr[0]) and !empty($arr[0])){
-                                $this->success($arr[0]);
+//                                $this->success($arr[0]);
                                 $this->success("$dirName/$item");
-                                die();
+//                                die();
                             }
                         }else{
-                            $this->error("$dirName/$item");
+//                            $this->error("$dirName/$item");
                             $this->actionSearchStr($dirName."/".$item);
                         }
                     }

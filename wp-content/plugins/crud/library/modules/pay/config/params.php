@@ -6,21 +6,21 @@ return [
             "parent_slug" => "index",
             "page_title" => "支付",
             "menu_title" => "支付",
-            "menu_slug" => "alipay/index",
+            "menu_slug" => "pay/index",
         ],
         [
-            "parent_slug" => "alipay/index",
+            "parent_slug" => "pay/index",
             "page_title" => "阿里支付",
             "menu_title" => "阿里支付",
-            "menu_slug" => "alipay/index/alibaba",
+            "menu_slug" => "pay/index/alibaba",
         ],
 
     ],
     'settings' => [
-        "alibaba" => [
+        "alipay" => [
             'option_group' => 'crud_group',
-            'page' => 'alipay/index/alibaba',
-            'section_id' => 'alibaba',
+            'page' => 'pay/index/alibaba',
+            'section_id' => 'alipay',
             "section_description" => '支付宝配置',
             'fields' => [
                 // appID
@@ -98,11 +98,11 @@ return [
                         ],
                     ],
                 ],
-                /******** 公钥模式 ***********/
+                /******** 加密选项 ***********/
                 // 接口加密方式
                 [
                     'id' => 'encryptType',
-                    "title" => "接口加密方式",
+                    "title" => "接口加密模式",
                     'args' => [
                         "tag" => "dropDownList",
                         "items" => [
@@ -115,105 +115,20 @@ return [
                         ]
                     ],
                 ],
-                // 支付宝公钥
+                // 接口签名算法
                 [
-                    'id' => 'alipayPublicKey',
-                    "title" => "支付宝公钥",
+                    'id' => 'signType',
+                    "title" => "接口签名算法",
                     'args' => [
-                        "tag" => "text",
-                        "description" => "<code style='color: rebeccapurple'>公钥模式</code>",
-                        "defaultValue" => "/key/alipayPublicKey_RSA2.txt",
-                        'options' => [
-                            "class" => "regular-text code",
-                            "placeholder" => "/key/alipayPublicKey_RSA2.txt",
+                        "tag" => "dropDownList",
+                        "items" => [
+                            'RSA2' => 'RSA2',
+                            'SM2' => 'SM2'
                         ],
-                    ],
-                ],
-                // app公钥
-                [
-                    'id' => 'appPublicKey',
-                    "title" => "应用公钥",
-                    'args' => [
-                        "tag" => "text",
-                        "description" => "<code style='color: rebeccapurple'>公钥模式</code>",
-                        "defaultValue" => "/key/appPublicKey_RSA2048.txt",
+                        "defaultValue" => 'RSA2',
                         'options' => [
-                            "class" => "regular-text code",
-                            "placeholder" => "/key/appPublicKey_RSA2048.txt",
-                        ],
-                    ],
-                ],
-                // app私钥
-                [
-                    'id' => 'appPrivateKey',
-                    "title" => "应用私钥",
-                    'args' => [
-                        "tag" => "text",
-                        "description" => "<code style='color: rebeccapurple'>公钥模式</code>",
-                        "defaultValue" => "/key/appPrivateKey_RSA2048.txt",
-                        'options' => [
-                            "class" => "regular-text code",
-                            "placeholder" => "/key/appPrivateKey_RSA2048.txt",
-                        ],
-                    ],
-                ],
-                /******** 证书模式 ***********/
-                // app公钥证书
-                [
-                    'id' => 'appPublicCert',
-                    "title" => "应用公钥证书",
-                    'args' => [
-                        "tag" => "text",
-                        "description" => "<code style='color: red'>证书模式</code>",
-                        "defaultValue" => "/certificate/appPublicCert.crt",
-                        'options' => [
-                            "class" => "regular-text code",
-                            "placeholder" => "/certificate/appPublicCert.crt",
-                        ],
-                    ],
-                ],
-                // app证书私钥
-                [
-                    'id' => 'appPrivateCertKey',
-                    "title" => "应用证书私钥",
-                    'args' => [
-                        "tag" => "text",
-                        "description" => "<code style='color: red'>证书模式</code>",
-                        "defaultValue" => "/certificate/appPublicCertKey.txt",
-                        'options' => [
-                            "class" => "regular-text code",
-                            "placeholder" => "/certificate/appPublicCertKey.txt",
-                        ],
-                    ],
-                ],
-                // 支付宝公钥证书
-                [
-                    'id' => 'alipayPublicCert',
-                    "title" => "支付宝公钥证书",
-                    'args' => [
-                        "tag" => "text",
-
-                        "defaultValue" => "/certificate/alipayPublicCert.crt",
-                        "description" => "<code style='color: red'>证书模式</code>",
-                        'options' => [
-                            "class" => "regular-text code",
-                            "placeholder" => "/certificate/alipayPublicCert.crt",
-                        ],
-                    ],
-                ],
-                // 支付宝根证书
-                [
-                    'id' => 'alipayRootCert',
-                    "title" => "支付宝根证书",
-
-                    'args' => [
-                        "tag" => "text",
-                        "defaultValue" => "/certificate/alipayRootCert.crt",
-                        "description" => "<code style='color: red'>证书模式</code>",
-                        'options' => [
-                            "class" => "regular-text code",
-                            "placeholder" => "/certificate/alipayRootCert.crt",
-                        ],
+                            "class" => "regular-text code"
+                        ]
                     ],
                 ],
                 /******** 接口内容加密 ***********/
@@ -241,13 +156,103 @@ return [
                     "description" => "对称加密",
                     'args' => [
                         "tag" => "text",
-                        "defaultValue" => "/key/contentSecretKey_AES.txt",
+                        "defaultValue" => "@palKey/alipay/contentSecretKey_AES.txt",
                         'options' => [
                             "class" => "regular-text code",
-                            "placeholder" => "/key/contentSecretKey_AES.txt",
+                            "placeholder" => "/contentSecretKey_AES.txt",
                         ],
                     ],
                 ],
+                /******** 公钥模式 ***********/
+                // 应用私钥
+                [
+                    'id' => 'appPrivateKey',
+                    "title" => "应用私钥路径",
+                    'args' => [
+                        "tag" => "text",
+                        "description" => "<code style='color: rebeccapurple'>公钥模式</code><code style='color: red'>证书模式</code>",
+                        "defaultValue" => "@palKey/alipay/appPrivateKey_RSA2048.txt",
+                        'options' => [
+                            "class" => "regular-text code",
+                            "placeholder" => "@palKey/alipay/appPrivateKey_RSA2048.txt",
+                        ],
+                    ],
+                ],
+                // 应用公钥
+                [
+                    'id' => 'appPublicKey',
+                    "title" => "应用公钥路径",
+                    'args' => [
+                        "tag" => "text",
+                        "description" => "<code style='color: rebeccapurple'>公钥模式</code><code style='color: red'>证书模式</code>",
+                        "defaultValue" => "@palKey/alipay/appPublicKey_RSA2048.txt",
+                        'options' => [
+                            "class" => "regular-text code",
+                            "placeholder" => "@palKey/alipay/appPublicKey_RSA2048.txt",
+                        ],
+                    ],
+                ],
+                // 支付宝公钥
+                [
+                    'id' => 'alipayPublicKey',
+                    "title" => "支付宝公钥路径",
+                    'args' => [
+                        "tag" => "text",
+                        "description" => "<code style='color: rebeccapurple'>公钥模式</code>",
+                        "defaultValue" => "@palKey/alipay/alipayPublicKey_RSA2.txt",
+                        'options' => [
+                            "class" => "regular-text code",
+                            "placeholder" => "@palKey/alipay/alipayPublicKey_RSA2.txt",
+                        ],
+                    ],
+                ],
+                /******** 证书模式 ***********/
+                // 应用公钥证书
+                [
+                    'id' => 'appPublicCert',
+                    "title" => "应用公钥证书路径",
+                    'args' => [
+                        "tag" => "text",
+                        "description" => "<code style='color: red'>证书模式</code>",
+                        "defaultValue" => "@palKey/alipay/appPublicCert.crt",
+                        'options' => [
+                            "class" => "regular-text code",
+                            "placeholder" => "@palKey/alipay/appPublicCert.crt",
+                        ],
+                    ],
+                ],
+                // 支付宝公钥证书
+                [
+                    'id' => 'alipayPublicCert',
+                    "title" => "支付宝公钥证书路径",
+                    'args' => [
+                        "tag" => "text",
+
+                        "defaultValue" => "@palKey/alipay/alipayPublicCert.crt",
+                        "description" => "<code style='color: red'>证书模式</code>",
+                        'options' => [
+                            "class" => "regular-text code",
+                            "placeholder" => "@palKey/alipay/alipayPublicCert.crt",
+                        ],
+                    ],
+                ],
+                // 支付宝根证书
+                [
+                    'id' => 'alipayRootCert',
+                    "title" => "支付宝根证书路径",
+
+                    'args' => [
+                        "tag" => "text",
+                        "defaultValue" => "@palKey/alipay/alipayRootCert.crt",
+                        "description" => "<code style='color: red'>证书模式</code>",
+                        'options' => [
+                            "class" => "large-text code",
+                            "rows" => "5", "cols" => "50",
+                            "placeholder" => "@palKey/alipay/alipayRootCert.crt",
+                        ],
+                    ],
+                ],
+
             ]
         ],
     ],

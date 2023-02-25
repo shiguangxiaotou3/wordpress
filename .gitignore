@@ -1,6 +1,6 @@
 wp-admin/*
 wp-includes/*
-node/*
+test/node/*
 test/*
 .idea/*
 deploy

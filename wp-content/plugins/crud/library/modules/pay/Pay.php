@@ -1,14 +1,14 @@
 <?php
 
 
-namespace crud\modules\alipay;
+namespace crud\modules\pay;
 
 use Yii;
 use yii\base\Module;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
 
-class AliPay extends Module implements BootstrapInterface
+class Pay extends Module implements BootstrapInterface
 {
     /**
      * {@inheritdoc}
@@ -18,7 +18,7 @@ class AliPay extends Module implements BootstrapInterface
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = 'crud\modules\alipay\controllers';
+    public $controllerNamespace = 'crud\modules\pay\controllers';
 
     /**
      * {@inheritdoc}
@@ -42,6 +42,6 @@ class AliPay extends Module implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        // TODO: Implement bootstrap() method.
+
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8683585af3a70fb8a6b3b847e898791",
+    "content-hash": "e4d712f2b2439f00ef01dc021bb0b11f",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -2426,19 +2426,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/shiguangxiaotou3/alipay.git",
-                "reference": "87feea2053e43e91a2f08abd26d0be7f2d983c2d"
+                "reference": "27186e86318250db1fe87d9787119b99b990b740"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shiguangxiaotou3/alipay/zipball/87feea2053e43e91a2f08abd26d0be7f2d983c2d",
-                "reference": "87feea2053e43e91a2f08abd26d0be7f2d983c2d",
+                "url": "https://api.github.com/repos/shiguangxiaotou3/alipay/zipball/27186e86318250db1fe87d9787119b99b990b740",
+                "reference": "27186e86318250db1fe87d9787119b99b990b740",
                 "shasum": ""
             },
             "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Shiguangxiaotou\\Alipay\\": "src/"
+                    "shiguangxiaotou\\alipay\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2448,14 +2448,14 @@
             "authors": [
                 {
                     "name": "shiguangxiaotou",
-                    "email": "wanlong757402@outlook.com"
+                    "email": "shiguangxiaotou7574@outlook.com"
                 }
             ],
             "support": {
                 "issues": "https://github.com/shiguangxiaotou3/alipay/issues",
                 "source": "https://github.com/shiguangxiaotou3/alipay/tree/master"
             },
-            "time": "2022-12-20T11:27:23+00:00"
+            "time": "2023-02-25T00:24:12+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -6750,7 +6750,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.5"
+        "php": ">=5.5",
+        "ext-pdo": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"

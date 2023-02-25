@@ -7,7 +7,7 @@
 return [
     'components' => [
         'alibaba' => [
-            'class' => 'crud\modules\alipay\components\Alipay',
+            'class' => 'crud\modules\pay\components\Alipay',
             // appID
             'appId' => get_option("crud_group_alibaba_appId", ''),
             // 应用名称

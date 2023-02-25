@@ -25,11 +25,11 @@
     "google/cloud-translate": "^1.12",
     "jaybizzle/crawler-detect": "^1.2",
     "microsoft/bingads": "^13.0",
-    "shiguangxiaotou/alipay": "dev-master",
     "qiniu/php-sdk": "^7.8",
     "aliyuncs/oss-sdk-php": "^2.6",
     "orhanerday/open-ai": "^3.4",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "shiguangxiaotou/alipay": "dev-master"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
@@ -62,5 +62,21 @@
     "allow-plugins": {
       "yiisoft/yii2-composer": true
     }
+  },
+  "scripts": {
+    "pre-install-cmd":[],
+    "post-install-cmd": [
+      "sudo mkdir wp-content/uploads/assets",
+      "sudo chmod -R 777 wp-content/uploads/assets",
+      "sudo rm -R wp-content/uploads/runtime",
+      "sudo mkdir wp-content/uploads/runtime",
+      "sudo chmod -R 777 wp-content/uploads/runtime"
+    ],
+    "pre-update-cmd":[],
+    "post-update-cmd":[],
+    "pre-package-install": [],
+    "post-package-install":[],
+    "pre-package-uninstall":[],
+    "post-package-uninstall":[]
   }
 }

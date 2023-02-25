@@ -4,21 +4,24 @@
 /** @var $token  */
 /** @var $code  */
 
-use yii\helpers\Html;
-use crud\widgets\PreCodeWidget;
+use Yii;
 use crud\widgets\PageHeaderWidget;
 ?>
 
 
 <div class="wrap">
-    <?= PageHeaderWidget::widget([]) ?>
+    <?= PageHeaderWidget::widget() ?>
     <div style="width: 50%">
         <form action="options.php" method="post">
             <?php
-            settings_fields("crud_group_alibaba");
-            do_settings_sections("alipay/index/alibaba");
+            settings_fields("crud_group_alipay");
+            do_settings_sections("pay/index/alibaba");
             submit_button();
             ?>
         </form>
+        <?php
+         $alipay = Yii::$app->alipay->test();
+
+        ?>
     </div>
 </div>

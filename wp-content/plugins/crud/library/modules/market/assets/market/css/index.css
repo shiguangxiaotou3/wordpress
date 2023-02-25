@@ -1,0 +1,54 @@
+.settings-content{
+    display: flex;
+    margin-top: 20px;
+}
+.content-phone{
+    background-color: #f0f0f1;
+    align-content: center;
+    padding: 30px;
+}
+.phone-size{
+    margin: 5px auto;
+    align-content: center;
+    text-align: center;
+}
+.phone-background-image{
+    background-repeat:no-repeat;
+    background-image: url("https://www.shiguangxiaotou.com/wp-content/uploads/2023/02/phone.png");
+}
+.phone{
+    background-color: white;
+    border-radius: 30px 30px 55px 55px;
+    border: 1px solid red;
+}
+.content-settings{
+    flex: 1;
+    margin-left: 20px;
+
+}
+.settings-content{
+    display: flex;
+}
+.settings-left{
+    width: 300px;
+}
+.settings-right{
+    flex: 1;
+    margin-left: 20px;
+}
+.control-section{
+    padding: 8px 12px;margin: 0;
+}
+.canvas{
+    padding: 5px;
+}
+.view{
+    padding: 10px 15px;
+    background-color: rgb(246,247,247);
+    border: 1px solid rgb(220,220,222);
+}
+.view:hover{
+    padding: 10px 15px;
+    background-color: rgb(246,247,247);
+    border: 1px solid rgb(100,100,100);
+}
