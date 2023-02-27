@@ -15,9 +15,6 @@ use crud\modules\crud\Generator;
 
 
 
-
-
-
 /**
  * This is the command line version of Gii - a code generator.
  *
@@ -53,8 +50,6 @@ class GenerateController extends Controller
      * @var array generator option values
      */
     private $_options = [];
-
-
     /**
      * {@inheritdoc}
      */

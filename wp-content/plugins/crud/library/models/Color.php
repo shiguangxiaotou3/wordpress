@@ -1,14 +1,7 @@
 <?php
-
-
 namespace crud\models;
 
 use yii\base\Model;
-
-
-
-
-
 
 
 /**

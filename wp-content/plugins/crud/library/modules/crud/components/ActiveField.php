@@ -13,9 +13,6 @@ use crud\modules\crud\Generator;
 
 
 
-
-
-
 /**
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
@@ -30,8 +27,6 @@ class ActiveField extends \yii\widgets\ActiveField
      * @var Generator
      */
     public $model;
-
-
     /**
      * {@inheritdoc}
      */

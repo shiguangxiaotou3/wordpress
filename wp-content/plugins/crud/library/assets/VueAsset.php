@@ -4,7 +4,6 @@ namespace crud\assets;
 use yii\web\View;
 
 
-
 class VueAsset extends AppAsset {
 
     public $sourcePath =  "@bower/vue/dist";
@@ -15,11 +14,7 @@ class VueAsset extends AppAsset {
     ];
     public $jsOptions=[];
     public $depends = ['yii\web\JqueryAsset'];
-
-
 }
-
-
 /**
  * The location of registered JavaScript code block or files.
  * 注册的JavaScript代码块或文件的位置

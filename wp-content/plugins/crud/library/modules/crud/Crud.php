@@ -22,7 +22,6 @@ use yii\web\ForbiddenHttpException;
 use yii\console\Application as ConsoleApp;
 
 
-
 /**
  * This is the main module class for the Gii module.
  * 这是Gii模块的主模块类

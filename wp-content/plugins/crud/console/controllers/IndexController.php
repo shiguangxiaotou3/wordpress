@@ -355,6 +355,7 @@ class IndexController extends Controller
                                     $newStr .= PHP_EOL . $key;
                                 }
                                 $newStr = str_replace($namespace, $newStr, $text);
+                                $newStr= str_replace(PHP_EOL.PHP_EOL.PHP_EOL,PHP_EOL,$newStr);
                                 file_put_contents($basePath . "/" . $file, $newStr);
                             }
                         }

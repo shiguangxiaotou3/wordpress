@@ -1,12 +1,9 @@
 <?php
-
-
 namespace crud\modules\base\controllers;
 
 use Yii;
 use crud\models\Files;
 use yii\web\Controller;
-
 
 
 class IndexController extends Controller
@@ -96,8 +93,6 @@ class IndexController extends Controller
         }
         return $this->render("editor");
     }
-
-
     public function actionIcons(){
         return $this->render("icons");
     }

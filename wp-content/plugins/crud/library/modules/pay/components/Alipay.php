@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\pay\components;
 
 use Yii;
@@ -18,7 +16,6 @@ use shiguangxiaotou\alipay\request\AlipayTradePagePayRequest;
 use shiguangxiaotou\alipay\request\AlipayFundTransUniTransferRequest;
 use shiguangxiaotou\alipay\request\AlipayTradeFastpayRefundQueryRequest;
 use shiguangxiaotou\alipay\request\AlipayDataDataserviceBillDownloadurlQueryRequest;
-
 
 
 class Alipay extends Component implements Pay
@@ -122,8 +119,6 @@ class Alipay extends Component implements Pay
     }
 
     public function test(){
-
-
 //        $resultCode = $result->$responseNode->code;
 //        if(!empty($resultCode)&&$resultCode == 10000){
 //            echo "成功";

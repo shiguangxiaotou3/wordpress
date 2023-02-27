@@ -1,12 +1,9 @@
 <?php
-
-
 namespace crud\modules\base\components;
 
 use Qiniu\Auth;
 use yii\base\Component;
 use Qiniu\Storage\UploadManager;
-
 
 
 class ICloud extends Component
@@ -27,8 +24,6 @@ class ICloud extends Component
         // 如果指定了断点记录文件，那么下次会从指定的该文件尝试读取上次上传的进度，以实现断点续传
         $resumeFile = 'progress.log';
     }
-
-
 
 
 }

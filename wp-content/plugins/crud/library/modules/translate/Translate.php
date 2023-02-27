@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\translate;
 
 use Yii;
@@ -8,9 +6,6 @@ use yii\base\Module;
 use yii\base\Application;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
-
-
-
 
 
 

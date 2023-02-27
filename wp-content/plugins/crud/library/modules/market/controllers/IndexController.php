@@ -1,11 +1,8 @@
 <?php
-
-
 namespace crud\modules\market\controllers;
 
 use Yii;
 use yii\web\Controller;
-
 
 
 class IndexController extends Controller

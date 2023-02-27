@@ -1,13 +1,10 @@
 <?php
-
-
 namespace crud\widgets;
 
 use Yii;
 use yii\base\Widget;
 use yii\web\Controller;
 use crud\model\SettingsSwitch;
-
 
 
 /**

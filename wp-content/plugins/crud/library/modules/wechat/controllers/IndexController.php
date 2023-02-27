@@ -1,11 +1,8 @@
 <?php
-
-
 namespace crud\modules\wechat\controllers;
 
 use Yii;
 use yii\web\Controller;
-
 
 
 class IndexController extends Controller
@@ -38,6 +35,4 @@ class IndexController extends Controller
     public function actionShare(){
         return  $this->render("share");
     }
-
-
 }

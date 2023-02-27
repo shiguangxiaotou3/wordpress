@@ -1,17 +1,10 @@
 <?php
-
-
 namespace crud\modules\ads;
 
 use Yii;
 use yii\base\Module;
 use yii\helpers\ArrayHelper;
 use crud\modules\ModuleImplements;
-
-
-
-
-
 
 
 class Ads extends Module

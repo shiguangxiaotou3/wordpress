@@ -1,11 +1,8 @@
 <?php
-
-
 namespace crud\components;
 
 use yii\web\RequestParserInterface;
 use yii\web\BadRequestHttpException;
-
 
 
 /**

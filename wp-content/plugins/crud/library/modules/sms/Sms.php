@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\sms;
 
 use Yii;
@@ -13,9 +11,6 @@ use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
 use yii\base\InvalidRouteException;
-
-
-
 
 class Sms extends Module implements BootstrapInterface
 {

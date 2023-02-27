@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\widgets;
 
 use Yii;
@@ -9,9 +7,6 @@ use yii\base\Widget;
 use yii\helpers\Html;
 use crud\assets\ChartAsset;
 use yii\helpers\ArrayHelper;
-
-
-
 
 
 

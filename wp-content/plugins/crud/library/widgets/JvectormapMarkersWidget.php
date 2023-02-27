@@ -1,13 +1,10 @@
 <?php
-
-
 namespace crud\library\widgets;
 
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use crud\assets\JvectormapAsset;
-
 
 
 class JvectormapMarkersWidget extends  Widget
@@ -76,8 +73,6 @@ class JvectormapMarkersWidget extends  Widget
         ["latLng" => [26.02, 50.55], "name" => 'Bahrain'],
         ["latLng" => [0.33, 6.73], "name" => 'São Tomé and Príncipe']
     ];
-
-
     public function run(){
         JvectormapAsset::addJsFile($this->view,$this->mapFile,["depends"=>"crud\assets\JvectormapAsset"]);
         $options = ArrayHelper::merge(

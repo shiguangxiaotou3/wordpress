@@ -15,9 +15,6 @@ use crud\modules\crud\Generator as BaseGenerator;
 
 
 
-
-
-
 /**
  * This generator will generate the skeleton code needed by a module.
  *
@@ -37,8 +34,6 @@ class Generator extends BaseGenerator
      * @var string
      */
     public $moduleID;
-
-
     /**
      * {@inheritdoc}
      */

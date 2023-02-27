@@ -1,17 +1,12 @@
 <?php
-
-
 namespace crud\modules\server\controllers;
 
 use Yii;
 use yii\web\Controller;
 
 
-
 class IndexController extends Controller
 {
-
-
     public $layout = false;
 
     public function actions(){

@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\wechat;
 
 use Yii;
@@ -10,9 +8,6 @@ use yii\base\Module;
 use yii\web\Application;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
-
-
-
 
 class Wechat extends Module implements BootstrapInterface
 {

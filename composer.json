@@ -85,13 +85,15 @@
     "Server":["bash bash/runCommand.sh"],
     "Mysql":["bash bash/runCommand.sh loginServerMysql \"SELECT * FROM wp_users;\r\""],
     "Apache":["bash bash/runCommand.sh runCommand \"sudo /etc/init.d/apache2 restart\""],
-    "DeleteDsStore": ["php command index/delete-ds-store"]
+    "DeleteDsStore": ["php command index/delete-ds-store"],
+    "UseSort":["php command index/use-sort"]
   },
   "scripts-descriptions": {
     "Server": "登录`linux`服务器",
     "Mysql": "登录`Mysql`服务器",
     "Apache": "重启服务器的Apache服务",
     "DeleteDsStore": "删除本地MAC系统中的.DS_Store文件",
+    "UseSort": "文件命名空间美化",
     "pre-install-cmd": "在`install`命令执行前触发",
     "post-install-cmd": "在`install`命令执行后触发",
     "pre-update-cmd": "在`update`命令执行前触发",

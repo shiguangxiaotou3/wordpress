@@ -1,13 +1,8 @@
 <?php
-
-
 namespace crud\modules\translate\components;
 
 use Yii;
 use yii\base\Component;
-
-
-
 
 
 

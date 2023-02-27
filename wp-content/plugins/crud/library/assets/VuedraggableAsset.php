@@ -4,7 +4,6 @@ namespace crud\assets;
 use yii\web\View;
 
 
-
 class VuedraggableAsset extends AppAsset {
 
     public $sourcePath =  "@bower/vuedraggable/dist";

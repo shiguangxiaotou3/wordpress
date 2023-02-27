@@ -1,12 +1,9 @@
 <?php
-
-
 namespace crud\modules\wechat\controllers\api;
 
 use Yii;
 use crud\Base;
 use yii\web\Controller;
-
 
 
 class IndexController extends Controller
