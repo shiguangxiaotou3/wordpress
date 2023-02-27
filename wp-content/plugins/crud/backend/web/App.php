@@ -79,7 +79,7 @@ class App extends Application
         // +----------------------------------------------------------------------
         return ArrayHelper::merge(
             [
-                'bootstrap' => ['wechat', 'wp','base','crud',"market" ],
+                'bootstrap' => ['wechat',"pay", 'wp','server','base','crud',"market" ],
             ],
             Crud::config(),
             BaseModule::config(),
@@ -109,10 +109,10 @@ class App extends Application
         // +----------------------------------------------------------------------
         // ｜Ajax、RestfulApi、路由配置、解析规则，挂载到wordpress钩子中
         // +----------------------------------------------------------------------
-        add_action("admin_init", [$this, "registerAjax"]);
-//        add_action("rest_api_init",[$this,""]);
+        add_action("init", [$this, "registerAjax"]);
         add_action("rest_api_init", [$this, "registerApi"]);
-
+//        add_action("wp_ajax_pay/index/remit",[$this,"renderAjaxTest"]);
+//        add_action("wp_ajax_nopriv_pay/index/remit",[$this,"renderAjaxTest"]);
         // +----------------------------------------------------------------------
         // ｜配置邮箱
         // +----------------------------------------------------------------------
@@ -210,17 +210,21 @@ class App extends Application
     {
         $request = $this->request;
         $query = $request->queryParams;
-        $action = $query["page"];
+        $route = $query["page"];
+
         unset($query['page']);
-        Yii::$app->run();
-        if ($this->checkAdminPageRoute($action)) {
+        if ($this->checkAdminPageRoute($route,$moduleId)) {
 //            try {
-                Base::sendHtml( $this->runAction($action, $query) );
+                if(empty($moduleId)){
+                    Base::sendHtml( $this->runAction($route, $query) );
+                }else{
+                    Base::sendHtml( $this->getModule($moduleId)->runAction($route, $query) );
+                }
 //            } catch (Exception $exception) {
 //                Base::sendHtml($this->runAction("index/error", $exception));
 //            }
         } else {
-            Base::sendHtml($this->runAction("index/error",  new  Exception('找不到路由' . $action)));
+            Base::sendHtml($this->runAction("index/error",  new  Exception('找不到路由' . $route)));
         }
     }
 
@@ -245,16 +249,37 @@ class App extends Application
     public function renderAjax()
     {
         try {
-            $request = $this->request;
-            $query = $request->queryParams;
-            $action = $query["action"];
-            unset($query['action']);
-            if ($this->checkAdminPageRoute($action)) {
-                exit($this->runAction($action, $query));
+            $request= Yii::$app->request;
+            $route = $moduleId='';
+            $query =[];
+            if($request->isGet ){
+                $query = $request->queryParams;
+                if(isset($query['action'])){
+                    $route = $query['action'];
+                    unset($query['action']);
+                }
+            }
+            if($request->isPost){
+                $query = $request->post();
+                if(isset($query['action'])){
+                    $route = $query['action'];
+                    unset($query['action']);
+                }
+            }
+            if($this->checkAdminPageRoute($route,$moduleId)){
+                if(empty($moduleId)){
+                    exit($this->runAction($route, $query));
+                }else{
+                    exit($this->getModule($moduleId)->runAction($route, $query));
+                }
             }
         } catch (Exception $exception) {
-            print_r($query);
-            print_r($exception);
+            exit(json_encode([
+                'code' => $exception->getCode(),
+                'message' => $exception->getMessage(),
+                'trace' => $exception->getTrace(),
+                "file" => $exception->getFile()
+            ]));
         }
     }
 
@@ -327,16 +352,20 @@ class App extends Application
 
     /**
      * 检查路由并执行控制器
-     * @param $module
+     * @param $moduleId
      * @param $controller
      * @param $action
      * @param $route
      * @param $params
      */
-    public function runApi($module, $controller, $action, $route,$params){
-        if ($this->checkApiRoute($module, $controller, $action, $route)) {
+    public function runApi($moduleId, $controller, $action, $route,$params){
+        if ($this->checkApiRoute($moduleId, $controller, $action, $route)) {
             try {
-                $data = $this->runAction($route, $params);
+                if(empty($moduleId)){
+                    $data = $this->runAction($route, $params);
+                }else{
+                    $data = Yii::$app->getModule($moduleId)->runAction($route, $params);
+                }
                 $responseDate =['code' => 1, 'message' => "ok", 'data' => $data, "time" => time()];
                 Base::sendJson( $responseDate );
             } catch (Exception $exception) {
@@ -458,33 +487,32 @@ class App extends Application
     /**
      * 检查api路由
      *
-     * @param $module
      * @param $controller
      * @param $action
      * @param $route
+     * @param $moduleId
      *
      * @return bool
      */
-    public function checkApiRoute($module, $controller, $action, &$route)
+    public function checkApiRoute(&$moduleId, $controller, $action, &$route)
     {
         $modules = array_keys(Yii::$app->modules);
         $controller = empty($controller) ? 'index':$controller;
         $action = empty($action) ? 'index':$action;
-
-        if(empty($module) ){
+        if(empty($moduleId) ){
             if(in_array($controller,$modules)){
-                $module = $controller;
+                $moduleId = $controller;
                 $controller = $action;
-                $route ="$module/api/$controller/$action";
-                $defaultControllerNamespace =Yii::$app->getModule($module)->controllerNamespace;
+                $route ="api/$controller/$action";
+                $defaultControllerNamespace =Yii::$app->getModule($moduleId)->controllerNamespace;
             }else{
                 $route = "api/$controller/$action";
                 $defaultControllerNamespace =Yii::$app->controllerNamespace;
             }
 
         }else{
-            $route ="$module/api/$controller/$action";
-            $defaultControllerNamespace =Yii::$app->getModule($module)->controllerNamespace;
+            $route ="api/$controller/$action";
+            $defaultControllerNamespace =Yii::$app->getModule($moduleId)->controllerNamespace;
         }
 
         $str = explode('/', $route);
@@ -504,10 +532,10 @@ class App extends Application
      * 检查后台页面路由是否存在
      *
      * @param $route
-     *
+     * @param $moduleId
      * @return bool
      */
-    public function checkAdminPageRoute($route)
+    public function checkAdminPageRoute(&$route,&$moduleId='')
     {
         // +----------------------------------------------------------------------
         // | 未启用模块情况
@@ -526,6 +554,7 @@ class App extends Application
         $is_module = in_array($arr[0], $modules);
         if ($is_module) {
             $moduleId = $arr[0];
+            $route = trim( str_replace($moduleId,"",$route),"/");
             switch ($count) {
                 case 1:
                     $controllerNamespace = 'crud\modules\\' . $moduleId . '\controllers\IndexController';
@@ -863,5 +892,4 @@ class App extends Application
             ]);
         }
     }
-
 }

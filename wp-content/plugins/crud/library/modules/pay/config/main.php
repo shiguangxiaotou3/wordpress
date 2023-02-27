@@ -19,6 +19,8 @@ return [
             "pid" => get_option("crud_group_alipay_pid"),
             "alipayUli" => get_option("crud_group_alipay_alipayUli"),
             "gateway" => get_option("crud_group_alipay_gateway"),
+            "returnUrl" => get_option("crud_group_alipay_returnUrl"),
+            "notifyUrl" => get_option("crud_group_alipay_notifyUrl"),
             "authorizationCallbackUil" => get_option("crud_group_alipay_authorizationCallbackUil"),
             "encryptType" => get_option("crud_group_alipay_encryptType"),
             "signType" => get_option("crud_group_alipay_signType"),

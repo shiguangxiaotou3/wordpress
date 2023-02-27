@@ -5,7 +5,9 @@
 /** @var $code  */
 
 use Yii;
+use crud\Base;
 use crud\widgets\PageHeaderWidget;
+use crud\modules\pay\components\Alipay;
 ?>
 
 
@@ -19,9 +21,7 @@ use crud\widgets\PageHeaderWidget;
             submit_button();
             ?>
         </form>
-        <?php
-         $alipay = Yii::$app->alipay->test();
 
-        ?>
     </div>
 </div>
+

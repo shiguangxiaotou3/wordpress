@@ -1,5 +1,8 @@
 <?php
 
+$siteurl = trim( get_option('siteurl'),"/");
+
+
 return [
     "menus" => [
         [
@@ -13,6 +16,19 @@ return [
             "page_title" => "阿里支付",
             "menu_title" => "阿里支付",
             "menu_slug" => "pay/index/alibaba",
+        ],
+        [
+            "parent_slug" => "pay/index",
+            "page_title" => "测试",
+            "menu_title" => "测试",
+            "menu_slug" => "pay/index/test",
+        ],
+        //remit
+        [
+            "parent_slug" => "pay/index",
+            "page_title" => "转账到支付宝",
+            "menu_title" => "测试",
+            "menu_slug" => "pay/index/remit",
         ],
 
     ],
@@ -53,6 +69,7 @@ return [
                     "title" => "绑定的商家账号(PID)",
                     'args' => [
                         "tag" => "text",
+                        "description" => "<hr style='width: 100%;' />",
                         "defaultValue" => "",
                         'options' => [
                             "class" => "regular-text code"
@@ -84,13 +101,40 @@ return [
                         ]
                     ],
                 ],
+                // 异步通知
+                [
+                    'id' => 'notifyUrl',
+                    "title" => "异步通知",
+                    'args' => [
+                        "tag" => "text",
+                        "description" => "支付完成后的异步通知url<code style='color: red'>POST</code>",
+                        "defaultValue" => $siteurl ."/wp-json/crud/api/pay",
+                        'options' => [
+                            "class" => "regular-text code",
+                        ]
+                    ],
+                ],
+                // 同步跳转
+                [
+                    'id' => 'returnUrl',
+                    "title" => '同步跳转',
+                    'args' => [
+                        "tag" => "text",
+                        "description" => "支付完成跳转的url<code style='color: red'>GET</code>",
+                        "defaultValue" => $siteurl ."/crud/index/pay",
+                        'options' => [
+                            "class" => "regular-text code",
+                            "placeholder" => $siteurl ."/crud/index/pay",
+                        ],
+                    ],
+                ],
                 // 授权回调地址
                 [
                     'id' => 'authorizationCallbackUil',
                     "title" => '授权回调地址',
-                    "description" => "对称加密<hr style='width: 100%;' />",
                     'args' => [
                         "tag" => "text",
+                        "description" => "对称加密<hr style='width: 100%;' />",
                         "defaultValue" => "https://www.shiguangxiaotou.com",
                         'options' => [
                             "class" => "regular-text code",

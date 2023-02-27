@@ -4,6 +4,7 @@
 namespace crud\modules\server;
 
 use Yii;
+use backend\web\App;
 use yii\base\Module;
 use yii\base\Application;
 use yii\helpers\ArrayHelper;
@@ -45,6 +46,16 @@ class Server extends Module implements BootstrapInterface
 
     public function bootstrap($app)
     {
-        // TODO: Implement bootstrap() method.
+        if ($app instanceof \yii\web\Application) {
+            add_action("rest_api_init", [$this, "registerApi"]);
+        }
+    }
+
+    /**
+     * 注册RestfulApi
+     */
+    public function registerApi()
+    {
+        App::addRestfulApi($this->id);
     }
 }

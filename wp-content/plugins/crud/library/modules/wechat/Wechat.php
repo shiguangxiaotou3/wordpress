@@ -115,7 +115,6 @@ class Wechat extends Module implements BootstrapInterface
     public function registerApi()
     {
        App::addRestfulApi($this->id);
-
     }
 
 }

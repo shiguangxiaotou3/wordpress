@@ -597,6 +597,18 @@ class IndexController extends Controller
         ]);
         return file_get_contents($url, false, $context);
     }
+
+
+    public function actionCer(){
+        $ailipay = Yii::$app->alipay;
+        $ailipay->
+        $certPath = Yii::$app->alipay->alipayRootCert;
+        $certPath = Yii::getAlias($certPath);
+        $cert = file_get_contents($certPath);
+        $ssl = openssl_x509_parse($cert);
+        $SN = md5(array2string(array_reverse($ssl['issuer'])) . $ssl['serialNumber']);
+        $this->success( $SN);
+    }
 }
 
 /**

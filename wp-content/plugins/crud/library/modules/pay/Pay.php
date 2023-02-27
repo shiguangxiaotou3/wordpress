@@ -4,9 +4,11 @@
 namespace crud\modules\pay;
 
 use Yii;
+use backend\web\App;
 use yii\base\Module;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
+use yii\web\Application;
 
 class Pay extends Module implements BootstrapInterface
 {
@@ -42,6 +44,17 @@ class Pay extends Module implements BootstrapInterface
      */
     public function bootstrap($app)
     {
+        if ($app instanceof Application) {
+            add_action("rest_api_init", [$this, "registerApi"]);
+        }
+    }
+
+    /**
+     * 注册RestfulApi
+     */
+    public function registerApi()
+    {
+        App::addRestfulApi($this->id);
 
     }
 }

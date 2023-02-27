@@ -48,4 +48,18 @@ class IndexController extends Controller
     public function actionIcons(){
         return $this->render("icons");
     }
+
+    /**
+     * @return string
+     */
+    public function actionPay(){
+        return $this->render("pay");
+    }
+
+    /**
+     * @return string
+     */
+    public function actionWap(){
+        return $this->render("wap");
+    }
 }

@@ -19,6 +19,7 @@
   },
   "require": {
     "php": ">=7.4",
+    "ext-json": "*",
     "yiisoft/yii2": "^2.0",
     "erusev/parsedown": "^1.7",
     "alibabacloud/alidns-20150109": "^3.0",
@@ -28,7 +29,8 @@
     "qiniu/php-sdk": "^7.8",
     "aliyuncs/oss-sdk-php": "^2.6",
     "orhanerday/open-ai": "^3.4",
-    "shiguangxiaotou/alipay": "dev-master"
+    "shiguangxiaotou/alipay": "dev-master",
+    "wechatpay/wechatpay": "^1.4"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
