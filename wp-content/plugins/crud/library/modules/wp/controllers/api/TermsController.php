@@ -9,6 +9,8 @@ use yii\rest\ActiveController;
 
 
 
+
+
 class TermsController  extends ActiveController{
 
     public $modelClass ="crud\modules\wp\models\WpTerms";

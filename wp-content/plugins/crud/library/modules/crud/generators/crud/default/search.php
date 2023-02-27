@@ -31,6 +31,8 @@ use <?= ltrim($generator->modelClass, '\\') . (isset($modelAlias) ? " as $modelA
 
 
 
+
+
 /**
  * <?= $searchModelClass ?> represents the model behind the search form of `<?= $generator->modelClass ?>`.
  */

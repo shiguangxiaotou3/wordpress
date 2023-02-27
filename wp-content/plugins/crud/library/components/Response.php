@@ -3,8 +3,10 @@
 
 namespace crud\components;
 
-use yii\web\HeadersAlreadySentException;
 use yii\web\Response  as YiiResponse;
+use yii\web\HeadersAlreadySentException;
+
+
 
 class Response extends YiiResponse
 {

@@ -17,6 +17,8 @@ use yii\helpers\StringHelper;
 
 
 
+
+
 class <?= StringHelper::basename($generator->controllerClass) ?> extends <?= '\\' . trim($generator->baseClass, '\\') . "\n" ?>
 {
 <?php foreach ($generator->getActionIDs() as $action): ?>

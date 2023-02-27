@@ -81,6 +81,32 @@
     "pre-package-install": [],
     "post-package-install":[],
     "pre-package-uninstall":[],
-    "post-package-uninstall":[]
+    "post-package-uninstall":[],
+    "Server":["bash bash/runCommand.sh"],
+    "Mysql":["bash bash/runCommand.sh loginServerMysql \"SELECT * FROM wp_users;\r\""],
+    "Apache":["bash bash/runCommand.sh runCommand \"sudo /etc/init.d/apache2 restart\""],
+    "DeleteDsStore": ["php command index/delete-ds-store"]
+  },
+  "scripts-descriptions": {
+    "Server": "登录`linux`服务器",
+    "Mysql": "登录`Mysql`服务器",
+    "Apache": "重启服务器的Apache服务",
+    "DeleteDsStore": "删除本地MAC系统中的.DS_Store文件",
+    "pre-install-cmd": "在`install`命令执行前触发",
+    "post-install-cmd": "在`install`命令执行后触发",
+    "pre-update-cmd": "在`update`命令执行前触发",
+    "post-update-cmd": "在`update`命令执行后触发",
+    "pre-status-cmd": "在`status`命令执行前触发",
+    "post-status-cmd": "在`status`命令执行后触发",
+    "pre-package-install": "在资源包安装前触发",
+    "post-package-install": "在资源包安装后触发",
+    "pre-package-update": "在资源包更新前触发",
+    "post-package-update": "在资源包更新后触发",
+    "pre-package-uninstall": "在资源包被卸载前触发",
+    "post-package-uninstal": "在资源包被卸载后触发",
+    "pre-autoload-dump": "在自动加载器被转储前触发,无论是`installupdatev还是`dump-autoload`命令都会触发",
+    "post-autoload-dump": "在自动加载器被转储后触发，无论是 `install/updatev还是`dump-autoload`命令都会触发",
+    "post-root-package-install": "在`create-project`命令期间根包安装完成后触发",
+    "post-create-project-cmd": "在`create-project`命令执行后触发"
   }
 }

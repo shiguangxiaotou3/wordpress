@@ -9,6 +9,8 @@ use yii\rest\ActiveController;
 
 
 
+
+
 class PostsController  extends ActiveController{
 
     public $modelClass ="crud\modules\wp\models\WpPosts";

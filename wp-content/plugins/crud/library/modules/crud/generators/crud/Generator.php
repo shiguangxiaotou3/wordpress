@@ -20,6 +20,8 @@ use crud\modules\crud\Generator as BaseGenerator;
 
 
 
+
+
 /**
  * Generates CRUD controller and views.
  *

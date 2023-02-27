@@ -14,6 +14,8 @@ use GuzzleHttp\Exception\GuzzleException;
 use crud\modules\wechat\assets\MarketAssets;
 use crud\modules\wechat\models\ValidateServer;
 
+
+
 /**
  * 微信公众号组件
  * @property string $appId 

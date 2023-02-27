@@ -10,6 +10,8 @@ use crud\modules\translate\components\Translate;
 
 
 
+
+
 class YoudaoTranslate extends Component implements Translate
 {
     public $appId = "";

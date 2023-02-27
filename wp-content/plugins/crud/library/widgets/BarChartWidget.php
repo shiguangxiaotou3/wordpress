@@ -13,6 +13,8 @@ use crud\common\assets\ChartAsset;
 
 
 
+
+
 class BarChartWidget extends  Widget
 {
     public $id;

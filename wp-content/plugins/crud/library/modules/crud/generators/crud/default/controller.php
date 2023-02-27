@@ -38,6 +38,8 @@ use <?= ltrim($generator->searchModelClass, '\\') . (isset($searchModelAlias) ? 
 
 
 
+
+
 <?php if (!empty($generator->searchModelClass)): ?>
 <?php else: ?>
 <?php endif; ?>

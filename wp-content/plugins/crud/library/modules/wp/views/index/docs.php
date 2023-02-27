@@ -265,7 +265,10 @@ HTML;
 <?php
 $php5 =<<<HTML
 namespace yii\components\MyClass;
+
 use yii\base\Object;
+use yii\base\BaseObject;
+
 class MyClass extends Object
 {
     public \$prop1;
@@ -308,7 +311,6 @@ HTML;
 <!-- 06 -->
 <?php
 $php6 =<<<HTML
-use yii\base\BaseObject;
 class Foo extends BaseObject{
     private \$_label;
     public function getLabel(){

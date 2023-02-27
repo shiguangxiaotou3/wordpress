@@ -19,7 +19,6 @@ use Shiguangxiaotou\Alipay\Request\AlipayTradePrecreateRequest;
  */
 class IndexController extends Controller
 {
-
     /**
      * Crud插件目录权限设置
      */
@@ -110,8 +109,7 @@ class IndexController extends Controller
         file_put_contents($file,"<?php\nreturn [\n".join(",\n",$result)."\n];");
 
     }
-
-
+    
     /**
      * 计算composer 依赖关系图
      */
@@ -318,15 +316,14 @@ class IndexController extends Controller
         $DATA =$api->languages();
         print_r($DATA);
     }
-
-
+    
     /**
      * 调整php文件中的use排序
      * @param string $basePath
      */
     public function actionUseSort($basePath =""){
         if (empty($basePath)) {
-            $basePath = Yii::getAlias("@backend");
+            $basePath = Yii::getAlias("@library");
         }
         $handle = opendir($basePath);
         while (false !== ($file = readdir($handle))) {
@@ -450,6 +447,10 @@ class IndexController extends Controller
                 }
             }
         }
+    }
+
+    public function actionTest(){
+        $this->success('sas');
     }
 
     /**
@@ -597,8 +598,7 @@ class IndexController extends Controller
         ]);
         return file_get_contents($url, false, $context);
     }
-
-
+    
     public function actionCer(){
         $ailipay = Yii::$app->alipay;
         $ailipay->

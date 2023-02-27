@@ -11,6 +11,8 @@ use Google\Cloud\Translate\V2\TranslateClient;
 use crud\modules\translate\components\Translate;
 
 
+
+
 /**
  * Class TranslateController
  * @property TranslateClient $client

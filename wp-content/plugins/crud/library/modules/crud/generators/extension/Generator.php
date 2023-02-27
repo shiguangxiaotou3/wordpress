@@ -13,6 +13,8 @@ use crud\modules\crud\Generator as BaseGenerator;
 
 
 
+
+
 /**
  * This generator will generate the skeleton files needed by an extension.
  *

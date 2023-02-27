@@ -4,6 +4,8 @@
 namespace crud\modules\sms\models;
 
 use Exception;
+
+
 class RequestError extends Exception
 {
     private $responseCode;

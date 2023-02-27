@@ -7,6 +7,8 @@ use Yii;
 use yii\web\Controller;
 use crud\modules\pay\components\Alipay;
 
+
+
 class IndexController extends Controller
 {
     public $layout=false;

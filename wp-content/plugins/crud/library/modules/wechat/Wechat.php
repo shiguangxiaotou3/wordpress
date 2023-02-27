@@ -3,13 +3,15 @@
 
 namespace crud\modules\wechat;
 
-use backend\web\App;
 use Yii;
 use crud\Base;
+use backend\web\App;
 use yii\base\Module;
 use yii\web\Application;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
+
+
 
 
 class Wechat extends Module implements BootstrapInterface

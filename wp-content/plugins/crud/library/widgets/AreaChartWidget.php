@@ -13,6 +13,8 @@ use yii\helpers\ArrayHelper;
 
 
 
+
+
 class AreaChartWidget extends  Widget{
     public $id;
     private $_defaultOptions=[

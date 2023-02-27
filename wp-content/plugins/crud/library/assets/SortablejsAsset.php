@@ -3,6 +3,8 @@ namespace crud\assets;
 
 use yii\web\View;
 
+
+
 class SortablejsAsset extends AppAsset {
 
     public $sourcePath =  "@bower/sortablejs";

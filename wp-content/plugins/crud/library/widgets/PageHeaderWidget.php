@@ -7,6 +7,8 @@ use yii\base\Widget;
 use crud\widgets\SearchWidget;
 use crud\widgets\ControllerActionsWidget;
 
+
+
 class PageHeaderWidget extends Widget
 {
     public $searchOptions=[];

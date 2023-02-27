@@ -9,6 +9,8 @@ use yii\base\Model;
 
 
 
+
+
 class Message extends Model{
 
     const Type_Link ="link";

@@ -1,8 +1,11 @@
 #!/bin/bash
 
-# 包含服务器连接参数
-. config.sh
-# "https://www.shiguangxiaotou.com/wp-json/crud/api/server/login"
+
+projectPath="/Library/WebServer/Documents/wp"
+serverPath="/var/www/html/wordpress"
+# 包含服务器链接参数
+. "$projectPath/bash/config.sh"
+
 # +----------------------------------------------------------------------
 # ｜交互登录ubuntu18.04并执行一条命令
 # +----------------------------------------------------------------------
@@ -11,14 +14,14 @@ function runCommand(){
 if [ "$action" = ""  ]; then
     action="cd $serverPath"
 fi
-expect client.sh "$user" "$host" "$password" "$action"
+expect "$projectPath/bash/client.sh" "$user" "$host" "$password" "$action"
 }
 
 # +----------------------------------------------------------------------
 # ｜将本地文件发布到服务器
 # +----------------------------------------------------------------------
 function publish() {
-    scp -r $basePath/wp-content/plugins/crud/ $user@$host:$serverPath/wp-content/plugins
+    scp -r $projectPath/wp-content/plugins/crud/ $user@$host:$serverPath/wp-content/plugins
 }
 
 # +----------------------------------------------------------------------
@@ -62,7 +65,7 @@ sudo touch ${domainPath}/.htaccess
 echo "\$htaccess" >> ${domainPath}/.htaccess
 certbot
 EOF
-  expect client.sh "$user" "$host" "$password" "$action"
+  expect "$projectPath/bash/client.sh" "$user" "$host" "$password" "$action"
 
   fi
 fi
@@ -80,8 +83,8 @@ sudo rm /etc/apache2/sites-available/${domain}.conf
 sudo rm /etc/apache2/sites-enabled/${domain}-le.ssl.conf
 sudo rm /etc/apache2/sites-available/${domain}-le.ssl.conf
 EOF
-echo "$action"
-#  expect client.sh "$user" "$host" "$password" "$action"
+
+  expect "$projectPath/bash/client.sh" "$user" "$host" "$password" "$action"
 fi
 }
 
@@ -90,15 +93,16 @@ fi
 # +----------------------------------------------------------------------
 function nginxProxy(){
 config=`cat $basePath/bash/nginx.conf`
-expect nginx.sh "$user" "$host" "$password" "$config"
+expect "$projectPath/bash/nginx.sh" "$user" "$host" "$password" "$config"
 }
 
-
-#runCommand
-#apacheAddHost "tesh.shiguangxiaotou.com" "/var/www/html/test"
-#apacheDeleteHost "tesh.shiguangxiaotou.com"
-
-runCommand
+# +----------------------------------------------------------------------
+# ｜登录
+# +----------------------------------------------------------------------
+function loginServerMysql() {
+  sql=$1
+   expect "$projectPath/bash/mysql.sh" "$user" "$host" "$password" "$mysqlUser" "$mysqlPassword" "$mysqlDb" "$sql"
+}
 
 
 
