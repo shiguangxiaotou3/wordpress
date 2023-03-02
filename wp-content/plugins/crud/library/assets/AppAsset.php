@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\assets;
 
 use Yii;
@@ -15,8 +13,4 @@ use yii\base\InvalidConfigException;
  */
 class AppAsset extends WpAsset
 {
-
-
-
-
 }

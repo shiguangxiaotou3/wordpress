@@ -1,13 +1,7 @@
 <?php
-
-
 namespace crud\models;
 
 use yii\base\Model;
-
-
-
-
 
 /**
  * Class Pages
@@ -28,8 +22,6 @@ class Pages extends Model
     public $capbility='manage_options';
     public $menu_slug;
     public $posiyion="";
-
-
     /**
      * @param $plugins
      */
@@ -43,6 +35,4 @@ class Pages extends Model
             $this->posiyion,
         );
     }
-
-
 }

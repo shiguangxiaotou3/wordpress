@@ -16,10 +16,6 @@ use yii\helpers\VarDumper;
 use yii\db\BaseActiveRecord;
 use crud\modules\crud\CodeFile;
 use crud\modules\crud\Generator as BaseGenerator;
-
-
-
-
 /**
  * Generates CRUD controller and views.
  *
@@ -69,8 +65,6 @@ class Generator extends BaseGenerator
      * @since 2.1.0
      */
     public $strictInflector = true;
-
-
     /**
      * {@inheritdoc}
      */

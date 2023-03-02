@@ -1,14 +1,12 @@
 <?php
 namespace crud\modules\sms;
 
-
 use Yii;
-use yii\base\Module;
 use backend\web\App;
+use yii\base\Module;
 use yii\web\Application;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
-
 class Sms extends Module implements BootstrapInterface
 {
     /**

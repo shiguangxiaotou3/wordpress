@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\assets;
 
 use yii\web\AssetBundle;

@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\wechat\components;
 
 use crud\modules\wechat\components\SubscriptionService;

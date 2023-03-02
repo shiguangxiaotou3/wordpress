@@ -1,11 +1,7 @@
 <?php
-
-
 namespace crud\modules\market\assets;
 
-
 use crud\modules\wp\assets\WpAsset;
-
 class MarketAsset extends WpAsset
 {
     public $sourcePath =  "@library/modules/market/assets/market";

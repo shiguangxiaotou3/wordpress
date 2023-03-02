@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\base\components;
 
 use OSS\Model\Tag;

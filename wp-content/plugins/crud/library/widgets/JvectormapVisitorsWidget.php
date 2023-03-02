@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\library\widgets;
 
 use yii\base\Widget;
@@ -9,10 +7,6 @@ use crud\models\Color;
 use yii\helpers\ArrayHelper;
 use crud\assets\JvectormapAsset;
 use ParagonIE\Sodium\Core\Curve25519\H;
-
-
-
-
 
 /**
  * 地区统计
@@ -61,8 +55,6 @@ class JvectormapVisitorsWidget extends  Widget
         "GB" => 320, // Great Britain
         "RU" => 3000 // Russia
     ];
-
-
     /**
      * @return string
      */

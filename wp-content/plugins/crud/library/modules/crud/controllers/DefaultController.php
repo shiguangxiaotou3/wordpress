@@ -41,8 +41,6 @@ class DefaultController extends Controller
         Yii::$app->response->format = Response::FORMAT_HTML;
         return parent::beforeAction($action);
     }
-
-
     public function actionIndex()
     {
         $this->layout ='main';

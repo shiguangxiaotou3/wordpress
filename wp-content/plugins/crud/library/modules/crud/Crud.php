@@ -7,19 +7,19 @@
 
 namespace crud\modules\crud;
 
-use crud\Base;
 use Yii;
+use crud\Base;
+use backend\web\App;
 use yii\base\Module;
 use yii\helpers\Json;
 use yii\web\Application;
-use backend\web\App;
 use yii\helpers\IpHelper;
 use yii\helpers\ArrayHelper;
-use yii\console\Application as ConsoleApp;
 use yii\base\BootstrapInterface;
 use crud\modules\ModuleImplements;
-use yii\web\ForbiddenHttpException;
 use yii\base\NotSupportedException;
+use yii\web\ForbiddenHttpException;
+use yii\console\Application as ConsoleApp;
 
 /**
  * This is the main module class for the Gii module.

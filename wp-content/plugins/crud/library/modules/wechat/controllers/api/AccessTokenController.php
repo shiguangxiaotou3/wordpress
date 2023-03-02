@@ -4,10 +4,6 @@ namespace  crud\modules\wechat\controllers\api;
 use Yii;
 use yii\web\Controller;
 
-
-
-
-
 class AccessTokenController extends Controller
 {
 

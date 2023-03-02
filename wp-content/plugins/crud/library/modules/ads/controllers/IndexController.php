@@ -1,16 +1,10 @@
 <?php
-
-
 namespace crud\modules\ads\controllers;
 
 use Yii;
 use yii\web\Controller;
 use crud\modules\ads\components\Ads;
 use crud\modules\ads\components\Flows;
-
-
-
-
 
 class IndexController extends Controller
 {

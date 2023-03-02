@@ -1,12 +1,10 @@
 <?php
-
-
 namespace crud\modules\base\controllers;
 
-use crud\models\Files;
 use Yii;
-use yii\web\Controller;
 use yii\web\Response;
+use crud\models\Files;
+use yii\web\Controller;
 
 class IndexController extends Controller
 {
@@ -110,13 +108,9 @@ class IndexController extends Controller
         }
         return $this->render("editor");
     }
-
-
     public function actionIcons(){
         return $this->render("icons");
     }
-
-
     public function error($message, $data = [],$header=[])
     {
         header('Content-Type: application/json');

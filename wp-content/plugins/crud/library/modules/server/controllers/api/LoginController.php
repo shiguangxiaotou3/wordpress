@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\server\controllers\api;
 
 use Yii;

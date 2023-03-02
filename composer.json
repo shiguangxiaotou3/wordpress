@@ -88,7 +88,7 @@
     "publish":["bash bash/runCommand.sh publish"],
     "Apache":["bash bash/runCommand.sh runCommand \"sudo /etc/init.d/apache2 restart\""],
     "DeleteDsStore": ["php command index/delete-ds-store"],
-    "UseSort":["php command index/use-sort"]
+    "UseSort":["php command index/use-sort","php command index/delete-ds-store"]
   },
   "scripts-descriptions": {
     "Server": "登录`linux`服务器",

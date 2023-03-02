@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\base\controllers\api;
 
 use Yii;
@@ -10,8 +8,6 @@ class IndexController  extends Controller
 {
 
     public function actionIndex(){
-
-
     }
 
     public function actionCreate(){

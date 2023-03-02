@@ -1,12 +1,8 @@
 <?php
-
-
 namespace crud\widgets;
 
 use yii\base\Widget;
 use yii\helpers\Html;
-
-
 /**
  * 打印表格
  * @package crud\widgets
@@ -86,8 +82,6 @@ HTML;
                     "data-colname"=>$column['title'],
                 ];
                 $value = $this->getValue($item,$column);
-
-
                 $td[] =Html::beginTag("td",$options).  $value.Html::endTag("td");
             }
             $row []= "<tr id='post-{$i}'>".join("",$td)."</tr>";
@@ -100,8 +94,6 @@ HTML;
     </tbody>
 HTML;
     }
-
-
     /**
      * @param $row
      * @param $field
@@ -117,8 +109,6 @@ HTML;
             return '';
         }
     }
-
-
     /**
      * @param $value
      * @return false|string

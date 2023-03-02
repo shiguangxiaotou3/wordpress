@@ -52,8 +52,6 @@ class CodeFile extends BaseObject
      * @var string the operation to be performed. This can be [[OP_CREATE]], [[OP_OVERWRITE]] or [[OP_SKIP]].
      */
     public $operation;
-
-
     /**
      * Constructor.
      * @param string $path the file path that the new code should be saved to.

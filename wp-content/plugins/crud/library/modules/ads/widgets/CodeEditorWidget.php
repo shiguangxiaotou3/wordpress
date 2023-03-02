@@ -1,16 +1,10 @@
 <?php
-
-
 namespace crud\modules\editor\widgets;
 
 use yii\base\Widget;
 use yii\helpers\Html;
 use crud\models\Files;
 use crud\modules\editor\assets\AceAsset;
-
-
-
-
 
 
 /**

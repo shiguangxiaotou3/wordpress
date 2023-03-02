@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\wechat\components;
 
 use Yii;
@@ -549,8 +547,6 @@ JS;
         }else{
             return false;
         }
-
-
     }
 
     /**

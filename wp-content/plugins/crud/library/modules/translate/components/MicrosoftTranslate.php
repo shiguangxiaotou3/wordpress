@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\translate\components;
 
 use Yii;
@@ -16,8 +14,6 @@ class MicrosoftTranslate extends Component implements Translate
     public $location;
     public $shortcut;
     public $uli ="https://api.cognitive.microsofttranslator.com";
-
-
     public function translate($data, $from = "en", $to = "zh-Hans", $format = "text", $model = ""){
         $result = $request =[];
         if (is_array($data)){
@@ -209,5 +205,3 @@ class MicrosoftTranslate extends Component implements Translate
         return $this->shortcut;
     }
 }
-
-

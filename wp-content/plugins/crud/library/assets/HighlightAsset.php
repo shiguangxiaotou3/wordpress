@@ -16,11 +16,7 @@ class HighlightAsset  extends AppAsset {
         "position"=>View::POS_HEAD,
     ];
     public $depends = ['yii\web\JqueryAsset'];
-
-
 }
-
-
 /**
  * The location of registered JavaScript code block or files.
  * 注册的JavaScript代码块或文件的位置

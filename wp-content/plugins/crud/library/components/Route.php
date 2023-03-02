@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\components;
 
 use Yii;

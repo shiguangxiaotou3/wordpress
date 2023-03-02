@@ -1,14 +1,8 @@
 <?php
-
-
 namespace crud;
 
 use Yii;
 use yii\web\Response;
-
-
-
-
 /**
  * @property Application $app
  * @package crud
@@ -92,7 +86,5 @@ class Base  {
     public static function success($message,$data='',$code=1){
         self::sendJson(["code"=>$code, "message"=>$message, 'data'=>$data, "time"=>time()]);
     }
-
-
 
 }

@@ -1,14 +1,8 @@
 <?php
-
-
 namespace crud\modules\wechat\assets;
 
 use Yii;
 use yii\web\AssetBundle;
-
-
-
-
 class WeChatAssets extends AssetBundle
 {
     public $sourcePath =  "http://res.wx.qq.com/open/js/jweixin-1.6.0.js";

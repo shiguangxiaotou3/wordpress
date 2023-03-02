@@ -1,7 +1,5 @@
 <?php
 /** @var $this yii\web\View */
-
-
 ?>
 
 <!-- 01 -->
@@ -265,7 +263,10 @@ HTML;
 <?php
 $php5 =<<<HTML
 namespace yii\components\MyClass;
+
 use yii\base\Object;
+use yii\base\BaseObject;
+
 class MyClass extends Object
 {
     public \$prop1;
@@ -308,7 +309,6 @@ HTML;
 <!-- 06 -->
 <?php
 $php6 =<<<HTML
-use yii\base\BaseObject;
 class Foo extends BaseObject{
     private \$_label;
     public function getLabel(){
@@ -501,8 +501,6 @@ $php11 =<<<HTML
     add_action("rest_api_init", [\$this, "registerRestfulApi"]);
 HTML;
 
-
-
 $php12 =<<<HTML
     <span class="code-comment">// +----------------------------------------------------------------------
     // ｜将yii\web\View事件挂载到wordpress钩子中
@@ -544,8 +542,6 @@ $php13 =<<<HtML
     remove_action('admin_init', '_maybe_update_plugins');
     remove_action('admin_init', '_maybe_update_themes');
 HtML;
-
-
 $php14 =<<<HTML
     <span class="code-comment">// +----------------------------------------------------------------------
     // ｜中国地区头像代理
@@ -562,10 +558,6 @@ $php14 =<<<HTML
     });
 }
 HTML;
-
-
-
-
 ?>
     <section>
         <!--.wrap = container (width: 90%) -->

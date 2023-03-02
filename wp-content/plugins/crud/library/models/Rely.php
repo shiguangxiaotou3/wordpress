@@ -1,14 +1,8 @@
 <?php
-
-
 namespace crud\models;
 
 use Yii;
 use yii\base\Model;
-
-
-
-
 /**
  * 生成composer 依赖关系图
  * @package crud\models
@@ -143,8 +137,6 @@ class Rely extends Model
             }
         }
     }
-
-
     /**
      * 获取分类id,如何没有分组则创建一个
      * @param $categoryName

@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\base\components;
 
 use Yii;
@@ -8,8 +6,6 @@ use Exception;
 use crud\models\Color;
 use yii\base\Component;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
-
-
 /**
  *
  * @property-read  string $path
@@ -432,8 +428,6 @@ class Crawlers extends Component
         $file = $this->path . "/visits/" . $dayUnix . "/referer.data";
         return self::getData($file);
     }
-
-
     /**
      * 获取近几天访问量
      * @param $dayNumber

@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\market\controllers;
 
 use Yii;

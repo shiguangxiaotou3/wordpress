@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\wechat\controllers;
 
 use Yii;
@@ -36,6 +34,4 @@ class IndexController extends Controller
     public function actionShare(){
         return  $this->render("share");
     }
-
-
 }

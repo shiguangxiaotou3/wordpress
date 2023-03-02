@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\translate\components;
 
 use Exception;

@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\wp\assets;
 
 use crud\assets\AppAsset;

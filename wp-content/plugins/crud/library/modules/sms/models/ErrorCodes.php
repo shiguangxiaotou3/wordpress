@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\sms\models;
 
 use crud\modules\sms\models\RequestError;

@@ -1,6 +1,4 @@
 <?php
-
-
 namespace crud\modules\base\components;
 
 use Exception;
@@ -39,8 +37,6 @@ class Dns extends Component
     public $lang = "zh_CN";
     public $accessKeyId = "";
     public $accessKeySecret = "";
-
-
     /**
      * @param string $accessKeyId
      * @param string $accessKeySecret
@@ -146,8 +142,6 @@ class Dns extends Component
                 return  $data;
             }
         }
-
-
     }
 
     /**
@@ -471,6 +465,4 @@ class Dns extends Component
         }
 
     }
-
-
 }

@@ -1,13 +1,7 @@
 <?php
-
-
 namespace crud\modules\ads\components;
 
 use yii\base\Component;
-
-
-
-
 
 /**
  * @property-read $_ch
@@ -18,8 +12,6 @@ class Flows extends Component{
     public $apiKey="";
     public $domain="";
     private $ch;
-
-
     /**
      * @link $_ch
      * @return \CurlHandle|false|resource
