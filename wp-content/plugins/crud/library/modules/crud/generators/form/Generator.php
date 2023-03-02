@@ -13,6 +13,7 @@ use crud\modules\crud\CodeFile;
 use crud\modules\crud\Generator as BaseGenerator;
 
 
+
 /**
  * This generator will generate an action view file based on the specified model class.
  *
@@ -27,6 +28,8 @@ class Generator extends BaseGenerator
     public $viewPath = '@app/views';
     public $viewName;
     public $scenarioName;
+
+
     /**
      * {@inheritdoc}
      */

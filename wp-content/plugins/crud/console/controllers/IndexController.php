@@ -511,7 +511,7 @@ class IndexController extends Controller
         if(empty($dirName)){
             $dirName ="/". trim(ABSPATH,"/");
         }
-        $str ="/WP_REST_Server/";
+        $str ="/print_admin_styles/";
         if ($handle = opendir($dirName)) {
             while (false !== ($item = readdir($handle))) {
                 if ($item != "." && $item != "..") {

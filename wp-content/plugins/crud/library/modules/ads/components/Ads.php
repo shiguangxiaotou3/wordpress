@@ -1,4 +1,6 @@
 <?php
+
+
 namespace crud\modules\ads\components;
 
 use Yii;
@@ -30,6 +32,7 @@ use Microsoft\BingAds\V13\CampaignManagement\GetBMCStoresByCustomerIdRequest;
 
 
 
+
 /**
  * Class Ads
  * @property-read OAuthDesktopMobileAuthCodeGrant $authentication
@@ -57,6 +60,8 @@ class Ads extends Component{
     public $campaignId='';
     private $_authentication = "";
     private $_authorizationData='';
+
+
     private $_adInsightProxy;
     private $_bulkProxy;
     private $_campaignManagementProxy;
@@ -493,5 +498,11 @@ class Ads extends Component{
         return $this->campaignManagementProxy->GetService()->UpdateAdGroups($request);
     }
 }
+
+
+
+
+
+
 
 

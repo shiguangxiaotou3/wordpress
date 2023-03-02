@@ -1,15 +1,18 @@
 <?php
+
+
 namespace crud\modules\wp;
 
 use Yii;
 use yii\base\Module;
 use yii\db\Exception;
+use yii\debug\panels\DumpPanel;
 use yii\web\Application;
 use yii\helpers\ArrayHelper;
-use yii\debug\panels\DumpPanel;
 use yii\base\BootstrapInterface;
 use yii\base\InvalidRouteException;
 use yii\console\Application as ConsoleApplication;
+
 
 
 /**

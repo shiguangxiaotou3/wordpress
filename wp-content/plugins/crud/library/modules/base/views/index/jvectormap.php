@@ -38,7 +38,7 @@ $crawlers = Yii::$app->crawlers;
     </form>
     <div style="display: flex;">
         <div id="showJvectormap" style="margin: 10px; width: 480px ;height:270px; background-color: rgb(220,220,220);"> </div>
-        <textarea id="ips_text" style="margin: 10px; width: 480px ;height:270px; " class="large-text code" placeholder="ip地址查询.多个ip','隔开"></textarea>
+        <textarea id="ips_text" style="margin: 10px; width: 480px ;height:270px; " class="large-text code" placeholder="ip地址查询.多个ip','隔开">123.56.7.206</textarea>
     </div>
     <button id="select" class="button button-primary">查询</button>
     <div class="map">
@@ -66,13 +66,15 @@ $crawlers = Yii::$app->crawlers;
 
 <?php
 
+$ajaxUrl = admin_url('admin-ajax.php')."?action=base/index/jvectormap";
 $js =<<<JS
-
+  var crudAjax = "{$ajaxUrl}";
   showJvectormap("showJvectormap","");
   $("#select").on("click" ,function(){
       let ips = $("#ips_text").val();
       if((ips !== "") && (ips !== undefined)){
-        $.get("/wp-json/crud/api/base/index",{'ips':ips},function(res,status,xhr){
+        $.get(crudAjax,{'ips':ips},function(res,status,xhr){
+          console.log(res);
           if(res.code ==1){
              $('#showJvectormap').children().remove();
             showJvectormap("showJvectormap",res.data);

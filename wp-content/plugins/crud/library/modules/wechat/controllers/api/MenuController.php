@@ -1,12 +1,12 @@
 <?php
+
+
 namespace crud\modules\wechat\controllers\api;
 
 use Yii;
 use Exception;
+use yii\web\Response;
 use yii\web\Controller;
-use crud\controllers\RestfulApiControllerImplements;
-
-
 
 class MenuController extends Controller
 {
@@ -17,16 +17,9 @@ class MenuController extends Controller
      * 获取菜单
      */
     public function actionIndex(){
-        $cache =Yii::$app->cache;
-        $menus = $cache->get("wechat_menus");
-        if(empty($menus)){
-            $wechat = Yii::$app->subscription;
-            $menus =$wechat->menu;
-            if($menus['code']== 1){
-                $cache->set("wechat_menus",$menus);
-            }
-        }
-        return $menus;
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $wechat = Yii::$app->subscription;
+        return  $wechat->menu;
     }
 
     /**

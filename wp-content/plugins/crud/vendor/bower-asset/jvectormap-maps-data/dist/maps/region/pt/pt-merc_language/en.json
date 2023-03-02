@@ -1,0 +1,25 @@
+{
+    "insets":{"width":400,"top":100,"height":227.1821699591692,"bbox":[{"y":-4828991.437978903,"x":-3484385.6934304936},{"y":-4432201.590905579,"x":-2785757.192532491}],"left":0},
+    "names":[
+         {"code":"PT-13","name":"Porto"},
+         {"code":"PT-12","name":"Portalegre"},
+         {"code":"PT-11","name":"Lisboa"},
+         {"code":"PT-10","name":"Leiria"},
+         {"code":"PT-08","name":"Faro"},
+         {"code":"PT-16","name":"Viana do Castelo"},
+         {"code":"PT-20","name":"Azores"},
+         {"code":"PT-14","name":"Santarém"},
+         {"code":"PT-04","name":"Bragança"},
+         {"code":"PT-05","name":"Castelo Branco"},
+         {"code":"PT-06","name":"Coimbra"},
+         {"code":"PT-07","name":"Évora"},
+         {"code":"PT-01","name":"Aveiro"},
+         {"code":"PT-02","name":"Beja"},
+         {"code":"PT-03","name":"Braga"},
+         {"code":"PT-09","name":"Guarda"},
+         {"code":"PT-15","name":"Setúbal"},
+         {"code":"PT-17","name":"Vila Real"},
+         {"code":"PT-18","name":"Viseu"},
+         {"code":"PT-30","name":"Madeira"}
+    ] 
+}

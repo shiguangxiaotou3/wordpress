@@ -1,4 +1,6 @@
 <?php
+
+
 namespace crud\modules\wechat\components;
 
 use Yii;
@@ -11,7 +13,6 @@ use yii\base\InvalidConfigException;
 use GuzzleHttp\Exception\GuzzleException;
 use crud\modules\wechat\assets\MarketAssets;
 use crud\modules\wechat\models\ValidateServer;
-
 
 /**
  * 微信公众号组件
@@ -548,6 +549,8 @@ JS;
         }else{
             return false;
         }
+
+
     }
 
     /**

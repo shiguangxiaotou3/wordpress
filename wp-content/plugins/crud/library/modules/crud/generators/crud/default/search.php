@@ -3,6 +3,8 @@
  * This is the template for generating CRUD search class of the specified model.
  */
 
+
+
 /** @var yii\web\View $this */
 /** @var crud\modules\crud\generators\crud\Generator $generator */
 
@@ -25,6 +27,7 @@ use yii\base\Model;
 use yii\helpers\StringHelper;
 use yii\data\ActiveDataProvider;
 use <?= ltrim($generator->modelClass, '\\') . (isset($modelAlias) ? " as $modelAlias" : "") ?>;
+
 
 
 

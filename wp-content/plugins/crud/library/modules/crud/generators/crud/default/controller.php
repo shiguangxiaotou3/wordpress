@@ -3,6 +3,8 @@
  * This is the template for generating a CRUD controller class file.
  */
 
+
+
 /** @var yii\web\View $this */
 /** @var crud\modules\crud\generators\crud\Generator $generator */
 
@@ -33,6 +35,7 @@ use yii\web\NotFoundHttpException;
 use <?= ltrim($generator->modelClass, '\\') ?>;
 use <?= ltrim($generator->baseControllerClass, '\\') ?>;
 use <?= ltrim($generator->searchModelClass, '\\') . (isset($searchModelAlias) ? " as $searchModelAlias" : "") ?>;
+
 
 
 <?php if (!empty($generator->searchModelClass)): ?>

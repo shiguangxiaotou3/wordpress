@@ -1,7 +1,7 @@
 <?php
 namespace crud\modules\sms\models;
 
-use Exception;
+use \Exception;
 
 class RequestError extends Exception
 {

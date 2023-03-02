@@ -1,4 +1,6 @@
 <?php
+
+
 namespace crud\modules\base\components;
 
 use Exception;
@@ -23,7 +25,6 @@ use AlibabaCloud\SDK\Alidns\V20150109\Models\DescribeDomainStatisticsSummaryRequ
 use AlibabaCloud\SDK\Alidns\V20150109\Models\DescribeRecordStatisticsSummaryRequest;
 use AlibabaCloud\SDK\Alidns\V20150109\Models\OperateBatchDomainRequest\domainRecordInfo;
 
-
 /**
  * 阿里云云解析接口
  *
@@ -38,6 +39,8 @@ class Dns extends Component
     public $lang = "zh_CN";
     public $accessKeyId = "";
     public $accessKeySecret = "";
+
+
     /**
      * @param string $accessKeyId
      * @param string $accessKeySecret
@@ -143,6 +146,8 @@ class Dns extends Component
                 return  $data;
             }
         }
+
+
     }
 
     /**
@@ -466,4 +471,6 @@ class Dns extends Component
         }
 
     }
+
+
 }

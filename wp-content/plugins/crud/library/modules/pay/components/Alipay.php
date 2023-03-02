@@ -157,7 +157,7 @@ class Alipay extends Component implements Pay
      * @return false|mixed
      * @throws Exception
      */
-    public function select($orderId,$number,$options=[]){
+    public function select($orderId,$number="",$options=[]){
         if(empty($orderId) and empty($number)){
             return false;
         }

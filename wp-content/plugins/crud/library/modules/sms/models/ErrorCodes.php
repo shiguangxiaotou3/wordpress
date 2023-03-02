@@ -3,7 +3,7 @@
 
 namespace crud\modules\sms\models;
 
-
+use crud\modules\sms\models\RequestError;
 class ErrorCodes extends RequestError
 {
     public function checkExist($errorCode)

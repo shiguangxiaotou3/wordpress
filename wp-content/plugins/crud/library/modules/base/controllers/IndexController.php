@@ -1,10 +1,12 @@
 <?php
+
+
 namespace crud\modules\base\controllers;
 
-use Yii;
 use crud\models\Files;
+use Yii;
 use yii\web\Controller;
-
+use yii\web\Response;
 
 class IndexController extends Controller
 {
@@ -55,6 +57,21 @@ class IndexController extends Controller
      * @return string
      */
     public function actionJvectormap(){
+        $request = Yii::$app->request;
+        if($request->isAjax){
+            $ips = $request->get("ips");
+            $ips = explode(",",$ips);
+            $crawlers = Yii::$app->crawlers;
+            $results =[];
+            foreach ($ips as $ip){
+                $re =$crawlers->getIpinfo($ip);
+                $results[] = [
+                    "latLng" => explode(",", $re["loc"]),
+                    "name" => Yii::t("city", $re["city"])
+                ];
+            }
+           return  $this->success('ok', $results);
+        }
         return $this->render("jvectormap");
     }
 
@@ -93,8 +110,33 @@ class IndexController extends Controller
         }
         return $this->render("editor");
     }
+
+
     public function actionIcons(){
         return $this->render("icons");
+    }
+
+
+    public function error($message, $data = [],$header=[])
+    {
+        header('Content-Type: application/json');
+        return json_encode([
+            'code' => 0,
+            'message' => $message,
+            'time' => time(),
+            'data' => $data
+        ]);
+    }
+
+    public function success($message, $data = [],$header=[])
+    {
+        header('Content-Type: application/json');
+        return json_encode([
+            'code' => 1,
+            'message' => $message,
+            'time' => time(),
+            'data' => $data,
+        ]);
     }
 
 }

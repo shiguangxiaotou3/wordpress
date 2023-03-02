@@ -1,11 +1,12 @@
 <?php
+
+
 namespace crud\assets;
 
 use Yii;
 use yii\web\View;
 use yii\web\AssetBundle;
 use yii\base\InvalidConfigException;
-
 
 class WpAsset extends AssetBundle
 {
@@ -43,13 +44,14 @@ class WpAsset extends AssetBundle
         $ver = basename( $path);
         $jsOptions =$bundle->jsOptions;
         if(isset($jsOptions['position']) and $jsOptions['position']== View::POS_END){
-            $in_footer =false;
-        }else{
             $in_footer =true;
+//            $in_footer =false;
+        }else{
+             $in_footer =false;
         }
         foreach ($bundle->js as $js){
             $itemHandle = str_replace("/","-",$ver."/".$js);
-            wp_register_script( $itemHandle, $path."/".$js , $JsDepends,false,$in_footer);
+            wp_register_script( $itemHandle, $path."/".$js , $JsDepends,false, $in_footer);
             array_push($JsDepends ,  $itemHandle);
         }
         foreach ($bundle->css as $css){
@@ -57,6 +59,7 @@ class WpAsset extends AssetBundle
             wp_register_style($itemHandle, $path."/".$css , $CssDepends,false,"all");
             array_push($CssDepends ,$itemHandle);
         }
+
         unset($bundle);
     }
 
@@ -124,9 +127,9 @@ class WpAsset extends AssetBundle
         $path = $bundle->publishedUrl();
         $ver = basename( $path);
         if(isset($options['position']) and $options['position']== View::POS_END){
-            $in_footer =false;
-        }else{
             $in_footer =true;
+        }else{
+            $in_footer =false;
         }
         $itemHandle = str_replace("/","-",$ver."/".$file);
         $depends =[];
@@ -135,7 +138,7 @@ class WpAsset extends AssetBundle
             array_push($depends, $tmp );
         }
         unset($bundle);
-        wp_enqueue_script(  $itemHandle, $path.$file , $depends , $key,  $in_footer);
+        wp_enqueue_script(  $itemHandle, $path.$file , $depends , $key, $in_footer);
         $view->registerJsFile(  $path.$file, $options, $key );
     }
 }

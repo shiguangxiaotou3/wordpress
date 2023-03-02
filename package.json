@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/shiguangxiaotou3/wordpress/issues"
   },
-  "homepage": "https://github.com/shiguangxiaotou3/wordpress#readme"
+  "homepage": "https://github.com/shiguangxiaotou3/wordpress#readme",
+  "dependencies": {
+    "layui": "^2.8.0-rc.10"
+  }
 }

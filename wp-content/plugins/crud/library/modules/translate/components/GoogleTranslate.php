@@ -1,4 +1,6 @@
 <?php
+
+
 namespace crud\modules\translate\components;
 
 use Yii;
@@ -7,6 +9,7 @@ use yii\web\Request;
 use yii\base\Component;
 use Google\Cloud\Translate\V2\TranslateClient;
 use crud\modules\translate\components\Translate;
+
 
 /**
  * Class TranslateController

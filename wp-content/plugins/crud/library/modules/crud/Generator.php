@@ -14,6 +14,7 @@ use ReflectionClass;
 use yii\helpers\VarDumper;
 use yii\base\InvalidConfigException;
 
+
 /**
  * This is the base class for all generator classes.
  *
@@ -56,6 +57,8 @@ abstract class Generator extends Model
      * @var string the message category used by `Yii::t()` when `$enableI18N` is `true`, defaults to `app`.
      */
     public $messageCategory = 'console';
+
+
     /**
      * Returns the name of the code generator.
      *

@@ -1,10 +1,11 @@
 <?php
+
+
 namespace crud\modules\translate\components;
 
 use Exception;
 use yii\base\Component;
 use crud\modules\translate\components\Translate;
-
 
 class BaiduTranslate extends Component implements Translate
 {

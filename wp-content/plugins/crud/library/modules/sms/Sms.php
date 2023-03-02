@@ -1,16 +1,13 @@
 <?php
 namespace crud\modules\sms;
 
+
 use Yii;
-use crud\Base;
 use yii\base\Module;
-use crud\models\Menu;
+use backend\web\App;
 use yii\web\Application;
-use crud\models\Settings;
-use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
-use yii\base\InvalidRouteException;
 
 class Sms extends Module implements BootstrapInterface
 {
@@ -46,7 +43,15 @@ class Sms extends Module implements BootstrapInterface
      */
     public function bootstrap($app){
         if ($app instanceof Application) {
-
+            add_action("rest_api_init", [$this, "registerApi"]);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerApi()
+    {
+        App::addApi($this->id);
     }
 }

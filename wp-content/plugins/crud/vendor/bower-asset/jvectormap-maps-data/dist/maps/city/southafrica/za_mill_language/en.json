@@ -1,0 +1,14 @@
+{
+    "insets":{"width":900,"top":0,"height":1182.5061736225139,"bbox":[{"y":2504518.996929638,"x":1834359.851696376},{"y":5651894.636486174,"x":4229812.948506281}],"left":0},
+    "names":[
+         {"code":"ZA-WC","name":"Western Cape"},
+         {"code":"ZA-FS","name":"Orange Free State"},
+         {"code":"ZA-EC","name":"Eastern Cape"},
+         {"code":"ZA-NC","name":"Northern Cape"},
+         {"code":"ZA-LP","name":"Limpopo"},
+         {"code":"ZA-MP","name":"Mpumalanga"},
+         {"code":"ZA-NL","name":"KwaZulu-Natal"},
+         {"code":"ZA-NW","name":"North West"},
+         {"code":"ZA-GT","name":"Gauteng"}
+    ] 
+}

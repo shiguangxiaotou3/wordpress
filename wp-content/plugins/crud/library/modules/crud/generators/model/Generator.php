@@ -21,7 +21,6 @@ use yii\base\NotSupportedException;
 use yii\base\InvalidConfigException;
 use crud\modules\crud\Generator as BaseGenerator;
 
-
 /**
  * This generator will generate one or multiple ActiveRecord classes for the specified database table.
  *
@@ -78,6 +77,8 @@ class Generator extends BaseGenerator
      * @var string[]
      */
     protected $classNames = [];
+
+
     public function init()
     {
         parent::init();
@@ -337,6 +338,8 @@ class Generator extends BaseGenerator
                 );
             }
         }
+
+
         return $files;
 
     }
@@ -561,6 +564,8 @@ class Generator extends BaseGenerator
     private function generateManyManyRelations($table, $fks, $relations)
     {
         $db = $this->getDbConnection();
+
+
         foreach ($fks as $pair) {
             list($firstKey, $secondKey) = $pair;
             $table0 = $firstKey[0][0];

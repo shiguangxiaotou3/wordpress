@@ -1,5 +1,8 @@
 <?php
+
+
 namespace crud\modules\market\assets;
+
 
 use crud\modules\wp\assets\WpAsset;
 

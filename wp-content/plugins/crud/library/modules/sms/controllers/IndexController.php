@@ -1,45 +1,26 @@
 <?php
-namespace crud\modules\wechat\controllers;
+namespace crud\modules\sms\controllers;
 
 use Yii;
 use yii\web\Controller;
-
 
 
 class IndexController extends Controller
 {
     public $layout=false;
 
-    public function actions(){
-        return ['index','menu','event'];
-    }
-
-    /**
-     * 验证开发者服务器
-     * @return false|string
-     */
     public function actionIndex(){
+
        return  $this->render("index");
     }
 
-    /**
-     * 菜单设置
-     * @return string
-     */
-    public function actionMenu(){
-        return  $this->render("menu");
-    }
-
-    /**
-     * 事件
-     * @return string
-     */
-    public function actionEvent(){
-        return  $this->render("event");
-    }
-
-    public function actionShare(){
-        return  $this->render("share");
+    public function actionTest(){
+        $request = Yii::$app->request;
+        if($request->isAjax){
+//            header("Content-Type:application/json;charset=UTF-8;");
+            return json_encode([['code'=>"asda","img"=>"asda","name"=>"asda"],['code'=>"asda","img"=>"asda","name"=>"asda"]]);
+        }
+        return  $this->render("test");
     }
 
 }

@@ -1,0 +1,18 @@
+{
+    "insets":{"width":900,"top":0,"height":693.6576731732696,"bbox":[{"y":-12522796.066032534,"x":-15704627.24417655},{"y":-4935412.353764981,"x":-5860224.731043733}],"left":0},
+    "names":[
+         {"code":"CA-NT","name":"Northwest Territories"},
+         {"code":"CA-NU","name":"Nunavut"},
+         {"code":"CA-NS","name":"Nova Scotia"},
+         {"code":"CA-BC","name":"British Columbia"},
+         {"code":"CA-SK","name":"Saskatchewan"},
+         {"code":"CA-QC","name":"Québec"},
+         {"code":"CA-PE","name":"Prince Edward Island"},
+         {"code":"CA-MB","name":"Manitoba"},
+         {"code":"CA-YT","name":"Yukon"},
+         {"code":"CA-NB","name":"New Brunswick"},
+         {"code":"CA-NL","name":"Newfoundland and Labrador"},
+         {"code":"CA-ON","name":"Ontario"},
+         {"code":"CA-AB","name":"Alberta"}
+    ] 
+}

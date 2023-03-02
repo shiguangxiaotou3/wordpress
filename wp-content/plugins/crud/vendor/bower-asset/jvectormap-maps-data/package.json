@@ -1,0 +1,24 @@
+{
+  "name": "jvectormap-maps-data",
+  "version": "1.0.8",
+  "description": "jvectormap 地图数据整理",
+  "main": "dist/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "jvectormap",
+    "maps",
+    "data"
+  ],
+  "files": [
+    "dist"
+  ],
+  "author": "shiguangxiaotou ",
+  "license": "ISC",
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shiguangxiaotou3/jvectormap-maps-data.git"
+  }
+}

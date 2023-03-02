@@ -12,7 +12,7 @@ use crud\widgets\PageHeaderWidget;
 $css = get_option("crud_group_highlight_theme","monokai_sublime.css");
 HighlightAsset::register($this);
 HighlightAsset::addCssFile($this,"/styles/".$css);
-$this->registerJs('hljs.initHighlightingOnLoad();',View::POS_HEAD);
+$this->registerJs('hljs.initHighlightingOnLoad();');
 
 
 

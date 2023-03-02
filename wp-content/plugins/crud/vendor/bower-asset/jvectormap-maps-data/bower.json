@@ -1,0 +1,22 @@
+{
+  "name": "jvectormap-maps-data",
+  "description": "jvectormap 地图数据整理",
+  "main": "dist/index.js",
+  "authors": [
+    "shiguangxiaotou"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "jvectormap",
+    "maps",
+    "data"
+  ],
+  "homepage": "https://github.com/shiguangxiaotou3/jvectormap-maps-data",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

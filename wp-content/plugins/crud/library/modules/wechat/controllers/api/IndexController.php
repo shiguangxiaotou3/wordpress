@@ -1,10 +1,11 @@
 <?php
+
+
 namespace crud\modules\wechat\controllers\api;
 
 use Yii;
 use crud\Base;
 use yii\web\Controller;
-
 
 class IndexController extends Controller
 {
@@ -19,11 +20,9 @@ class IndexController extends Controller
      */
     public function actionIndex()
     {
+        wp_mail(['757402123@qq.com'],'异步通知测试',print_r(['get'=>$_GET,"post"=>$_POST],true));
         $wechat = Yii::$app->subscription;
-        $echostr = $wechat->ValidateServer();
-        if($echostr ){
-            exit($echostr);
-        }
+         exit( $wechat->ValidateServer());
     }
 
     /**
@@ -39,7 +38,7 @@ class IndexController extends Controller
         }else{
             Base::error('你谁啊');
         }
-
+        wp_mail(['757402123@qq.com'],'异步通知测试',print_r($msg,true));
     }
 
     /**

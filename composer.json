@@ -84,6 +84,8 @@
     "post-package-uninstall":[],
     "Server":["bash bash/runCommand.sh"],
     "Mysql":["bash bash/runCommand.sh loginServerMysql \"SELECT * FROM wp_users;\r\""],
+    "download":["bash bash/runCommand.sh download"],
+    "publish":["bash bash/runCommand.sh publish"],
     "Apache":["bash bash/runCommand.sh runCommand \"sudo /etc/init.d/apache2 restart\""],
     "DeleteDsStore": ["php command index/delete-ds-store"],
     "UseSort":["php command index/use-sort"]

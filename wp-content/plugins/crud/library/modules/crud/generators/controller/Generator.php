@@ -15,6 +15,9 @@ use crud\modules\crud\CodeFile;
 use crud\modules\crud\Generator as BaseGenerator;
 
 
+
+
+
 /**
  * This generator will generate a controller and one or a few action view files.
  *
@@ -45,6 +48,8 @@ class Generator extends BaseGenerator
      * @var string list of action IDs separated by commas or spaces
      */
     public $actions = 'index';
+
+
     /**
      * {@inheritdoc}
      */

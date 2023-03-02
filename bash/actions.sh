@@ -22,7 +22,14 @@ expect "$projectPath/bash/client.sh" "$user" "$host" "$password" "$action"
 # +----------------------------------------------------------------------
 function publish() {
     scp -r $projectPath/wp-content/plugins/crud/ $user@$host:$serverPath/wp-content/plugins
+#    scp -r $user@$host:$serverPath/wp-content/plugins/crud $projectPath/wp-content/plugins
 }
+
+function download() {
+#    scp -r $projectPath/wp-content/plugins/crud/ $user@$host:$serverPath/wp-content/plugins
+    scp -r $user@$host:$serverPath/wp-content/plugins/crud $projectPath/wp-content/plugins
+}
+
 
 # +----------------------------------------------------------------------
 # ｜添加apache多站点配置

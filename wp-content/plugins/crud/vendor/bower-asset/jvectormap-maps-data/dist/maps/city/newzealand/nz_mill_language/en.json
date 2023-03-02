@@ -1,0 +1,23 @@
+{
+    "insets":{"width":900,"top":0,"height":1943.9872200122288,"bbox":[{"y":953774.6103007781,"x":17362005.725865904},{"y":6469539.930907439,"x":19915617.569319673}],"left":0},
+    "names":[
+         {"code":"NZ-NSN","name":"Nelson City"},
+         {"code":"NZ-STL","name":"Southland"},
+         {"code":"NZ-HKB","name":"Hawke's Bay"},
+         {"code":"NZ-BOP","name":"Bay of Plenty"},
+         {"code":"NZ-AUK","name":"Auckland"},
+         {"code":"NZ-TKI","name":"Taranaki"},
+         {"code":"NZ-MBH","name":"Marlborough District"},
+         {"code":"NZ-TAS","name":"Tasman District"},
+         {"code":"NZ-CIT","name":"Chatham Islands Territory"},
+         {"code":"NZ-WKO","name":"Waikato"},
+         {"code":"NZ-WTC","name":"West Coast"},
+         {"code":"NZ-OTA","name":"Otago"},
+         {"code":"NZ-","name":"The Snares"},
+         {"code":"NZ-NTL","name":"Northland"},
+         {"code":"NZ-MWT","name":"Manawatu-Wanganui"},
+         {"code":"NZ-WGN","name":"Wellington"},
+         {"code":"NZ-GIS","name":"Gisborne District"},
+         {"code":"NZ-CAN","name":"Canterbury"}
+    ] 
+}

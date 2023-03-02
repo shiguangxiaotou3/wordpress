@@ -17,6 +17,10 @@ if [ "$functionName" = "publish" ]; then
  publish
 fi
 
+if [ "$functionName" = "download" ]; then
+ download
+fi
+
 if [ "$functionName" = "apacheAddHost" ]; then
  apacheAddHost "$2" "$3"
 fi

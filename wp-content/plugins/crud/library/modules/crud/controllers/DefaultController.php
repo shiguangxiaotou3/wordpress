@@ -16,7 +16,6 @@ use crud\modules\crud\Generator;
 use yii\web\NotFoundHttpException;
 use crud\modules\crud\generators\model\Generator  as modelGenerator;
 
-
 /**
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
@@ -42,6 +41,8 @@ class DefaultController extends Controller
         Yii::$app->response->format = Response::FORMAT_HTML;
         return parent::beforeAction($action);
     }
+
+
     public function actionIndex()
     {
         $this->layout ='main';

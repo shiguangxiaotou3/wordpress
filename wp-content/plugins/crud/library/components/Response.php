@@ -1,9 +1,10 @@
 <?php
+
+
 namespace crud\components;
 
-use yii\web\Response  as YiiResponse;
 use yii\web\HeadersAlreadySentException;
-
+use yii\web\Response  as YiiResponse;
 
 class Response extends YiiResponse
 {

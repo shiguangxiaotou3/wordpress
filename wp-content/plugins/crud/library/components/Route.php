@@ -1,9 +1,10 @@
 <?php
+
+
 namespace crud\components;
 
 use Yii;
 use yii\base\Component;
-
 
 /***
  * Class Route

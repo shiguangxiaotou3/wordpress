@@ -1,12 +1,14 @@
 <?php
+
+
 namespace crud\components;
 
+use yii\base\InvalidConfigException;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\AssetBundle;
 use yii\web\JqueryAsset;
 use yii\web\View as YiiView;
-use yii\base\InvalidConfigException;
-
 
 class View extends YiiView
 {
@@ -35,23 +37,28 @@ class View extends YiiView
      * @param null $key
      */
     public function registerJs($js, $position = self::POS_READY, $key = null){
-        global $wp_scripts;
-        if($position == self::POS_READY){
-            $js = "jQuery(function ($) {\n" . $js. "\n});";
-        }
-        if($position ==self::POS_LOAD){
-            $js = "jQuery(window).on('load', function () {\n" . $js . "\n});";
-        }
-        $handles =$wp_scripts->queue;
-        if(is_array($handles) and !empty($handles)){
-            $handle  =$handles[count($handles)-1];
-            wp_add_inline_script(  $handle , $js );
-        }
-
         $key = $key ?: md5($js);
         $this->js[$position][$key] = $js;
         if ($position === self::POS_READY || $position === self::POS_LOAD) {
             JqueryAsset::register($this);
+        }
+    }
+    public function adminPrintFooterScripts($position=self::POS_READY){
+        global $wp_scripts;
+        $handles =$wp_scripts->queue;
+        if(is_array($handles) and !empty($handles)){
+            $handle  =$handles[count($handles)-1];
+//            if(isset($this->js[self::POS_HEAD])){
+//                $js = ArrayHelper::merge(
+//                    $this->js[self::POS_HEAD],
+//                    $this->js[self::POS_READY]
+//                );
+//            }
+            if(!empty(($this->js)[$position])){
+                $js = "jQuery(function ($) {\n" . implode("\n", $this->js[self::POS_READY]) . "\n});";
+                wp_add_inline_script(  $handle , $js  );
+            }
+
         }
     }
 }

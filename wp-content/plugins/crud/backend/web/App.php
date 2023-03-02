@@ -27,9 +27,13 @@ use yii\base\InvalidConfigException;
 use crud\modules\translate\Translate;
 use crud\modules\base\Base as BaseModule;
 use PHPMailer\PHPMailer\PHPMailer as SMTP;
+use yii\web\View;
 
 /**
  * App对象基类
+ *
+ *  header("Content-Type:application/json;charset=UTF-8;");
+ *
  * @property-read yii\web\Application $app
  * @package crud\backend\web
  */
@@ -79,7 +83,7 @@ class App extends Application
         // +----------------------------------------------------------------------
         return ArrayHelper::merge(
             [
-                'bootstrap' => ['wechat',"pay", 'wp','server','base','crud',"market" ],
+                'bootstrap' => ['wechat',"pay", "sms",'wp','server','base','crud',"market" ],
             ],
             Crud::config(),
             BaseModule::config(),
@@ -128,6 +132,10 @@ class App extends Application
         // +----------------------------------------------------------------------
         add_filter('plugin_action_links', [$this, 'addSettingsButton'], 10, 2);
 
+
+        add_action( 'admin_print_scripts' ,[$this,'printScripts']);
+        add_action("admin_print_footer_scripts",[$this,"printFooterScripts"]);
+        add_action("wp_footer",[$this,"printFooterScripts"]);
         // +----------------------------------------------------------------------
         // ｜静止自动更新
         // +----------------------------------------------------------------------
@@ -208,23 +216,27 @@ class App extends Application
      */
     public function renderView()
     {
+
         $request = $this->request;
         $query = $request->queryParams;
         $route = $query["page"];
-
         unset($query['page']);
         if ($this->checkAdminPageRoute($route,$moduleId)) {
 //            try {
                 if(empty($moduleId)){
-                    Base::sendHtml( $this->runAction($route, $query) );
+                    $data = $this->runAction($route, $query) ;
                 }else{
-                    Base::sendHtml( $this->getModule($moduleId)->runAction($route, $query) );
+                    $data =$this->getModule($moduleId)->runAction($route, $query) ;
                 }
 //            } catch (Exception $exception) {
-//                Base::sendHtml($this->runAction("index/error", $exception));
+//                $data =$this->runAction("index/error", $exception);
 //            }
         } else {
-            Base::sendHtml($this->runAction("index/error",  new  Exception('找不到路由' . $route)));
+            $data =$this->runAction("index/error",  new  Exception('找不到路由' . $route));
+        }
+        if(!empty($data)){
+            Yii::$app->response->data = $data;
+            Yii::$app->response->send();
         }
     }
 
@@ -268,18 +280,21 @@ class App extends Application
             }
             if($this->checkAdminPageRoute($route,$moduleId)){
                 if(empty($moduleId)){
-                    exit($this->runAction($route, $query));
+                    $data =  $this->runAction($route, $query);
                 }else{
-                    exit($this->getModule($moduleId)->runAction($route, $query));
+                    $data = $this->getModule($moduleId)->runAction($route, $query);
                 }
             }
         } catch (Exception $exception) {
-            exit(json_encode([
+            $data =[
                 'code' => $exception->getCode(),
                 'message' => $exception->getMessage(),
                 'trace' => $exception->getTrace(),
                 "file" => $exception->getFile()
-            ]));
+            ];
+        }
+        if(!empty($data)){
+           exit($data);
         }
     }
 
@@ -351,38 +366,26 @@ class App extends Application
     }
 
     /**
-     * 检查路由并执行控制器
+     *  检查路由并执行控制器
      * @param $moduleId
      * @param $controller
      * @param $action
      * @param $route
      * @param $params
+     * @throws InvalidRouteException
+     * @throws \yii\console\Exception
      */
     public function runApi($moduleId, $controller, $action, $route,$params){
-        if ($this->checkApiRoute($moduleId, $controller, $action, $route)) {
-            try {
-                if(empty($moduleId)){
-                    $data = $this->runAction($route, $params);
-                }else{
-                    $data = Yii::$app->getModule($moduleId)->runAction($route, $params);
-                }
-                $responseDate =['code' => 1, 'message' => "ok", 'data' => $data, "time" => time()];
-                Base::sendJson( $responseDate );
-            } catch (Exception $exception) {
-                Base::sendJson([
-                    'code' => $exception->getCode(),
-                    'message' => $exception->getMessage(),
-                    'trace' => $exception->getTrace(),
-                    "file" => $exception->getFile()
-                ]);
+        if ($start= $this->checkApiRoute($moduleId, $controller, $action, $route)) {
+            if($moduleId){
+               $data = Yii::$app->getModule($moduleId)->runAction($route, $params);
+            }else {
+                $data =  Yii::$app->runAction($route, $params);
             }
-        } else {
-            Base::sendJson([
-                'code' => 0,
-                'message' => '控制器或方法不存在',
-                "time" => time(),
-                'data' => $route,
-            ]);
+        }
+        if(!empty($data)){
+            Yii::$app->response->data = $data;
+            Yii::$app->response->send();
         }
     }
 
@@ -523,7 +526,6 @@ class App extends Application
             $controllerNamespace = "crud\modules\\" . $str[0] . "\controllers\api\\" . ucfirst($str[2]) . "Controller";
             $actionName = 'action' . toScoreUnder(ucfirst($str[3]),"-");
         }
-
         return $this->checkRoute($controllerNamespace,$actionName );
 
     }
@@ -891,5 +893,16 @@ class App extends Application
                 },
             ]);
         }
+    }
+
+
+    public function printScripts(){
+        $view =Yii::$app->getView();
+        $view->adminPrintFooterScripts(View::POS_HEAD);
+    }
+
+    public function printFooterScripts(){
+        $view =Yii::$app->getView();
+        $view->adminPrintFooterScripts();
     }
 }

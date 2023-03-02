@@ -1,0 +1,32 @@
+{
+    "insets":[],
+    "names":[
+         {"code":"ro","name":"Rondônia"},
+         {"code":"ac","name":"Acre"},
+         {"code":"am","name":"Amazonas"},
+         {"code":"rr","name":"Roraima"},
+         {"code":"ap","name":"Amapá"},
+         {"code":"to","name":"Tocantins"},
+         {"code":"mt","name":"MatoGrosso"},
+         {"code":"go","name":"Goiás"},
+         {"code":"ms","name":"MatoGrosso do Sul"},
+         {"code":"mg","name":"Minas Gerais"},
+         {"code":"pr","name":"Paraná"},
+         {"code":"rs","name":"Rio Grande do Sul"},
+         {"code":"ba","name":"Bahia"},
+         {"code":"pi","name":"Piauí"},
+         {"code":"ce","name":"Ceará"},
+         {"code":"rn","name":"Rio Grande do Norte"},
+         {"code":"al","name":"Alagoas"},
+         {"code":"se","name":"Sergipe"},
+         {"code":"df","name":"Distrito Federal"},
+         {"code":"pe","name":"Pernambuco"},
+         {"code":"ma","name":"Maranhão"},
+         {"code":"pa","name":"Pará"},
+         {"code":"sp","name":"São Paulo"},
+         {"code":"rj","name":"Rio de Janeiro"},
+         {"code":"es","name":"Espírito Santo"},
+         {"code":"sc","name":"Santa Catarina"},
+         {"code":"pb","name":"Paraíba"}
+    ] 
+}

@@ -10,10 +10,10 @@ return [
         ],
     ],
     'components' => [
-        "sms" => [
+        "smsComponent" => [
             "class" => "crud\modules\sms\components\Sms",
-//            "url" => get_option("crud_group_sms_url",'https://api.sms-activate.org/stubs/handler_api.php'),
-//            "apiKey" => get_option("crud_group_sms_apiKey"),
+            "url" => get_option("crud_group_sms_url"),
+            "apiKey" => get_option("crud_group_sms_apiKey"),
         ],
     ],
     'params' => $params,

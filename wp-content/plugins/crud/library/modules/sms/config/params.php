@@ -3,43 +3,31 @@
 return [
     "menus" => [
         [
-            "parent_slug" => "base/index",
+            "parent_slug" => "index",
             "page_title" => "虚拟电话号码",
             "menu_title" => "虚拟电话号码",
             "menu_slug" => "sms/index",
-           'icon_url'=> 'dashicons-phone',
+        ],
+        [
+            "parent_slug" => "sms/index",
+            "page_title" => "测试",
+            "menu_title" => "测试",
+            "menu_slug" => "sms/index/test",
         ],
     ],
     'settings' => [
-//        "switch" => [
-//            'fields' => [
-//                [
-//                    "id" => "switch",
-//                    "title" => "服务",
-//                    'args' => [
-//                        "tag" => "switch",
-//                        "options" => [
-//                            "class" => "regular-text code"
-//                        ],
-//                        'switch' => [
-//                            ["checked" => 1, "description" => "虚拟电话号码", "options" => ["value" => "base/index/icons"]],
-//                        ],
-//                    ]
-//                ]
-//            ]
-//        ],
         "sms"=>[
             'option_group' => 'crud_group',
-            'page' => 'wechat',
+            'page' => 'sms/index',
             'section_id' => 'sms',
             "section_description" => '虚拟电话号码',
             'fields' => [
                 [
                     'id' => 'url',
-                    "title" => "Url",
+                    "title" => "请求地址",
                     'args' => [
                         "tag" => "text",
-                        "defaultValue" => "",
+                        "defaultValue" => "https://api.sms-activate.org/stubs/handler_api.php",
                         "description" => "开发环境",
                         'options' => [
                             "class" => "regular-text code"
@@ -48,16 +36,15 @@ return [
                 ],
                 [
                     'id' => 'apiKey',
-                    "title" => "apiKey",
+                    "title" => "密钥",
                     'args' => [
                         "tag" => "text",
-                        "defaultValue" => "https://api.weixin.qq.com",
-                        "description" => "公众平台接口域名池",
+                        "description" => "密钥",
                         'options' => [
                             "class" => "regular-text code"
                         ],
                     ],
-                ],
+                ]
             ]
         ],
     ],
