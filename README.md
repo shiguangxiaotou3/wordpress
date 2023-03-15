@@ -2,7 +2,7 @@
     <a href="https://https://github.com/shiguangxiaotou3/wordpress" target="_blank">
         <img src="https://www.shiguangxiaotou.com/favicon.ico" height="100px">
     </a>
-    <h1 align="center">Wordpress plugins CRUD for MVC </h1>
+    <h1 align="center">一个MVC的wordpress插件 </h1>
     <br/>
 </p>
 
