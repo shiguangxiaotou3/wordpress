@@ -39,4 +39,5 @@ class m221031_122934_create_table_wp_test extends Migration
         return false;
     }
     */
+
 }

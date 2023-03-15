@@ -18,7 +18,7 @@
     "issues": "http://www.shiguangxiaotou.com"
   },
   "require": {
-    "php": ">=7.4",
+    "php": ">=5.6",
     "ext-json": "*",
     "yiisoft/yii2": "^2.0",
     "erusev/parsedown": "^1.7",
@@ -30,7 +30,8 @@
     "aliyuncs/oss-sdk-php": "^2.6",
     "orhanerday/open-ai": "^3.4",
     "shiguangxiaotou/alipay": "dev-master",
-    "wechatpay/wechatpay": "^1.4"
+    "wechatpay/wechatpay": "^1.4",
+    "alibabacloud/dysmsapi-20170525": "2.0.23"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
@@ -73,8 +74,14 @@
       "sudo chmod -R 777 wp-content/uploads/runtime",
       "sudo mkdir -p wp-content/plugins/crud/vendor/bower-asset",
       "sudo mkdir -p wp-content/plugins/crud/vendor/npm-asset",
-      "bower install chart.js",
-      "bower install jquery"
+      "bower install chart.js#^1.1.1",
+      "bower install jquery#^3.6.4",
+      "bower install vue#^2.7.14",
+      "bower install ace-builds#^1.15.3",
+      "bower install vuedraggable#^2.24.3",
+      "bower install echarts#^5.4.1",
+      "bower install git://github.com/shiguangxiaotou3/jvectormap-maps-data.git",
+      "bower install git://github.com/shiguangxiaotou3/webslides.git"
     ],
     "pre-update-cmd":[],
     "post-update-cmd":[],
@@ -88,7 +95,8 @@
     "publish":["bash bash/runCommand.sh publish"],
     "Apache":["bash bash/runCommand.sh runCommand \"sudo /etc/init.d/apache2 restart\""],
     "DeleteDsStore": ["php command index/delete-ds-store"],
-    "UseSort":["php command index/use-sort","php command index/delete-ds-store"]
+    "UseSort":["php command index/use-sort","php command index/delete-ds-store"],
+    "ServerPermission":["bash bash/runCommand.sh Permission"]
   },
   "scripts-descriptions": {
     "Server": "登录`linux`服务器",
@@ -96,6 +104,7 @@
     "Apache": "重启服务器的Apache服务",
     "DeleteDsStore": "删除本地MAC系统中的.DS_Store文件",
     "UseSort": "文件命名空间美化",
+    "ServerPermission": "修改服务器目录权限",
     "pre-install-cmd": "在`install`命令执行前触发",
     "post-install-cmd": "在`install`命令执行后触发",
     "pre-update-cmd": "在`update`命令执行前触发",

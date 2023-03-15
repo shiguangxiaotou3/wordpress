@@ -2,7 +2,6 @@
 namespace crud\models;
 
 use yii\base\Model;
-
 /**
  * 小工具开关
  * @package crud\common\model

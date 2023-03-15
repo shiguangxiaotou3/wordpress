@@ -7,7 +7,6 @@ use yii\base\Module;
 use yii\web\Application;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
-
 class Pay extends Module implements BootstrapInterface
 {
     /**

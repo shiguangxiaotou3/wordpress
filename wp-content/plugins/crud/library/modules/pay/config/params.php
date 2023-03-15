@@ -30,6 +30,13 @@ return [
             "menu_title" => "测试",
             "menu_slug" => "pay/index/remit",
         ],
+        //order
+        [
+            "parent_slug" => "pay/index",
+            "page_title" => "订单表",
+            "menu_title" => "测试",
+            "menu_slug" => "pay/index/order",
+        ],
 
     ],
     'settings' => [

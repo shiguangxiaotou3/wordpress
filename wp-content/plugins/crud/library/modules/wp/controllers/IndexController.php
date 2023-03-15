@@ -2,7 +2,6 @@
 namespace crud\modules\wp\controllers;
 
 use yii\web\Controller;
-
 class IndexController extends Controller
 {
     public $layout ='webslides';

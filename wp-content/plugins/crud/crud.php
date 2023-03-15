@@ -22,7 +22,7 @@
  * Text Domain:       plugin-name
  * Domain Path:       /languages
  */
-defined('YII_DEBUG') or define('YII_DEBUG', true);
+defined('YII_DEBUG') or define('YII_DEBUG', WP_DEBUG);
 defined('YII_ENV') or define('YII_ENV', 'dev');
 
 require_once __DIR__ . "/library/debug.php";

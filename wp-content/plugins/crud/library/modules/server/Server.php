@@ -8,7 +8,6 @@ use yii\base\Application;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
 use crud\modules\ModuleImplements;
-
 class Server extends Module implements BootstrapInterface
 {
     /**

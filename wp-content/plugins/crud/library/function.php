@@ -522,3 +522,43 @@ function getFileFormat($fileName){
     }
     return false;
 }
+
+
+/**
+ * 简单的http
+ * @param $url
+ * @param $data
+ * @param array $herder
+ * @return false|string
+ */
+function httpGet($url, $data, $herder = [])
+{
+    $serializedData = http_build_query($data);
+    return file_get_contents("$url?$serializedData");
+}
+
+/**
+ * @param $url
+ * @param $data
+ * @param array $herder
+ * @param array $timeout
+ * @return false|string
+ */
+function httpPost($url, $data, $herder = [],$timeout=3)
+{
+
+    $serializedData = http_build_query($data);
+    if (empty($herder)) {
+        $herder = ["Content-type: application/x-www-form-urlencoded"];
+    }
+    $options = array(
+        'http' => array(
+            'header' => join("\r\n", $herder),
+            'method' => 'POST',
+            'timeout'=>$timeout,
+            'content' => $serializedData
+        )
+    );
+    $context = stream_context_create($options);
+    return file_get_contents($url, false, $context);
+}

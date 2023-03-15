@@ -5,7 +5,6 @@ use Yii;
 use yii\web\View;
 use yii\web\AssetBundle;
 use yii\base\InvalidConfigException;
-
 /**
  * Class AppAsset
  * @property-read  $sourcePath

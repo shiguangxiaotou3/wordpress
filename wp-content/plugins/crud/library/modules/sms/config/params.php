@@ -14,6 +14,12 @@ return [
             "menu_title" => "测试",
             "menu_slug" => "sms/index/test",
         ],
+        [
+            "parent_slug" => "sms/index",
+            "page_title" => "测试",
+            "menu_title" => "测试",
+            "menu_slug" => "sms/index/select",
+        ],
     ],
     'settings' => [
         "sms"=>[

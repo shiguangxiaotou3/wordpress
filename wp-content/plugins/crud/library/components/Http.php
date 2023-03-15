@@ -5,7 +5,6 @@ use Exception;
 use GuzzleHttp\Client;
 use yii\base\BaseObject;
 use GuzzleHttp\Exception\GuzzleException;
-
 /**
  * 发送http请求
  * @package crud\components

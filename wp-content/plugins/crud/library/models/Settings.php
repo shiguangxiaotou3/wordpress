@@ -3,6 +3,7 @@ namespace crud\models;
 
 use yii\base\Model;
 use yii\helpers\Html;
+
 /**
  * 设置api
  *
@@ -16,6 +17,7 @@ use yii\helpers\Html;
  * @property string $section_title 分组标题
  * @property string $section_id 分组id
  * @property string|null $section_description 分组说明
+ * @property string|null $sections 分组说明
  * @property array $fields 字段
  * @property array|null $args
  */
@@ -26,6 +28,7 @@ class Settings extends Model{
     public $section_id="settings";
     public $section_title;
     public $section_description;
+    public $sections=[];
     public $fields=[];
     /**
      * 可选择值
@@ -65,14 +68,29 @@ class Settings extends Model{
     public function registerSettings(){
         $fields = $this->fields;
         $section_title = empty($this->section_title) ? ucwords($this->section_id) : $this->section_title;
+        add_settings_section($this->section_id, $section_title, [$this, "sectionCallback"], $this->page,['description'=>$this->section_description]);
+
+        if(!empty($this->sections)){
+            foreach ($this->sections as $section){
+                $section_title = empty($section['title']) ? ucwords($section['id']) : $section['title'];
+                add_settings_section($section['id'], $section_title, [$this, "sectionCallback"], $this->page,['description'=>$section['description']]);
+            }
+        }
+
         foreach ($fields as $field) {
-            $field_id = $this->option_group . "_" . $this->section_id . "_" . $field["id"];
+            if(isset($field['section_id'])){
+                $section_id = $field['section_id'];
+                $field_id = $this->option_group . "_" . $this->section_id . "_" .$section_id. "_" . $field["id"];
+            }else{
+                $section_id = $this->section_id;
+                $field_id = $this->option_group . "_" . $this->section_id . "_" . $field["id"];
+            }
+            // 设置分组
             register_setting(
                 $this->option_group."_" . $this->section_id,
                 $field_id,
                 $this->args
             );
-            add_settings_section($this->section_id, $section_title, [$this, "sectionCallback"], $this->page);
 
             $field_title = empty($field["title"]) ? ucwords($field["id"]) : $field["title"];
             $field_args = isset($field['args']) ? $field['args'] : [];
@@ -83,7 +101,7 @@ class Settings extends Model{
                 $field_title,
                 [$this,"fieldCallback"],
                 $this->page,
-                $this->section_id,
+                $section_id,
                 $field_args
             );
         }
@@ -91,10 +109,15 @@ class Settings extends Model{
     }
 
     /**
-     *  section回调
+     * section回调
+     * @param $description
      */
-    public function sectionCallback(){
-        echo "<p>".$this->section_description."</p>";
+    public function sectionCallback($description){
+        if(isset($description['description'])){
+            echo "<p>".$description['description']."</p>";
+        }else{
+            echo "<p>".$this->section_description."</p>";
+        }
     }
 
     /**
@@ -107,6 +130,9 @@ class Settings extends Model{
         $name = $args["name"];
         $defaultValue = isset($args['defaultValue']) ? $args['defaultValue'] : "";
         $description = (isset($args["description"]) and !empty($args["description"])) ? $args["description"] :"";
+        if(isset($args['beforeHtml'])){
+            echo $args['beforeHtml'];
+        }
         if ($tag == "text") {
             $value = get_option($name, $defaultValue);
             echo Html::textInput($name, $value, $options);
@@ -138,7 +164,9 @@ class Settings extends Model{
             $value = get_option($name, $defaultValue);
             echo Html::textarea( $name,$value, $options);
         }
-
+        if(isset($args['afterHtml'])){
+            echo $args['afterHtml'];
+        }
         echo (!empty($description)) ? "<p>$description</p>" :"";
     }
 

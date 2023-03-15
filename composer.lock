@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f029a59b61a9e0e4256a803a56812243",
+    "content-hash": "656f34fbdc89d85334aeea347245d897",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -226,6 +226,49 @@
                 "source": "https://github.com/alibabacloud-sdk-php/darabonba-openapi/tree/0.2.8"
             },
             "time": "2022-11-14T03:38:23+00:00"
+        },
+        {
+            "name": "alibabacloud/dysmsapi-20170525",
+            "version": "2.0.23",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alibabacloud-sdk-php/Dysmsapi-20170525.git",
+                "reference": "f743fce2182cb503962c37cba2ce4ba71642e89e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alibabacloud-sdk-php/Dysmsapi-20170525/zipball/f743fce2182cb503962c37cba2ce4ba71642e89e",
+                "reference": "f743fce2182cb503962c37cba2ce4ba71642e89e",
+                "shasum": ""
+            },
+            "require": {
+                "alibabacloud/darabonba-openapi": "^0.2.8",
+                "alibabacloud/endpoint-util": "^0.1.0",
+                "alibabacloud/openapi-util": "^0.1.10|^0.2.0",
+                "alibabacloud/tea-utils": "^0.2.17",
+                "php": ">5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlibabaCloud\\SDK\\Dysmsapi\\V20170525\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Alibaba Cloud SDK",
+                    "email": "sdk-team@alibabacloud.com"
+                }
+            ],
+            "description": "Alibaba Cloud Dysmsapi (20170525) SDK Library for PHP",
+            "support": {
+                "source": "https://github.com/alibabacloud-sdk-php/Dysmsapi-20170525/tree/2.0.23"
+            },
+            "time": "2022-11-29T07:24:48+00:00"
         },
         {
             "name": "alibabacloud/endpoint-util",
@@ -6901,7 +6944,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4",
+        "php": ">=5.6",
         "ext-json": "*"
     },
     "platform-dev": [],

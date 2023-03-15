@@ -6,6 +6,7 @@ use yii\base\Module;
 use yii\base\Application;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
+
 class Translate extends Module implements BootstrapInterface
 {
     /**

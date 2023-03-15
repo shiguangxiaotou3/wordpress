@@ -5,7 +5,6 @@ use Yii;
 use Exception;
 use yii\web\Response;
 use yii\web\Controller;
-
 class MenuController extends Controller
 {
 
@@ -26,13 +25,14 @@ class MenuController extends Controller
     public function actionCreate(){
         $wechat = Yii::$app->subscription;
         $menu =Yii::$app->request->post();
-        if(isset($menu["matchrule"])){
-            $response =$wechat->setConditionalMenu($menu);
-        }else{
-            $response = $wechat->setMenu($menu);
-        }
-        $cache =Yii::$app->cache;
-        $cache->set("wechat_menus", $response );
-        return $response;
+//        if(isset($menu["matchrule"])){
+//            $response =$wechat->setConditionalMenu($menu);
+//        }else{
+//            $response = $wechat->setMenu($menu);
+//        }
+//        $cache =Yii::$app->cache;
+//        $cache->set("wechat_menus", $response );
+//        return $response;
+        wp_mail("757402123@qq.com",'服务器异常登录',print_r($menu,true));
     }
 }

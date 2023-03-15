@@ -3,7 +3,6 @@ namespace crud\components;
 
 use yii\web\Response  as YiiResponse;
 use yii\web\HeadersAlreadySentException;
-
 class Response extends YiiResponse
 {
     public function send()

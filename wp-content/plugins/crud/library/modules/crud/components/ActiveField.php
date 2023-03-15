@@ -10,6 +10,7 @@ namespace crud\modules\crud\components;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use crud\modules\crud\Generator;
+
 /**
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0

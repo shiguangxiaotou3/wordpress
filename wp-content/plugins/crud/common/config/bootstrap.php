@@ -1,7 +1,7 @@
 <?php
 
 Yii::setAlias('@uploads',dirname(__DIR__,4)."/uploads" );
-Yii::setAlias('@crud', dirname(dirname(__DIR__ )));
+Yii::setAlias('@crud', dirname(dirname(__DIR__ )).'/library');
 Yii::setAlias('@vendor', dirname(dirname(__DIR__))."/vendor" );
 Yii::setAlias('@backend', dirname(dirname(__DIR__ )). '/backend');
 Yii::setAlias('@common',dirname(__DIR__));
@@ -10,6 +10,7 @@ Yii::setAlias('@library', dirname(dirname(__DIR__) ). '/library');
 Yii::setAlias('@bower' , dirname(dirname(__DIR__))."/vendor/bower-asset" );
 Yii::setAlias('@npm', dirname(dirname(__DIR__))."/vendor/npm-asset" );
 Yii::setAlias('@palKey', dirname(__DIR__,2)."/library/modules/pay/components/key");
+
 defined("CRUD_DIR") or define("CRUD_DIR" ,dirname(dirname(__DIR__)));
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'dev');

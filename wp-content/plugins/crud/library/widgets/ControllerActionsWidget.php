@@ -5,7 +5,6 @@ use Yii;
 use yii\base\Widget;
 use yii\web\Controller;
 use crud\model\SettingsSwitch;
-
 /**
  * 生产控制器菜单
  * @package crud\common\widgets
@@ -62,29 +61,19 @@ class ControllerActionsWidget extends Widget{
             $links = [];
             foreach ($this->actions as $key=> $action) {
                 $action = is_array($action) ? $key : $action;
+                $menu_slug ='';
                 if (($action == "index")) {
                     $menu_slug = $tmlUrl;
-                    $label = self::get_page_title($menu_slug);
-                    $label = empty($label) ? ucwords($action) : $label;
-                    $links[] = [
-                        "label" => $label,
-                        'url' => $this->defaultUrl . $menu_slug,
-                        "options" => [],
-                    ];
                 } elseif (!empty($this->filter)) {
+                    // 过滤一些操作
                     $function = $this->filter;
                     if ($function($action)) {
                         $menu_slug = $tmlUrl.'/'.$action;
-                        $label = self::get_page_title($menu_slug);
-                        $label = empty($label) ? ucwords($action) : $label;
-                        $links[] = [
-                            "label" => $label,
-                            'url' => $this->defaultUrl . $menu_slug,
-                            "options" => [],
-                        ];
                     }
                 } else {
                     $menu_slug = $tmlUrl.'/'.$action;
+                }
+                if(!empty($menu_slug)){
                     $label = self::get_page_title($menu_slug);
                     $label = empty($label) ? ucwords($action) : $label;
                     $links[] = [
@@ -93,6 +82,7 @@ class ControllerActionsWidget extends Widget{
                         "options" => [],
                     ];
                 }
+
             }
             return LinksWidget::widget([
                 "activeUrl" => $activeUrl,

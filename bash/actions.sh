@@ -21,7 +21,7 @@ expect "$projectPath/bash/client.sh" "$user" "$host" "$password" "$action"
 # ｜将本地文件发布到服务器
 # +----------------------------------------------------------------------
 function publish() {
-    scp -r $projectPath/wp-content/plugins/crud/ $user@$host:$serverPath/wp-content/plugins
+    scp -r $projectPath/wp-content/plugins/crud/crud.php $user@$host:$serverPath/wp-content/plugins/crud
 #    scp -r $user@$host:$serverPath/wp-content/plugins/crud $projectPath/wp-content/plugins
 }
 
@@ -109,6 +109,27 @@ expect "$projectPath/bash/nginx.sh" "$user" "$host" "$password" "$config"
 function loginServerMysql() {
   sql=$1
    expect "$projectPath/bash/mysql.sh" "$user" "$host" "$password" "$mysqlUser" "$mysqlPassword" "$mysqlDb" "$sql"
+}
+
+function Permission(){
+  read -d '' action<<EOF
+cd $serverPath\r
+sudo rm -R wp-content/plugins/crud/backend/runtime\r
+sudo mkdir wp-content/plugins/crud/backend/runtime\r
+sudo chmod -R 777 wp-content/plugins/crud/backend/runtime\r
+sudo rm -R wp-content/uploads/assets\r
+sudo mkdir wp-content/uploads/assets\r
+sudo chmod -R 777 wp-content/uploads/assets\r
+sudo rm -R wp-content/plugins/crud/console/runtime\r
+sudo mkdir wp-content/plugins/crud/console/runtime\r
+sudo chmod -R 777 wp-content/plugins/crud/console/runtime\r
+sudo rm -R wp-content/plugins/crud/library/a.txt\r
+sudo touch wp-content/plugins/crud/library/a.txt\r
+sudo chmod -R 777 wp-content/plugins/crud/library/a.txt\r
+sudo chmod -R 777 wp-content/plugins/crud/common/runtime\r
+EOF
+
+  expect "$projectPath/bash/client.sh" "$user" "$host" "$password" "$action"
 }
 
 

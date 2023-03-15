@@ -4,7 +4,6 @@ namespace crud\modules\pay\controllers;
 use Yii;
 use yii\web\Controller;
 use crud\modules\pay\components\Alipay;
-
 class IndexController extends Controller
 {
     public $layout=false;
@@ -58,5 +57,8 @@ class IndexController extends Controller
             }
         }
         return $this->render('remit');
+    }
+    public function actionOrder(){
+        return $this->render('order');
     }
 }

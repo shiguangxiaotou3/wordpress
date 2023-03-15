@@ -7,7 +7,6 @@ use crud\models\Color;
 use yii\helpers\ArrayHelper;
 use crud\assets\JvectormapAsset;
 use ParagonIE\Sodium\Core\Curve25519\H;
-
 /**
  * 地区统计
  * @package crud\library\widgets

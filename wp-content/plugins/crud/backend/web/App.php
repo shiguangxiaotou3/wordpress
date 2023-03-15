@@ -2,32 +2,26 @@
 
 namespace backend\web;
 
-
 use Yii;
-use crud\Base;
 use Exception;
-use yii\web\Response;
+use yii\web\View;
 use crud\models\Menu;
 use crud\modules\wp\Wp;
 use yii\web\Application;
 use crud\modules\sms\Sms;
+use crud\modules\pay\Pay;
 use crud\models\Settings;
-use crud\modules\ads\Ads;
 use crud\models\AjaxAction;
-use crud\modules\crud\Crud;
 use yii\helpers\ArrayHelper;
 use crud\modules\market\Market;
 use crud\modules\wechat\Wechat;
-use crud\modules\editor\Editor;
-use crud\modules\pay\Pay;
-use crud\modules\server\Server;
+use yii\gii\Module as GiiModule;
 use crud\modules\applets\Applets;
 use yii\base\InvalidRouteException;
 use yii\base\InvalidConfigException;
 use crud\modules\translate\Translate;
 use crud\modules\base\Base as BaseModule;
 use PHPMailer\PHPMailer\PHPMailer as SMTP;
-use yii\web\View;
 
 /**
  * App对象基类
@@ -83,19 +77,25 @@ class App extends Application
         // +----------------------------------------------------------------------
         return ArrayHelper::merge(
             [
-                'bootstrap' => ['wechat',"pay", "sms",'wp','server','base','crud',"market" ],
+                "bootstrap" => ["base", 'applets', 'sms', "wechat", 'wp', 'market', 'gii'],
+                'modules' => [
+                    "gii" => [
+                        'class' => GiiModule::class,
+                    ],
+                    'debug' => [
+                        'class' => 'yii\debug\Module',
+                        'allowedIPs' => ['119.98.223.254']
+                    ]
+                ]
             ],
-            Crud::config(),
-            BaseModule::config(),
-            Wp::config(),
-            Wechat::config(),
-            Ads::config(),
-            Pay::config(),
-            Server::config(),
-            Translate::config(),
             Applets::config(),
+            BaseModule::config(),
+            Pay::config(),
+            Market::config(),
             Sms::config(),
-            Market::config()
+            Translate::config(),
+            Wechat::config(),
+            Wp::config()
         );
     }
 
@@ -115,8 +115,9 @@ class App extends Application
         // +----------------------------------------------------------------------
         add_action("init", [$this, "registerAjax"]);
         add_action("rest_api_init", [$this, "registerApi"]);
-//        add_action("wp_ajax_pay/index/remit",[$this,"renderAjaxTest"]);
-//        add_action("wp_ajax_nopriv_pay/index/remit",[$this,"renderAjaxTest"]);
+        //add_action("wp_ajax_pay/index/remit",[$this,"renderAjaxTest"]);
+        //add_action("wp_ajax_nopriv_pay/index/remit",[$this,"renderAjaxTest"]);
+
         // +----------------------------------------------------------------------
         // ｜配置邮箱
         // +----------------------------------------------------------------------
@@ -131,40 +132,38 @@ class App extends Application
         // ｜在插件旁边显示设置按钮
         // +----------------------------------------------------------------------
         add_filter('plugin_action_links', [$this, 'addSettingsButton'], 10, 2);
-
-
-        add_action( 'admin_print_scripts' ,[$this,'printScripts']);
-        add_action("admin_print_footer_scripts",[$this,"printFooterScripts"]);
-        add_action("wp_footer",[$this,"printFooterScripts"]);
+        add_action('admin_print_scripts', [$this, 'printScripts']);
+        add_action("admin_print_footer_scripts", [$this, "printFooterScripts"]);
+        add_action("wp_footer", [$this, "printFooterScripts"]);
         // +----------------------------------------------------------------------
         // ｜静止自动更新
         // +----------------------------------------------------------------------
-//        add_filter('pre_site_transient_update_core', function () {
-//            return null;
-//        }); // 关闭核心提示
-//        add_filter('pre_site_transient_update_plugins', function () {
-//            return null;
-//        }); // 关闭插件提示
-//        add_filter('pre_site_transient_update_themes', function () {
-//            return null;
-//        }); // 关闭主题提示
-//        remove_action('admin_init', '_maybe_update_core');    // 禁止 WordPress 检查更新
-//        remove_action('admin_init', '_maybe_update_plugins'); // 禁止 WordPress 更新插件
-//        remove_action('admin_init', '_maybe_update_themes');
+        //add_filter('pre_site_transient_update_core', function () {
+        //    return null;
+        //}); // 关闭核心提示
+        //add_filter('pre_site_transient_update_plugins', function () {
+        //    return null;
+        //}); // 关闭插件提示
+        //add_filter('pre_site_transient_update_themes', function () {
+        //    return null;
+        //}); // 关闭主题提示
+        //remove_action('admin_init', '_maybe_update_core');    // 禁止 WordPress 检查更新
+        //remove_action('admin_init', '_maybe_update_plugins'); // 禁止 WordPress 更新插件
+        //remove_action('admin_init', '_maybe_update_themes');
 
         // +----------------------------------------------------------------------
         // ｜中国地区头像代理
         // +----------------------------------------------------------------------
-//        add_filter('get_avatar', function ($avatar) {
-//            return str_replace([
-//                'https://www.gravatar.com',
-//                'https://0.gravatar.com',
-//                'https://1.gravatar.com',
-//                'https://2.gravatar.com',
-//                'https://secure.gravatar.com',
-//                'https://cn.gravatar.com',
-//            ], 'http://103.215.125.122', $avatar);
-//        });
+        //add_filter('get_avatar', function ($avatar) {
+        //    return str_replace([
+        //        'https://www.gravatar.com',
+        //        'https://0.gravatar.com',
+        //        'https://1.gravatar.com',
+        //        'https://2.gravatar.com',
+        //        'https://secure.gravatar.com',
+        //        'https://cn.gravatar.com',
+        //    ], 'http://103.215.125.122', $avatar);
+        //});
 
     }
 
@@ -216,25 +215,24 @@ class App extends Application
      */
     public function renderView()
     {
-
         $request = $this->request;
         $query = $request->queryParams;
         $route = $query["page"];
         unset($query['page']);
-        if ($this->checkAdminPageRoute($route,$moduleId)) {
-//            try {
-                if(empty($moduleId)){
-                    $data = $this->runAction($route, $query) ;
-                }else{
-                    $data =$this->getModule($moduleId)->runAction($route, $query) ;
+        if ($this->checkAdminPageRoute($route, $moduleId)) {
+            //try {
+                if (empty($moduleId)) {
+                    $data = $this->runAction($route, $query);
+                } else {
+                    $data = $this->getModule($moduleId)->runAction($route, $query);
                 }
-//            } catch (Exception $exception) {
-//                $data =$this->runAction("index/error", $exception);
-//            }
+            //} catch (Exception $exception) {
+            //    $data =$this->runAction("index/error", $exception);
+            //}
         } else {
-            $data =$this->runAction("index/error",  new  Exception('找不到路由' . $route));
+            $data = $this->runAction("index/error", new  Exception('找不到路由' . $route));
         }
-        if(!empty($data)){
+        if (!empty($data)) {
             Yii::$app->response->data = $data;
             Yii::$app->response->send();
         }
@@ -261,48 +259,50 @@ class App extends Application
     public function renderAjax()
     {
         try {
-            $request= Yii::$app->request;
-            $route = $moduleId='';
-            $query =[];
-            if($request->isGet ){
+            $request = Yii::$app->request;
+            $route = $moduleId = '';
+            $query = [];
+            if ($request->isGet) {
                 $query = $request->queryParams;
-                if(isset($query['action'])){
+                if (isset($query['action'])) {
                     $route = $query['action'];
                     unset($query['action']);
                 }
             }
-            if($request->isPost){
+            if ($request->isPost) {
                 $query = $request->post();
-                if(isset($query['action'])){
+                if (isset($query['action'])) {
                     $route = $query['action'];
                     unset($query['action']);
                 }
             }
-            if($this->checkAdminPageRoute($route,$moduleId)){
-                if(empty($moduleId)){
-                    $data =  $this->runAction($route, $query);
-                }else{
+
+            if ($this->checkAdminPageRoute($route, $moduleId)) {
+                if (empty($moduleId)) {
+                    $data = $this->runAction($route, $query);
+                } else {
                     $data = $this->getModule($moduleId)->runAction($route, $query);
                 }
             }
         } catch (Exception $exception) {
-            $data =[
+            header('Content-Type: application/json');
+            $data = json_encode([
                 'code' => $exception->getCode(),
                 'message' => $exception->getMessage(),
                 'trace' => $exception->getTrace(),
                 "file" => $exception->getFile()
-            ];
+            ]);
         }
-        if(!empty($data)){
-           exit($data);
+        if (!empty($data)) {
+            exit($data);
         }
     }
 
     /**
-     * 注册普通Api
-     * @param $moduleId
+     * 注册api
      */
-    public function registerApi(){
+    public function registerApi()
+    {
         // +----------------------------------------------------------------------
         // ｜注册api路由
         // +----------------------------------------------------------------------
@@ -314,10 +314,13 @@ class App extends Application
 
     /**
      * 获取RestfulApi路由并执行控制器
-     * @param WP_REST_Request $request
+     * @param $request
+     * @throws InvalidRouteException
+     * @throws \yii\console\Exception
      */
-    public function renderRestfulApi($request){
-        $module = $controller = $route =  '';
+    public function renderRestfulApi($request)
+    {
+        $module = $controller = $route = '';
         $action = self::getActionByHttpMethod();
         $params = $request->get_params();
         // +----------------------------------------------------------------------
@@ -332,18 +335,20 @@ class App extends Application
             unset($params['controller']);
         }
 
-        $this->runApi($module, $controller, $action, $route,$params);
+        $this->runApi($module, $controller, $action, $route, $params);
     }
 
     /**
      * 获取Api路由并执行控制器
      *
-     * @param WP_REST_Request $request
+     * @param $request
+     * @throws InvalidRouteException
+     * @throws \yii\console\Exception
      */
     public function renderApi($request)
     {
 
-        $module = $controller =$action= $route = $id = '';
+        $module = $controller = $action = $route = $id = '';
         $params = $request->get_params();
 
         // +----------------------------------------------------------------------
@@ -362,11 +367,12 @@ class App extends Application
             unset($params['action']);
         }
 
-        $this->runApi($module, $controller, $action, $route,$params);
+        $this->runApi($module, $controller, $action, $route, $params);
     }
 
     /**
-     *  检查路由并执行控制器
+     * 检查路由并执行控制器
+     *
      * @param $moduleId
      * @param $controller
      * @param $action
@@ -375,15 +381,16 @@ class App extends Application
      * @throws InvalidRouteException
      * @throws \yii\console\Exception
      */
-    public function runApi($moduleId, $controller, $action, $route,$params){
-        if ($start= $this->checkApiRoute($moduleId, $controller, $action, $route)) {
-            if($moduleId){
-               $data = Yii::$app->getModule($moduleId)->runAction($route, $params);
-            }else {
-                $data =  Yii::$app->runAction($route, $params);
+    public function runApi($moduleId, $controller, $action, $route, $params)
+    {
+        if ($start = $this->checkApiRoute($moduleId, $controller, $action, $route)) {
+            if ($moduleId) {
+                $data = Yii::$app->getModule($moduleId)->runAction($route, $params);
+            } else {
+                $data = Yii::$app->runAction($route, $params);
             }
         }
-        if(!empty($data)){
+        if (!empty($data)) {
             Yii::$app->response->data = $data;
             Yii::$app->response->send();
         }
@@ -396,9 +403,8 @@ class App extends Application
      */
     public function smtp($mail)
     {
-
         // 发件人呢称
-        $mail->FromName = get_option('crud_group_mail_blogname', '');
+        $mail->FromName = get_option('crud_group_mail_blogname', 'admin');
         // smtp 服务器地址
         $mail->Host = get_option('crud_group_mail_host', "smtp.qq.com");
         // 端口号
@@ -408,7 +414,7 @@ class App extends Application
         // 密码
         $mail->Password = get_option('crud_group_mail_password', '');
         // 收件人
-        $mail->From = get_option('crud_group_mail_username', '');
+        $mail->From = get_option('crud_group_mail_username', 'Crud插件');
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = get_option('crud_group_mail_encryption', "ssl");
         $mail->isSMTP();
@@ -428,11 +434,12 @@ class App extends Application
      * @param $file
      * @return mixed
      */
-    public function addSettingsButton($links, $file){
-       if($file =='crud/crud.php'){
-           $links[] = '<a href="admin.php?page=base/index">设置</a>';
-           $links[] = '<a href="https://www.shiguangxiaotou.com/crud" target="_blank">文档</a>';
-       }
+    public function addSettingsButton($links, $file)
+    {
+        if ($file == 'crud/crud.php') {
+            $links[] = '<a href="admin.php?page=base/index">设置</a>';
+            $links[] = '<a href="https://www.shiguangxiaotou.com/crud" target="_blank">文档</a>';
+        }
         return $links;
     }
 
@@ -500,33 +507,33 @@ class App extends Application
     public function checkApiRoute(&$moduleId, $controller, $action, &$route)
     {
         $modules = array_keys(Yii::$app->modules);
-        $controller = empty($controller) ? 'index':$controller;
-        $action = empty($action) ? 'index':$action;
-        if(empty($moduleId) ){
-            if(in_array($controller,$modules)){
+        $controller = empty($controller) ? 'index' : $controller;
+        $action = empty($action) ? 'index' : $action;
+        if (empty($moduleId)) {
+            if (in_array($controller, $modules)) {
                 $moduleId = $controller;
                 $controller = $action;
-                $route ="api/$controller/$action";
-                $defaultControllerNamespace =Yii::$app->getModule($moduleId)->controllerNamespace;
-            }else{
                 $route = "api/$controller/$action";
-                $defaultControllerNamespace =Yii::$app->controllerNamespace;
+                $defaultControllerNamespace = Yii::$app->getModule($moduleId)->controllerNamespace;
+            } else {
+                $route = "api/$controller/$action";
+                $defaultControllerNamespace = Yii::$app->controllerNamespace;
             }
 
-        }else{
-            $route ="api/$controller/$action";
-            $defaultControllerNamespace =Yii::$app->getModule($moduleId)->controllerNamespace;
+        } else {
+            $route = "api/$controller/$action";
+            $defaultControllerNamespace = Yii::$app->getModule($moduleId)->controllerNamespace;
         }
 
         $str = explode('/', $route);
         if (count($str) == 3) {
-            $controllerNamespace =  $defaultControllerNamespace."\\" . $str[0] . '\\' . ucfirst($str[1]) . "Controller";
-            $actionName = 'action' . toScoreUnder(ucfirst($str[2]),"-");
+            $controllerNamespace = $defaultControllerNamespace . "\\" . $str[0] . '\\' . ucfirst($str[1]) . "Controller";
+            $actionName = 'action' . toScoreUnder(ucfirst($str[2]), "-");
         } else {
             $controllerNamespace = "crud\modules\\" . $str[0] . "\controllers\api\\" . ucfirst($str[2]) . "Controller";
-            $actionName = 'action' . toScoreUnder(ucfirst($str[3]),"-");
+            $actionName = 'action' . toScoreUnder(ucfirst($str[3]), "-");
         }
-        return $this->checkRoute($controllerNamespace,$actionName );
+        return $this->checkRoute($controllerNamespace, $actionName);
 
     }
 
@@ -537,7 +544,7 @@ class App extends Application
      * @param $moduleId
      * @return bool
      */
-    public function checkAdminPageRoute(&$route,&$moduleId='')
+    public function checkAdminPageRoute(&$route, &$moduleId = '')
     {
         // +----------------------------------------------------------------------
         // | 未启用模块情况
@@ -556,7 +563,7 @@ class App extends Application
         $is_module = in_array($arr[0], $modules);
         if ($is_module) {
             $moduleId = $arr[0];
-            $route = trim( str_replace($moduleId,"",$route),"/");
+            $route = trim(str_replace($moduleId, "", $route), "/");
             switch ($count) {
                 case 1:
                     $controllerNamespace = 'crud\modules\\' . $moduleId . '\controllers\IndexController';
@@ -612,7 +619,8 @@ class App extends Application
      * 注册Restful 风格api
      * @param string $moduleId
      */
-    public static function addRestfulApi($moduleId=''){
+    public static function addRestfulApi($moduleId = '')
+    {
         $app = Yii::$app;
         /**
          *  * - `'PUT,PATCH users/<id>' => 'user/update'`: update a user
@@ -623,53 +631,53 @@ class App extends Application
          * - `'users/<id>' => 'user/options'`: process all unhandled verbs of a user
          * - `'users' => 'user/options'`: process all unhandled verbs of user collection
          */
-        if(empty($moduleId)){
+        if (empty($moduleId)) {
             // indexController注册
             register_rest_route("crud", "api/(?P<id>[\d]+)", [
                 'methods' => "PUT,PATCH",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api/(?P<id>[\d]+)", [
                 'methods' => "DELETE",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api/(?P<id>[\d]+)", [
                 'methods' => "GET,HEAD",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api/(?P<id>[\d]+)", [
                 'methods' => "OPTIONS",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api", [
                 'methods' => "POST",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api", [
                 'methods' => "GET,HEAD",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api", [
                 'methods' => "OPTIONS",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
@@ -677,150 +685,150 @@ class App extends Application
             // 模块默认控制器
             register_rest_route("crud", "api/(?P<controller>[\w]+)/(?P<id>[\d]+)", [
                 'methods' => "PUT,PATCH",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api/(?P<controller>[\w]+)/(?P<id>[\d]+)", [
                 'methods' => "DELETE",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api/(?P<controller>[\w]+)/(?P<id>[\d]+)", [
                 'methods' => "GET,HEAD",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api/(?P<controller>[\w]+)/(?P<id>[\d]+)", [
                 'methods' => "OPTIONS",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api/(?P<controller>[\w]+)", [
                 'methods' => "POST",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api/(?P<controller>[\w]+)", [
                 'methods' => "GET,HEAD",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api/(?P<controller>[\w]+)", [
                 'methods' => "OPTIONS",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
 
-        }else{
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
+        } else {
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
                 'methods' => "PUT,PATCH",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
                 'methods' => "DELETE",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
                 'methods' => "GET,HEAD",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
                 'methods' => "OPTIONS",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
                 'methods' => "POST",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
                 'methods' => "GET,HEAD",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
                 'methods' => "OPTIONS",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
 
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")/(?P<id>[\d]+)", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")/(?P<id>[\d]+)", [
                 'methods' => "PUT,PATCH",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")/(?P<id>[\d]+)", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")/(?P<id>[\d]+)", [
                 'methods' => "DELETE",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")/(?P<id>[\d]+)", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")/(?P<id>[\d]+)", [
                 'methods' => "GET,HEAD",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")/(?P<id>[\d]+)", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")/(?P<id>[\d]+)", [
                 'methods' => "OPTIONS",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")", [
                 'methods' => "POST",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")", [
                 'methods' => "GET,HEAD",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")", [
                 'methods' => "OPTIONS",
-                'callback' => [$app , "renderRestfulApi"],
+                'callback' => [$app, "renderRestfulApi"],
                 'permission_callback' => function () {
                     return '';
                 },
@@ -832,77 +840,86 @@ class App extends Application
      * 注册普通api
      * @param string $moduleId
      */
-    public static function addApi($moduleId=''){
+    public static function addApi($moduleId = '')
+    {
         $app = Yii::$app;
-        if(empty($moduleId)){
+        if (empty($moduleId)) {
             register_rest_route("crud", "api/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<action>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
                 'methods' => "GET,POST,HEAD,PUT,PATCH,OPTIONS,DELETE,OPTIONS",
-                'callback' => [ $app , "renderApi"],
+                'callback' => [$app, "renderApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<action>(([a-z]+)-([a-z]+)|([a-z]+)))", [
                 'methods' => "GET,POST,HEAD,PUT,PATCH,OPTIONS,DELETE,OPTIONS",
-                'callback' => [ $app , "renderApi"],
+                'callback' => [$app, "renderApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
                 'methods' => "GET,POST,HEAD,PUT,PATCH,OPTIONS,DELETE,OPTIONS",
-                'callback' => [ $app , "renderApi"],
+                'callback' => [$app, "renderApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
             register_rest_route("crud", "api", [
                 'methods' => "GET,POST,HEAD,PUT,PATCH,OPTIONS,DELETE,OPTIONS",
-                'callback' => [ $app , "renderApi"],
+                'callback' => [$app, "renderApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-        }else{
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<action>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
+        } else {
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<action>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
                 'methods' => "GET,POST,HEAD,PUT,PATCH,OPTIONS,DELETE,OPTIONS",
-                'callback' => [ $app , "renderApi"],
+                'callback' => [$app, "renderApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<action>(([a-z]+)-([a-z]+)|([a-z]+)))", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<action>(([a-z]+)-([a-z]+)|([a-z]+)))", [
                 'methods' => "GET,POST,HEAD,PUT,PATCH,OPTIONS,DELETE,OPTIONS",
-                'callback' => [ $app , "renderApi"],
+                'callback' => [$app, "renderApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))", [
                 'methods' => "GET,POST,HEAD,PUT,PATCH,OPTIONS,DELETE,OPTIONS",
-                'callback' => [ $app , "renderApi"],
+                'callback' => [$app, "renderApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
-            register_rest_route("crud", "api/(?P<module>".$moduleId.")", [
+            register_rest_route("crud", "api/(?P<module>" . $moduleId . ")", [
                 'methods' => "GET,POST,HEAD,PUT,PATCH,OPTIONS,DELETE,OPTIONS",
-                'callback' => [ $app , "renderApi"],
+                'callback' => [$app, "renderApi"],
                 'permission_callback' => function () {
                     return '';
                 },
             ]);
         }
     }
-
-
-    public function printScripts(){
-        $view =Yii::$app->getView();
+    /**
+     * 打印yii2容器中注册的css
+     */
+    public function printScripts()
+    {
+        /** @var crud\components\View  $view */
+        $view = Yii::$app->getView();
         $view->adminPrintFooterScripts(View::POS_HEAD);
     }
 
-    public function printFooterScripts(){
-        $view =Yii::$app->getView();
+    /**
+     * 打印yii2容器中注册的Javascript
+     */
+    public function printFooterScripts()
+    {
+        /** @var crud\components\View  $view */
+        $view = Yii::$app->getView();
         $view->adminPrintFooterScripts();
     }
 }

@@ -7,7 +7,6 @@ use yii\web\JqueryAsset;
 use yii\helpers\ArrayHelper;
 use yii\web\View as YiiView;
 use yii\base\InvalidConfigException;
-
 class View extends YiiView
 {
 

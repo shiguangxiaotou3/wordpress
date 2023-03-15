@@ -1,17 +1,11 @@
 <?php
 namespace crud\modules\market;
 
-use Yii;
-use crud\Base;
+use backend\web\App;
 use yii\base\Module;
-use crud\models\Menu;
 use yii\web\Application;
-use crud\models\Settings;
-use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
-use yii\base\InvalidRouteException;
-
 class Market extends Module implements BootstrapInterface
 {
     /**
@@ -23,6 +17,7 @@ class Market extends Module implements BootstrapInterface
      * {@inheritdoc}
      */
     public $layout = false;
+
     /**
      * {@inheritdoc}
      */
@@ -52,8 +47,12 @@ class Market extends Module implements BootstrapInterface
           // +----------------------------------------------------------------------
           // ｜商场 子模块加载完毕引导
           // +----------------------------------------------------------------------
-//            add_action("rest_api_init", [$this, "registerRestfulApi"]);
+            add_action("rest_api_init", [$this, "registerRestfulApi"]);
 
         }
+    }
+
+    public function registerRestfulApi(){
+        App::addApi($this->id);
     }
 }

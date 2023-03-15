@@ -25,6 +25,7 @@
     "commit": "a62537a80029cd5a2e230769a652904e2de2d5d4"
   },
   "_source": "https://github.com/chartjs/Chart.js.git",
-  "_target": "^1.0",
-  "_originalSource": "chart.js"
+  "_target": "^1.1.1",
+  "_originalSource": "chart.js",
+  "_direct": true
 }

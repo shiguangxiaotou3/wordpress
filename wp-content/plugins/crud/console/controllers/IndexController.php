@@ -19,6 +19,20 @@ use Shiguangxiaotou\Alipay\Request\AlipayTradePrecreateRequest;
  */
 class IndexController extends Controller
 {
+    public function actionTest(){
+        $arr =[];
+        for($i =1;$i<=11;$i++){
+            array_push($arr,Yii::$app->getSecurity()->generateRandomString(6));
+
+        }
+        print_r($arr);
+//        $PATH = ABSPATH."sms/设置.shortcut";
+////        echo ABSPATH;
+//        print_r(getFileFormat( $PATH ));
+////       echo Yii::getAlias("@crud");
+    }
+
+
     /**
      * Crud插件目录权限设置
      */
@@ -323,7 +337,7 @@ class IndexController extends Controller
      */
     public function actionUseSort($basePath =""){
         if (empty($basePath)) {
-            $basePath = Yii::getAlias("@library");
+            $basePath = Yii::getAlias("@backend");
         }
         $handle = opendir($basePath);
         while (false !== ($file = readdir($handle))) {
@@ -448,10 +462,6 @@ class IndexController extends Controller
                 }
             }
         }
-    }
-
-    public function actionTest(){
-        $this->success('sas');
     }
 
     /**

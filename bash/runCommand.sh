@@ -36,3 +36,7 @@ fi
 if [ "$functionName" = "loginServerMysql" ]; then
  loginServerMysql "$2"
 fi
+
+if [ "$functionName" = "Permission" ]; then
+ Permission
+fi

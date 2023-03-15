@@ -2,7 +2,6 @@
 namespace crud\assets;
 
 use yii\web\View;
-
 class VueAsset extends AppAsset {
 
     public $sourcePath =  "@bower/vue/dist";

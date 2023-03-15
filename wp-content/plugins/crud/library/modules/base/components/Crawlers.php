@@ -6,6 +6,7 @@ use Exception;
 use crud\models\Color;
 use yii\base\Component;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
+
 /**
  *
  * @property-read  string $path

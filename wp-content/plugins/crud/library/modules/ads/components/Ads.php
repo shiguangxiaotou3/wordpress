@@ -27,6 +27,7 @@ use Microsoft\BingAds\V13\CustomerManagement\GetCustomersInfoRequest;
 use Microsoft\BingAds\V13\CampaignManagement\GetAdsByAdGroupIdRequest;
 use Microsoft\BingAds\V13\CampaignManagement\GetKeywordsByAdGroupIdRequest;
 use Microsoft\BingAds\V13\CampaignManagement\GetBMCStoresByCustomerIdRequest;
+
 /**
  * Class Ads
  * @property-read OAuthDesktopMobileAuthCodeGrant $authentication

@@ -13,6 +13,7 @@ use yii\base\Model;
 use ReflectionClass;
 use yii\helpers\VarDumper;
 use yii\base\InvalidConfigException;
+
 /**
  * This is the base class for all generator classes.
  *

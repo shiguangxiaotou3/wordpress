@@ -11,7 +11,6 @@ use Yii;
 use yii\helpers\Html;
 use yii\base\BaseObject;
 use yii\gii\components\DiffRendererHtmlInline;
-
 /**
  * CodeFile represents a code file to be generated.
  *

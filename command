@@ -14,3 +14,4 @@ try {
 } catch (InvalidConfigException $e) {
     exit($e->getMessage());
 }
+//php command   gii/model --ns=crud\\modules\\pay\\models --tableName=wp_order --modelClass=Order

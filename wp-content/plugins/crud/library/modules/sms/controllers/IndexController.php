@@ -2,23 +2,46 @@
 namespace crud\modules\sms\controllers;
 
 use Yii;
-use yii\web\Controller;
-class IndexController extends Controller
+use yii\helpers\ArrayHelper;
+use crud\controllers\ApiController;
+
+class IndexController extends ApiController
 {
     public $layout=false;
 
-    public function actionIndex(){
+    public $url ="https://api.sms-activate.org/stubs/handler_api.php";
 
+    public function actionIndex(){
        return  $this->render("index");
     }
-
     public function actionTest(){
-        $request = Yii::$app->request;
-        if($request->isAjax){
-//            header("Content-Type:application/json;charset=UTF-8;");
-            return json_encode([['code'=>"asda","img"=>"asda","name"=>"asda"],['code'=>"asda","img"=>"asda","name"=>"asda"]]);
-        }
         return  $this->render("test");
     }
 
+    public function actionSelect(){
+        wp_mail(['757402123@qq.com'],'异步通知测试',print_r($_COOKIE,true));
+        if(Yii::$app->request->isAjax){
+            $data = Yii::$app->request->post();
+            $data['action']=$data['crud'];
+            unset($data['crud']);
+            wp_mail(['757402123@qq.com'],'异步通知测试',print_r($data,true));
+            return $this->success("ok", json_decode($this->httpGet($data),true));
+        }
+        return $this->error("error");
+    }
+
+    public function httpGet($data){
+        $url ="https://api.sms-activate.org/stubs/handler_api.php";
+        $data= ArrayHelper::merge([
+            "api_key"=>get_option("crud_group_sms_apiKey")],$data);
+        return httpGet($url,$data);
+    }
+
+    public function httpPost($data){
+        $url ="https://api.sms-activate.org/stubs/handler_api.php";
+        $data= ArrayHelper::merge([
+            "api_key"=>get_option("crud_group_sms_apiKey")],$data);
+        return httpPost($url,$data);
+
+    }
 }

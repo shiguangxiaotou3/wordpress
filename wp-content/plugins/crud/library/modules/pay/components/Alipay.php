@@ -16,6 +16,7 @@ use shiguangxiaotou\alipay\request\AlipayTradePagePayRequest;
 use shiguangxiaotou\alipay\request\AlipayFundTransUniTransferRequest;
 use shiguangxiaotou\alipay\request\AlipayTradeFastpayRefundQueryRequest;
 use shiguangxiaotou\alipay\request\AlipayDataDataserviceBillDownloadurlQueryRequest;
+
 class Alipay extends Component implements Pay
 {
     // appID

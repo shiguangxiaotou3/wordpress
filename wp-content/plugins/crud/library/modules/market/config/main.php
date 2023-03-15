@@ -11,6 +11,9 @@ return [
         ],
     ],
     'components' => [
+        "marketBase"=>[
+            'class'=>"crud\modules\market\components\BaseComponent"
+        ]
     ],
     'params' => $params,
 ];

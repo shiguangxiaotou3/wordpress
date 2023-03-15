@@ -5,7 +5,6 @@ use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use crud\assets\JvectormapAsset;
-
 class JvectormapMarkersWidget extends  Widget
 {
     public $options=[];

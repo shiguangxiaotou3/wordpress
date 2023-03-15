@@ -2,7 +2,6 @@
 namespace crud\assets;
 
 use yii\web\View;
-
 class HighlightAsset  extends AppAsset {
 
     public $sourcePath =  "@bower/highlight";

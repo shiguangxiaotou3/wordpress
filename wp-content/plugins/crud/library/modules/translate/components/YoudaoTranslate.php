@@ -3,7 +3,6 @@ namespace crud\modules\translate\components;
 
 use yii\base\Component;
 use crud\modules\translate\components\Translate;
-
 class YoudaoTranslate extends Component implements Translate
 {
     public $appId = "";
