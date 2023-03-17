@@ -21,7 +21,7 @@ expect "$projectPath/bash/client.sh" "$user" "$host" "$password" "$action"
 # ｜将本地文件发布到服务器
 # +----------------------------------------------------------------------
 function publish() {
-    scp -r $projectPath/wp-content/plugins/crud/crud.php $user@$host:$serverPath/wp-content/plugins/crud
+    scp -r $projectPath/wp-content/plugins/crud $user@$host:$serverPath/wp-content/plugins
 #    scp -r $user@$host:$serverPath/wp-content/plugins/crud $projectPath/wp-content/plugins
 }
 

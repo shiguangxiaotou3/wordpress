@@ -5,7 +5,7 @@ use crud\modules\wp\assets\WpAsset;
 
 class MarketAsset extends WpAsset
 {
-    public $sourcePath =  "@library/modules/market/assets/market";
+    public $sourcePath =  "@crud/modules/market/assets/market";
     public $css = ["css/index.css"];
     public $js = [];
     public $jsOptions=[];

@@ -3,8 +3,8 @@
 
 use crud\models\SettingsSwitch;
 use crud\widgets\PageHeaderWidget;
-use crud\library\widgets\JvectormapVisitorsWidget;
-use crud\library\widgets\JvectormapMarkersWidget;
+use crud\widgets\JvectormapVisitorsWidget;
+use crud\widgets\JvectormapMarkersWidget;
 use crud\assets\JvectormapAsset;
 
 JvectormapAsset::register($this);

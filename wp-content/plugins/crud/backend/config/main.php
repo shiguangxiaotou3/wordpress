@@ -56,8 +56,8 @@ return [
                 "<controller:[\w-]+>/<action:[\w-]+>"=>"<controller>/<action>",
             ]
         ],
-
         'errorHandler' => [
+            "class"=>"crud\components\ErrorHandler",
             'errorAction' => 'index/error',
         ],
     ],

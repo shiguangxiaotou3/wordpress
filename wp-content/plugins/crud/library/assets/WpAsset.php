@@ -5,6 +5,7 @@ use Yii;
 use yii\web\View;
 use yii\web\AssetBundle;
 use yii\base\InvalidConfigException;
+
 class WpAsset extends AssetBundle
 {
 

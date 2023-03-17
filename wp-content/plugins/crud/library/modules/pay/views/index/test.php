@@ -17,10 +17,15 @@ use crud\modules\pay\components\Alipay;
     <div >
         <?php
         $alipay = Yii::$app->alipay;
-//        dump($alipay->select("test_757402123_1677466706"));
-//        $var = $alipay->getBillDownloadUrl("2023-02");
-//        dump($var);
-//        echo $alipay->submit("pc","test_757402123_".time(),"测试","0.1")
+        $a =$alipay->client();
+//        dump($alipay->client()->alipayrsaPublicKey);
+//        //读取公钥文件
+//        $pubKey = file_get_contents($rsaPublicKeyFilePath);
+//        //转换为openssl格式密钥
+//        dump($a);
+//        $res = openssl_get_publickey($pubKey);
+//            dump( get_class( $alipay->client()));
+       dump($alipay->submit("pc","test_757402123_".time(),"test","0.1",'https://www.shiguangxiaotou.com/wp-json/crud/api/pay/index/notify', ''));
         ?>
     </div>
 </div>

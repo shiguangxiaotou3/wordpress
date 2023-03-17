@@ -8,7 +8,7 @@ use yii\base\InvalidConfigException;
 try {
     $application = new Application($config);
     // 控制台汉化包装类
-    $application->controllerMap['help'] = 'crud\library\controllers\HelpController';
+    $application->controllerMap['help'] = 'crud\controllers\HelpController';
     $exitCode = $application->run();
     exit($exitCode);
 } catch (InvalidConfigException $e) {

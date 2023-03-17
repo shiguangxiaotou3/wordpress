@@ -51,7 +51,6 @@ class Pay extends Module implements BootstrapInterface
      */
     public function registerApi()
     {
-        App::addRestfulApi($this->id);
-
+        App::addApi($this->id);
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace crud\library\widgets;
+namespace crud\widgets;
 
 use yii\base\Widget;
 use yii\helpers\Html;

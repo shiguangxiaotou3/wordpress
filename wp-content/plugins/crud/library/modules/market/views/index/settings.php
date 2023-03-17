@@ -6,7 +6,7 @@ use crud\modules\market\assets\MarketAsset;
 
 MarketAsset::register($this);
 $js ="";
-$path =Yii::getAlias("@library/modules/market/views/index/component");
+$path =Yii::getAlias("@crud/modules/market/views/index/component");
 if ($handle = opendir($path)) {
     while (false !== ($item = readdir($handle))) {
         if ($item != "." && $item != "..") {

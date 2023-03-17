@@ -16,7 +16,6 @@ use shiguangxiaotou\alipay\request\AlipayTradePagePayRequest;
 use shiguangxiaotou\alipay\request\AlipayFundTransUniTransferRequest;
 use shiguangxiaotou\alipay\request\AlipayTradeFastpayRefundQueryRequest;
 use shiguangxiaotou\alipay\request\AlipayDataDataserviceBillDownloadurlQueryRequest;
-
 class Alipay extends Component implements Pay
 {
     // appID
@@ -83,37 +82,63 @@ class Alipay extends Component implements Pay
         }
     }
 
-    private function client($encryptType=""){
+    public function client($encryptType=""){
         $this->pathInit();
         if(empty($encryptType)){
             $encryptType = $this->encryptType;
         }
         if($encryptType){
-            $client = new AopClient ();
-            $client->gatewayUrl =$this->alipayUli;
-            $client->appId = $this->appId;
-            $client->rsaPrivateKey = str_replace(PHP_EOL,"",file_get_contents($this->appPrivateKey));
-            $client->alipayrsaPublicKey =str_replace(PHP_EOL,"",file_get_contents( $this->alipayPublicKey));
-            $client->apiVersion = '1.0';
-            $client->signType = $this->signType;
-            $client->postCharset = 'utf-8';
-            $client->format = 'json';
-            return  $client;
+            $config =new  AlipayConfig();
+            $config->setAppId($this->appId);
+            $config->setCharset("utf-8");
+            $config->setFormat("json");
+            $config->setSignType($this->signType);
+            $config->setServerUrl($this->alipayUli);
+            $config->setPrivateKey(str_replace(PHP_EOL,"",file_get_contents($this->appPrivateKey)));
+            $config->setAlipayPublicKey($this->appPublicKey);
+
+            return new AopClient ($config);
+//            $client->gatewayUrl =$this->alipayUli;
+//            $client->appId = $this->appId;
+//            $client->rsaPrivateKey = str_replace(PHP_EOL,"",file_get_contents($this->appPrivateKey));
+//            $client->alipayrsaPublicKey =str_replace(PHP_EOL,"",file_get_contents( $this->alipayPublicKey));
+//            $client->apiVersion = '1.0';
+//            $client->signType = $this->signType;
+//            $client->postCharset = 'utf-8';
+//            $client->format = 'json';
+//            return  $client;
         }else{
-            $aop = new AopCertClient ();
+            $alipayConfig = new AlipayConfig();
+            $alipayConfig->setAppId($this->appId);
+            $alipayConfig->setCharset("utf-8");
+            $alipayConfig->setFormat("json");
+            $alipayConfig->setSignType($this->signType);
+            $alipayConfig->setServerUrl($this->alipayUli);
+            $alipayConfig->setPrivateKey(str_replace(PHP_EOL,"",file_get_contents($this->appPrivateKey)));
+            // content 和 path 只需要设置一个即可
+            $alipayConfig->setAppCertPath($this->appPublicCert);
+            //$alipayConfig->setAppCertContent()
+            $alipayConfig->setAlipayPublicCertPath($this->alipayPublicCert);
+            //$alipayConfig->setAlipayPublicCertContent()
+            $alipayConfig->setRootCertPath($this->alipayRootCert);
+            //$alipayConfig->setRootCertContent()
+            return  new AopCertClient ($alipayConfig);
             $aop->gatewayUrl =$this->alipayUli;
-            $aop->appId = $this->appId;
-            $str = file_get_contents($this->appPrivateKey);
-            $aop->rsaPrivateKey = str_replace(PHP_EOL,"",$str);
-            $aop->alipayrsaPublicKey = $aop->getPublicKey($this->alipayPublicCert);
-            $aop->apiVersion = '1.0';
-            $aop->signType = $this->signType;
-            $aop->postCharset = 'utf-8';
-            $aop->format = 'json';
-            $aop->isCheckAlipayPublicCert = true;//是否校验自动下载的支付宝公钥证书，如果开启校验要保证支付宝根证书在有效期内
-            $aop->appCertSN = $aop->getCertSN($this->appPublicCert);//调用getCertSN获取证书序列号
-            $aop->alipayRootCertSN = $aop->getRootCertSN($this->alipayRootCert);//调用getRootCertSN获取支付宝根证书序列号
-            return  $aop;
+//            $aop->appId = $this->appId;
+//            // 应用私钥路径
+//            $aop->rsaPrivateKey = str_replace(PHP_EOL,"",file_get_contents($this->appPrivateKey));
+//            //支付宝公钥证书
+//            $aop->alipayrsaPublicKey = $aop->getPublicKey($this->alipayPublicCert);
+//            $aop->apiVersion = '1.0';
+//            $aop->signType = $this->signType;
+//            $aop->postCharset = 'utf-8';
+//            $aop->format = 'json';
+//            $aop->isCheckAlipayPublicCert = true;//是否校验自动下载的支付宝公钥证书，如果开启校验要保证支付宝根证书在有效期内
+//            // 应用公钥证书
+//            $aop->appCertSN = $aop->getCertSN($this->appPublicCert);//调用getCertSN获取证书序列号
+//            // 支付宝根证书
+//            $aop->alipayRootCertSN = $aop->getRootCertSN($this->alipayRootCert);//调用getRootCertSN获取支付宝根证书序列号
+//            return  $aop;
         }
     }
 
@@ -307,6 +332,7 @@ class Alipay extends Component implements Pay
      * @param string $returnUrl
      * @param array $options
      * @return 提交表单HTML文本|构建好的、签名后的最终跳转URL（GET）或String形式的form（POST）|string
+     * @throws Exception
      */
     public function submitPc($orderId,$subject,$money,$notifyUrl='',$returnUrl='',$options=[]){
         $notifyUrl = empty($notifyUrl) ? $this->notifyUrl : $notifyUrl;
@@ -336,6 +362,7 @@ class Alipay extends Component implements Pay
      * @param string $returnUrl
      * @param array $options
      * @return 提交表单HTML文本|构建好的、签名后的最终跳转URL（GET）或String形式的form（POST）|string
+     * @throws Exception
      */
     public function submitWap($orderId, $subject, $money, $notifyUrl='', $returnUrl='',  $options=[]){
         $notifyUrl = empty($notifyUrl) ? $this->notifyUrl : $notifyUrl;
@@ -357,7 +384,7 @@ class Alipay extends Component implements Pay
         $request->setNotifyUrl($notifyUrl);
         $request->setReturnUrl($returnUrl);
         $request->setBizContent($json);
-        return $aop->pageExecute( $request);
+        return  $aop->pageExecute( $request);
     }
 
     public function submitPcQr($orderId,$subject,$money,$notifyUrl='',$returnUrl='',$options=[]){
@@ -388,7 +415,14 @@ class Alipay extends Component implements Pay
      */
     public function checkSign($params,$encryptType=''){
         $aop = $this->client($encryptType);
-        return $aop->rsaCheckV1($params, $this->appPublicKey,$this->signType);
+        return $aop->rsaCheckV1($params, $aop->alipayrsaPublicKey,$this->signType);
+//        return $aop->rsaCheckV1($params, $this->appPublicKey,$this->signType);
+    }
+
+    public function notifyUrlCheckSign($params,$encryptType=''){
+        $aop = $this->client($encryptType);
+        return $aop->rsaCheckV1($params,  $aop->alipayrsaPublicKey,$this->signType);
+//        return $aop->alipayPublicKey;
     }
 
     /**

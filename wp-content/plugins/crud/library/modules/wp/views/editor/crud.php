@@ -8,7 +8,7 @@ use crud\widgets\RegisterHighlightAssetWidget;
 /** @var $this yii\web\View */
 
 RegisterHighlightAssetWidget::widget();
-$file = Yii::getAlias("@library/modules/wp/views/editor/Crud插件文档.md");
+$file = Yii::getAlias("@crud/modules/wp/views/editor/Crud插件文档.md");
 $myText = file_get_contents($file );
 $css =<<<CSS
 

@@ -35,7 +35,7 @@ return [
                 ],
                 'wp' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@library/messages/wp',
+                    'basePath' => '@crud/messages/wp',
                     'fileMap' => [
                         'wp' => 'wp.php',
                         'wp/error' => 'error.php',
@@ -43,7 +43,7 @@ return [
                 ],
                 'console' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@library/messages/console',
+                    'basePath' => '@crud/messages/console',
                     'fileMap' => [
                         'console' => 'console.php',
                         'console/error' => 'error.php',
@@ -51,7 +51,7 @@ return [
                 ],
                 'city' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@library/messages/city',
+                    'basePath' => '@crud/messages/city',
                     'fileMap' => [
                         'city' => 'city.php',
                         'city/error' => 'error.php',
@@ -59,7 +59,7 @@ return [
                 ],
                 'ads' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@library/messages/ads',
+                    'basePath' => '@crud/messages/ads',
                     'fileMap' => [
                         'country' => 'ads.php',
                         'country/error' => 'error.php',

@@ -77,7 +77,7 @@ class App extends Application
         // +----------------------------------------------------------------------
         return ArrayHelper::merge(
             [
-                "bootstrap" => ["base", 'applets', 'sms', "wechat", 'wp', 'market', 'gii'],
+                "bootstrap" => ["base", 'applets','pay', 'sms', "wechat", 'wp', 'market', 'gii'],
                 'modules' => [
                     "gii" => [
                         'class' => GiiModule::class,
@@ -220,15 +220,15 @@ class App extends Application
         $route = $query["page"];
         unset($query['page']);
         if ($this->checkAdminPageRoute($route, $moduleId)) {
-            //try {
+            try {
                 if (empty($moduleId)) {
                     $data = $this->runAction($route, $query);
                 } else {
                     $data = $this->getModule($moduleId)->runAction($route, $query);
                 }
-            //} catch (Exception $exception) {
-            //    $data =$this->runAction("index/error", $exception);
-            //}
+            } catch (Exception $exception) {
+               $data =  Yii::$app->errorHandler->wpAdminRenderException($exception);
+            }
         } else {
             $data = $this->runAction("index/error", new  Exception('找不到路由' . $route));
         }
@@ -366,7 +366,6 @@ class App extends Application
             $action = $params["action"];
             unset($params['action']);
         }
-
         $this->runApi($module, $controller, $action, $route, $params);
     }
 

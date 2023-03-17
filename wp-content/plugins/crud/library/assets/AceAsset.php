@@ -6,7 +6,6 @@ namespace crud\assets;
 
 class AceAsset extends AppAsset {
 
-
     public $sourcePath =  "@bower/ace";
     public $css = [];
     public $js = [
