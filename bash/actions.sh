@@ -140,3 +140,5 @@ EOF
 #config=`cat $projectPath/nginx.conf`
 #
 #expect "$projectPath/nginx.sh" "$user" "$host" "$password" "$config"
+
+scp -r /Library/WebServer/Documents root@123.56.7.206:/var/www/html/mac

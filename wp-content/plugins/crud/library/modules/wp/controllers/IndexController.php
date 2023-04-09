@@ -64,6 +64,15 @@ class IndexController extends Controller
      * @return string
      */
     public function actionSubmit(){
+
         return $this->render("submit");
+    }
+
+    /**
+     * @return string
+     */
+    public function actionAce(){
+        $this->layout ='break';
+        return $this->render("ace");
     }
 }
