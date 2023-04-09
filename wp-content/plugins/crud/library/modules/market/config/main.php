@@ -11,8 +11,16 @@ return [
         ],
     ],
     'components' => [
-        "marketBase"=>[
-            'class'=>"crud\modules\market\components\BaseComponent"
+        "marketApi"=>[
+            'class'=>"crud\modules\market\components\BaseComponent",
+        ],
+        "wechatApplet"=>[
+            'class'=>"crud\modules\market\components\WechatApplet",
+            'appId'=>get_option('crud_group_market_appid'),
+            'appSecret'=>get_option('crud_group_market_appSecret'),
+        ],
+        "tencent"=>[
+            'class'=>"crud\modules\market\components\Tencent",
         ]
     ],
     'params' => $params,

@@ -9,8 +9,8 @@ set timeout 3000
 spawn ssh $user@$host
 expect  {
   "*yes/no*" {
-    send "yes\r" ; exp_continue
-    }
+      send "yes\r" ; exp_continue
+  }
   "*password*" {
     send "$password\r";
     expect {

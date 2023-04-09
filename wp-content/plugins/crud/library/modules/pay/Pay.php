@@ -1,6 +1,7 @@
 <?php
 namespace crud\modules\pay;
 
+use crud\models\AjaxAction;
 use Yii;
 use backend\web\App;
 use yii\base\Module;
@@ -42,7 +43,25 @@ class Pay extends Module implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app instanceof Application) {
+            add_action("init", [$this, "registerAjax"]);
             add_action("rest_api_init", [$this, "registerApi"]);
+
+        }
+    }
+
+    public function registerAjax(){
+        $menus =[
+            ["menu_slug" => "pay/order/init"],
+            ["menu_slug" => "pay/order/index"],
+            ["menu_slug" => "pay/order/create"],
+            ["menu_slug" => "pay/order/view"],
+            ["menu_slug" => "pay/order/update"],
+            ["menu_slug" => "pay/order/delete"],
+            ["menu_slug" => "pay/order/deletes"]
+        ];
+        foreach ($menus as $menu) {
+            $menuModel = new AjaxAction($menu);
+            $menuModel->registerAjaxAction();
         }
     }
 

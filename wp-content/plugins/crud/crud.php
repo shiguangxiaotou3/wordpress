@@ -34,6 +34,7 @@ require_once __DIR__ . '/common/config/bootstrap.php';
 register_activation_hook(__FILE__, "crud_activate");
 register_deactivation_hook(__FILE__, "crud_activate");
 date_default_timezone_set('Asia/Shanghai');
+//ini_set('magic_quotes_gpc',0);
 global $crud;
 $crud = new backend\web\App();
 $crud->run();

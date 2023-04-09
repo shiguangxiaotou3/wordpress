@@ -562,3 +562,25 @@ function httpPost($url, $data, $herder = [],$timeout=3)
     $context = stream_context_create($options);
     return file_get_contents($url, false, $context);
 }
+
+
+/**
+ * 生成随机字符串
+ * @param int $length
+ * @param int $type
+ * @return string
+ */
+function generateUuid($length=32,$type=2) {
+    if($type==1) {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@-_';
+    } elseif($type==2) {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    } else {
+        $chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    }
+    $password ='';
+    for ( $i = 0; $i < $length; $i++ ) {
+        $password .= $chars[ mt_rand(0, strlen($chars) - 1) ];
+    }
+    return $password;
+}

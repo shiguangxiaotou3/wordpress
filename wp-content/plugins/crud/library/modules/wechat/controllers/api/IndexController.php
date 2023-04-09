@@ -1,10 +1,10 @@
 <?php
 namespace crud\modules\wechat\controllers\api;
 
+
 use Yii;
-use crud\Base;
-use yii\web\Controller;
-class IndexController extends Controller
+use crud\modules\market\controllers\api\ApiController;
+class IndexController extends ApiController
 {
 
     public $_ToUserName;
@@ -17,7 +17,6 @@ class IndexController extends Controller
      */
     public function actionIndex()
     {
-        wp_mail(['757402123@qq.com'],'异步通知测试',print_r(['get'=>$_GET,"post"=>$_POST],true));
         $wechat = Yii::$app->subscription;
          exit( $wechat->ValidateServer());
     }
@@ -33,9 +32,8 @@ class IndexController extends Controller
             $this->_FromUserName = $msg["FromUserName"];
             return $this->sandEcho($msg);
         }else{
-            Base::error('你谁啊');
+            return $this-> error('你谁啊');
         }
-        wp_mail(['757402123@qq.com'],'异步通知测试',print_r($msg,true));
     }
 
     /**

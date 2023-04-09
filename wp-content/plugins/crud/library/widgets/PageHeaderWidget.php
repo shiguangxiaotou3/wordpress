@@ -9,6 +9,7 @@ class PageHeaderWidget extends Widget
     public $searchOptions=[];
     public $searchResponse='';
     public $buttons=[];
+    public $isVue=false;
 
     public function run(){
         $parent_title = get_admin_page_parent();

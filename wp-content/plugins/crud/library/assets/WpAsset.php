@@ -43,18 +43,27 @@ class WpAsset extends AssetBundle
         $jsOptions =$bundle->jsOptions;
         if(isset($jsOptions['position']) and $jsOptions['position']== View::POS_END){
             $in_footer =true;
-//            $in_footer =false;
         }else{
              $in_footer =false;
         }
         foreach ($bundle->js as $js){
             $itemHandle = str_replace("/","-",$ver."/".$js);
-            wp_register_script( $itemHandle, $path."/".$js , $JsDepends,false, $in_footer);
+            // 兼容外部js
+            if(self::isHttp($js)){
+                wp_register_script( $itemHandle, $js , $JsDepends,false, $in_footer);
+            }else{
+                wp_register_script( $itemHandle, $path."/".$js , $JsDepends,false, $in_footer);
+            }
             array_push($JsDepends ,  $itemHandle);
         }
         foreach ($bundle->css as $css){
             $itemHandle = str_replace("/","-",$ver."/".$css);
-            wp_register_style($itemHandle, $path."/".$css , $CssDepends,false,"all");
+            // 兼容外部css
+            if(self::isHttp($css)){
+                wp_register_style($itemHandle, $css , $CssDepends,false,"all");
+            }else{
+                wp_register_style($itemHandle, $path."/".$css , $CssDepends,false,"all");
+            }
             array_push($CssDepends ,$itemHandle);
         }
 
@@ -138,6 +147,10 @@ class WpAsset extends AssetBundle
         unset($bundle);
         wp_enqueue_script(  $itemHandle, $path.$file , $depends , $key, $in_footer);
         $view->registerJsFile(  $path.$file, $options, $key );
+    }
+
+    public static function isHttp($str){
+        return preg_match("/^(http|https)/",$str);
     }
 }
 

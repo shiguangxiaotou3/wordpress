@@ -19,7 +19,6 @@
   },
   "require": {
     "php": ">=5.6",
-    "ext-json": "*",
     "yiisoft/yii2": "^2.0",
     "erusev/parsedown": "^1.7",
     "alibabacloud/alidns-20150109": "^3.0",
@@ -29,9 +28,10 @@
     "qiniu/php-sdk": "^7.8",
     "aliyuncs/oss-sdk-php": "^2.6",
     "orhanerday/open-ai": "^3.4",
-    "shiguangxiaotou/alipay": "dev-master",
     "wechatpay/wechatpay": "^1.4",
-    "alibabacloud/dysmsapi-20170525": "2.0.23"
+    "alibabacloud/dysmsapi-20170525": "2.0.23",
+    "shiguangxiaotou/alipay": "dev-master",
+    "ext-simplexml": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
@@ -47,7 +47,6 @@
     "symfony/browser-kit": "^6.0 || >=2.7 <=4.2.4"
   },
   "replace": {
-    "ext-mcrypt": "*",
     "bower-asset/jquery": "*",
     "bower-asset/inputmask": "*",
     "bower-asset/punycode": "*",
@@ -62,7 +61,7 @@
     "vendor-dir": "wp-content/plugins/crud/vendor",
     "process-timeout": 1800,
     "allow-plugins": {
-      "yiisoft/yii2-composer": true
+      "yiisoft/yii2-composer": false
     }
   },
   "scripts": {

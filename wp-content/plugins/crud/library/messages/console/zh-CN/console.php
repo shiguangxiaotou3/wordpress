@@ -176,7 +176,7 @@ return [
     'This indicates whether the generator should generate relations based on foreign key constraints it detects in the database. Note that if your database contains too many tables, you may want to uncheck this option to accelerate the code generation process.'
     => '这指示生成器是否应基于它在数据库中检测到的外键约束来生成关系.请注意,如果数据库包含太多表,则可能需要取消选中此选项以加快代码生成过程.',
     'This indicates whether the table name returned by the generated ActiveRecord class should consider the <code>tablePrefix</code> setting of the DB connection. For example, if the table name is <code>tbl_post</code> and <code>tablePrefix=tbl_</code>, the ActiveRecord class will return the table name as <code>{{%post}}</code>.'
-    => '这表示生成的ActiveRecord类返回的表名是否应考虑DB连接的＜code＞tablePrefix＜/code＞设置。例如，如果表名是＜code＞tbl_post＜/code＞，并且＜code＞tablePrefix＝tbl_＜/code>，ActiveRecord类将返回表名为<code>{{%post}}</code>.',
+    => '这表示生成的ActiveRecord类返回的表名是否应考虑DB连接的<code>tablePrefix</code>设置。例如，如果表名是<code>tbl_post</code>，并且<code>tablePrefix＝tbl_</code>，ActiveRecord类将返回表名为<code>{{%post}}</code>.',
     'This indicates whether to include the schema name in the ActiveRecord classwhen it\'s auto generated. Only non default schema would be used.'
     => '这指示当ActiveRecord类自动生成时，是否在ActiveRecord类中包含模式名称。将仅使用非默认架构.',
     'This indicates whether to generate ActiveQuery for the ActiveRecord class.'
@@ -249,6 +249,7 @@ return [
 
     'This indicates whether the generated class names should have standardized capitals. For example,table names like <code>SOME_TABLE</code> or <code>Other_Table</code> will have class names <code>SomeTable</code>and <code>OtherTable</code>, respectively. If not checked, the same tables will have class names <code>SOMETABLE</code>and <code>OtherTable</code> instead.'
     => '这表明生成的类名是否应该有标准化的大写字母。例如，表名（如<code>SOME_table</code>或<code>Other_table</code>）将分别具有类名<code>SomeTable</code>和<code>OtherTable</code>。如果未选中，则相同的表将具有类名<code>SOMETABLE</code>和<code>OtherTable</code>',
+
     'This indicates whether the generated class names should be singularized. For example,table names like <code>some_tables</code> will have class names <code>SomeTable</code>.'
     => '这指示生成的类名是否应单独化。例如，表名（如<code>some_tables</code>）将具有类名<code>SomeTable</code>',
     'This is the class that the new controller class will extend from. Please make sure the class exists and can be autoloaded.'
@@ -271,6 +272,9 @@ return [
     =>'这指示生成器是否应将索引页上的＜code＞GridView＜/code＞或＜code＞ListView＜/code＞小部件与＜code＞yii\widgets\Pjax＜/code>小部件包装在一起。如果您想在不刷新页面的情况下进行排序、过滤和分页，请将其设置为<code>true</code>。',
 
     'Access to Gii is denied due to IP address restriction. The requested IP is '=>'由于IP地址限制,对Gii的访问被拒绝.请求的IP是:',
-
-
+//               'This is the name of the ActiveRecord class to be generated. The class name should not contain the namespace part as it is specified in "Namespace". You do not need to specify the class name if "Table Name" ends with asterisk, in which case multiple ActiveRecord classes will be generated.'=>'这是要生成的ActiveRecord类的名称。类名不应包含
+//在"命名空间"中指定的命名空间部分。您不需要指定类名
+//如果“表名”以星号结尾，那么在这种情况下将生成多个ActiveRecord类。',
+    'This indicates whether the generator should generate strings using <code>Yii::t()</code> method. Set this to <code>true</code> if you are planning to make your application translatable.'=>"这指示生成器是否应该使用<code>Yii::t()</code>方法生成字符串.如果您计划使应用程序可翻译,请将此项设置为<code>true</code>",
+    'This is the category used by <code>Yii::t()</code> in case you enable I18N.'=>'这是<code>Yii::t()</code>在启用I18N时使用的类别.'
 ];

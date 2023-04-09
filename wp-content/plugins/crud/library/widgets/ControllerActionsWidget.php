@@ -4,7 +4,7 @@ namespace crud\widgets;
 use Yii;
 use yii\base\Widget;
 use yii\web\Controller;
-use crud\model\SettingsSwitch;
+//use crud\model\SettingsSwitch;
 /**
  * 生产控制器菜单
  * @package crud\common\widgets
@@ -18,6 +18,7 @@ class ControllerActionsWidget extends Widget{
     public $actions = [];
     public $defaultUrl = "admin.php?page=";
     public $filter ;
+    public $isVue=false;
 
     private $moduleId ;
     private $controllerId ;
@@ -35,7 +36,7 @@ class ControllerActionsWidget extends Widget{
     }
 
     /**
-     * @return string|void
+     * @return string|void|array
      * @throws \Throwable
      */
     public function run(){
@@ -82,7 +83,6 @@ class ControllerActionsWidget extends Widget{
                         "options" => [],
                     ];
                 }
-
             }
             return LinksWidget::widget([
                 "activeUrl" => $activeUrl,
@@ -97,7 +97,6 @@ class ControllerActionsWidget extends Widget{
      */
     public static function get_page_title($menu_slug){
         $data =Yii::$app->params['menus'];
-        $title ="";
         foreach ($data as $datum){
             if($datum["menu_slug"] == $menu_slug){
                 return $datum['page_title'];

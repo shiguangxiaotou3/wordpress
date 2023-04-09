@@ -17,6 +17,10 @@ class Http extends BaseObject
      */
     public $_client;
 
+    /**
+     * Http constructor.
+     * @param string $base_uri
+     */
     public function __construct($base_uri=''){
         $this->_client = new Client([
             "base_uri"=>$base_uri,

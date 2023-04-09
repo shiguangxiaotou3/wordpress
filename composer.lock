@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "656f34fbdc89d85334aeea347245d897",
+    "content-hash": "9f155249fe32911d3a340040fe8cf2c6",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -2553,13 +2553,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/shiguangxiaotou3/alipay.git",
-                "reference": "da613b79de9d0675934ea58e7fb34c76ae58509c"
+                "reference": "6f8528375a8fffcc88fefcfe01f555f0fec33dab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shiguangxiaotou3/alipay/zipball/da613b79de9d0675934ea58e7fb34c76ae58509c",
-                "reference": "da613b79de9d0675934ea58e7fb34c76ae58509c",
-                "shasum": ""
+                "url": "https://api.github.com/repos/shiguangxiaotou3/alipay/zipball/6f8528375a8fffcc88fefcfe01f555f0fec33dab",
+                "reference": "6f8528375a8fffcc88fefcfe01f555f0fec33dab",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "default-branch": true,
             "type": "library",
@@ -2582,7 +2588,7 @@
                 "issues": "https://github.com/shiguangxiaotou3/alipay/issues",
                 "source": "https://github.com/shiguangxiaotou3/alipay/tree/master"
             },
-            "time": "2023-02-25T02:01:28+00:00"
+            "time": "2023-03-17T11:49:45+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -2746,7 +2752,13 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/wechatpay-apiv3/wechatpay-php/zipball/fbe8d7c2b3b367e42bf98caa0cce582b3205d427",
                 "reference": "fbe8d7c2b3b367e42bf98caa0cce582b3205d427",
-                "shasum": ""
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "require": {
                 "ext-curl": "*",

@@ -2,9 +2,16 @@
 
 namespace backend\web;
 
+use crud\components\Response;
+use crud\modules\market\components\BaseComponent;
+use crud\modules\market\components\Tencent;
+use crud\modules\market\components\WechatApplet;
+use crud\modules\pay\components\Alipay;
+use crud\modules\pay\components\WechatPay;
+use crud\modules\wechat\components\SubscriptionService;
+use crud\components\View;
 use Yii;
 use Exception;
-use yii\web\View;
 use crud\models\Menu;
 use crud\modules\wp\Wp;
 use yii\web\Application;
@@ -15,6 +22,7 @@ use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
 use crud\modules\market\Market;
 use crud\modules\wechat\Wechat;
+//use crud\modules\gii\Module as GiiModule;
 use yii\gii\Module as GiiModule;
 use crud\modules\applets\Applets;
 use yii\base\InvalidRouteException;
@@ -26,9 +34,13 @@ use PHPMailer\PHPMailer\PHPMailer as SMTP;
 /**
  * App对象基类
  *
- *  header("Content-Type:application/json;charset=UTF-8;");
  *
- * @property-read yii\web\Application $app
+ * @property-read Alipay $alipay
+ * @property-read WechatPay $wechatPay 微信支付
+ * @property-read SubscriptionService $subscription 微信公众号
+ * @property-read WechatApplet $wechatApplet 微信小程序
+ * @property-read Tencent $tencent
+ * @property-read BaseComponent $marketApi
  * @package crud\backend\web
  */
 class App extends Application
@@ -84,10 +96,11 @@ class App extends Application
                     ],
                     'debug' => [
                         'class' => 'yii\debug\Module',
-                        'allowedIPs' => ['119.98.223.254']
+                        'allowedIPs' => ['119.98.223.254','119.98.223.165']
                     ]
                 ]
             ],
+//            GiiModule::config(),
             Applets::config(),
             BaseModule::config(),
             Pay::config(),
@@ -107,8 +120,9 @@ class App extends Application
         // +----------------------------------------------------------------------
         // ｜后台页面、设置、菜单，挂载到wordpress钩子中
         // +----------------------------------------------------------------------
-        add_action("admin_init", [$this, "registerSettings"]);
         add_action("admin_menu", [$this, "registerPage"]);
+        add_action("admin_init", [$this, "registerSettings"]);
+
 
         // +----------------------------------------------------------------------
         // ｜Ajax、RestfulApi、路由配置、解析规则，挂载到wordpress钩子中
@@ -126,7 +140,7 @@ class App extends Application
         // +----------------------------------------------------------------------
         // ｜过滤评论
         // +----------------------------------------------------------------------
-        add_action('preprocess_comment', [$this, 'preprocessComment']);
+        //add_action('preprocess_comment', [$this, 'preprocessComment']);
 
         // +----------------------------------------------------------------------
         // ｜在插件旁边显示设置按钮
@@ -138,18 +152,18 @@ class App extends Application
         // +----------------------------------------------------------------------
         // ｜静止自动更新
         // +----------------------------------------------------------------------
-        //add_filter('pre_site_transient_update_core', function () {
-        //    return null;
-        //}); // 关闭核心提示
-        //add_filter('pre_site_transient_update_plugins', function () {
-        //    return null;
-        //}); // 关闭插件提示
-        //add_filter('pre_site_transient_update_themes', function () {
-        //    return null;
-        //}); // 关闭主题提示
-        //remove_action('admin_init', '_maybe_update_core');    // 禁止 WordPress 检查更新
-        //remove_action('admin_init', '_maybe_update_plugins'); // 禁止 WordPress 更新插件
-        //remove_action('admin_init', '_maybe_update_themes');
+        add_filter('pre_site_transient_update_core', function () {
+            return null;
+        }); // 关闭核心提示
+        add_filter('pre_site_transient_update_plugins', function () {
+            return null;
+        }); // 关闭插件提示
+        add_filter('pre_site_transient_update_themes', function () {
+            return null;
+        }); // 关闭主题提示
+        remove_action('admin_init', '_maybe_update_core');    // 禁止 WordPress 检查更新
+        remove_action('admin_init', '_maybe_update_plugins'); // 禁止 WordPress 更新插件
+        remove_action('admin_init', '_maybe_update_themes');
 
         // +----------------------------------------------------------------------
         // ｜中国地区头像代理
@@ -249,7 +263,7 @@ class App extends Application
         $menus = $this->params["menus"];
         foreach ($menus as $menu) {
             $menuModel = new AjaxAction($menu);
-            $menuModel->registerAjaxAction($this);
+            $menuModel->registerAjaxAction();
         }
     }
 
@@ -260,23 +274,15 @@ class App extends Application
     {
         try {
             $request = Yii::$app->request;
-            $route = $moduleId = '';
-            $query = [];
-            if ($request->isGet) {
-                $query = $request->queryParams;
-                if (isset($query['action'])) {
-                    $route = $query['action'];
-                    unset($query['action']);
-                }
+            $query =  $request->get();
+            if(isset($query['action']) and !empty($query['action'])){
+                $route = $query['action'];
+                unset($query['action']);
+            }else{
+                $data = $request->post();
+                $route = $data['action'];
+                unset($data['action']);
             }
-            if ($request->isPost) {
-                $query = $request->post();
-                if (isset($query['action'])) {
-                    $route = $query['action'];
-                    unset($query['action']);
-                }
-            }
-
             if ($this->checkAdminPageRoute($route, $moduleId)) {
                 if (empty($moduleId)) {
                     $data = $this->runAction($route, $query);
@@ -371,23 +377,32 @@ class App extends Application
 
     /**
      * 检查路由并执行控制器
-     *
      * @param $moduleId
      * @param $controller
      * @param $action
      * @param $route
      * @param $params
-     * @throws InvalidRouteException
-     * @throws \yii\console\Exception
      */
     public function runApi($moduleId, $controller, $action, $route, $params)
     {
         if ($start = $this->checkApiRoute($moduleId, $controller, $action, $route)) {
-            if ($moduleId) {
-                $data = Yii::$app->getModule($moduleId)->runAction($route, $params);
-            } else {
-                $data = Yii::$app->runAction($route, $params);
+            try{
+                if ($moduleId) {
+                    $data = Yii::$app->getModule($moduleId)->runAction($route, $params);
+                } else {
+                    $data = Yii::$app->runAction($route, $params);
+                }
+            }catch (Exception $exception){
+                Yii::$app->response->format =Response::FORMAT_JSON;
+                $data =[
+                    'code'=>0,
+                    'message'=>$exception->getMessage(),
+                    'trace'=>$exception->getTrace()
+                ];
+
+
             }
+
         }
         if (!empty($data)) {
             Yii::$app->response->data = $data;
@@ -526,10 +541,10 @@ class App extends Application
 
         $str = explode('/', $route);
         if (count($str) == 3) {
-            $controllerNamespace = $defaultControllerNamespace . "\\" . $str[0] . '\\' . ucfirst($str[1]) . "Controller";
+            $controllerNamespace = $defaultControllerNamespace . "\\" . $str[0] . '\\' .toScoreUnder( ucfirst($str[1]),"-") . "Controller";
             $actionName = 'action' . toScoreUnder(ucfirst($str[2]), "-");
         } else {
-            $controllerNamespace = "crud\modules\\" . $str[0] . "\controllers\api\\" . ucfirst($str[2]) . "Controller";
+            $controllerNamespace = "crud\modules\\" . $str[0] . "\controllers\api\\" . toScoreUnder(ucfirst($str[2]),"-") . "Controller";
             $actionName = 'action' . toScoreUnder(ucfirst($str[3]), "-");
         }
         return $this->checkRoute($controllerNamespace, $actionName);
@@ -569,12 +584,12 @@ class App extends Application
                     $actionName = "actionIndex";
                     break;
                 case 2:
-                    $controllerNamespace = 'crud\modules\\' . $moduleId . '\controllers\\' . ucfirst($arr[1]) . 'Controller';
+                    $controllerNamespace = 'crud\modules\\' . $moduleId . '\controllers\\' . toScoreUnder(ucfirst($arr[1]) ,'-') . 'Controller';
                     $actionName = "actionIndex";
                     break;
                 case 3:
-                    $controllerNamespace = 'crud\modules\\' . $moduleId . '\controllers\\' . ucfirst($arr[1]) . 'Controller';
-                    $actionName = "action" . ucfirst($arr[2]);
+                    $controllerNamespace = 'crud\modules\\' . $moduleId . '\controllers\\' . toScoreUnder(ucfirst($arr[1]),'-') . 'Controller';
+                    $actionName = "action" .toScoreUnder( ucfirst($arr[2]),'-');
                     break;
                 default:
                     unset($arr[0]);
@@ -585,7 +600,7 @@ class App extends Application
                     $namespace = trim(join("\\", $arr));
                     $controllerNamespace = 'crud\modules\\' . $moduleId . '\controllers\\' .
                         ($namespace != "" ? $namespace . "\\" : "") . ucfirst($controllerId) . 'Controller';
-                    $actionName = "action" . ucfirst($actionId);
+                    $actionName = "action" .toScoreUnder( ucfirst($actionId),'-');
             }
 
         } else {
@@ -610,7 +625,6 @@ class App extends Application
                     $actionName = "action" . ucfirst($actionId);
             }
         }
-
         return $this->checkRoute($controllerNamespace, $actionName);
     }
 
@@ -841,6 +855,7 @@ class App extends Application
      */
     public static function addApi($moduleId = '')
     {
+        /** @var App $app */
         $app = Yii::$app;
         if (empty($moduleId)) {
             register_rest_route("crud", "api/(?P<controller>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<action>(([a-z]+)-([a-z]+)|([a-z]+)))/(?P<id>[\d]+)", [
@@ -902,12 +917,13 @@ class App extends Application
             ]);
         }
     }
+
     /**
      * 打印yii2容器中注册的css
      */
     public function printScripts()
     {
-        /** @var crud\components\View  $view */
+        /** @var View  $view */
         $view = Yii::$app->getView();
         $view->adminPrintFooterScripts(View::POS_HEAD);
     }
@@ -917,7 +933,7 @@ class App extends Application
      */
     public function printFooterScripts()
     {
-        /** @var crud\components\View  $view */
+        /** @var View  $view */
         $view = Yii::$app->getView();
         $view->adminPrintFooterScripts();
     }

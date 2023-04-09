@@ -59,4 +59,11 @@ class IndexController extends Controller
     public function actionWap(){
         return $this->render("wap");
     }
+
+    /**
+     * @return string
+     */
+    public function actionSubmit(){
+        return $this->render("submit");
+    }
 }

@@ -12,4 +12,11 @@ use yii\base\InvalidConfigException;
  */
 class AppAsset extends WpAsset
 {
+    public $sourcePath = '@yii/assets';
+    public $js = [
+        'yii.js','yii.activeForm.js',
+    ];
+    public $depends = [
+        'yii\web\JqueryAsset',
+    ];
 }

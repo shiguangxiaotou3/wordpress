@@ -4,12 +4,18 @@
 namespace crud\modules\pay\components;
 
 
+/**
+ * Interface Pay
+ * @package crud\modules\pay\components
+ * @property-read  crud\modules\pay\events\PayEvent $payEvent
+ */
 interface Pay
 {
 
     /**
      * 创建订单
      * @param 订单场景 $palType
+     * @param 用户id|int|null $userId
      * @param 订单号|string $orderId
      * @param 订单标题|string $subject
      * @param 订单金额|number $money
@@ -18,7 +24,7 @@ interface Pay
      * @param array $options
      * @return mixed
      */
-    public function submit($palType,$orderId,$subject,$money,$notifyUrl='',$returnUrl='',$options=[]);
+    public function submit($palType,$userId,$orderId,$subject,$money,$notifyUrl='',$returnUrl='',$options=[]);
 
     /**
      * 订单查询
@@ -67,15 +73,10 @@ interface Pay
 
     /**
      * 异步通知
+     * @param array $data
      * @return mixed
      */
-    public function notify();
-
-    /**
-     * 测试
-     * @return mixed
-     */
-    public function test();
+    public function notify($data);
 
     /**
      * 转账到支付宝账户 仅在证书模式下有效

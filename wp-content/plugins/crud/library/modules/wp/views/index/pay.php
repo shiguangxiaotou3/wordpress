@@ -8,9 +8,9 @@ $assets = new WpAsset();
 $dir = $assets->publishedUrl();
 $request = Yii::$app->request;
 $data =$request->get();
-echo json_encode($data);
 $alipay = Yii::$app->alipay;
 if($alipay-> checkSign($data)){
+//    $alipay-> notify($data);
 $message="支付成功";
 }else{
     $message="支付失败";

@@ -1,10 +1,9 @@
 #!/bin/bash
 
 
-projectPath="/Library/WebServer/Documents/wp"
-serverPath="/var/www/html/wordpress"
+
 # 包含服务器链接参数
-. "$projectPath/bash/config.sh"
+. "./bash/config.sh"
 
 # +----------------------------------------------------------------------
 # ｜交互登录ubuntu18.04并执行一条命令
@@ -99,7 +98,8 @@ fi
 # ｜nginx代理配置
 # +----------------------------------------------------------------------
 function nginxProxy(){
-config=`cat $basePath/bash/nginx.conf`
+config=`cat $projectPath/bash/nginx.conf`
+
 expect "$projectPath/bash/nginx.sh" "$user" "$host" "$password" "$config"
 }
 
@@ -133,4 +133,10 @@ EOF
 }
 
 
-
+#user='root'
+#host='61.136.162.220'
+#password='8X8ABT6kF2'
+#projectPath='/www/wwwroot'
+#config=`cat $projectPath/nginx.conf`
+#
+#expect "$projectPath/nginx.sh" "$user" "$host" "$password" "$config"

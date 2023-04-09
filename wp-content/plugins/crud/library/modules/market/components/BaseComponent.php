@@ -1,6 +1,8 @@
 <?php
 namespace crud\modules\market\components;
-
+use Yii;
+use crud\components\Http;
+use GuzzleHttp\Exception\GuzzleException;
 use yii\base\BaseObject;
 use Darabonba\OpenApi\Models\Config;
 use AlibabaCloud\Tea\Utils\Utils\RuntimeOptions;
@@ -8,8 +10,22 @@ use AlibabaCloud\SDK\Dysmsapi\V20170525\Dysmsapi;
 use AlibabaCloud\SDK\Dysmsapi\V20170525\Models\SendSmsRequest;
 use AlibabaCloud\SDK\Dysmsapi\V20170525\Models\AddSmsTemplateRequest;
 use AlibabaCloud\SDK\Dysmsapi\V20170525\Models\QuerySmsTemplateListRequest;
+
+/**
+ *
+ * @property string $appId
+ * @property string $appSecret
+ * @property string $token
+ * @property Http $client
+ * @property $menu
+ * @property-read string $accessToken
+ * @property-read string $ticket
+ * Class BaseComponent
+ * @package crud\modules\market\components
+ */
 class BaseComponent extends BaseObject
 {
+
 
     /**
      * @param $phone
@@ -84,6 +100,9 @@ class BaseComponent extends BaseObject
         return  $this->smsClient()->addSmsTemplateWithOptions($addSmsTemplateRequest,new RuntimeOptions([]));
     }
 
+    /**
+     * @return Dysmsapi
+     */
     public function smsClient(){
         $config = new Config([
             "accessKeyId" => get_option("crud_group_market_sms_accessKeyId"),
@@ -117,4 +136,6 @@ class BaseComponent extends BaseObject
         }
         return $res;
     }
+
+
 }

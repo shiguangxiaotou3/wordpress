@@ -7,6 +7,7 @@ use yii\web\View;
 use yii\base\Component;
 use crud\components\Http;
 use yii\helpers\ArrayHelper;
+use crud\assets\WechatJsSdkAssets;
 use yii\base\InvalidConfigException;
 use GuzzleHttp\Exception\GuzzleException;
 use crud\modules\wechat\assets\MarketAssets;
@@ -21,6 +22,7 @@ use crud\modules\wechat\models\ValidateServer;
  * @property-read string $accessToken
  * @property-read string $ticket
  * @property-read array $jsConfig
+ * @property-read array $jsApiList
  * @package crud\common\components\webxin
  */
 class SubscriptionService extends Component{
@@ -427,30 +429,42 @@ class SubscriptionService extends Component{
     }
 
     /**
-     * @param $url
+     * @param string|null $url
      * @param array $jsApiList
      * @param bool $debug
      * @return array
      * @throws \yii\base\Exception
      */
-    public function getJsConfig($url,$jsApiList=[], $debug=true){
-        $timestamp= time();
-        $nonceStr = Yii::$app->getSecurity()->generateRandomString();
-        $config =[
-            'noncestr'=>$nonceStr,
-            'jsapi_ticket'=>$this->ticket,
-            'timestamp'=>$timestamp,
-            'url'=>$url
-        ];
-        ksort($config);
-        return [
-            'debug'=>$debug,
-            'appId'=>$this->appId,
-            'timestamp'=> $timestamp , // 必填，生成签名的时间戳
-            'nonceStr'=> $nonceStr, // 必填，生成签名的随机串
-            'signature'=> sha1(http_build_query($config )),
-            'jsApiList'=>$jsApiList
-        ];
+    public function getJsConfig($url='',$jsApiList=[], $debug=true){
+        if(empty($url)){
+            $url =Yii::$app->request->getHostInfo().Yii::$app->request->url;
+        }
+        if(empty($jsApiList)){
+            try{
+                $jsApiList =$this->jsApiList;
+            }catch (Exception $exception){
+                $jsApiList =[];
+            }
+
+        }
+        $timestamp = time();
+        $nonceStr = $this->createNonceStr();
+        $jsapiTicket = $this->ticket;
+        // 这里参数的顺序要按照 key 值 ASCII 码升序排序
+        $string = "jsapi_ticket=$jsapiTicket&noncestr=$nonceStr&timestamp=$timestamp&url=$url";
+
+        $signature = sha1($string);
+
+
+
+        return  array(
+            'debug'=> true,
+            'appId'=> $this->appId,
+            'timestamp'=> $timestamp,
+            'nonceStr'=> $nonceStr,
+            'signature'=> $signature,
+            'jsApiList'=> $jsApiList
+        );
     }
 
     /**
@@ -480,35 +494,56 @@ class SubscriptionService extends Component{
         /** @var View $view */
         $view = Yii::$app->getView();
         global $wp;
-        $post = get_post();
-        try {
-            $view->registerJsFile('https://res.wx.qq.com/open/js/jweixin-1.6.0.js');
-        } catch (InvalidConfigException $e) {
+        WechatJsSdkAssets::register($view);
+        $config = json_encode( $this ->getJsConfig());
+
+        $title = get_option('blogname');
+        $desc = get_option('blogdescription');
+        $imgUrl= get_option('home')."favicon.ico";
+        $url = Yii::$app->request->getHostInfo().Yii::$app->request->url;
+        try{
+
+            $id =get_the_ID();
+            $title = get_the_title($id);
+//            $imgUrl= get_post_meta($id);
+////           $est= get_the_post_thumbnail_url(get_the_ID(),'medium');
+//            wp_mail('757402123@qq.com','开发者服务器验证',print_r(  $title,true));
+
+        }catch (Exception $exception){
+           // wp_mail('757402123@qq.com','开发者服务器验证',print_r( $exception,true));
         }
-        $view->registerJs(MarketAssets::registerConfig(['updateAppMessageShareData'],true));
-        $home = home_url() . '/favicon.ico';
-        if (isset($post) and !empty($post)) {
-            $title = json_encode($post->post_title);
-            $desc = json_encode($post->post_excerpt);
-            $url = urldecode(home_url(add_query_arg(array(), $wp->request)));
-            $json = json_encode($post);
-            $js = <<<JS
-console.log({$json});
-wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
-    wx.updateAppMessageShareData({ 
-        title: '{$title}', // 分享标题
-        desc: '{$desc}', // 分享描述
-        link: '{$url}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号 JS 安全域名一致
-        imgUrl: '{$home}', // 分享图标
-        success: function () {
-            console.log('分享成功');
-            alert('分享成功')
-        }
-    })
-});
+
+
+
+        $data = json_encode( [
+            // 分享标题
+            'title' => $title,
+            // 分享描述
+            'desc' =>  $desc,
+            /// 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            'link' =>  $url,
+            // 分享图标
+            'imgUrl' => $imgUrl,
+            'success' => 'function(res){console.log(res) }'
+        ]);
+        $data2 = json_encode( [
+            // 分享标题
+            'title' =>$title,
+            'link' =>  $url,
+            // 分享图标
+            'imgUrl' => $imgUrl,
+            'success' => 'function(res){console.log(res) }'
+        ]);
+
+$js =<<<JS
+    var config =$config;
+    wx.config(config);
+    wx.ready(function(res){
+      wx.updateAppMessageShareData($data);
+      wx.onMenuShareTimeline($data2);
+    });
 JS;
-            $view->registerJs($js);
-        }
+        $view->registerJs($js);
 
     }
 
@@ -530,14 +565,6 @@ JS;
             ],
         ]);
         $data = $this->response(json_decode($res, true));
-        //参数	描述
-        //access_token	网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同
-        //expires_in	access_token接口调用凭证超时时间，单位（秒）
-        //refresh_token	用户刷新access_token
-        //openid	用户唯一标识，请注意，在未关注公众号时，用户访问公众号的网页，也会产生一个用户和公众号唯一的OpenID
-        //scope	用户授权的作用域，使用逗号（,）分隔
-        //is_snapshotuser	是否为快照页模式虚拟账号，只有当用户是快照页模式虚拟账号时返回，值为1
-        //unionid 户统一标识（针对一个微信开放平台帐号下的应用，同一用户的 unionid 是唯一的），只有当 scope 为"snsapi_userinfo"时返回
 
         if ($data['code'] == 1) {
             $data['data']['expires_in'] = time() + $data['data']['expires_in'];
@@ -647,12 +674,39 @@ JS;
     /**
      * @param $code
      * @return false|mixed
+     * @throws GuzzleException
      */
     public function getUserInfoByCode($code){
         $accessToken = $this-> getUserAccessTokenByCode($code);
         if($accessToken){
             return $this->getUserInfo($accessToken['openid']);
         }
+    }
+
+    /**
+     * 生成随机字符串
+     * @param int $length
+     * @return string
+     */
+    private function createNonceStr($length = 16) {
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $str = "";
+        for ($i = 0; $i < $length; $i++) {
+            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+        }
+        return $str;
+    }
+
+    /**
+     * 获取默认的微信JSSDK接口名称
+     * @return false|string[]
+     */
+    public  function getJsApiList(){
+        $str =get_option('crud_group_wechat_jsApiList');
+        $str = str_replace(PHP_EOL,'',$str);
+        $str = str_replace('"','',$str);
+        $str = str_replace('\'','',$str);
+        return explode(',',$str);
     }
 
 }

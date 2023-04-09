@@ -6,7 +6,7 @@ use yii\helpers\Markdown;
 use crud\widgets\RegisterHighlightAssetWidget;
 
 /** @var $this yii\web\View */
-
+WechatJsSdkAssets::register($this);
 RegisterHighlightAssetWidget::widget();
 $file = Yii::getAlias("@crud/modules/wp/views/editor/Crud插件文档.md");
 $myText = file_get_contents($file );
@@ -253,6 +253,7 @@ $this->registerCss($css );
 ?>
 <div class="wrapper">
     <?php
+    dump((new crud\modules\pay\models\Order())->attributeLabels());
     echo Markdown::process($myText, 'gfm-comment')
     ?>
 </div>

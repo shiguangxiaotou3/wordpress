@@ -80,6 +80,7 @@ class Wp extends Module implements BootstrapInterface
                 return $public_query_vars;
             });
             add_action("template_redirect", [$this, "templateRedirect"]);
+
             // +----------------------------------------------------------------------
             // ｜将yii\web\View事件挂载到wordpress钩子中
             // +----------------------------------------------------------------------

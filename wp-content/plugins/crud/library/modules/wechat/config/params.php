@@ -42,8 +42,20 @@ return [
                     ],
                 ],
                 [
+                    'id' => 'appSecret',
+                    "title" => "appSecret",
+                    'args' => [
+                        "tag" => "password",
+                        "defaultValue" => "",
+                        "description" => "开发环境",
+                        'options' => [
+                            "class" => "regular-text code"
+                        ],
+                    ],
+                ],
+                [
                     'id' => 'domain',
-                    "title" => "domain",
+                    "title" => "微信开放平台域名",
                     'args' => [
                         "tag" => "dropDownList",
                         "items"=>[
@@ -54,33 +66,36 @@ return [
                             'https://hk.api.weixin.qq.com'=>'hk.api.weixin.qq.com',
                         ],
                         "defaultValue" => "https://api.weixin.qq.com",
-                        "description" => "公众平台接口域名池",
+                        "description" => "微信开放平台域名",
                         'options' => [
                             "class" => "regular-text code"
                         ],
                     ],
                 ],
-                [
-                    'id' => 'appSecret',
-                    "title" => "appSecret",
-                    'args' => [
-                        "tag" => "text",
-                        "defaultValue" => "",
-                        "description" => "开发环境",
-                        'options' => [
-                            "class" => "regular-text code"
-                        ],
-                    ],
-                ],
+
                 [
                     'id' => 'token',
                     "title" => "Token",
                     'args' => [
                         "tag" => "text",
                         "defaultValue" => "",
-                        "description" => "开发环境",
+                        "description" => "开发者服务器验证token",
                         'options' => [
                             "class" => "regular-text code"
+                        ],
+                    ],
+                ],
+                [
+                    'id' => 'jsApiList',
+                    "title" => "JS接口列表",
+                    'args' => [
+                        "tag" => "textarea",
+                        "defaultValue" => "",
+                        "description" => "使用逗号(英文逗号)或者换行隔开",
+                        'options' => [
+                            "class" => " large-text code",
+                            'rows'=>5,
+                            'style'=>"width: 500px"
                         ],
                     ],
                 ],

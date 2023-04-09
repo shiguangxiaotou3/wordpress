@@ -1,23 +1,35 @@
 <?php
 namespace crud\modules\pay\components;
 
+
 use Yii;
 use Exception;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
+use SimpleXMLElement;
 use shiguangxiaotou\alipay\AopClient;
 use shiguangxiaotou\alipay\AlipayConfig;
 use shiguangxiaotou\alipay\AopCertClient;
+use crud\modules\pay\behaviors\PayBehavior;
 use shiguangxiaotou\alipay\request\AlipayTradeCloseRequest;
 use shiguangxiaotou\alipay\request\AlipayTradeQueryRequest;
 use shiguangxiaotou\alipay\request\AlipayTradeRefundRequest;
 use shiguangxiaotou\alipay\request\AlipayTradeWapPayRequest;
 use shiguangxiaotou\alipay\request\AlipayTradePagePayRequest;
+use crud\modules\pay\events\PayEvent;
 use shiguangxiaotou\alipay\request\AlipayFundTransUniTransferRequest;
 use shiguangxiaotou\alipay\request\AlipayTradeFastpayRefundQueryRequest;
 use shiguangxiaotou\alipay\request\AlipayDataDataserviceBillDownloadurlQueryRequest;
+
+/**
+ * Class Alipay
+ *
+ * @property PayEvent $payEvent
+ * @package crud\modules\pay\components
+ */
 class Alipay extends Component implements Pay
 {
+
     // appID
     public $appId;
     // 应用名称
@@ -64,6 +76,15 @@ class Alipay extends Component implements Pay
     public $alipayPublicCert;//支付宝公钥证书
     public $alipayRootCert;//支付宝根证书
 
+    /**
+     * @return array
+     */
+    public function behaviors(){
+        return [
+//            PayBehavior::className()
+        ];
+    }
+
     public function pathInit(){
         $attr =[
            'contentSecretKey',
@@ -98,15 +119,6 @@ class Alipay extends Component implements Pay
             $config->setAlipayPublicKey($this->appPublicKey);
 
             return new AopClient ($config);
-//            $client->gatewayUrl =$this->alipayUli;
-//            $client->appId = $this->appId;
-//            $client->rsaPrivateKey = str_replace(PHP_EOL,"",file_get_contents($this->appPrivateKey));
-//            $client->alipayrsaPublicKey =str_replace(PHP_EOL,"",file_get_contents( $this->alipayPublicKey));
-//            $client->apiVersion = '1.0';
-//            $client->signType = $this->signType;
-//            $client->postCharset = 'utf-8';
-//            $client->format = 'json';
-//            return  $client;
         }else{
             $alipayConfig = new AlipayConfig();
             $alipayConfig->setAppId($this->appId);
@@ -123,37 +135,13 @@ class Alipay extends Component implements Pay
             $alipayConfig->setRootCertPath($this->alipayRootCert);
             //$alipayConfig->setRootCertContent()
             return  new AopCertClient ($alipayConfig);
-            $aop->gatewayUrl =$this->alipayUli;
-//            $aop->appId = $this->appId;
-//            // 应用私钥路径
-//            $aop->rsaPrivateKey = str_replace(PHP_EOL,"",file_get_contents($this->appPrivateKey));
-//            //支付宝公钥证书
-//            $aop->alipayrsaPublicKey = $aop->getPublicKey($this->alipayPublicCert);
-//            $aop->apiVersion = '1.0';
-//            $aop->signType = $this->signType;
-//            $aop->postCharset = 'utf-8';
-//            $aop->format = 'json';
-//            $aop->isCheckAlipayPublicCert = true;//是否校验自动下载的支付宝公钥证书，如果开启校验要保证支付宝根证书在有效期内
-//            // 应用公钥证书
-//            $aop->appCertSN = $aop->getCertSN($this->appPublicCert);//调用getCertSN获取证书序列号
-//            // 支付宝根证书
-//            $aop->alipayRootCertSN = $aop->getRootCertSN($this->alipayRootCert);//调用getRootCertSN获取支付宝根证书序列号
-//            return  $aop;
         }
     }
 
-    public function test(){
-//        $resultCode = $result->$responseNode->code;
-//        if(!empty($resultCode)&&$resultCode == 10000){
-//            echo "成功";
-//        } else {
-//            echo "失败";
-//        }
-
-    }
 
     /**
      * @param 订单场景 $palType
+     * @param 用户id|int|null $userId
      * @param 订单号|string $orderId
      * @param 订单标题|string $subject
      * @param 订单金额|number $money
@@ -162,13 +150,33 @@ class Alipay extends Component implements Pay
      * @param array $options
      * @return 提交表单HTML文本|构建好的、签名后的最终跳转URL（GET）或String形式的form（POST）|mixed|string
      */
-    public function submit( $palType , $orderId, $subject, $money, $notifyUrl='', $returnUrl='', $options=[])
+    public function submit( $palType ,$userId, $orderId, $subject, $money, $notifyUrl='', $returnUrl='', $options=[])
     {
-        if($palType=="pc"){
-            return  $this->submitPc($orderId,$subject,$money,$notifyUrl,$returnUrl,$options);
-        }elseif ($palType =="wap"){
-            return  $this->submitWap($orderId,$subject,$money,$notifyUrl,$returnUrl,$options);
+//        $notifyUrl = empty($notifyUrl) ? $this->notifyUrl : $notifyUrl;
+//        $returnUrl = empty($returnUrl) ? $this->returnUrl : $returnUrl;
+//        $result ='';
+//
+//        $this->payEvent->pal_type =$palType;
+//        $this->payEvent->user_id =$userId;
+//        $this->payEvent->subject = $subject;
+//        $this->payEvent->order_id = $orderId;
+//        $this->payEvent->total_amount =$money;
+//        $this->payEvent->notify_url = $notifyUrl;
+//        $this->payEvent->return_url  = $returnUrl;
+
+        try{
+            if($palType=="aliPayPc"){
+                $result=  $this->submitPc($orderId,$subject,$money,$notifyUrl,$returnUrl,$options);
+            }elseif ($palType =="aliPayWap"){
+                $result=  $this->submitWap($orderId,$subject,$money,$notifyUrl,$returnUrl,$options);
+            }
+//            $this->trigger('submit');
+            return  $result;
+        }catch (Exception $exception){
+//            $this->off('submit');
         }
+
+
     }
 
     /**
@@ -268,7 +276,7 @@ class Alipay extends Component implements Pay
      * @param 支付宝流水号 $number
      * @param 退款请求号|string $refund_reason
      * @param array $options
-     * @return false
+     * @return false|SimpleXMLElement
      * @throws Exception
      */
     public function refundSelect($orderId,$number,$refund_reason,$options=[]){
@@ -296,7 +304,7 @@ class Alipay extends Component implements Pay
      * @param $bill_date
      * @param string $bill_type
      * @param array $options
-     * @return false
+     * @return SimpleXMLElement
      * @throws Exception
      */
     public function getBillDownloadUrl($bill_date,$bill_type='trade',$options=[]){
@@ -317,11 +325,16 @@ class Alipay extends Component implements Pay
 
     /**
      * 异步通知
+     * @param $data
      * @return mixed|void
      *
      */
-    public function notify()
+    public function notify($data)
     {
+        $this->payEvent->receipt_amount = $data['receipt_amount'];
+        $this->payEvent->order_id = $data['out_trade_no'];
+        $this->payEvent->trade_no = $data['trade_no'];
+        $this->trigger('notify');
     }
 
     /**
@@ -335,8 +348,7 @@ class Alipay extends Component implements Pay
      * @throws Exception
      */
     public function submitPc($orderId,$subject,$money,$notifyUrl='',$returnUrl='',$options=[]){
-        $notifyUrl = empty($notifyUrl) ? $this->notifyUrl : $notifyUrl;
-        $returnUrl = empty($returnUrl) ? $this->returnUrl : $returnUrl;
+
         $aop = $this->client();
         $object =[
             "out_trade_no" => $orderId,
@@ -365,8 +377,7 @@ class Alipay extends Component implements Pay
      * @throws Exception
      */
     public function submitWap($orderId, $subject, $money, $notifyUrl='', $returnUrl='',  $options=[]){
-        $notifyUrl = empty($notifyUrl) ? $this->notifyUrl : $notifyUrl;
-        $returnUrl = empty($returnUrl) ? $this->returnUrl : $returnUrl;
+
         $aop = $this->client();
         $object =[
             "out_trade_no" => $orderId,
@@ -384,12 +395,12 @@ class Alipay extends Component implements Pay
         $request->setNotifyUrl($notifyUrl);
         $request->setReturnUrl($returnUrl);
         $request->setBizContent($json);
-        return  $aop->pageExecute( $request);
+        return  $aop->pageExecute($request,"GET");
+//        return  $aop->execute( $request);
     }
 
     public function submitPcQr($orderId,$subject,$money,$notifyUrl='',$returnUrl='',$options=[]){
-        $notifyUrl = empty($notifyUrl) ? $this->notifyUrl : $notifyUrl;
-        $returnUrl = empty($returnUrl) ? $this->returnUrl : $returnUrl;
+
         $aop = $this->client();
         $object =[
             "out_trade_no" => $orderId,
@@ -414,15 +425,8 @@ class Alipay extends Component implements Pay
      * @return bool
      */
     public function checkSign($params,$encryptType=''){
-        $aop = $this->client($encryptType);
-        return $aop->rsaCheckV1($params, $aop->alipayrsaPublicKey,$this->signType);
-//        return $aop->rsaCheckV1($params, $this->appPublicKey,$this->signType);
-    }
-
-    public function notifyUrlCheckSign($params,$encryptType=''){
-        $aop = $this->client($encryptType);
-        return $aop->rsaCheckV1($params,  $aop->alipayrsaPublicKey,$this->signType);
-//        return $aop->alipayPublicKey;
+        $aop = $this->client();
+        return $aop->rsaCheckV1($params, '',$this->signType);
     }
 
     /**
@@ -491,5 +495,10 @@ class Alipay extends Component implements Pay
 //        else{
 //            echo("调用失败");
 //        }
+    }
+
+    public function test()
+    {
+        // TODO: Implement test() method.
     }
 }

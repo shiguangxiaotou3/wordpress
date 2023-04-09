@@ -2,6 +2,7 @@
 namespace crud\modules\market;
 
 use backend\web\App;
+use crud\models\AjaxAction;
 use yii\base\Module;
 use yii\web\Application;
 use yii\helpers\ArrayHelper;
@@ -22,6 +23,7 @@ class Market extends Module implements BootstrapInterface
      * {@inheritdoc}
      */
     public $controllerNamespace = 'crud\modules\market\controllers';
+
     /**
      * {@inheritdoc}
      */
@@ -47,6 +49,7 @@ class Market extends Module implements BootstrapInterface
           // +----------------------------------------------------------------------
           // ｜商场 子模块加载完毕引导
           // +----------------------------------------------------------------------
+            add_action("init", [$this, "registerAjax"]);
             add_action("rest_api_init", [$this, "registerRestfulApi"]);
 
         }
@@ -54,5 +57,20 @@ class Market extends Module implements BootstrapInterface
 
     public function registerRestfulApi(){
         App::addApi($this->id);
+    }
+
+    public function registerAjax(){
+//        $menus=[];
+        $config =[
+            'address','money','categorize','commodity',
+            'commodity-price','express','storehouse','user'
+        ];
+        $actions =['init','index','create','view','update','delete','deletes'];
+        foreach ($config as $menu){
+            foreach ($actions as $action){
+                $menuModel = new AjaxAction(['menu_slug'=>"market/".$menu."/".$action]);
+                $menuModel->registerAjaxAction();
+            }
+        }
     }
 }

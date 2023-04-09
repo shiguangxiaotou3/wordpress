@@ -13,6 +13,60 @@ return [
             "page_title" => "基础设置",
             "menu_title" => "基础设置",
             "menu_slug" => "market/index/settings",
+       ],
+        [
+            "parent_slug" =>  "market/index",
+            "page_title" => "地址管理",
+            "menu_title" => "地址管理",
+            "menu_slug" => "market/index/address",
+        ],
+        [
+            "parent_slug" =>  "market/index",
+            "page_title" => "余额管理",
+            "menu_title" => "余额管理",
+            "menu_slug" => "market/index/money",
+        ],
+        [
+            "parent_slug" =>  "market/index",
+            "page_title" => "分类管理",
+            "menu_title" => "分类管理",
+            "menu_slug" => "market/index/categorize",
+        ],
+        [
+            "parent_slug" =>  "market/index",
+            "page_title" => "商品管理",
+            "menu_title" => "商品管理",
+            "menu_slug" => "market/index/commodity",
+        ],
+        [
+            "parent_slug" =>  "market/index",
+            "page_title" => "商品价格管理",
+            "menu_title" => "商品价格管理",
+            "menu_slug" => "market/index/commodity-price",
+        ],
+        [
+            "parent_slug" =>  "market/index",
+            "page_title" => "快递管理",
+            "menu_title" => "快递管理",
+            "menu_slug" => "market/index/express",
+        ],
+        [
+            "parent_slug" =>  "market/index",
+            "page_title" => "仓库管理",
+            "menu_title" => "仓库管理",
+            "menu_slug" => "market/index/storehouse",
+        ],
+        [
+            "parent_slug" =>  "market/index",
+            "page_title" => "用户管理",
+            "menu_title" => "用户管理",
+            "menu_slug" => "market/index/user",
+        ],
+        [
+            "parent_slug" =>  "market/index",
+            "page_title" => "测试",
+            "menu_title" => "测试",
+            "menu_slug" => "market/index/test",
         ],
     ],
 
@@ -38,6 +92,7 @@ return [
                         ]
                     ],
                 ],
+
                 [
                     'id' => 'describe',
                     "title" => "描述",
@@ -59,6 +114,30 @@ return [
                         "defaultValue" => "",
                         'options' => [
                             //<a onclick="return false;" title="Upload image" class="thickbox" id="add_image" href="media-upload.php?type=image&amp;TB_iframe=true&amp;width=640&amp;height=105">Upload Image</a>
+                            "class" => "regular-text code"
+                        ]
+                    ],
+                ],
+                [
+                    'id' => 'appid',
+                    "title" => "App Id",
+                    'args' => [
+                        "tag" => "text",
+                        "description" => "小程序",
+                        "defaultValue" => "",
+                        'options' => [
+                            "class" => "regular-text code"
+                        ]
+                    ],
+                ],
+                [
+                    'id' => 'appSecret',
+                    "title" => "App Secret",
+                    'args' => [
+                        "tag" => "text",
+                        "description" => "小程序",
+                        "defaultValue" => "",
+                        'options' => [
                             "class" => "regular-text code"
                         ]
                     ],
@@ -116,36 +195,91 @@ return [
                     ],
                 ],
                 [
-                    'id' => 'AppKey',
+                    'id' => 'yunyang_appid',
                     "title" => "AppKey",
                     'section_id' => 'express',
                     'args' => [
                         "tag" => "text",
                         "defaultValue" => "",
+                        "description" => "云洋物流",
                         'options' => [
                             "class" => "regular-text code"
                         ]
                     ],
                 ],
                 [
-                    'id' => 'AppSecret',
+                    'id' => 'yunyang_secretKey',
+
+                    "title" => "AppSecret",
+                    'section_id' => 'express',
+                    'args' => [
+                        "tag" => "text",
+                        "defaultValue" => "",
+                        "description" => "云洋物流",
+                        'options' => [
+                            "class" => "regular-text code"
+                        ]
+                    ],
+                ],
+                [
+                    'id' => 'qbd_appid',
+                    "title" => "AppKey",
+                    'section_id' => 'express',
+                    'args' => [
+                        "tag" => "text",
+                        "defaultValue" => "",
+                        "description" => "QBD",
+                        'options' => [
+                            "class" => "regular-text code"
+                        ]
+                    ],
+                ],
+                [
+                    'id' => 'qbd_secretKey',
                     'section_id' => 'express',
                     "title" => "AppSecret",
                     'args' => [
                         "tag" => "text",
                         "defaultValue" => "",
+                        "description" =>"QBD",
                         'options' => [
                             "class" => "regular-text code"
                         ]
                     ],
                 ],
                 [
-                    'id' => 'AppCode',
+                    'id' => 'qbd_host',
                     'section_id' => 'express',
-                    "title" => "AppCode",
+                    "title" => "host",
                     'args' => [
                         "tag" => "text",
                         "defaultValue" => "",
+                        "description" =>"QBD",
+                        'options' => [
+                            "class" => "regular-text code"
+                        ]
+                    ],
+                ],
+                [
+                    'id' => 'yida_username',
+                    "title" => "User Name",
+                    'section_id' => 'express',
+                    'args' => [
+                        "tag" => "text",
+                        "description" => "易达Api",
+                        'options' => [
+                            "class" => "regular-text code"
+                        ]
+                    ],
+                ],
+                [
+                    'id' => 'yida_privateKey',
+                    'section_id' => 'express',
+                    "title" => "Private Key",
+                    'args' => [
+                        "tag" => "text",
+
+                        "description" =>"易达Api",
                         'options' => [
                             "class" => "regular-text code"
                         ]

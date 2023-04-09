@@ -1,6 +1,7 @@
 <?php
 namespace crud\models;
 
+use Yii;
 use yii\base\Model;
 
 /**
@@ -26,7 +27,8 @@ class AjaxAction extends Model
     public $icon_url='dashicons-align-full-width';
     public $position=110;
 
-    public function registerAjaxAction(&$app){
+    public function registerAjaxAction(){
+        $app = Yii::$app;
         add_action("wp_ajax_".$this->menu_slug,[$app,"renderAjax"]);
         wp_localize_script(
             'ajax-script',

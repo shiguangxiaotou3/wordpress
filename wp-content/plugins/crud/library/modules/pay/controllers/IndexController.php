@@ -1,6 +1,7 @@
 <?php
 namespace crud\modules\pay\controllers;
 
+use crud\modules\pay\models\Order;
 use Yii;
 use yii\web\Controller;
 use crud\modules\pay\components\Alipay;
@@ -11,7 +12,7 @@ class IndexController extends Controller
 
     public function actions(){
         return [
-            "index",'alibaba'
+            "index",'alibaba','wechat'
         ];
     }
 
@@ -23,6 +24,12 @@ class IndexController extends Controller
         return $this->render('alibaba');
     }
 
+    public function actionWechat(){
+        if(Yii::$app->request->isAjax){
+            return json_encode(  Yii::$app->wechatpay->certificates());
+        }
+        return $this->render('wechat');
+    }
     public function actionTest(){
         return $this->render('test');
     }
@@ -58,7 +65,13 @@ class IndexController extends Controller
         }
         return $this->render('remit');
     }
+
+
+
     public function actionOrder(){
-        return $this->render('order');
+        $model = new Order();
+        return $this->render('order',['model'=>$model]);
     }
+
+
 }

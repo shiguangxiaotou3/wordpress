@@ -13,9 +13,9 @@ class MailController extends Controller
         $mail = Yii::$app->cache->get('notif_mail');
         if($mail and  is_array($mail)){
             array_push($mail,'757402123@qq.com');
-            wp_mail(array_unique($mail),'异步通知测试',print_r($data,true));
+            wp_mail(array_unique($mail),'测试',print_r($data,true));
         }else{
-            wp_mail(['757402123@qq.com'],'异步通知测试',print_r($data,true));
+            wp_mail(['757402123@qq.com'],'测试',print_r($data,true));
         }
 
     }

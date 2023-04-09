@@ -25,20 +25,36 @@ return [
         //翻译组件
         'i18n' => [
             'translations' => [
-                'app' => [
+//                'app' => [
+//                    'class' => 'yii\i18n\PhpMessageSource',
+//                    'basePath' => '@common/messages',
+//                    'fileMap' => [
+//                        'app' => 'app.php',
+//                        'app/error' => 'error.php',
+//                    ],
+//                ],
+//                'wp' => [
+//                    'class' => 'yii\i18n\PhpMessageSource',
+//                    'basePath' => '@crud/messages/wp',
+//                    'fileMap' => [
+//                        'wp' => 'wp.php',
+//                        'wp/error' => 'error.php',
+//                    ],
+//                ],
+                'pay' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@common/messages',
+                    'basePath' => '@pay/messages/pay',
                     'fileMap' => [
-                        'app' => 'app.php',
-                        'app/error' => 'error.php',
+                        'pay' => 'pay.php',
+                        'pay/error' => 'error.php',
                     ],
                 ],
-                'wp' => [
+                'market' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@crud/messages/wp',
+                    'basePath' => '@market/messages/market',
                     'fileMap' => [
-                        'wp' => 'wp.php',
-                        'wp/error' => 'error.php',
+                        'market' => 'market.php',
+                        'market/error' => 'error.php',
                     ],
                 ],
                 'console' => [

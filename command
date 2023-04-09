@@ -14,4 +14,22 @@ try {
 } catch (InvalidConfigException $e) {
     exit($e->getMessage());
 }
-//php command   gii/model --ns=crud\\modules\\pay\\models --tableName=wp_order --modelClass=Order
+
+
+//php command   gii/model --ns=crud\\models\\wp --tableName=wp_users --modelClass=WpUsers
+//php command   gii/model --ns=crud\\models\\wp --tableName=wp_usermeta --modelClass=WpUserMeta
+
+//php command   gii/model --ns=crud\\modules\\market\\models --tableName=wp_address --modelClass=Address --enableI18N=1 --messageCategory=market
+//php command   gii/model --ns=crud\\modules\\market\\models --tableName=wp_money --modelClass=Money --enableI18N=1 --messageCategory=market
+//php command   gii/model --ns=crud\\modules\\market\\models --tableName=wp_categorize --modelClass=Categorize --enableI18N=1 --messageCategory=market
+
+
+
+
+//php command   gii/model --ns=crud\\modules\\market\\models --tableName=wp_categorize --modelClass=Categorize --enableI18N=1 --messageCategory=market
+//php command   gii/model --ns=crud\\modules\\market\\models --tableName=wp_commodity --modelClass=Commodity --enableI18N=1 --messageCategory=market
+//php command   gii/model --ns=crud\\modules\\market\\models --tableName=wp_commodity_price --modelClass=CommodityPrice --enableI18N=1 --messageCategory=market
+//php command   gii/model --ns=crud\\modules\\market\\models --tableName=wp_storehouse --modelClass=Storehouse --enableI18N=1 --messageCategory=market
+//php command   gii/model --ns=crud\\modules\\market\\models --tableName=wp_express --modelClass=Express --enableI18N=1 --messageCategory=market
+
+

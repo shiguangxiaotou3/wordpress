@@ -8,6 +8,7 @@ use crud\assets\JvectormapAsset;
 class JvectormapMarkersWidget extends  Widget
 {
     public $options=[];
+    public $Tag='div';
     public $jvectormapOptions=[];
     public $_defaultOptions=[
         "backgroundColor" => 'transparent',
@@ -80,7 +81,7 @@ class JvectormapMarkersWidget extends  Widget
         //$json_options = self::replaceJsonVar($json_options,$options["onMarkerTipShow"]);
         $js="$('#{$this->options['id']}').vectorMap({$json_options});";
         $this->view->registerJs($js);
-        return Html::beginTag("div",$this->options).Html::endTag("div");
+        return Html::beginTag($this->Tag,$this->options).Html::endTag("div");
     }
 
     /**

@@ -252,7 +252,9 @@ class IndexController extends Controller
      * @throws \yii\db\Exception
      */
     public  function actionUuid(){
-        echo Yii::$app->db->createCommand("select uuid() as uuid")->queryOne()['uuid'];
+        $str='5aeff03ec98211edb261cf07b26b02c8';
+        echo strlen($str);
+//        echo Yii::$app->db->createCommand("select uuid() as uuid")->queryOne()['uuid'];
     }
 
     /**
