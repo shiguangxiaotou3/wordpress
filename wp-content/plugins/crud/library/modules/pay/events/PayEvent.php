@@ -4,7 +4,8 @@
 namespace crud\modules\pay\events;
 
 
-
+use crud\models\wp\WpUsers;
+use Yii;
 use yii\base\Event;
 use crud\modules\pay\models\Order;
 /**
@@ -21,6 +22,7 @@ use crud\modules\pay\models\Order;
  * @property string|null $notify_url 异步通知url
  * @property string|null $return_url 同步跳转url
  * @property bool $status 支付状态
+ * @property-read  Order $model 错误信息
  * @package crud\modules\pay\events
  */
 class PayEvent extends Event
@@ -38,47 +40,74 @@ class PayEvent extends Event
     public $return_url; //同步跳转url
     public $status; //支付状态
 
+
+    private $_transaction;
+    private $_model;
+    private $_error=[];
+
     /**
      * 创建订单事件处理器
      * 创建订单时，将订单信息保存到数据库
      */
-    public function submitEvent(){
+    public function beforeSubmitEvent(){
+        $this->_transaction = Yii::$app->db->beginTransaction();
         $model = new Order();
-        $data = $this->data;
-        //$palType , $orderId, $subject, $money, $notifyUrl='', $returnUrl='',
+        $model->user_id= $this->user_id;
         $model->pal_type = $this->pal_type;
         $model->order_id=$this->order_id;
         $model->subject = $this->subject;
         $model->total_amount = $this->total_amount;
         $model->notify_url = $this->notify_url;
         $model->return_url = $this->return_url;
-        $model->save();
+        $this->_model = $model;
+    }
+
+    public function afterSubmitEvent(){
+        $this->model->save();
+        $this->_transaction->commit();
     }
 
     /**
      * 异步通知事件处理器
      * 异步通知 确认后更新订单状态和金额
      */
-    public function notifyEvent(){
+    public function beforeNotifyEvent(){
+        /** @var Order $model */
         $model = Order::find()->where(['order_id'=>$this->order_id])->one();
-        if($model  ){
-            if($model->status ==0){
+        if($model){
+            if($model->status ==0 and $this->status ==1){
                 $model->receipt_amount = $this->receipt_amount;
-                $model->status = 1;
-                $model->trade_no =$this->trade_no;
-            }
-            if(empty($model->notify_number)){
-                $model->notify_number =1;
-            }else{
-                $model->notify_number ++;
-            }
-            if($model->save()){
-//                wp_mail('757402123@qq.com','更新成功',print_r([$model->getErrors()],true));
-            }else{
-//                wp_mail('757402123@qq.com','更新失败',print_r([$model->getErrors()],true));
-            }
+                $model->status = $this->status;
+                $model->trade_no = $this->trade_no;
+                $transaction = Yii::$app->db->beginTransaction();
+                $u = new WpUsers();
+                $user = $u->getUserById($model->user_id);
+                $res = $user->updateUserMoney(
+                    $model->receipt_amount,
+                    $model->subject
+                );
+                if ($res and $model->save()) {
+                    $transaction->commit();
+                } else {
+                    $transaction->rollBack();
+                }
 
+            }else{
+                if(empty($model->notify_number)){
+                    $model->notify_number =1;
+                }else{
+                    $model->notify_number ++;
+                }
+                $model->save();
+            }
+            $this->_model = $model;
         }
+    }
+
+
+    public function afterNotifyEvent(){
+        $user= new WpUsers();
+        $user->getUserById($this->model->user_id);
     }
 
     /**
@@ -93,5 +122,10 @@ class PayEvent extends Event
      */
     public function updateUserMoney(){
 
+    }
+
+
+    public function getModel(){
+        return $this->_model;
     }
 }

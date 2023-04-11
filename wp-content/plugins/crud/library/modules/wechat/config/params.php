@@ -86,6 +86,18 @@ return [
                     ],
                 ],
                 [
+                    'id' => 'encodingAESKey',
+                    "title" => "EncodingAESKey",
+                    'args' => [
+                        "tag" => "text",
+                        "defaultValue" => "",
+                        "description" => "消息加密密钥由43位字符组成",
+                        'options' => [
+                            "class" => "regular-text code"
+                        ],
+                    ],
+                ],
+                [
                     'id' => 'jsApiList',
                     "title" => "JS接口列表",
                     'args' => [

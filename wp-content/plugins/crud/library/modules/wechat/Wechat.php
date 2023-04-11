@@ -2,9 +2,7 @@
 namespace crud\modules\wechat;
 
 use Yii;
-use crud\Base;
 use backend\web\App;
-use yii\base\InvalidRouteException;
 use yii\base\Module;
 use yii\web\Application;
 use yii\helpers\ArrayHelper;
@@ -48,32 +46,8 @@ class Wechat extends Module implements BootstrapInterface
 //            // +----------------------------------------------------------------------
 //            // ｜微信公众号
 //            // +----------------------------------------------------------------------
-//            add_action('login_form', [$this,'login']);
-//            add_action('login_init',[$this,'getUserInfo']);
-//            add_action("template_redirect",[$this,"ValidateServer"]);
-//            add_action('the_content',[$this,'WechatShare']);
             add_action("rest_api_init", [$this, "registerApi"]);
-
-            add_action('init', function () {
-                add_rewrite_rule("^wechat$",
-                    'index.php?wechat=index/index', "top");
-
-                add_rewrite_rule("^wechat/([\w]+)$",
-                    'index.php?wechat=$matches[1]/index', "top");
-
-                add_rewrite_rule("^wechat/([\w]+)/([\w]+)$",
-                    'index.php?wechat=$matches[1]/$matches[2]', "top");
-
-                add_rewrite_rule("^wechat/([\w]+)/([\w]+)/([0-9]+)$",
-                    'index.php?wechat=$matches[1]/$matches[2]&id=$matches[3]', "top");
-            });
-            add_filter('query_vars', function ($public_query_vars) {
-                $public_query_vars[] = 'wechat';
-                $public_query_vars[] = 'id';
-
-                return $public_query_vars;
-            });
-            add_action("template_redirect", [$this, "templateRedirect"]);
+            Yii::$app->route($this->id);
         }
     }
 
@@ -81,7 +55,7 @@ class Wechat extends Module implements BootstrapInterface
      * 显示微信登录按钮
      */
     public function login(){
-        $url =  Yii::$app->wechatSubscription->authorizationUrl('https://www.shiguangxiaotou.com/wp-login.php');
+        $url =  Yii::$app->subscription->authorizationUrl('https://www.shiguangxiaotou.com/wp-login.php');
         echo '<a 
         class="button button-primary button-large" 
         style="color:#fff;background: #2a0; float: right; margin: 18px 0 5px 10px; min-height: 32px;" 
@@ -113,8 +87,8 @@ class Wechat extends Module implements BootstrapInterface
      */
     public function getUserInfo(){
         if(isset($_GET['code']) and !empty($this)){
-            $wechat = Yii::$app->wechatSubscription->getUserInfoByCode($_GET['code']);
-            Yii::$app->wechatSubscription->getUserInfo( $wechat['openid']);
+            $wechat = Yii::$app->subscription->getUserInfoByCode($_GET['code']);
+            Yii::$app->subscription->getUserInfo( $wechat['openid']);
         }
     }
 
@@ -135,54 +109,7 @@ class Wechat extends Module implements BootstrapInterface
        App::addRestfulApi($this->id);
     }
 
-
-    /**
-     * 显示前台页面
-     * @throws InvalidRouteException
-     */
-    public function templateRedirect()
-    {
-        global $wp_query;
-        $query_vars = $wp_query->query_vars;
-        if (isset($query_vars['wechat']) and !empty($query_vars['wechat'])) {
-            $route = 'wechat/'.$query_vars['wechat'];
-            $params = $query_vars;
-            $module = Yii::$app->getModule('wechat');
-            $response = Yii::$app->response;
-            $response->format = 'html';
-            $response->setStatusCode(200);
-            unset($query_vars['wechat']);
-            if ($this->checkWpRoute($route)) {
-                $response->data = $module->runAction($route, $params);
-            } else {
-                $response->data = $module->runAction("index/error", []);
-            }
-            $response->send();
-            exit();
-        }
-    }
-
-    /**
-     * 检查某一个模块路由是否存在
-     *
-     * @param $route
-     * @param string $moduleId
-     *
-     * @return bool
-     */
-    private function checkWpRoute($route, $moduleId = 'wechat')
-    {
-        $str = explode('/', $route);
-        $count = count($str);
-        $controllerId = $str[$count - 2];
-        unset($str[$count - 2]);
-        $actionId = $str[$count - 1];
-        unset($str[$count - 1]);
-        $namespace = trim(join("\\", $str));
-        $controllerNamespace = "crud\modules\\" . $moduleId . "\controllers\\" .
-            ($namespace != "" ? $namespace . "\\" : "") .
-            ucfirst($controllerId) . "Controller";
-        $actionName = 'action' . ucfirst($actionId);
-        return Yii::$app->checkRoute($controllerNamespace, $actionName);
+    public function templateRedirect(){
+        Yii::$app->templateRedirect($this->id);
     }
 }

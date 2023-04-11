@@ -117,7 +117,7 @@ return [
                 // 异步通知
                 [
                     'id' => 'notifyUrl',
-                    "title" => "异步通知",
+                    "title" => "默认异步通知",
                     'args' => [
                         "tag" => "text",
                         "description" => "支付完成后的异步通知url<code style='color: red'>POST</code>",
@@ -130,7 +130,7 @@ return [
                 // 同步跳转
                 [
                     'id' => 'returnUrl',
-                    "title" => '同步跳转',
+                    "title" => '默认同步跳转',
                     'args' => [
                         "tag" => "text",
                         "description" => "支付完成跳转的url<code style='color: red'>GET</code>",
@@ -351,6 +351,33 @@ return [
                         'options' => [
                             "class" => "regular-text code"
                         ]
+                    ],
+                ],
+                // 异步通知
+                [
+                    'id' => 'notifyUrl',
+                    "title" => "默认异步通知",
+                    'args' => [
+                        "tag" => "text",
+                        "description" => "支付完成后的异步通知url<code style='color: red'>POST</code>",
+                        "defaultValue" => $siteurl ."/wp-json/crud/api/pay",
+                        'options' => [
+                            "class" => "large-text code",
+                        ]
+                    ],
+                ],
+                // 同步跳转
+                [
+                    'id' => 'returnUrl',
+                    "title" => '默认同步跳转',
+                    'args' => [
+                        "tag" => "text",
+                        "description" => "支付完成跳转的url<code style='color: red'>GET</code>",
+                        "defaultValue" => $siteurl ."/crud/index/pay",
+                        'options' => [
+                            "class" => "large-text code",
+                            "placeholder" => $siteurl ."/crud/index/pay",
+                        ],
                     ],
                 ],
                 [

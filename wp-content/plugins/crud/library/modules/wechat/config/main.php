@@ -15,6 +15,7 @@ return [
             "appId" => get_option("crud_group_wechat_appId"),
             "appSecret" => get_option("crud_group_wechat_appSecret"),
             "token" => get_option("crud_group_wechat_token"),
+            "encodingAESKey" => get_option("crud_group_wechat_encodingAESKey"),
             "domain" => get_option("crud_group_wechat_domain", 'https://api.weixin.qq.com')
         ],
     ],

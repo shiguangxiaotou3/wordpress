@@ -2,6 +2,7 @@
 
 namespace crud\models\wp;
 
+use crud\modules\market\models\Money;
 use \Yii;
 use \WP_Error;
 use \WP_User;
@@ -169,7 +170,7 @@ class WpUsers extends ActiveRecord
     }
 
     public function getMoney(){
-        return $this->getUserMeta('money');
+        return (float) $this->getUserMeta('money');
     }
     public function setMoney($value){
         return $this->setUserMeta('money',$value,true);
@@ -456,6 +457,29 @@ class WpUsers extends ActiveRecord
             }
         }else{
             return  add_user_meta($this->ID,$field,$value,$unique);
+        }
+    }
+
+
+    /**
+     * 更新用户余额
+     * @param $money
+     * @param $remarks
+     * @return bool
+     */
+    public function updateUserMoney($money,$remarks =''){
+        $user_id =(int) $this->ID;
+
+        $before = $this->money;
+        $after= $before + (float) $money;
+        $model = new Money();
+        $model->user_id = $user_id;
+        $model->before = $before;
+        $model->after = $after;
+        $model->remarks =$remarks;
+        if($model->validate() and $model->save()){
+          $this->money =   $after;
+          return true;
         }
     }
 }

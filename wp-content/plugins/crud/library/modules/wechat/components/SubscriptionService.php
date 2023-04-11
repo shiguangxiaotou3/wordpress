@@ -30,6 +30,8 @@ class SubscriptionService extends Component{
     public $appId ;
     public $appSecret ;
     public $token ;
+
+    public $encodingAESKey;
     private $_client;
     public $domain='https://api.weixin.qq.com';
 
@@ -58,7 +60,7 @@ class SubscriptionService extends Component{
      */
     public function getAccessToken(){
         $cache = Yii::$app->cache;
-        $access_token = $cache->get("wechat_access_token");
+        $access_token = $cache->get("subscription_access_token");
         if($access_token ){
             return $access_token;
         }else{
@@ -70,15 +72,15 @@ class SubscriptionService extends Component{
                 ]
             ]));
             if($results['code'] ==1 ){
-                $cache->set("wechat_access_token",$results['data']["access_token"],$results['data']["expires_in"]);
-                return $cache->get("wechat_access_token");
+                $cache->set("subscription_access_token",$results['data']["access_token"],$results['data']["expires_in"]);
+                return $cache->get("subscription_access_token");
             }
             return false;
         }
     }
 
     /**
-     * 发送请求对象
+     * 获取http对象
      * @return Http
      */
     public function getClient(){
@@ -90,7 +92,7 @@ class SubscriptionService extends Component{
 
     /**
      * 获取公众号菜单
-     * @return array|false
+     * @return array
      * @throws GuzzleException
      */
     public function getMenu(){
@@ -104,10 +106,9 @@ class SubscriptionService extends Component{
 
     /**
      * 创建菜单
-     * @param array $options
-     * @return array|mixed
+     * @param $options
+     * @return array
      * @throws GuzzleException
-     * @throws Exception
      */
     public function setMenu($options=[]){
         return $this->response($this->client->post("/cgi-bin/menu/create", [
@@ -124,8 +125,8 @@ class SubscriptionService extends Component{
 
     /**
      * 创建自定义菜单
-     * @param array $options
-     * @return mixed
+     * @param $options
+     * @return array
      * @throws GuzzleException
      */
     public function setConditionalMenu($options=[]){
@@ -144,7 +145,7 @@ class SubscriptionService extends Component{
     /**
      * 处理请求结果,处理保存信息
      * @param $response
-     * @return array|false
+     * @return array
      */
     public function response($response){
         $error = [
@@ -429,11 +430,10 @@ class SubscriptionService extends Component{
     }
 
     /**
-     * @param string|null $url
-     * @param array $jsApiList
-     * @param bool $debug
+     * @param $url
+     * @param $jsApiList
+     * @param $debug
      * @return array
-     * @throws \yii\base\Exception
      */
     public function getJsConfig($url='',$jsApiList=[], $debug=true){
         if(empty($url)){
@@ -454,9 +454,6 @@ class SubscriptionService extends Component{
         $string = "jsapi_ticket=$jsapiTicket&noncestr=$nonceStr&timestamp=$timestamp&url=$url";
 
         $signature = sha1($string);
-
-
-
         return  array(
             'debug'=> true,
             'appId'=> $this->appId,
@@ -500,36 +497,26 @@ class SubscriptionService extends Component{
         $title = get_option('blogname');
         $desc = get_option('blogdescription');
         $imgUrl= get_option('home')."favicon.ico";
-        $url = Yii::$app->request->getHostInfo().Yii::$app->request->url;
-        try{
+        $url = Yii::$app->request->getHostInfo() . Yii::$app->request->url;
 
-            $id =get_the_ID();
-            $title = get_the_title($id);
-//            $imgUrl= get_post_meta($id);
-////           $est= get_the_post_thumbnail_url(get_the_ID(),'medium');
-//            wp_mail('757402123@qq.com','开发者服务器验证',print_r(  $title,true));
+        $id = get_the_ID();
+        $title = get_the_title($id);
 
-        }catch (Exception $exception){
-           // wp_mail('757402123@qq.com','开发者服务器验证',print_r( $exception,true));
-        }
-
-
-
-        $data = json_encode( [
+        $data = json_encode([
             // 分享标题
             'title' => $title,
             // 分享描述
-            'desc' =>  $desc,
+            'desc' => $desc,
             /// 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            'link' =>  $url,
+            'link' => $url,
             // 分享图标
             'imgUrl' => $imgUrl,
             'success' => 'function(res){console.log(res) }'
         ]);
-        $data2 = json_encode( [
+        $data2 = json_encode([
             // 分享标题
-            'title' =>$title,
-            'link' =>  $url,
+            'title' => $title,
+            'link' => $url,
             // 分享图标
             'imgUrl' => $imgUrl,
             'success' => 'function(res){console.log(res) }'
@@ -568,7 +555,7 @@ JS;
 
         if ($data['code'] == 1) {
             $data['data']['expires_in'] = time() + $data['data']['expires_in'];
-            $cache->set('wechat_' . $data['data']['openid'], $data['data'], 24 * 60 * 60 * 30);
+            $cache->set('subscription_' . $data['data']['openid'], $data['data'], 24 * 60 * 60 * 30);
             return $data['data'];
         }else{
             return false;
@@ -584,7 +571,7 @@ JS;
     public function refreshUserToken($openid)
     {
         $cache = Yii::$app->cache;
-        $refresh_token = $cache->get('wechat_' . $openid);
+        $refresh_token = $cache->get('subscription_' . $openid);
         if ($refresh_token) {
             $res = $this->client->get("/sns/oauth2/refresh_token", [
                 'query' => [
@@ -601,7 +588,7 @@ JS;
                 unset($refresh_token['refresh_token']);
                 $refresh_token = ArrayHelper::merge($refresh_token, $data['data']);
                 wp_mail('757402123@qq.com', '刷新access_token', print_r($refresh_token, true));
-                $cache->get('wechat_' . $openid, $refresh_token, 24 * 60 * 60 * 30);
+                $cache->get('subscription_' . $openid, $refresh_token, 24 * 60 * 60 * 30);
             }
         } else {
             return false;
@@ -617,11 +604,11 @@ JS;
     public function getUserInfo($openid)
     {
         $cache = Yii::$app->cache;
-        $refresh_token = $cache->get('wechat_' . $openid);
+        $refresh_token = $cache->get('subscription_' . $openid);
         if ($refresh_token) {
             if (time() > $refresh_token['expires_in']) {
                 $this->refreshUserToken($openid);
-                $refresh_token = $cache->get('wechat_' . $openid);
+                $refresh_token = $cache->get('subscription_' . $openid);
             }
             $res = $this->client->get("/sns/userinfo", [
                 'query' => [
@@ -632,7 +619,6 @@ JS;
             ]);
             $data = $this->response(json_decode($res, true));
             if ($data['code'] == 1) {
-                wp_mail('757402123@qq.com', '用户信息', print_r($data['data'], true));
                 return $data['data'];
             } else {
                 return false;
@@ -663,7 +649,6 @@ JS;
         ]);
         $data = $this->response(json_decode($res, true));
         if ($data['code'] == 1) {
-            wp_mail('757402123@qq.com', '用户信息', print_r($data['data'], true));
             return $data['data'];
         } else {
             return false;
@@ -673,7 +658,7 @@ JS;
 
     /**
      * @param $code
-     * @return false|mixed
+     * @return false|mixed|void
      * @throws GuzzleException
      */
     public function getUserInfoByCode($code){
@@ -684,8 +669,9 @@ JS;
     }
 
     /**
+     *
      * 生成随机字符串
-     * @param int $length
+     * @param $length
      * @return string
      */
     private function createNonceStr($length = 16) {

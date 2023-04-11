@@ -51,8 +51,8 @@ Vue.component("crud-table", {
           <tfoot>
               <tr>
                   <td id="cb" class="">
-                      <label class="screen-reader-text" for="cb-select-all-1">全选</label>
-                      <input id="cb-select-all-1" type="checkbox" @click="selectorAll">
+                    <label class="screen-reader-text" for="cb-select-all-1">全选</label>
+                    <input id="cb-select-all-1" type="checkbox" @click="selectorAll">
                   </td>
                   <crud-columns-tfoot v-for="(field,index) in columns" :key="index"  :field="field"></crud-columns-tfoot>
               </tr>

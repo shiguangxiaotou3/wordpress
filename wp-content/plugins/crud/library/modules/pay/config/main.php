@@ -39,6 +39,8 @@ return [
             "apiV3Key" => get_option("crud_group_wechatpay_apiV3Key"),
             "appid" => get_option("crud_group_wechatpay_appid"),
             "merchantId" => get_option("crud_group_wechatpay_merchantId"),
+            "returnUrl" => get_option("crud_group_wechatpay_returnUrl"),
+            "notifyUrl" => get_option("crud_group_wechatpay_notifyUrl"),
             "merchantCertificateSerial" => get_option("crud_group_wechatpay_merchantCertificateSerial"),
             "merchantPrivateKeyFilePath" => get_option("crud_group_wechatpay_merchantPrivateKeyFilePath"),
             "merchantPublicKeyFilePath" => get_option("crud_group_wechatpay_merchantPublicKeyFilePath"),

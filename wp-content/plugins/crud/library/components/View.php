@@ -45,12 +45,6 @@ class View extends YiiView
         $handles =$wp_scripts->queue;
         if(is_array($handles) and !empty($handles)){
             $handle  =$handles[count($handles)-1];
-//            if(isset($this->js[self::POS_HEAD])){
-//                $js = ArrayHelper::merge(
-//                    $this->js[self::POS_HEAD],
-//                    $this->js[self::POS_READY]
-//                );
-//            }
             if(!empty(($this->js)[$position])){
                 $js = "jQuery(function ($) {\n" . implode("\n", $this->js[self::POS_READY]) . "\n});";
                 wp_add_inline_script(  $handle , $js  );

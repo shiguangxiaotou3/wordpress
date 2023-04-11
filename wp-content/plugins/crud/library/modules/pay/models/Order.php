@@ -2,6 +2,8 @@
 
 namespace crud\modules\pay\models;
 
+use common\models\User;
+use crud\models\wp\WpUsers;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
@@ -59,11 +61,23 @@ class Order extends ActiveRecord
     {
         return [
             [['pal_type', 'order_id', 'notify_url'], 'required'],
+            [['user_id'],'validateUser'],
+            [['order_id'],'unique'],
             [['user_id', 'notify_number', 'status', 'created_at', 'updated_at'], 'integer'],
             [['total_amount', 'receipt_amount'], 'number'],
-            [['pal_type'], 'string', 'max' => 10],
+            [['pal_type'], 'string', 'max' => 15],
             [['order_id', 'subject', 'trade_no', 'notify_url', 'return_url'], 'string', 'max' => 255],
         ];
+    }
+
+
+    public function validateUser($attribute){
+        if( WpUsers::find()->where(['Id'=>$this->user_id])->one()){
+           return true;
+        }else{
+            $this->addError($attribute,"#".$this->user_id.'用户不存在');
+            return false;
+        }
     }
 
     /**
@@ -94,17 +108,17 @@ class Order extends ActiveRecord
             ['field' => 'id', 'title' => Yii::t('pay', 'ID'),"style"=>'width: 20px'],
             ['field' => 'pal_type', 'title' => Yii::t('pay', 'Pal Type'),"style"=>'width: 80px'],
             ['field' => 'user_id', 'title' => Yii::t('pay', 'User ID'),"style"=>'width: 50px'],
-            ['field' => 'order_id', 'title' => Yii::t('pay', 'Order ID'),"style"=>'width: 100px'],
+            ['field' => 'order_id', 'title' => Yii::t('pay', 'Order ID'),"style"=>'width: 150px'],
             ['field' => 'subject', 'title' => Yii::t('pay', 'Subject'),"style"=>'width: 100px'],
             ['field' => 'total_amount', 'title' => Yii::t('pay', 'Total Amount'),"style"=>'width: 60px'],
             ['field' => 'receipt_amount', 'title' => Yii::t('pay', 'Receipt Amount'),"style"=>'width: 60px'],
-            ['field' => 'trade_no', 'title' => Yii::t('pay', 'Trade No'),"style"=>'width: 100px'],
-            ['field' => 'notify_number', 'title' => Yii::t('pay', 'Notify Number'),"style"=>'width: 50px'],
-            ['field' => 'notify_url', 'title' => Yii::t('pay', 'Notify Url'),"style"=>'width: 100px'],
-            ['field' => 'return_url', 'title' => Yii::t('pay', 'Return Url'),"style"=>'width: 100px'],
-            ['field' => 'status', 'title' => Yii::t('pay', 'Status'),"formatter"=>'status',"style"=>'width: 50px','statusList'=>['未支付','已支付']],
-            ['field' => 'created_at', 'title' => Yii::t('pay', 'Created At'),"formatter"=>'datetime',"style"=>'width: 100px'],
-            ['field' => 'updated_at', 'title' => Yii::t('pay', 'Updated At'),"formatter"=>'datetime',"style"=>'width: 100px'],
+            ['field' => 'trade_no', 'title' => Yii::t('pay', 'Trade No'),"style"=>'width: 200px'],
+            ['field' => 'notify_number', 'title' => Yii::t('pay', 'Notify Number'),"style"=>'width: 60px'],
+            ['field' => 'notify_url', 'title' => Yii::t('pay', 'Notify Url'),"style"=>'width: 200px'],
+            ['field' => 'return_url', 'title' => Yii::t('pay', 'Return Url'),"style"=>'width: 200px'],
+            ['field' => 'status', 'title' => Yii::t('pay', 'Status'),"formatter"=>'status',"style"=>'width: 60px','statusList'=>['未支付','支付成功']],
+            ['field' => 'created_at', 'title' => Yii::t('pay', 'Created At'),"formatter"=>'datetime',"style"=>'width: 130px'],
+            ['field' => 'updated_at', 'title' => Yii::t('pay', 'Updated At'),"formatter"=>'datetime',"style"=>'width: 130px'],
         ];
     }
 }

@@ -27,6 +27,7 @@ class IndexController extends ApiController
     public function actionCreate()
     {
         $msg = Yii::$app->request->post();
+        wp_mail('757402123@qq.com','公众号',print_r(  $msg,true));
         if(isset($msg["ToUserName"]) and isset($msg["FromUserName"])){
             $this->_ToUserName = $msg["ToUserName"];
             $this->_FromUserName = $msg["FromUserName"];

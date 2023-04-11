@@ -100,7 +100,6 @@ class App extends Application
                     ]
                 ]
             ],
-//            GiiModule::config(),
             Applets::config(),
             BaseModule::config(),
             Pay::config(),
@@ -143,7 +142,7 @@ class App extends Application
         //add_action('preprocess_comment', [$this, 'preprocessComment']);
 
         // +----------------------------------------------------------------------
-        // ｜在插件旁边显示设置按钮
+        // ｜JS和css注册和排队钩子
         // +----------------------------------------------------------------------
         add_filter('plugin_action_links', [$this, 'addSettingsButton'], 10, 2);
         add_action('admin_print_scripts', [$this, 'printScripts']);
@@ -354,7 +353,7 @@ class App extends Application
     public function renderApi($request)
     {
 
-        $module = $controller = $action = $route = $id = '';
+        $module = $controller = $action = $route =  '';
         $params = $request->get_params();
 
         // +----------------------------------------------------------------------
@@ -393,16 +392,14 @@ class App extends Application
                     $data = Yii::$app->runAction($route, $params);
                 }
             }catch (Exception $exception){
-                Yii::$app->response->format =Response::FORMAT_JSON;
+                Yii::$app->response->format = Response::FORMAT_JSON;
                 $data =[
                     'code'=>0,
-                    'message'=>$exception->getMessage(),
-                    'trace'=>$exception->getTrace()
-                ];
-
-
+                    'message'=>$exception->getMessage()];
+                if(YII_DEBUG){
+                    $data['trace']=$exception->getTrace();
+                }
             }
-
         }
         if (!empty($data)) {
             Yii::$app->response->data = $data;
@@ -936,5 +933,101 @@ class App extends Application
         /** @var View  $view */
         $view = Yii::$app->getView();
         $view->adminPrintFooterScripts();
+    }
+
+
+    // +----------------------------------------------------------------------
+    // ｜下面是将插件的中的某个页面映射到前台的有个路由
+    // ｜实现在前台访问插件的页面
+    // +----------------------------------------------------------------------
+    // ｜只需要子模块的 `bootstrap()`方法中调用 `backend\web\App::route($this->id)`
+    // ｜例如`crud\modules\wechat\Wechat`
+    // ｜```
+    // ｜## Yii::$app 是backend\web\App的实例
+    // ｜public function bootstrap($app){
+    // |    if ($app instanceof Application) {
+    // |        Yii::$app->route($this->id)
+    // |    }
+    // |}
+    // |public function templateRedirect(){
+    // |    Yii::$app->templateRedirect($this->id);
+    // |}
+    // ｜```
+    // ｜接下来在前台访问
+    // |http://you_domain.com/wechat
+    // ｜  就会执行
+    // ｜ crud\modules\wechat\controllers\IndexController::actionIndex
+    // ｜
+    // +----------------------------------------------------------------------
+
+    /**
+     * @param string $moduleId
+     * @param string|null $alias url前缀别名
+     * @param string|null|array $controller_prefix 控制器命名空间前缀
+     * @return void
+     */
+    public function route($moduleId,$alias='',$controller_prefix=''){
+        if(empty($alias)){
+            $alias = $moduleId;
+        }
+        if(!empty($controller_prefix)){
+            $controller_prefix=  trim($controller_prefix,"/").'/';
+        }
+        if(!empty($moduleId) and $module =$this->getModule($moduleId)){
+            add_action('init', function ()use($alias,$controller_prefix) {
+                add_rewrite_rule('^'.$alias.'$',
+                    'index.php?'.$alias.'='.$controller_prefix.'index/index', "top");
+
+                add_rewrite_rule('^'.$alias.'/([\w]+)$',
+                    'index.php?'.$alias.'='.$controller_prefix.'$matches[1]/index', "top");
+
+                add_rewrite_rule('^'.$alias.'/([\w]+)/([\w]+)$',
+                    'index.php?'.$alias.'='.$controller_prefix.'$matches[1]/$matches[2]', "top");
+
+                add_rewrite_rule('^'.$alias.'/([\w]+)/([\w]+)/([0-9]+)$',
+                    'index.php?'.$alias.'='.$controller_prefix.'$matches[1]/$matches[2]&id=$matches[3]', "top");
+            });
+            add_filter('query_vars', function ($public_query_vars) use($alias){
+                if(!in_array($alias,$public_query_vars)){
+                    $public_query_vars[] = $alias;
+                }
+                if(!in_array('id',$public_query_vars)){
+                    $public_query_vars[] = 'id';
+                }
+                return $public_query_vars;
+            });
+            add_action("template_redirect", [$module, "templateRedirect"]);
+        }
+    }
+
+
+    /**
+     * 根据重写的url规则 显示页面
+     * @param $moduleId
+     * @param $alias
+     * @return void
+     * @throws InvalidRouteException
+     */
+    public function templateRedirect($moduleId='',$alias='')
+    {
+        if(empty($alias)){
+            $alias = $moduleId;
+        }
+        if(!empty($moduleId)){
+            global $wp_query;
+            $query_vars = $wp_query->query_vars;
+            if (isset($query_vars[$alias]) and !empty($query_vars[$alias])) {
+                $route = $query_vars[$alias];
+                $params = $query_vars;
+                $module = Yii::$app->getModule($moduleId);
+                $response = Yii::$app->response;
+                $response->format = 'html';
+                $response->setStatusCode(200);
+                unset($query_vars[$alias]);
+                $response->data = $module->runAction($route, $params) ;
+                $response->send();
+                exit();
+            }
+        }
     }
 }

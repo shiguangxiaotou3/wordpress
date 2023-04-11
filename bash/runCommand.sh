@@ -1,6 +1,8 @@
 #!/bin/bash
 
-projectPath="/Library/WebServer/Documents/wp"
+projectPath="/Users/wanlong/web/wp"
+serverPath="/var/www/html/wordpress"
+. "$projectPath/bash/config.sh"
 . "$projectPath/bash/actions.sh"
 
 functionName=$1

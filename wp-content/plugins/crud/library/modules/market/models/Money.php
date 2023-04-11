@@ -3,6 +3,8 @@
 namespace crud\modules\market\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "wp_money".
@@ -73,14 +75,24 @@ class Money extends \yii\db\ActiveRecord
         ];
     }
 
-    //'ID' => '',
-    //'User ID' => '',
-    //'Money' => '',
-    //'Before' => '',
-    //'After' => '',
-    //'Remarks' => '',
-    //'Created At' => '',
-    //'Updated At' => '',
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors() {
+        return [
+            [
+                'class'=>TimestampBehavior::className(),
+                'attributes' => [
+                    # 创建之前
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    # 修改之前
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at']
+                ],
+                #设置默认值
+                'value' => time()
+            ]
+        ];
+    }
 
 
 }

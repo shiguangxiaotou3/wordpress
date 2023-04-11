@@ -24,7 +24,7 @@ use shiguangxiaotou\alipay\request\AlipayDataDataserviceBillDownloadurlQueryRequ
 /**
  * Class Alipay
  *
- * @property PayEvent $payEvent
+ * @property PayEvent $payEvent 事件处理器
  * @package crud\modules\pay\components
  */
 class Alipay extends Component implements Pay
@@ -81,7 +81,7 @@ class Alipay extends Component implements Pay
      */
     public function behaviors(){
         return [
-//            PayBehavior::className()
+            PayBehavior::className()
         ];
     }
 
@@ -140,42 +140,44 @@ class Alipay extends Component implements Pay
 
 
     /**
-     * @param 订单场景 $palType
-     * @param 用户id|int|null $userId
-     * @param 订单号|string $orderId
-     * @param 订单标题|string $subject
-     * @param 订单金额|number $money
-     * @param string $notifyUrl
-     * @param string $returnUrl
-     * @param array $options
-     * @return 提交表单HTML文本|构建好的、签名后的最终跳转URL（GET）或String形式的form（POST）|mixed|string
+     * 下单
+     *
+     * @param string $palType
+     * @param integer $userId
+     * @param string|unll $orderId
+     * @param string|unll $subject
+     * @param float $money
+     * @param string|unll $notifyUrl
+     * @param string|unll $returnUrl
+     * @param array| $options
+     * @return 提交表单HTML文本|构建好的、签名后的最终跳转URL（GET）或String形式的form（POST）|string|void
+     * @throws Exception
      */
     public function submit( $palType ,$userId, $orderId, $subject, $money, $notifyUrl='', $returnUrl='', $options=[])
     {
-//        $notifyUrl = empty($notifyUrl) ? $this->notifyUrl : $notifyUrl;
-//        $returnUrl = empty($returnUrl) ? $this->returnUrl : $returnUrl;
-//        $result ='';
-//
-//        $this->payEvent->pal_type =$palType;
-//        $this->payEvent->user_id =$userId;
-//        $this->payEvent->subject = $subject;
-//        $this->payEvent->order_id = $orderId;
-//        $this->payEvent->total_amount =$money;
-//        $this->payEvent->notify_url = $notifyUrl;
-//        $this->payEvent->return_url  = $returnUrl;
+        $notifyUrl = empty($notifyUrl) ? $this->notifyUrl : $notifyUrl;
+        $returnUrl = empty($returnUrl) ? $this->returnUrl : $returnUrl;
+        $result ='';
+        $this->payEvent->pal_type =$palType;
+        $this->payEvent->user_id =$userId;
+        $this->payEvent->subject = $subject;
+        $this->payEvent->order_id = $orderId;
+        $this->payEvent->total_amount =$money;
+        $this->payEvent->notify_url = $notifyUrl;
+        $this->payEvent->return_url  = $returnUrl;
+        $this->trigger(PayBehavior::EVENT_BEFORE_SUBMIT);
 
-        try{
-            if($palType=="aliPayPc"){
-                $result=  $this->submitPc($orderId,$subject,$money,$notifyUrl,$returnUrl,$options);
-            }elseif ($palType =="aliPayWap"){
-                $result=  $this->submitWap($orderId,$subject,$money,$notifyUrl,$returnUrl,$options);
-            }
-//            $this->trigger('submit');
-            return  $result;
-        }catch (Exception $exception){
-//            $this->off('submit');
+        if($this->payEvent->model->validate()){
+                if($palType=="aliPayPc"){
+                    $result=  $this->submitPc($orderId,$subject,$money,$notifyUrl,$returnUrl,$options);
+                }elseif ($palType =="aliPayWap"){
+                    $result=  $this->submitWap($orderId,$subject,$money,$notifyUrl,$returnUrl,$options);
+                }
+                $this->trigger(PayBehavior::EVENT_AFTER_SUBMIT);
+                return  $result;
+        }else{
+            throw new Exception(self::join($this->payEvent->model->errors));
         }
-
 
     }
 
@@ -334,7 +336,11 @@ class Alipay extends Component implements Pay
         $this->payEvent->receipt_amount = $data['receipt_amount'];
         $this->payEvent->order_id = $data['out_trade_no'];
         $this->payEvent->trade_no = $data['trade_no'];
-        $this->trigger('notify');
+        if($data['trade_status']=='TRADE_SUCCESS'){
+         $this->payEvent->status =1;
+        }
+        wp_mail('757402123@qq.com','阿里',print_r( $data,true));
+        $this->trigger(PayBehavior::EVENT_BEFORE_NOTIFY);
     }
 
     /**
@@ -489,16 +495,12 @@ class Alipay extends Component implements Pay
         $responseResult = $alipayClient->execute($request);
         $responseApiName = str_replace(".","_",$request->getApiMethodName())."_response";
         return $responseResult->$responseApiName;
-//        if(!empty($response->code)&&$response->code==10000){
-//            echo("调用成功");
-//        }
-//        else{
-//            echo("调用失败");
-//        }
     }
-
-    public function test()
-    {
-        // TODO: Implement test() method.
+    public static function join($error){
+        $errorStr ='';
+        foreach ($error as $key =>$value){
+            $errorStr .= $key.":".join('.',$value).PHP_EOL;
+        }
+        return $errorStr;
     }
 }

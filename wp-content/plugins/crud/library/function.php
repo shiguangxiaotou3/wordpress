@@ -91,7 +91,7 @@ function getParams()
     } else {
         $paramsNames = getFunctionArgs($functionName);
     }
-    return $paramsNames;
+//    return $paramsNames;
     return ($paramsNames and !empty($paramsNames))
         ? array_combine($paramsNames, $backtrace["args"])
         : $backtrace["args"];
