@@ -1,16 +1,20 @@
 <?php
 
-
-namespace crud\modules\market\controllers;
+namespace crud\controllers;
 
 use Yii;
 use crud\controllers\ApiController;
 
-class CrudController extends ApiController
+/**
+ * ajax 控制器基类
+ */
+class AjaxController extends ApiController
 {
     public $modelClass;
 
     public $modelName;
+    public $layout =false;
+   public $url_prefix;
 
     public function actionInit(){
         $url =toUnderScore($this->modelName,'-');
@@ -21,18 +25,18 @@ class CrudController extends ApiController
             "columns" => $this->findModel()->columns(),
             //获取字段配置url
             "actions" => [
-                "init_url" => "market/". $url."/init",
+                "init_url" => $this->url_prefix."/". $url."/init",
                 // 列表数据url
-                "index_url" => "market/". $url."/index",
+                "index_url" => $this->url_prefix."/". $url."/index",
                 // 新增数据url
-                "add_url" => "market/". $url."/create",
+                "add_url" => $this->url_prefix."/". $url."/create",
                 // 查看数据url
-                "view_url" => "market/". $url."/view",
+                "view_url" => $this->url_prefix."/". $url."/view",
                 // 更新数据url
-                "update_url" => "market/". $url."/update",
+                "update_url" => $this->url_prefix."/". $url."/update",
                 // 删除数据url
-                "delete_url" => "market/". $url."/delete",
-                "deletes_url" => "market/". $url."/deletes"
+                "delete_url" => $this->url_prefix."/". $url."/delete",
+                "deletes_url" =>$this->url_prefix."/". $url."/deletes"
             ]
         ]);
     }
@@ -44,7 +48,8 @@ class CrudController extends ApiController
      * @date 2023-03-21
      */
     public function actionIndex(){
-        $request =Yii::$app->request;
+
+        $request = Yii::$app->request;
         $class =$this->modelClass;
         if ($request->isAjax) {
             $query = $class::find();
@@ -75,11 +80,12 @@ class CrudController extends ApiController
      * @return array
      */
     public function actionCreate(){
+        $class =$this->modelClass;
         $request =Yii::$app->request;
         if($request->isAjax){
             $model = $this->findModel();
             if($model->load($request->post(),$this->modelName) and $model->validate() and $model->save()){
-                return $this->success('ok',['id'=>$model->id]);
+                return $this->success('ok',  $class::find()->where(['id'=>$model->id])->asArray()->all());
             }else{
                 return $this->error('error',$model->getErrors());
             }

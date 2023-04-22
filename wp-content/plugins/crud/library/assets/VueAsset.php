@@ -1,6 +1,7 @@
 <?php
 namespace crud\assets;
 
+use Yii;
 use yii\web\View;
 class VueAsset extends AppAsset {
 
@@ -12,6 +13,18 @@ class VueAsset extends AppAsset {
     ];
     public $jsOptions=[];
     public $depends = ['yii\web\JqueryAsset'];
+    public static function loadComponents(){
+        $component =[
+            'common.js','modal.js','table.js','tablenav-pages.js',
+            'notice.js','columns.js','nav-tab-wrapper.js','crud.js','from.js'
+        ];
+        $path =Yii::getAlias("@crud/assets/js/component");
+        $js ='';
+        foreach ($component as $item){
+            $js .=PHP_EOL.file_get_contents($path."/".$item);
+        }
+        return $js;
+    }
 }
 /**
  * The location of registered JavaScript code block or files.

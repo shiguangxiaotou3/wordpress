@@ -1,14 +1,16 @@
 <?php
 
-
 namespace crud\modules\market\controllers;
+
+use crud\controllers\AjaxController;
 use Yii;
 use  crud\models\wp\WpUsers;
-use crud\modules\market\controllers\CrudController;
 
-class UserController extends CrudController
+
+class UserController  extends AjaxController
 {
     public $modelClass ='crud\models\wp\WpUsers';
     public $modelName ='WpUsers';
+    public $url_prefix='market';
 
 }

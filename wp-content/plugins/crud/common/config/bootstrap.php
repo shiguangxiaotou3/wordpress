@@ -9,6 +9,7 @@ Yii::setAlias('@console', dirname(dirname(__DIR__)) . '/console');
 Yii::setAlias('@bower' , dirname(dirname(__DIR__))."/vendor/bower-asset" );
 Yii::setAlias('@npm', dirname(dirname(__DIR__))."/vendor/npm-asset" );
 Yii::setAlias('@palKey', dirname(__DIR__,2)."/library/modules/pay/components/key");
+Yii::setAlias('@wechat',dirname(__DIR__,2)."/library/modules/wechat");
 
 defined("CRUD_DIR") or define("CRUD_DIR" ,dirname(dirname(__DIR__)));
 defined('YII_DEBUG') or define('YII_DEBUG', true);

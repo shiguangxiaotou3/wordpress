@@ -4,7 +4,6 @@
 /** @var $token  */
 /** @var $code  */
 
-use crud\Base;
 use crud\models\wp\WpUsers;
 use crud\modules\pay\models\Order;
 use yii\helpers\Html;
@@ -40,12 +39,17 @@ use crud\modules\pay\components\Alipay;
         ///
         ///
 
-            $event =new \crud\modules\pay\events\PayEvent();
-            $event->order_id = 'text_1681137069';
-            $event->status =1;
-            $event->receipt_amount ="0.01";
-            $event->trade_no ="asdas";
-            $event->beforeNotifyEvent();
+//            $event =new \crud\modules\pay\events\PayEvent();
+//            $event->order_id = 'text_1681137069';
+//            $event->status =1;
+//            $event->receipt_amount ="0.01";
+//            $event->trade_no ="asdas";
+//            $event->beforeNotifyEvent();
+
+           $user = Order::find()->where(['id'=>25])->one();;
+           /** @var yii\db\ActiveQuery $query */
+           $query = $user->getUser();
+           dump( $query ->asArray()->one());
 
 
 //        $model = Order::find()->where(['order_id'=>'text_1681137069'])->one();

@@ -4,25 +4,18 @@
 /** @var $activeUrl string */
 /** @var $tableName string */
 /** @var $links array */
+/** @var $url_prefix string */
 
-use crud\Base;
 use crud\assets\EchartAsset;
 use crud\assets\VueAsset;
 
 
 VueAsset::register($this);
 EchartAsset::register($this);
-wp_enqueue_media();
-$component =[
-        'common.js','modal.js','table.js','tablenav-pages.js',
-    'notice.js','columns.js','nav-tab-wrapper.js','crud.js'
-];
-$path =Yii::getAlias("@pay/assets/component");
-$js ='';
-foreach ($component as $item){
-    $js .=PHP_EOL.file_get_contents($path."/".$item);
-}
 
+wp_enqueue_media();
+
+$js =VueAsset::loadComponents();
 ?>
 <div class="wrap">
     <h1 class="wp-heading-inline" v-html="title"></h1>
@@ -64,18 +57,18 @@ new Vue({
             page:1,
             pageSize:10,
             actions: {
-               "init_url" : "market/{$url}/init",
+               "init_url" : "{$url_prefix}/{$url}/init",
                 // 列表数据url
-                "index_url" : "market/{$url}/index",
+                "index_url" : "{$url_prefix}/{$url}/index",
                 // 新增数据url
-                "add_url" : "market/{$url}/create",
+                "add_url" : "{$url_prefix}/{$url}/create",
                 // 查看数据url
-                "view_url" : "market/{$url}/view",
+                "view_url" : "{$url_prefix}/{$url}/view",
                 // 更新数据url
-                "update_url" : "market/{$url}/update",
+                "update_url" : "{$url_prefix}/{$url}/update",
                 // 删除数据url
-                "delete_url": "market/{$url}/delete",
-                "deletes_url" : "market/{$url}/deletes"
+                "delete_url": "{$url_prefix}/{$url}/delete",
+                "deletes_url" : "{$url_prefix}/{$url}/deletes"
             }
         }
     },
@@ -83,10 +76,7 @@ new Vue({
         message(notice){
             this.notice = notice
         }
-    },
-     mounted(){
-        console.log(this.links)
-     }
+    }
 });
 JS;
 $js = str_replace('\'{{LINKS}}\'' ,$links,$js);

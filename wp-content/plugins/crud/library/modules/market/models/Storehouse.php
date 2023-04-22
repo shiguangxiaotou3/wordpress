@@ -76,8 +76,8 @@ class Storehouse extends \yii\db\ActiveRecord
             ['field' =>'district', 'title' => Yii::t('market', 'District')],
             ['field' =>'address_info', 'title' => Yii::t('market', 'Address Info')],
             ['field' =>'status', 'title' => Yii::t('market', 'Status')],
-            ['field' =>'created_at', 'title' => Yii::t('market', 'Created At')],
-            ['field' =>'updated_at', 'title' => Yii::t('market', 'Updated At')],
+            ['field' => 'created_at', 'title' => Yii::t('market', 'Created At'),"formatter"=>'datetime',"style"=>'width: 130px'],
+            ['field' => 'updated_at', 'title' => Yii::t('market', 'Updated At'),"formatter"=>'datetime',"style"=>'width: 130px'],
         ];
     }
 

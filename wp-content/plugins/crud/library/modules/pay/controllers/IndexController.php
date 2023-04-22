@@ -69,8 +69,22 @@ class IndexController extends Controller
 
 
     public function actionOrder(){
-        $model = new Order();
-        return $this->render('order',['model'=>$model]);
+       $links=[
+            ['url'=>'pay/index','label'=>'支付'],
+            ['url'=>'pay/index/alibaba','label'=>'支付宝'],
+            ['url'=>'pay/index/wechat','label'=>'微信支付'],
+            ['url'=>'pay/index/test','label'=>'测试'],
+            ['url'=>'pay/index/remit','label'=>'转账到支付宝'],
+            ['url'=>'pay/index/order','label'=>'订单表'],
+
+       ];
+        return  $this->render("@crud/views/ajax",[
+            'activeUrl'=>'pay/index/order',
+            'title'=>'用户管理',
+            'url_prefix'=>'pay',
+            'links'=>json_encode($links),
+            'tableName'=>'Order'
+        ]);
     }
 
 

@@ -584,3 +584,24 @@ function generateUuid($length=32,$type=2) {
     }
     return $password;
 }
+
+function getRequireUrl($type=3){
+    $scheme =$_SERVER['REQUEST_SCHEME'];
+    $host =$_SERVER["HTTP_HOST"];
+    $url =$_SERVER['REDIRECT_URL'];
+    $query =$_SERVER['QUERY_STRING'];
+
+    if($type>=0 and $type<=3){
+        switch ($type){
+            case 0:
+                return $scheme ;
+            case 1:
+                return $scheme."://".$host;
+            case 2:
+                return $scheme."://".$host.$url;
+            case 3:
+                return $scheme."://".$host.$url.'?'.$query;
+        }
+    }
+
+}

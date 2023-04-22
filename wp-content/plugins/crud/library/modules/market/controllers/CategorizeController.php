@@ -4,12 +4,13 @@
 namespace crud\modules\market\controllers;
 
 
+use crud\controllers\AjaxController;
 use Yii;
 use crud\modules\market\models\Categorize;
-use crud\modules\market\controllers\CrudController;
-class CategorizeController extends CrudController
+class CategorizeController extends AjaxController
 {
     public $modelClass ='crud\modules\market\models\Categorize';
     public $modelName ='Categorize';
+    public $url_prefix='market';
 
 }

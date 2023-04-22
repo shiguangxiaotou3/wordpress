@@ -1,6 +1,7 @@
 <?php
 namespace crud\modules\market\controllers;
 
+use Yii;
 use yii\web\Controller;
 class IndexController extends Controller
 {
@@ -25,9 +26,10 @@ class IndexController extends Controller
      * @return string
      */
     public function actionAddress(){
-        return  $this->render("crud",[
+        return  $this->render("@crud/views/ajax",[
             'activeUrl'=>'market/index/address',
             'title'=>'地址',
+            'url_prefix'=>'market',
             'links'=>json_encode($this->links()),
             'tableName'=>'Address'
         ]);
@@ -37,9 +39,10 @@ class IndexController extends Controller
      * @return string
      */
     public function actionMoney(){
-        return  $this->render("crud",[
+        return   $this->render("@crud/views/ajax",[
         'activeUrl'=>'market/index/money',
             'title'=>'余额管理',
+            'url_prefix'=>'market',
             'links'=>json_encode($this->links()),
             'tableName'=>'Money'
         ]);
@@ -49,9 +52,10 @@ class IndexController extends Controller
      * @return string
      */
     public function actionCategorize(){
-        return  $this->render("crud",[
+        return  $this->render("@crud/views/ajax",[
             'activeUrl'=>'market/index/categorize',
             'title'=>'分类管理',
+            'url_prefix'=>'market',
             'links'=>json_encode($this->links()),
             'tableName'=>'Categorize'
         ]);
@@ -61,9 +65,10 @@ class IndexController extends Controller
      * @return string
      */
     public function actionCommodity(){
-        return  $this->render("crud",[
+        return   $this->render("@crud/views/ajax",[
             'activeUrl'=>'market/index/commodity',
             'title'=>'商品管理',
+            'url_prefix'=>'market',
             'links'=>json_encode($this->links()),
             'tableName'=>'Commodity'
         ]);
@@ -73,34 +78,38 @@ class IndexController extends Controller
      * @return string
      */
     public function actionCommodityPrice(){
-        return  $this->render("crud",[
+        return   $this->render("@crud/views/ajax",[
             'activeUrl'=>'market/index/commodity-price',
             'title'=>'商品价格管理',
+            'url_prefix'=>'market',
             'links'=>json_encode($this->links()),
             'tableName'=>'CommodityPrice'
         ]);
     }
     public function actionExpress(){
-        return  $this->render("crud",[
+        return   $this->render("@crud/views/ajax",[
             'activeUrl'=>'market/index/express',
             'title'=>'快递管理',
+            'url_prefix'=>'market',
             'links'=>json_encode($this->links()),
             'tableName'=>'Express'
         ]);
     }
     public function actionStorehouse(){
-        return  $this->render("crud",[
+        return   $this->render("@crud/views/ajax",[
             'activeUrl'=>'market/index/storehouse',
             'title'=>'仓库管理',
+            'url_prefix'=>'market',
             'links'=>json_encode($this->links()),
             'tableName'=>'Storehouse'
         ]);
     }
 
     public function actionUser(){
-        return  $this->render("crud",[
+        return  $this->render("@crud/views/ajax",[
             'activeUrl'=>'market/index/user',
             'title'=>'用户管理',
+            'url_prefix'=>'market',
             'links'=>json_encode($this->links()),
             'tableName'=>'User'
         ]);

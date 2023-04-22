@@ -64,8 +64,8 @@ class Categorize extends \yii\db\ActiveRecord
             ['field' =>'parent_id', 'title' => Yii::t('market', 'Parent ID')],
             ['field' =>'categorize_name', 'title' => Yii::t('market', 'Categorize Name')],
             ['field' =>'remarks', 'title' => Yii::t('market', 'Remarks')],
-            ['field' =>'created_at', 'title' => Yii::t('market', 'Created At')],
-            ['field' =>'updated_at', 'title' => Yii::t('market', 'Updated At')],
+            ['field' => 'created_at', 'title' => Yii::t('market', 'Created At'),"formatter"=>'datetime',"style"=>'width: 130px'],
+            ['field' => 'updated_at', 'title' => Yii::t('market', 'Updated At'),"formatter"=>'datetime',"style"=>'width: 130px'],
         ];
     }
 

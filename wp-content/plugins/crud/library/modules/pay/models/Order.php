@@ -26,8 +26,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $created_at 创建时间
  * @property int|null $updated_at 更新时间
  */
-class Order extends ActiveRecord
-{
+class Order extends ActiveRecord{
 
     public function behaviors() {
         return [
@@ -120,5 +119,9 @@ class Order extends ActiveRecord
             ['field' => 'created_at', 'title' => Yii::t('pay', 'Created At'),"formatter"=>'datetime',"style"=>'width: 130px'],
             ['field' => 'updated_at', 'title' => Yii::t('pay', 'Updated At'),"formatter"=>'datetime',"style"=>'width: 130px'],
         ];
+    }
+
+    public function getUser(){
+       return $this->hasOne(WpUsers::class ,[ 'ID'=>'user_id' ]);
     }
 }

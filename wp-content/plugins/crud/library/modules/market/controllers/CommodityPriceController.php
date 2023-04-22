@@ -3,11 +3,12 @@
 
 namespace crud\modules\market\controllers;
 
+use crud\controllers\AjaxController;
 use Yii;
 use crud\modules\market\models\CommodityPrice;
-use crud\modules\market\controllers\CrudController;
-class CommodityPriceController extends CrudController
+class CommodityPriceController extends AjaxController
 {
     public $modelClass ='crud\modules\market\models\CommodityPrice';
     public $modelName ='CommodityPrice';
+    public $url_prefix='market';
 }

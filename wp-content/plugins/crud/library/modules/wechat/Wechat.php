@@ -1,6 +1,7 @@
 <?php
 namespace crud\modules\wechat;
 
+use crud\models\AjaxAction;
 use Yii;
 use backend\web\App;
 use yii\base\Module;
@@ -47,7 +48,8 @@ class Wechat extends Module implements BootstrapInterface
 //            // ｜微信公众号
 //            // +----------------------------------------------------------------------
             add_action("rest_api_init", [$this, "registerApi"]);
-            Yii::$app->route($this->id);
+            add_action("init", [$this, "registerAjax"]);
+            Yii::$app->route($this->id,'wechat','wechat');
         }
     }
 
@@ -63,45 +65,6 @@ class Wechat extends Module implements BootstrapInterface
     }
 
     /**
-     * 注册分享js
-     */
-    public function WechatShare(){
-        $wechat = Yii::$app->subscription;
-        $wechat->share();
-    }
-
-    /**
-     * 验证开发者服务器
-     */
-    public function ValidateServer(){
-        $wechat = Yii::$app->subscription;
-        $echostr = $wechat->ValidateServer();
-        if($echostr ){
-            exit($echostr);
-            die();
-        }
-    }
-
-    /**
-     *
-     */
-    public function getUserInfo(){
-        if(isset($_GET['code']) and !empty($this)){
-            $wechat = Yii::$app->subscription->getUserInfoByCode($_GET['code']);
-            Yii::$app->subscription->getUserInfo( $wechat['openid']);
-        }
-    }
-
-    public  function addUser(){
-        $userId = wp_create_user("", "", "");
-        add_user_meta($userId, 'openid', "");
-        add_user_meta($userId, 'nickname', "");
-        add_user_meta($userId, 'avatarurl', "");
-        wp_set_current_user( $userId);
-        wp_set_auth_cookie( $userId);
-    }
-
-    /**
      * 注册RestfulApi
      */
     public function registerApi()
@@ -111,5 +74,31 @@ class Wechat extends Module implements BootstrapInterface
 
     public function templateRedirect(){
         Yii::$app->templateRedirect($this->id);
+    }
+
+    public function registerAjax(){
+        $config =[
+            ['menu_slug'=>'wechat/menu/get-menu'],
+            ['menu_slug'=>'wechat/menu/set-menu'],
+            ['menu_slug'=>'wechat/menu/delete-menu'],
+            ['menu_slug'=>'wechat/template-message/list'],
+            ['menu_slug'=>'wechat/template-message/send'],
+            ['menu_slug'=>'wechat/template-message/delete']
+        ];
+        $controller =[
+            'wechat-message'
+        ];
+        $actions =['init','index','create','view','update','delete','deletes'];
+        foreach ($controller as $item){
+            foreach ($actions as $action){
+                $config[] =['menu_slug'=>"wechat/". $item."/".$action];
+            }
+        }
+
+        foreach ($config as $menu){
+            $menuModel = new AjaxAction($menu);
+            $menuModel->registerAjaxAction();
+
+        }
     }
 }

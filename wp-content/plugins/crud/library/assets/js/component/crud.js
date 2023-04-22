@@ -41,18 +41,8 @@ Vue.component("crud-crud", {
             type:String,
             default: 'Test'
         },
-        // navTabWrapper:{
-        //     type:Object,
-        //     default: {}
-        // }
     },
     computed: {
-        // activeUrl(){
-        //     return this.navTabWrapper.activeUrl || '';
-        // },
-        // links(){
-        //     return this.navTabWrapper.links || [];
-        // }
     },
     methods:{
         error(notice){

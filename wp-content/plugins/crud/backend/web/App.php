@@ -10,6 +10,7 @@ use crud\modules\pay\components\Alipay;
 use crud\modules\pay\components\WechatPay;
 use crud\modules\wechat\components\SubscriptionService;
 use crud\components\View;
+use shiguangxiaotou\alipay\request\AlipayEcoCityserviceAppinfoQueryRequest;
 use Yii;
 use Exception;
 use crud\models\Menu;
@@ -147,7 +148,7 @@ class App extends Application
         add_filter('plugin_action_links', [$this, 'addSettingsButton'], 10, 2);
         add_action('admin_print_scripts', [$this, 'printScripts']);
         add_action("admin_print_footer_scripts", [$this, "printFooterScripts"]);
-        add_action("wp_footer", [$this, "printFooterScripts"]);
+//        add_action("wp_footer", [$this, "printFooterScripts"]);
         // +----------------------------------------------------------------------
         // ｜静止自动更新
         // +----------------------------------------------------------------------
@@ -177,7 +178,7 @@ class App extends Application
         //        'https://cn.gravatar.com',
         //    ], 'http://103.215.125.122', $avatar);
         //});
-
+        $this->shineUpon();
     }
 
     // +----------------------------------------------------------------------
@@ -271,6 +272,7 @@ class App extends Application
      */
     public function renderAjax()
     {
+
         try {
             $request = Yii::$app->request;
             $query =  $request->get();
@@ -282,6 +284,7 @@ class App extends Application
                 $route = $data['action'];
                 unset($data['action']);
             }
+
             if ($this->checkAdminPageRoute($route, $moduleId)) {
                 if (empty($moduleId)) {
                     $data = $this->runAction($route, $query);
@@ -574,7 +577,7 @@ class App extends Application
         $is_module = in_array($arr[0], $modules);
         if ($is_module) {
             $moduleId = $arr[0];
-            $route = trim(str_replace($moduleId, "", $route), "/");
+            $route = trim(str_replace($moduleId.'/', "", $route), "/");
             switch ($count) {
                 case 1:
                     $controllerNamespace = 'crud\modules\\' . $moduleId . '\controllers\IndexController';
@@ -963,10 +966,11 @@ class App extends Application
     /**
      * @param string $moduleId
      * @param string|null $alias url前缀别名
-     * @param string|null|array $controller_prefix 控制器命名空间前缀
+     * @param string|null $controller_prefix 控制器命名空间前缀
      * @return void
      */
     public function route($moduleId,$alias='',$controller_prefix=''){
+
         if(empty($alias)){
             $alias = $moduleId;
         }
@@ -999,8 +1003,6 @@ class App extends Application
             add_action("template_redirect", [$module, "templateRedirect"]);
         }
     }
-
-
     /**
      * 根据重写的url规则 显示页面
      * @param $moduleId
@@ -1030,4 +1032,75 @@ class App extends Application
             }
         }
     }
+
+    /**
+     * 文件映射
+     *
+     * 经常需要将一些第三方验证文件放置到根根目录.开起来很乱
+     * 通过此方法可以将文件集中管理起来
+     * @return void
+     */
+    public function shineUpon($files=[]){
+        $files =[
+            ['fileName'=>'google46c5f9f7f0f3280b.html',"filePath"=>Yii::getAlias('@crud/google46c5f9f7f0f3280b.html')]
+        ];
+        if(!empty($files)){
+            foreach ($files as $file){
+                if(
+                    isset($file['fileName']) and isset($file['filePath'])
+                    and !empty($file['fileName']) and !empty($file['filePath'])
+                ){
+                    add_action('init', function ()use($file) {
+                        add_rewrite_rule('^'.$file['fileName'],
+                            'index.php?validateFile='.$file['filePath'], "top");
+                    });
+                }
+            }
+            add_filter('query_vars', function ($public_query_vars){
+                if(!in_array('validateFile',$public_query_vars)){
+                    $public_query_vars[] = 'validateFile';
+                }
+                return $public_query_vars;
+            });
+            add_action("template_redirect", [$this, 'validateFile']);
+        }
+    }
+
+    /**
+     * 获取请求的文件,响应文件流
+     *
+     * @return void
+     */
+    public function validateFile(){
+        global $wp_query;
+        $query_vars = $wp_query->query_vars;
+        if (isset($query_vars['validateFile']) and !empty($query_vars['validateFile'])) {
+            $path = $query_vars['validateFile'];
+            $this->sendFile($path);
+        }
+    }
+
+
+    /**
+     * 响应文件流
+     *
+     * @param $path
+     * @param $fileSaveName
+     * @return void
+     */
+    public function sendFile($path,$fileSaveName=''){
+        if(empty( $fileSaveName)){
+            $tmp =explode('/',$path);
+            $fileName = end( $tmp );
+        }
+        if(!empty( $fileName) and file_exists($path)){
+            header("Content-type:application/octet-stream");
+            // 设置下载的文件名称
+            header("Content-Disposition:attachment;filename={$fileName}");
+            header("Accept-ranges:bytes");
+            header("Accept-length:" . filesize($path));
+            exit( file_get_contents($path));
+        }
+    }
+
 }

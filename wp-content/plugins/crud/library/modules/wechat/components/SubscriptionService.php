@@ -1,6 +1,8 @@
 <?php
+
 namespace crud\modules\wechat\components;
 
+use crud\modules\pay\behaviors\PayBehavior;
 use Yii;
 use Exception;
 use yii\web\View;
@@ -12,43 +14,62 @@ use yii\base\InvalidConfigException;
 use GuzzleHttp\Exception\GuzzleException;
 use crud\modules\wechat\assets\MarketAssets;
 use crud\modules\wechat\models\ValidateServer;
+use crud\modules\wechat\behaviors\SubscriptionServiceMessage;
+
 /**
  * 微信公众号组件
- * @property string $appId 
+ * @property string $appId
  * @property string $appSecret
  * @property string $token
  * @property Http $client
  * @property $menu
+ * @property-read $templateList
+ * @property-read $templateIds
+ * @property-read string $authorizeUrl;
  * @property-read string $accessToken
  * @property-read string $ticket
  * @property-read array $jsConfig
+ * @property-write array $conditionalMenu
  * @property-read array $jsApiList
- * @package crud\common\components\webxin
+ * @package crud\common\components\wechat
  */
-class SubscriptionService extends Component{
+class SubscriptionService extends Component
+{
 
-    public $appId ;
-    public $appSecret ;
-    public $token ;
-
+    public $appId;
+    public $appSecret;
+    public $token;
+    public $redirect_uri;
+    const  SUBSCRIPTION = 'subscription';
+    const SNSAPI_BASE ='snsapi_base';
+    const SNSAPI_USERINFO ='snsapi_userinfo';
     public $encodingAESKey;
     private $_client;
-    public $domain='https://api.weixin.qq.com';
+
+    public $domain = 'https://api.weixin.qq.com';
+
+    public function behaviors(){
+        return [
+            SubscriptionServiceMessage::class
+        ];
+    }
+
 
     /**
      * 验证开发者服务器
      */
-    public function ValidateServer(){
-        $request= Yii::$app->request;
+    public function ValidateServer()
+    {
+        $request = Yii::$app->request;
         $model = new ValidateServer();
-        $model->token=$this->token;
+        $model->token = $this->token;
         $model->signature = $request->get("signature");
         $model->echostr = $request->get("echostr");
         $model->timestamp = $request->get("timestamp");
-        $model->nonce  = $request->get("nonce");
-        if($model->validate() and  $model->checkSignature()){
+        $model->nonce = $request->get("nonce");
+        if ($model->validate() and $model->checkSignature()) {
             return $model->echostr;
-        }else{
+        } else {
             return false;
         }
     }
@@ -58,24 +79,28 @@ class SubscriptionService extends Component{
      * @return false|mixed
      * @throws GuzzleException
      */
-    public function getAccessToken(){
+    public function getAccessToken()
+    {
         $cache = Yii::$app->cache;
-        $access_token = $cache->get("subscription_access_token");
-        if($access_token ){
+        $access_token = $cache->get(self::SUBSCRIPTION . "_access_token");
+        if ($access_token) {
             return $access_token;
-        }else{
-            $results = $this->response($this->client->get("/cgi-bin/token",[
-                'query'=>[
-                    "grant_type"=>'client_credential',
-                    'appid'=>$this->appId,
-                    'secret'=>$this->appSecret,
-                ]
-            ]));
-            if($results['code'] ==1 ){
-                $cache->set("subscription_access_token",$results['data']["access_token"],$results['data']["expires_in"]);
-                return $cache->get("subscription_access_token");
+        } else {
+            try {
+
+                $results = $this->response($this->client->get("/cgi-bin/token", [
+                    'query' => [
+                        "grant_type" => 'client_credential',
+                        'appid' => $this->appId,
+                        'secret' => $this->appSecret,
+                    ]
+                ]));
+
+                $cache->set(self::SUBSCRIPTION . "_access_token", $results["access_token"], $results["expires_in"]);
+                return $results["access_token"];
+            } catch (Exception $exception) {
+                return false;
             }
-            return false;
         }
     }
 
@@ -83,8 +108,9 @@ class SubscriptionService extends Component{
      * 获取http对象
      * @return Http
      */
-    public function getClient(){
-        if (empty($this->_client)){
+    public function getClient()
+    {
+        if (empty($this->_client)) {
             $this->_client = new Http($this->domain);
         }
         return $this->_client;
@@ -95,8 +121,9 @@ class SubscriptionService extends Component{
      * @return array
      * @throws GuzzleException
      */
-    public function getMenu(){
-        return $this->response( $this->client->get("/cgi-bin/get_current_selfmenu_info", [
+    public function getMenu()
+    {
+        return $this->response($this->client->get("/cgi-bin/get_current_selfmenu_info", [
                 'query' => [
                     "access_token" => $this->accessToken,
                 ],
@@ -110,7 +137,8 @@ class SubscriptionService extends Component{
      * @return array
      * @throws GuzzleException
      */
-    public function setMenu($options=[]){
+    public function setMenu($options = [])
+    {
         return $this->response($this->client->post("/cgi-bin/menu/create", [
                 "headers" => [
                     'content-type' => 'application/json',
@@ -123,14 +151,27 @@ class SubscriptionService extends Component{
         ));
     }
 
+    public function deleteMenu(){
+        return $this->response($this->client->get("/cgi-bin/menu/delete", [
+                "headers" => [
+                    'content-type' => 'application/json',
+                ],
+                'query' => [
+                    "access_token" => $this->accessToken,
+                ],
+            ]
+        ));
+    }
+
     /**
      * 创建自定义菜单
      * @param $options
      * @return array
      * @throws GuzzleException
      */
-    public function setConditionalMenu($options=[]){
-        return $this->response( $this->client->post("/cgi-bin/menu/addconditional", [
+    public function setConditionalMenu($options = [])
+    {
+        return $this->response($this->client->post("/cgi-bin/menu/addconditional", [
                 "headers" => [
                     'content-type' => 'application/json',
                 ],
@@ -143,11 +184,12 @@ class SubscriptionService extends Component{
     }
 
     /**
-     * 处理请求结果,处理保存信息
      * @param $response
      * @return array
+     * @throws Exception
      */
-    public function response($response){
+    public function response($response)
+    {
         $error = [
             -1 => "系统繁忙，此时请开发者稍候再试",
             0 => "请求成功",
@@ -324,35 +366,11 @@ class SubscriptionService extends Component{
             9001035 => "设备申请参数不合法",
             9001036 => "查询起始值 begin 不合法",
         ];
-        if(!$response){
-            return [
-                'code'=>0,
-                'message'=>'请求错误',
-                'time'=>time(),
-                'data'=>'',
-            ];
-        }
-        if(isset( $response['errcode']) and $response['errcode'] !==0){
-          $msg =  isset($error[$response['errcode']]) ? $error[$response['errcode']]:$response['errmsg'];
-            return [
-                'code'=>0,
-                'message'=>"Error:". $response['errcode']." Message: ". $msg,
-                'time'=>time(),
-                'data'=>'',
-            ];
-        }else{
-            if(isset($response['errcode'])){
-                unset($response['errcode']);
-            }
-            if(isset($response['errmsg'])){
-                unset($response['errmsg']);
-            }
-            return [
-                'code'=>1,
-                'message'=>  "Ok",
-                'time'=>time(),
-                'data'=>$response,
-            ];
+        if (isset($response['errcode']) and $response['errcode'] !== 0) {
+            $msg = isset($error[$response['errcode']]) ? $error[$response['errcode']] : $response['errmsg'];
+          throw new Exception($msg);
+        } else {
+            return $response;
         }
     }
 
@@ -409,23 +427,25 @@ class SubscriptionService extends Component{
      * @return false|mixed
      * @throws GuzzleException
      */
-    public function getTicket(){
+    public function getTicket()
+    {
         $cache = Yii::$app->cache;
-        $ticket =$cache->get("wechat_ticket");
-        if( $ticket){
-            return  $ticket;
-        }else{
-            $results = $this->response($this->client->get('/cgi-bin/ticket/getticket',[
-                'query' => [
-                    "access_token" => $this->accessToken,
-                    'type'=>'jsapi'
-                ]
-            ]));
-            if($results['code'] ==1 ){
-                $cache->set("wechat_ticket",$results['data']["ticket"],$results['data']["expires_in"]);
-                return $cache->get("wechat_ticket");
+        $ticket = $cache->get(self::SUBSCRIPTION . "_ticket");
+        if ($ticket) {
+            return $ticket;
+        } else {
+            try {
+                $results = $this->response($this->client->get('/cgi-bin/ticket/getticket', [
+                    'query' => [
+                        "access_token" => $this->accessToken,
+                        'type' => 'jsapi'
+                    ]
+                ]));
+                $cache->set(self::SUBSCRIPTION . "_ticket", $results["ticket"], $results["expires_in"]);
+                return $results["ticket"];
+            } catch (Exception $exception) {
+                return false;
             }
-            return false;
         }
     }
 
@@ -435,15 +455,16 @@ class SubscriptionService extends Component{
      * @param $debug
      * @return array
      */
-    public function getJsConfig($url='',$jsApiList=[], $debug=true){
-        if(empty($url)){
-            $url =Yii::$app->request->getHostInfo().Yii::$app->request->url;
+    public function getJsConfig($url = '', $jsApiList = [], $debug = true)
+    {
+        if (empty($url)) {
+            $url = Yii::$app->request->getHostInfo() . Yii::$app->request->url;
         }
-        if(empty($jsApiList)){
-            try{
-                $jsApiList =$this->jsApiList;
-            }catch (Exception $exception){
-                $jsApiList =[];
+        if (empty($jsApiList)) {
+            try {
+                $jsApiList = $this->jsApiList;
+            } catch (Exception $exception) {
+                $jsApiList = [];
             }
 
         }
@@ -454,13 +475,13 @@ class SubscriptionService extends Component{
         $string = "jsapi_ticket=$jsapiTicket&noncestr=$nonceStr&timestamp=$timestamp&url=$url";
 
         $signature = sha1($string);
-        return  array(
-            'debug'=> true,
-            'appId'=> $this->appId,
-            'timestamp'=> $timestamp,
-            'nonceStr'=> $nonceStr,
-            'signature'=> $signature,
-            'jsApiList'=> $jsApiList
+        return array(
+            'debug' => true,
+            'appId' => $this->appId,
+            'timestamp' => $timestamp,
+            'nonceStr' => $nonceStr,
+            'signature' => $signature,
+            'jsApiList' => $jsApiList
         );
     }
 
@@ -492,11 +513,11 @@ class SubscriptionService extends Component{
         $view = Yii::$app->getView();
         global $wp;
         WechatJsSdkAssets::register($view);
-        $config = json_encode( $this ->getJsConfig());
+        $config = json_encode($this->getJsConfig());
 
         $title = get_option('blogname');
         $desc = get_option('blogdescription');
-        $imgUrl= get_option('home')."favicon.ico";
+        $imgUrl = get_option('home') . "favicon.ico";
         $url = Yii::$app->request->getHostInfo() . Yii::$app->request->url;
 
         $id = get_the_ID();
@@ -521,15 +542,12 @@ class SubscriptionService extends Component{
             'imgUrl' => $imgUrl,
             'success' => 'function(res){console.log(res) }'
         ]);
-
-$js =<<<JS
-    var config =$config;
-    wx.config(config);
-    wx.ready(function(res){
-      wx.updateAppMessageShareData($data);
-      wx.onMenuShareTimeline($data2);
-    });
-JS;
+        $js = "
+wx.config($config); 
+wx.ready(function(res){
+    wx.updateAppMessageShareData($data);
+    wx.onMenuShareTimeline($data2);
+})";
         $view->registerJs($js);
 
     }
@@ -543,21 +561,19 @@ JS;
     public function getUserAccessTokenByCode($code)
     {
         $cache = Yii::$app->cache;
-        $res = $this->client->get("/sns/oauth2/access_token", [
-            'query' => [
-                'appid' => $this->appId,
-                'secret' => $this->appSecret,
-                'code' => $code,
-                'grant_type' => 'authorization_code',
-            ],
-        ]);
-        $data = $this->response(json_decode($res, true));
-
-        if ($data['code'] == 1) {
-            $data['data']['expires_in'] = time() + $data['data']['expires_in'];
-            $cache->set('subscription_' . $data['data']['openid'], $data['data'], 24 * 60 * 60 * 30);
-            return $data['data'];
-        }else{
+        try {
+            $data = $this->response($this->client->get("/sns/oauth2/access_token", [
+                'query' => [
+                    'appid' => $this->appId,
+                    'secret' => $this->appSecret,
+                    'code' => $code,
+                    'grant_type' => 'authorization_code',
+                ],
+            ]));
+            $data['expires_in'] = time() + $data['expires_in'];
+            $cache->set(self::SUBSCRIPTION . '_' . $data['openid'], $data, 24 * 60 * 60 * 30);
+            return $data;
+        } catch (Exception $exception) {
             return false;
         }
     }
@@ -571,24 +587,26 @@ JS;
     public function refreshUserToken($openid)
     {
         $cache = Yii::$app->cache;
-        $refresh_token = $cache->get('subscription_' . $openid);
+        $refresh_token = $cache->get(self::SUBSCRIPTION . '_' . $openid);
         if ($refresh_token) {
-            $res = $this->client->get("/sns/oauth2/refresh_token", [
-                'query' => [
-                    'appid' => $this->appId,
-                    'grant_type' => 'refresh_token',
-                    'refresh_token' => $refresh_token['refresh_token'],
-                ],
-            ]);
-            $data = $this->response(json_decode($res, true));
-            if ($data['code'] == 1) {
-                $data['data']['expires_in'] = time() + $data['data']['expires_in'];
-                unset($refresh_token['access_token']);
-                unset($refresh_token['expires_in']);
-                unset($refresh_token['refresh_token']);
-                $refresh_token = ArrayHelper::merge($refresh_token, $data['data']);
-                wp_mail('757402123@qq.com', '刷新access_token', print_r($refresh_token, true));
-                $cache->get('subscription_' . $openid, $refresh_token, 24 * 60 * 60 * 30);
+            try {
+                $data = $this->response(json_decode($this->client->get("/sns/oauth2/refresh_token", [
+                    'query' => [
+                        'appid' => $this->appId,
+                        'grant_type' => 'refresh_token',
+                        'refresh_token' => $refresh_token['refresh_token'],
+                    ],
+                ]), true));
+                if ($data) {
+                    $data['expires_in'] = time() + $data['expires_in'];
+                    unset($refresh_token['access_token']);
+                    unset($refresh_token['expires_in']);
+                    unset($refresh_token['refresh_token']);
+                    $refresh_token = ArrayHelper::merge($refresh_token, $data);
+                    return $cache->get(self::SUBSCRIPTION . '_' . $openid, $refresh_token, 24 * 60 * 60 * 30);
+                }
+            } catch (Exception $exception) {
+                return false;
             }
         } else {
             return false;
@@ -604,27 +622,25 @@ JS;
     public function getUserInfo($openid)
     {
         $cache = Yii::$app->cache;
-        $refresh_token = $cache->get('subscription_' . $openid);
+        $refresh_token = $cache->get(self::SUBSCRIPTION . '_' . $openid);
         if ($refresh_token) {
-            if (time() > $refresh_token['expires_in']) {
-                $this->refreshUserToken($openid);
-                $refresh_token = $cache->get('subscription_' . $openid);
-            }
-            $res = $this->client->get("/sns/userinfo", [
-                'query' => [
-                    'access_token' => $refresh_token['access_token'],
-                    'openid' => $openid,
-                    'lang' => 'zh_CN'
-                ],
-            ]);
-            $data = $this->response(json_decode($res, true));
-            if ($data['code'] == 1) {
-                return $data['data'];
-            } else {
+            try {
+                if (time() > $refresh_token['expires_in']) {
+                    $this->refreshUserToken($openid);
+                    $refresh_token = $cache->get(self::SUBSCRIPTION . '_' . $openid);
+                }
+                $res = $this->client->get("/sns/userinfo", [
+                    'query' => [
+                        'access_token' => $refresh_token['access_token'],
+                        'openid' => $openid,
+                        'lang' => 'zh_CN'
+                    ],
+                ]);
+                return $this->response(json_decode($res, true));
+            } catch (Exception $exception) {
                 return false;
             }
-        } else {
-            return false;
+
         }
     }
 
@@ -661,9 +677,10 @@ JS;
      * @return false|mixed|void
      * @throws GuzzleException
      */
-    public function getUserInfoByCode($code){
-        $accessToken = $this-> getUserAccessTokenByCode($code);
-        if($accessToken){
+    public function getUserInfoByCode($code)
+    {
+        $accessToken = $this->getUserAccessTokenByCode($code);
+        if ($accessToken) {
             return $this->getUserInfo($accessToken['openid']);
         }
     }
@@ -674,7 +691,8 @@ JS;
      * @param $length
      * @return string
      */
-    private function createNonceStr($length = 16) {
+    private function createNonceStr($length = 16)
+    {
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         $str = "";
         for ($i = 0; $i < $length; $i++) {
@@ -687,12 +705,116 @@ JS;
      * 获取默认的微信JSSDK接口名称
      * @return false|string[]
      */
-    public  function getJsApiList(){
-        $str =get_option('crud_group_wechat_jsApiList');
-        $str = str_replace(PHP_EOL,'',$str);
-        $str = str_replace('"','',$str);
-        $str = str_replace('\'','',$str);
-        return explode(',',$str);
+    public function getJsApiList()
+    {
+        $str = get_option('crud_group_wechat_jsApiList');
+        $str = str_replace(PHP_EOL, '', $str);
+        $str = str_replace('"', '', $str);
+        $str = str_replace('\'', '', $str);
+        return explode(',', $str);
     }
+
+    /**
+     * 用户授权url
+     * @param $redirect_uri
+     * @param $scope
+     * @param $state
+     * @return string
+     */
+    public function getAuthorizeUrl($redirect_uri='',$scope =self::SNSAPI_USERINFO,$state=''){
+        if(empty( $redirect_uri)){
+            $redirect_uri =getRequireUrl(2);
+        }
+        $config =[
+            'appid'=>$this->appId,
+            //授权后重定向的回调链接地址
+            'redirect_uri'=>$redirect_uri,
+            'response_type'=>'code',
+            // snsapi_base:(不弹出授权页面,直接跳转,只能获取用户openid)
+            // snsapi_userinfo:(弹出授权页面,可通过openid拿到昵称、性别、所在地.并且即使在未关注的情况下,只要用户授权,也能获取其信息)
+            'scope'=>$scope,
+            'state'=>$state,
+        ];
+        $query = http_build_query($config);
+        return 'https://open.weixin.qq.com/connect/oauth2/authorize?'.$query."#wechat_redirect";
+    }
+
+
+    public function autoEcho(){
+
+    }
+
+    /**
+     * 获取模版列表
+     * @return array
+     * @throws GuzzleException
+     */
+    public function getTemplateList(){
+        return $this->response($this->client->post("/cgi-bin/template/get_all_private_template", [
+                'query' => [
+                    "access_token" => $this->accessToken,
+                ],
+            ]
+        ));
+    }
+
+    /**
+     * 删除模版列表
+     * @param $template_id
+     * @return array
+     * @throws GuzzleException
+     */
+    public function deleteTemplate($template_id){
+        return $this->response($this->client->post("/cgi-bin/template/del_private_template", [
+                'query' => [
+                    "access_token" => $this->accessToken,
+                ],
+                'json'=>[
+                    'template_id'=>$template_id
+                ]
+            ]
+        ));
+    }
+
+
+    /**
+     * 获取模版消息ids
+     * @return array
+     * @throws GuzzleException
+     */
+    public function getTemplateIds(){
+        return $this->response($this->client->post("/cgi-bin/template/api_add_template", [
+                'query' => [
+                    "access_token" => $this->accessToken,
+                ],
+            ]
+        ));
+    }
+
+    /**
+     * 发生模版消息
+     * @param $template_id
+     * @param $return_url
+     * @param $openid
+     * @param $data
+     * @return array
+     * @throws GuzzleException
+     */
+    public function sendTemplateMessage($template_id,$openid,$data,$return_url=[]){
+        $config =[
+            "touser" => $openid,
+            "template_id" => $template_id,
+            "data"=>$data
+        ];
+        $json = ArrayHelper::merge($config,$return_url);
+        return $this->response($this->client->post("/cgi-bin/message/template/send", [
+                'query' => [
+                    "access_token" => $this->accessToken,
+                ],
+                'json' =>$json
+            ]
+        ));
+    }
+
 
 }

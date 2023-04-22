@@ -1,7 +1,7 @@
 //scope="col"
 Vue.component("crud-columns-thead", {
     template: `
-    <th   v-if="display" :id="field.field" :class="className" :style="field.style">
+    <th  v-if="display" :id="field.field" :class="className" :style="field.style">
         <template v-if="field.order">
             <a href="">
                 <span>{{field.title}}</span>
@@ -15,7 +15,7 @@ Vue.component("crud-columns-thead", {
 `,
     data(){
         return {
-            className:""
+            className:"manage-column"
         }
     },
     props:{
@@ -32,8 +32,7 @@ Vue.component("crud-columns-thead", {
 });
 //field.field +' column-' +field.field
 Vue.component("crud-columns-tbody", {
-    template: `
-    <td  v-if="display" class=" " :style="field.style" :data-colname="field.title" v-html="formatter(field,row)"></td>`,
+    template: `<td  v-if="display" :class="className" :style="field.style" :data-colname="field.title" v-html="formatter(field,row)"></td>`,
     data(){
         return {
             className:"manage-column"
@@ -80,7 +79,7 @@ Vue.component("crud-columns-tbody", {
             return html;
         },
         formatter(field,row){
-            if(field.formatter =='datetime'){
+            if(field.formatter =='datetime' || field.field=='created_at' || field.field=='updated_at'){
                 return this.datetime(field,row)
             }else if ( field.formatter =='status'){
                 return this.status(field,row)
@@ -110,7 +109,7 @@ Vue.component("crud-columns-tfoot", {
 `,
     data(){
         return {
-            className:""
+            className:"manage-column"
         }
     },
     props:{

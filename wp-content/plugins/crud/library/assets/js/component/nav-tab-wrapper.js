@@ -1,7 +1,9 @@
 Vue.component("crud-nav-tab-wrapper", {
     template: `
 <ul class="nav-tab-wrapper wp-clearfix">
-    <a v-for="(item,index ) in links"  :href="prefix+item.url" :class="className(item.url)">{{item.label}}</a>
+    <a v-for="(item,index ) in links"  :href="prefix+item.url" :class="(activeUrl ==  item.url)?'nav-tab nav-tab-active':'nav-tab'">
+    {{item.label}}
+    </a>
 </ul>`,
     data(){
         return {
@@ -22,9 +24,5 @@ Vue.component("crud-nav-tab-wrapper", {
         }
     },
     computed: {},
-    methods:{
-        className(url){
-            return (url == this.activeUrl) ?  'nav-tab nav-tab-active':'nav-tab';
-        }
-    }
+    methods:{}
 });

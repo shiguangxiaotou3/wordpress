@@ -36,10 +36,6 @@ Vue.component("crud-tablenav-pages", {
             type: Number,
             default: 0
         },
-        // buttons:{
-        //     type:Array,
-        //     default: 0
-        // }
     },
     watch:{
         page(value){

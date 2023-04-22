@@ -32,4 +32,13 @@ class ApiController extends Controller
         wp_clear_auth_cookie();
     }
 
+    public function json($data){
+        header('Content-Type: application/json');
+        return json_encode($data);
+    }
+
+    public function html($data){
+        header('Content-Type: application/json');
+        return (string) $data;
+    }
 }

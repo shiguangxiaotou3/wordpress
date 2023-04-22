@@ -60,7 +60,6 @@ class Market extends Module implements BootstrapInterface
     }
 
     public function registerAjax(){
-//        $menus=[];
         $config =[
             'address','money','categorize','commodity',
             'commodity-price','express','storehouse','user'

@@ -13,10 +13,12 @@ Vue.component("content-settings", {
             v-for="(item,index) in settingsMenu"
             :key="index"
             @click="showSubMenu(index)">
+              
               <h3 class="accordion-section-title" :tabindex="index">
                 {{item.name}}
                 <span class="screen-reader-text">按回车来打开此小节</span>
               </h3>
+              
               <div class="accordion-section-content" >
                 <ul class="outer-border">
                   <draggable v-model="item.list">
@@ -28,6 +30,8 @@ Vue.component("content-settings", {
                   </draggable> 
                  </ul>
             </div>
+            
+            
           </li>
         </ul>
       </div>

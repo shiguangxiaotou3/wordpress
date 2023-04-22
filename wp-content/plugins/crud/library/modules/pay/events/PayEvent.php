@@ -95,10 +95,11 @@ class PayEvent extends Event
             }else{
                 if(empty($model->notify_number)){
                     $model->notify_number =1;
+                    $model->save();
                 }else{
-                    $model->notify_number ++;
+                    $model->updateCounters(['notify_number' => 1]);
                 }
-                $model->save();
+
             }
             $this->_model = $model;
         }
