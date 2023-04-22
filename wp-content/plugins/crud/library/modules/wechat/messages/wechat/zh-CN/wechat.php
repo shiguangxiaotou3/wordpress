@@ -64,7 +64,7 @@ return [
     'To User Name'=> '接收方',
     'From Username'=> '发送方',
     'Msg Type'=> '消息类型',
-    'Event Type'=> '事件名类型',
+    'Event Type'=> '事件类型',
      'Msg Info'=> '消息详情',
     'Return Msg Info'=> '获取详情',
 

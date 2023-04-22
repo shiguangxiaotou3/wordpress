@@ -14,6 +14,7 @@ Vue.component("crud-table", {
             </div>
             <div class="alignleft actions">
                 <input type="submit" class="button action" value="批量删除" @click="deletes">
+                <input type="submit" class="button action" value="刷新" @click="refresh">
             </div>
             <div class="alignleft actions bulkactions">
                 <label for="bulk-action-selector-top" class="screen-reader-text">选择批量操作</label>
@@ -21,6 +22,21 @@ Vue.component("crud-table", {
                     <option v-for="(item,index) in columns" :value="item.field" v-html="item.title" />
                 </select>
                 <input type="submit" id="doaction" class="button action" value="应用">
+            </div>
+            <div class="alignleft actions bulkactions">
+                <label for="bulk-action-selector-top" class="screen-reader-text">选择批量操作</label>
+                <select name="action"  placeholder="隐藏字段" ref="exportType" >
+                    <option  value="Excel" v-html="'Excel'" />
+                    <option  value="text" v-html="'Text'" />
+                </select>
+                <input type="submit"  class="button action" value="导出" @click="exportFile">
+                    <download-excel 
+                     :data="table"
+                     :fields="json_fields"
+                     :worksheet="tableName"
+                     :name="tableName + '.xls'"
+                     style="display: none"
+                    ><a ref="downloadExcel">Excel</a></download-excel>
             </div>
         </template>
     </crud-tablenav-pages>
@@ -41,58 +57,72 @@ Vue.component("crud-table", {
                 </tr>
             </thead>
             <!-- end thead -->
+            
             <!-- tbody -->
             <tbody id="the-list">
-                <tr v-if="table.length >0" v-for="(row,indexTr) in table" :id="'post'+indexTr">
-                  
-                    <th scope="row" class="check-column">
-                        <label class="screen-reader-text" for="cb-select-1">选择</label>
-                        <input 
-                         type="checkbox" 
-                         name="post[]"
-                         :id="'cb-select-'+indexTr"   
-                         :value="indexTr" 
-                         @click="checkbox(row.id)" />
-                        <div class="locked-indicator">
-                            <span class="locked-indicator-icon" aria-hidden="true"></span>
-                        </div>
-                    </th>
-                      
-                    <crud-columns-tbody 
-                     v-for="(field,index) in columns" 
-                     :key="index"   
-                     :field="field" 
-                     :row="row" />
-                     
-                    <td>
-                        <div class="button-group">
-                            <div class="button last-child ">
-                              <span class="dashicons dashicons-visibility" @click="view(indexTr)" style="vertical-align: middle; "></span>
+                <!-- 有数据 -->
+                <template v-if="(table.length >0)">
+                    <tr  v-for="(row,indexTr) in table" :id="'post'+indexTr">
+                        <!-- first -->
+                        <th scope="row" class="check-column">
+                            <label class="screen-reader-text" for="cb-select-1">选择</label>
+                            <input 
+                             type="checkbox" 
+                             name="post[]"
+                             :id="'cb-select-'+indexTr"   
+                             :value="indexTr" 
+                             @click="checkbox(row.id)" />
+                            <div class="locked-indicator">
+                                <span class="locked-indicator-icon" aria-hidden="true"></span>
                             </div>
-                            <div class="button ">
-                              <span  class="dashicons dashicons-admin-page" @click="edit(indexTr)" style="vertical-align: middle; "></span>
+                        </th>
+                        <!-- end first -->  
+                        
+                        <!-- content first --> 
+                        <crud-columns-tbody 
+                         v-for="(field,index) in columns" 
+                         :key="index"   
+                         :field="field" 
+                         :row="row"
+                         @showMiniModal="showMiniModal" 
+                         @closeMiniModal="closeMiniModal"/>
+                        <!-- end content --> 
+                        
+                        <!-- last -->
+                        <td>
+                            <div class="button-group">
+                                <div class="button last-child " style="padding: 0 ">
+                                  <span class="dashicons dashicons-visibility" @click="view(indexTr)" style="margin: 4px 4px "></span>
+                                </div>
+                                <div class="button " style="padding: 0 ">
+                                  <span  class="dashicons dashicons-admin-page" @click="edit(indexTr)" style="margin: 4px 4px "></span>
+                                </div>
+                                <div class="button first-child button-link-delete" style="padding: 0 ">
+                                  <span  class="dashicons dashicons-no" @click="deleteRow(indexTr)" style="margin: 4px 4px "></span>
+                                </div>
                             </div>
-                            <div class="button first-child button-link-delete">
-                              <span  class="dashicons dashicons-no" style="vertical-align: middle; "></span>
-                            </div>
-                        </div>
-                    </td>
-                    
-                </tr>
-              <tr v-else >
-                  <th><td>什么也没有</td></th>
-              </tr>
+                        </td>
+                        <!-- end last -->
+                    </tr>
+                </template>
+                <!-- 没有数据 -->
+                <template v-else>
+                     <tr >
+                        <td :colspan="columns.length +2" style="color: red">Nothing</td>
+                    </tr>
+                </template>
             </tbody>
             <!-- end tbody -->
+            
             <!-- tfoot -->
             <tfoot>
                 <tr>
                     <td id="cb" class="manage-column column-cb check-column">
                         <label class="screen-reader-text" for="cb-select-all-1">全选</label>
-                        <input id="cb-select-all-1" type="checkbox" @click="selectorAll" />
+                        <input id="cb-select-all-1" type="checkbox" @click="selectorAll">
                     </td>
-                    <crud-columns-tfoot v-for="(field,index) in columns" :key="index"  :field="field" />
-                    <th id="actions" class="manage-column">操作</th>
+                    <crud-columns-thead v-for="(field,index) in columns" :key="index" :field="field" />
+                    <th id="actions" class="manage-column" style="width: 130px">操作</th>
                 </tr>
             </tfoot>
             <!-- end tfoot -->
@@ -120,11 +150,59 @@ Vue.component("crud-table", {
              :actionType="actionType" 
              :row="row" />
         </template>
-       <template v-slot:right>
+        <template v-slot:right>
            <h1>right</h1>
-       </template>
+        </template>
     </crud-modal-container>
     <!-- end modal -->
+    
+    <!-- modal mini -->
+    <crud-modal-mini :active="showMini">
+        <!-- header -->
+        <template v-slot:theme-header>
+            <button class="left dashicons dashicons-no"><span class="screen-reader-text"></span></button>
+            <button class="right dashicons dashicons-no disabled" ><span class="screen-reader-text"></span></button>
+            <button class="close dashicons dashicons-no" @click="closeMiniModal"><span class="screen-reader-text"></span></button>
+        </template>
+        <!-- end header -->
+        
+        <!-- screenshots  -->
+         <template v-slot:theme-screenshots>
+                              <div class="theme-screenshots">
+                        <div class="screenshot"  ></div>
+                    </div>
+        </template>
+        <!-- end screenshots -->
+        
+        <!-- info  -->
+        <template v-slot:theme-info>
+                                <div class="theme-info">
+                        <h2 class="theme-name"><span class="theme-version"></span></h2>
+                        <p class="theme-author"></p>
+                        <p class="theme-description"></p>
+                        <p class="theme-tags"></p>
+                    </div>
+        </template>
+        <!-- end info -->
+        
+        <!-- right  -->
+        <template v-slot:actions-right></template>
+        <!-- end right -->
+        
+        <!-- content  -->
+        <template v-slot:actions-content>
+             <input type="button" class="button activate" @click="closeMiniModal" value="关闭" />
+        </template>
+        <!-- end content-->
+        
+        <!-- right  -->
+        <template v-slot:actions-right>
+            <a href="" class="button delete-theme" >删除</a>
+        </template>
+        <!-- end right -->
+        
+    </crud-modal-mini>
+    <!-- end modal mini-->
 </div>`,
   data() {
     return {
@@ -146,6 +224,9 @@ Vue.component("crud-table", {
       // 操作数据的url
       actionType:'add',
       title:this.tableName,
+      showMini:false,
+      miniContent:'',
+      miniInfo:''
     }
   },
   watch: {
@@ -188,7 +269,25 @@ Vue.component("crud-table", {
     },
     actions(){
       return this.defaultActions
-    }
+    },
+    json_fields(){
+        let fields ={};
+        for (let i =1;i<= this.columns.length -1;i++){
+            let name =(this.columns)[i]['field'];
+            let title =(this.columns)[i]['title'];
+            if((name =='created_at')||(name =='updated_at')){
+                fields[title]={
+                    field: name,
+                    callback: (value) => {
+                        return new Date(value*1000).format("yyyy-MM-dd hh:mm")
+                    }
+                };
+            }else {
+                fields[title]=name
+            }
+        }
+        return fields;
+    },
   },
   methods: {
     pageChange(value){
@@ -381,6 +480,10 @@ Vue.component("crud-table", {
         }
       })
     },
+    refresh(){
+        this.index();
+        this.noticeSuccess('刷新成功','')
+    },
     deleteAll(){
       let fromData =this.fromData('delete');
       this.$.ajax({
@@ -439,8 +542,30 @@ Vue.component("crud-table", {
       this.actionType='edit'
       this.open();
     },
-    deleteRow(){
+    exportFile(){
+        this.$refs.exportType;
+        let exportType =this.$refs.exportType.value;
+        console.log(exportType)
+        if(exportType =='Excel'){
+            console.log(this.$refs.downloadExcel)
+            this.$refs.downloadExcel.click()
+        }
 
+    },
+    deleteRow(n){
+        let res=confirm("确定要删除此记录吗?");
+        if(res ==true){
+            this.n =n
+            this.ids=[];
+            this.ids.push(this.row.id)
+            this.deletes();
+        }
+    },
+    showMiniModal(data){
+        this.showMini =true
+    },
+    closeMiniModal(){
+      this.showMini =false;
     }
   },
   //生命周期 - 创建完成

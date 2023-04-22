@@ -28,6 +28,9 @@ use yii\behaviors\TimestampBehavior;
  */
 class Order extends ActiveRecord{
 
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors() {
         return [
             [
@@ -113,11 +116,11 @@ class Order extends ActiveRecord{
             ['field' => 'receipt_amount', 'title' => Yii::t('pay', 'Receipt Amount'),"style"=>'width: 60px'],
             ['field' => 'trade_no', 'title' => Yii::t('pay', 'Trade No'),"style"=>'width: 200px'],
             ['field' => 'notify_number', 'title' => Yii::t('pay', 'Notify Number'),"style"=>'width: 60px'],
-            ['field' => 'notify_url', 'title' => Yii::t('pay', 'Notify Url'),"style"=>'width: 200px'],
-            ['field' => 'return_url', 'title' => Yii::t('pay', 'Return Url'),"style"=>'width: 200px'],
+            ['field' => 'notify_url', 'title' => Yii::t('pay', 'Notify Url'),"dataType"=>'url',"style"=>'width: 200px'],
+            ['field' => 'return_url', 'title' => Yii::t('pay', 'Return Url'),"dataType"=>'url',"style"=>'width: 200px'],
             ['field' => 'status', 'title' => Yii::t('pay', 'Status'),"formatter"=>'status',"style"=>'width: 60px','statusList'=>['未支付','支付成功']],
-            ['field' => 'created_at', 'title' => Yii::t('pay', 'Created At'),"formatter"=>'datetime',"style"=>'width: 130px'],
-            ['field' => 'updated_at', 'title' => Yii::t('pay', 'Updated At'),"formatter"=>'datetime',"style"=>'width: 130px'],
+            ['field' => 'created_at', 'title' => Yii::t('pay', 'Created At'),"dataType"=>'timeStamp',"style"=>'width: 130px'],
+            ['field' => 'updated_at', 'title' => Yii::t('pay', 'Updated At'),"dataType"=>'timeStamp',"style"=>'width: 130px'],
         ];
     }
 

@@ -3,17 +3,19 @@ Vue.component("crud-crud", {
 <div class="wrap">
     <h1 class="wp-heading-inline">{{title}}</h1>
     <hr class="wp-header-end">
+    
     <crud-notice 
-        :active="notice.active" 
-        :noticeType='notice.noticeType' 
-        :title="notice.title" 
-        :content="notice.content" 
-        :close="notice.close">
+     :active="notice.active" 
+     :noticeType='notice.noticeType' 
+     :title="notice.title" 
+     :content="notice.content" 
+     :messageTimeout="notice.messageTimeout"
+     :close="notice.close">
     </crud-notice>
    
     <crud-nav-tab-wrapper 
-        :active-url="activeUrl" 
-        :links="links">
+     :active-url="activeUrl" 
+     :links="links">
     </crud-nav-tab-wrapper>
 
     <crud-table 
@@ -32,6 +34,7 @@ Vue.component("crud-crud", {
                 noticeType: 'notice-dismiss',
                 title: '',
                 content: '',
+                messageTimeout:0,
                 close: true
             }
         }
@@ -42,8 +45,7 @@ Vue.component("crud-crud", {
             default: 'Test'
         },
     },
-    computed: {
-    },
+    computed: {},
     methods:{
         error(notice){
             this.notice =notice
@@ -52,7 +54,5 @@ Vue.component("crud-crud", {
             this.notice =notice
         }
     },
-    mounted() {
-        console.log(this.navTabWrapper)
-    }
+    mounted() {}
 });

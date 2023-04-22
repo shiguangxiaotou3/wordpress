@@ -98,8 +98,8 @@ class Address extends \yii\db\ActiveRecord
             ['field' => 'address_info', 'title' => Yii::t('market', 'Address Info'),"style"=>'width: 100px'],
             ['field' => 'address_type', 'title' => Yii::t('market', 'Address Type'),"style"=>'width: 50px'],
             ['field' => 'status', 'title' => Yii::t('market', 'Status'),"formatter"=>'status',"style"=>'width: 50px','statusList'=>['未支付','默认']],
-            ['field' => 'created_at', 'title' => Yii::t('market', 'Created At'),"formatter"=>'datetime',"style"=>'width: 130px'],
-            ['field' => 'updated_at', 'title' => Yii::t('market', 'Updated At'),"formatter"=>'datetime',"style"=>'width: 130px'],
+            ['field' => 'created_at', 'title' => Yii::t('market', 'Created At'),"dataType"=>'timeStamp',"style"=>'width: 130px'],
+            ['field' => 'updated_at', 'title' => Yii::t('market', 'Updated At'),"dataType"=>'timeStamp',"style"=>'width: 130px'],
             ];
     }
 }

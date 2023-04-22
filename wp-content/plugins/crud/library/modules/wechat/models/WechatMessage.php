@@ -21,7 +21,9 @@ use yii\db\ActiveRecord;
  */
 class WechatMessage extends ActiveRecord
 {
-
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors() {
         return [
             [
@@ -37,6 +39,9 @@ class WechatMessage extends ActiveRecord
             ]
         ];
     }
+
+
+
     /**
      * {@inheritdoc}
      */
@@ -82,14 +87,34 @@ class WechatMessage extends ActiveRecord
     {
         return [
             ['field' => 'id', 'title' => Yii::t('pay', 'ID'),"style"=>'width: 20px'],
-            ['field' =>'to_userName', 'title' => Yii::t('wechat', 'To User Name'),"style"=>'width: 100px'],
-            ['field' =>'from_username' , 'title' =>Yii::t('wechat', 'From Username'),"style"=>'width: 100px'],
-            ['field' =>'msg_type', 'title' => Yii::t('wechat', 'Msg Type'),"style"=>'width: 80px'],
-            ['field' =>'event_type', 'title' => Yii::t('wechat', 'Event Type'),"style"=>'width: 80px'],
-            ['field' =>'msg_info', 'title' =>Yii::t('wechat', 'Msg Info'),"style"=>'width: 130px'],
-            ['field' =>'return_msg_info' , 'title' => Yii::t('wechat', 'Return Msg Info'),"style"=>'width: 130px'],
-            ['field' => 'created_at', 'title' => Yii::t('pay', 'Created At'),"formatter"=>'datetime',"style"=>'width: 130px'],
-            ['field' => 'updated_at', 'title' => Yii::t('pay', 'Updated At'),"formatter"=>'datetime',"style"=>'width: 130px'],
+            ['field' =>'to_userName', 'title' => Yii::t('wechat', 'To User Name'),"style"=>'width: 130px'],
+            ['field' =>'from_username' , 'title' =>Yii::t('wechat', 'From Username'),"style"=>'width: 130px'],
+            ['field' =>'msg_type', 'title' => Yii::t('wechat', 'Msg Type'),"style"=>'width: 60px'],
+            ['field' =>'event_type', 'title' => Yii::t('wechat', 'Event Type'),"style"=>'width: 60px'],
+            [
+                'field' =>'msg_info',
+                'title' =>Yii::t('wechat', 'Msg Info'),
+                'dataType'=>'json',
+                "style"=>'width: 60px'
+            ],
+            [
+                'field' =>'return_msg_info' ,
+                'title' => Yii::t('wechat', 'Return Msg Info'),
+                'dataType'=>'json',
+                "style"=>'width: 60px'
+            ],
+            [
+                'field' => 'created_at',
+                'title' => Yii::t('pay', 'Created At'),
+                "dataType"=>'timeStamp',
+                "style"=>'width: 110px'
+            ],
+            [
+                'field' => 'updated_at',
+                'title' => Yii::t('pay', 'Updated At'),
+                "dataType"=>'timeStamp',
+                "style"=>'width: 110px'
+            ],
         ];
     }
 }

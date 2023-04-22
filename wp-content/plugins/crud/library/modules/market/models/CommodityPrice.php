@@ -63,8 +63,8 @@ class CommodityPrice extends \yii\db\ActiveRecord
             ['field' =>'publish_id', 'title' => Yii::t('market', 'Publish ID')],
             ['field' =>'publish_time', 'title' => Yii::t('market', 'Publish Time')],
             ['field' =>'publish_price', 'title' => Yii::t('market', 'Publish Price')],
-            ['field' => 'created_at', 'title' => Yii::t('market', 'Created At'),"formatter"=>'datetime',"style"=>'width: 130px'],
-            ['field' => 'updated_at', 'title' => Yii::t('market', 'Updated At'),"formatter"=>'datetime',"style"=>'width: 130px'],
+            ['field' => 'created_at', 'title' => Yii::t('market', 'Created At'),"dataType"=>'timeStamp',"style"=>'width: 130px'],
+            ['field' => 'updated_at', 'title' => Yii::t('market', 'Updated At'),"dataType"=>'timeStamp',"style"=>'width: 130px'],
         ];
     }
 

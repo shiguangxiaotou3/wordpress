@@ -79,8 +79,8 @@ class Commodity extends \yii\db\ActiveRecord
             ['field' =>'commoditye_image', 'title' => Yii::t('market', 'Commoditye Image')],
             ['field' =>'commodity_keyword', 'title' => Yii::t('market', 'Commodity Keyword')],
             ['field' =>'remarks', 'title' => Yii::t('market', 'Remarks')],
-            ['field' => 'created_at', 'title' => Yii::t('market', 'Created At'),"formatter"=>'datetime',"style"=>'width: 130px'],
-            ['field' => 'updated_at', 'title' => Yii::t('market', 'Updated At'),"formatter"=>'datetime',"style"=>'width: 130px'],
+            ['field' => 'created_at', 'title' => Yii::t('market', 'Created At'),"dataType"=>'timeStamp',"style"=>'width: 130px'],
+            ['field' => 'updated_at', 'title' => Yii::t('market', 'Updated At'),"dataType"=>'timeStamp',"style"=>'width: 130px'],
         ];
     }
 

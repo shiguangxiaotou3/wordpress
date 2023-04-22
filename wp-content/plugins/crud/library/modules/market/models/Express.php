@@ -98,7 +98,7 @@ class Express extends \yii\db\ActiveRecord
             ['field' =>'body', 'title' => Yii::t('market', 'Body')],
             ['field' =>'status', 'title' => Yii::t('market', 'Status')],
             ['field' => 'created_at', 'title' => Yii::t('market', 'Created At'),"formatter"=>'datetime',"style"=>'width: 130px'],
-            ['field' => 'updated_at', 'title' => Yii::t('market', 'Updated At'),"formatter"=>'datetime',"style"=>'width: 130px'],
+            ['field' => 'updated_at', 'title' => Yii::t('market', 'Updated At'),"dataType"=>'timeStamp',"style"=>'width: 130px'],
         ];
     }
 

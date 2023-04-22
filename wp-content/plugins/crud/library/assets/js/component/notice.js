@@ -3,12 +3,29 @@ Vue.component("crud-notice", {
 <div id="message" v-if="active" :class="className">
     <p ><strong>{{title}}</strong></p>
     <p v-if="content !==''">{{content}}</p>
-    <button v-if="close" type="button" class="notice-dismiss" @click="display" ></button>
+    
+    <template v-if="messageTimeout >0" />
+    
+    <template v-else>
+        <button 
+         type="button" 
+         class="notice-dismiss" 
+         v-if="close" 
+         @click="display"></button>
+    </template>
+    
 </div>`,
     data(){
         return {
-            notices:[ "notice-error", "notice-warning", "notice-success", "notice-dismiss", "notice-title", "notice-large", "notice-alt"],
-            // active:false,
+            notices:[
+                "notice-error",
+                "notice-warning",
+                "notice-success",
+                "notice-dismiss",
+                "notice-title",
+                "notice-large",
+                "notice-alt"
+            ],
         }
     },
     props:{
@@ -32,18 +49,25 @@ Vue.component("crud-notice", {
         close:{
             type:Boolean,
             default: true
-        }
+        },
+        messageTimeout:0
     },
     computed: {
         className(){
-            if((new RegExp(/notice\-dismiss/, 'g')).test(this.noticeType)){
-                return this.noticeType +' is-dismissible notice'
+            if(this.messageTimeout >0){
+                return this.noticeType +' notice-dismiss notice'
             }else {
-                if(this.close){
-                    return this.noticeType +' notice is-dismissible'
+                if((new RegExp(/notice\-dismiss/, 'g')).test(this.noticeType)){
+                    return this.noticeType +' is-dismissible notice'
+                }else {
+                    if(this.close){
+                        return this.noticeType +' notice is-dismissible'
+                    }
                 }
             }
+
         }
+
     },
     methods:{
         display(){

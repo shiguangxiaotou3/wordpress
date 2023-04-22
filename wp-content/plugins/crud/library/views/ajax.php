@@ -8,9 +8,10 @@
 
 use crud\assets\EchartAsset;
 use crud\assets\VueAsset;
-
+use crud\assets\SheetJSAsset;
 
 VueAsset::register($this);
+SheetJSAsset::register($this);
 EchartAsset::register($this);
 
 wp_enqueue_media();
@@ -45,6 +46,9 @@ $js =VueAsset::loadComponents();
 <?php
 $url = toUnderScore($tableName,'-');
 $js .=<<<JS
+Vue.prototype.$ = jQuery;
+Vue.config.productionTip = false;
+Vue.component("downloadExcel", JsonExcel)
 new Vue({
     el: '.wrap',
     data(){

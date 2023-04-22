@@ -1,10 +1,10 @@
 
 Vue.component("crud-modal-container", {
-  template: `
-<div v-show="active">
+  template: `<div v-show="active">
     <div tabindex="0" class="media-modal wp-core-ui" role="dialog" aria-labelledby="media-frame-title">
         <div class="media-modal-content" role="document">
             <div class="edit-attachment-frame mode-select hide-menu hide-router">
+                <!-- header -->
                 <div class="edit-media-header">
                     <button class="left dashicons"  @click="next"></button>
                     <button class="right dashicons"  @click="previous"></button>
@@ -13,6 +13,8 @@ Vue.component("crud-modal-container", {
                     </button>
                 </div>
                 <div class="media-frame-title"><h1>{{title}}</h1></div>
+                <!-- end header -->
+                 <!--  content -->
                 <div class="media-frame-content">
                     <div class="attachment-details save-ready">
                         <div class="attachment-media-view landscape">
@@ -30,6 +32,7 @@ Vue.component("crud-modal-container", {
                         </div>
                     </div>
                 </div>
+                <!-- end content -->
             </div>
         </div>
     </div>
@@ -86,46 +89,55 @@ Vue.component("crud-modal-container", {
 Vue.component(
     'crud-modal-mini',{
     template: `
+<div v-show="active">
     <div class="theme-overlay" tabindex="0" role="dialog" aria-label="主题详情">
         <div class="theme-overlay">
             <div class="theme-backdrop"></div>
             <div class="theme-wrap wp-clearfix" role="document">
-            <div class="theme-header">
-              <button class="left dashicons dashicons-no"><span class="screen-reader-text">显示上一个主题</span></button>
-              <button class="right dashicons dashicons-no disabled" disabled=""><span class="screen-reader-text">显示下一个主题</span></button>
-              <button class="close dashicons dashicons-no"><span class="screen-reader-text">关闭详情对话框</span></button>
-            </div>
-            <div class="theme-about wp-clearfix">
-                <div class="theme-screenshots">
-                    <div class="screenshot">
-                        <img src="https://www.shiguangxiaotou.com/wp-content/themes/hello-elementor/screenshot.png?ver=2.7.1" alt=""></div>
+                <!-- header -->
+                <div class="theme-header">
+                    <slot name="theme-header"></slot> 
+                </div>
+                <!-- end header -->
+                <!-- content -->
+                <div class="theme-about">
+                    <slot name="theme-screenshots"></slot>
+                    <slot name="theme-info"></slot>
+                </div>
+                 <!-- end content -->
+                <!-- footer -->
+                <div class="theme-actions">
+                    <div class="active-theme" style="float: right">
+                        <slot name="actions-right"></slot>
                     </div>
-                <div class="theme-info">
-                    <h2 class="theme-name">Hello Elementor<span class="theme-version">版本：2.7.1</span></h2>
-                    <p class="theme-author">作者：<a href="">Elementor Team</a>\t\t\t\t</p>
-                    <p class="theme-description">A plain-vanilla &amp; lightweight theme for Elementor page builder</p>
-                    <p class="theme-tags"><span>标签：</span> accessibility-ready、flexible-header、custom-colors、custom-menu、custom-logo、featured-images、rtl-language-support、threaded-comments、translation-ready</p>
+                    <div class="inactive-theme">
+                        <slot name="actions-content"></slot>
+                    </div>
+                    <slot name="actions-right"></slot>
                 </div>
-            </div>
-            <div class="theme-actions">
-                <div class="active-theme">
-                    <a href="" class="button button-primary customize load-customize hide-if-no-customize">自定义</a>
-                    <a class="button" href="">小工具</a>
-                    <a class="button" href="">菜单</a> 
-                    <a class="button hide-if-no-customize" href="">页眉</a> 
-                    <a class="button" href="">页眉</a> 
-                    <a class="button hide-if-no-customize" href="">背景</a> 
-                    <a class="button" href="">背景</a>
-                </div>
-                <div class="inactive-theme">
-                    <a href="" class="button activate" aria-label="启用 Hello Elementor">启用</a>
-                    <a href="" class="button button-primary load-customize hide-if-no-customize">实时预览</a>
-                </div>
-                <a href="" class="button delete-theme" aria-label="删除 Hello Elementor">删除</a>
+                <!-- end footer -->
             </div>
        </div>
     </div>
-</div>`
-
+</div>
+`,
+  data(){
+    return {
     }
-)
+  },
+  props:{
+    active:{
+      type:Boolean,
+      default: false
+    },
+  },
+  computed:{},
+  methods:{
+    next(value) {
+      this.$emit('next', value)
+    },
+    previous(value) {
+      this.$emit('previous', value)
+    },
+  }
+});

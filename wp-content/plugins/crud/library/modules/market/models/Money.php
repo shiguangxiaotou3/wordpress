@@ -70,8 +70,8 @@ class Money extends \yii\db\ActiveRecord
             ['field' =>'before', 'title' => Yii::t('market', 'Before')],
             ['field' =>'after', 'title' => Yii::t('market', 'After')],
             ['field' =>'remarks', 'title' => Yii::t('market', 'Remarks')],
-            ['field' => 'created_at', 'title' => Yii::t('market', 'Created At'),"formatter"=>'datetime',"style"=>'width: 130px'],
-            ['field' => 'updated_at', 'title' => Yii::t('market', 'Updated At'),"formatter"=>'datetime',"style"=>'width: 130px'],
+            ['field' => 'created_at', 'title' => Yii::t('market', 'Created At'),"dataType"=>'timeStamp',"style"=>'width: 130px'],
+            ['field' => 'updated_at', 'title' => Yii::t('market', 'Updated At'),"dataType"=>'timeStamp',"style"=>'width: 130px'],
         ];
     }
 
