@@ -10,6 +10,7 @@ use yii\debug\panels\DumpPanel;
 use yii\base\BootstrapInterface;
 use yii\base\InvalidRouteException;
 use yii\console\Application as ConsoleApplication;
+use crud\widgets\RegisterHighlightAssetWidget;
 /**
  * Class Wp
  *
@@ -59,7 +60,6 @@ class Wp extends Module implements BootstrapInterface
             // ｜将yii\web\View事件挂载到wordpress钩子中
             // +----------------------------------------------------------------------
             add_action("get_template_part_loop",[$this,"wpInit"]);
-
         }
         // 控制台应用引导 yii\console\Application
         if ($app instanceof ConsoleApplication) {
@@ -80,7 +80,9 @@ class Wp extends Module implements BootstrapInterface
      * 向前台注册全局aeesets
      */
     public function wpInit(){
-        $this->runAction('index/init');
+        $wechat = Yii::$app->subscription;
+        RegisterHighlightAssetWidget::widget();
+        $wechat->share();
     }
 
 }

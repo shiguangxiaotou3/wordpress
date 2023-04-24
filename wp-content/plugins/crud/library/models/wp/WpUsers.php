@@ -71,6 +71,15 @@ class WpUsers extends ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public function fields() {
+        $fields = parent::fields();
+        $fields[] = ['avatarUrl'=>function (){return $this->avatarUrl;}];
+        return  $fields;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
@@ -95,6 +104,7 @@ class WpUsers extends ActiveRecord
             'user_pass' => 'User Pass',
             'user_nicename' => 'User Nicename',
             'user_email' => 'User Email',
+            'avatarUrl'=>'Avatar Url',
             'user_url' => 'User Url',
             'user_registered' => 'User Registered',
             'user_activation_key' => 'User Activation Key',
@@ -112,6 +122,7 @@ class WpUsers extends ActiveRecord
             ['field' =>'ID', 'title' =>Yii::t('market',  'ID')],
             ['field' =>'user_login', 'title' => Yii::t('market', 'User Login')],
             ['field' =>'user_pass', 'title' => Yii::t('market', 'User Pass')],
+            ['field' =>'avatarUrl', 'title' => Yii::t('market', 'Avatar Url')],
             ['field' =>'user_nicename', 'title' => Yii::t('market', 'User Nicename')],
             ['field' =>'user_email', 'title' =>Yii::t('market',  'User Email')],
             ['field' =>'user_url', 'title' => Yii::t('market', 'User Url')],

@@ -129,6 +129,7 @@ class App extends Application
         // +----------------------------------------------------------------------
         add_action("init", [$this, "registerAjax"]);
         add_action("rest_api_init", [$this, "registerApi"]);
+
         //add_action("wp_ajax_pay/index/remit",[$this,"renderAjaxTest"]);
         //add_action("wp_ajax_nopriv_pay/index/remit",[$this,"renderAjaxTest"]);
 
@@ -148,7 +149,8 @@ class App extends Application
         add_filter('plugin_action_links', [$this, 'addSettingsButton'], 10, 2);
         add_action('admin_print_scripts', [$this, 'printScripts']);
         add_action("admin_print_footer_scripts", [$this, "printFooterScripts"]);
-//        add_action("wp_footer", [$this, "printFooterScripts"]);
+        add_action('wp_head', [$this, 'printScripts']);
+        add_action("wp_footer", [$this, "printFooterScripts"]);
         // +----------------------------------------------------------------------
         // ｜静止自动更新
         // +----------------------------------------------------------------------

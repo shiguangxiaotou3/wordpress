@@ -1,10 +1,8 @@
 #!/bin/bash
 
 projectPath="/Users/wanlong/web/wp"
-serverPath="/var/www/html/wordpress"
 . "$projectPath/bash/config.sh"
 . "$projectPath/bash/actions.sh"
-
 functionName=$1
 
 if [ "$functionName" = "" ]; then

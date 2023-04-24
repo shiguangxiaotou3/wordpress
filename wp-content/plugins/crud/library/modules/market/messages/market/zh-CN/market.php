@@ -61,5 +61,6 @@ return [
     'User Activation Key' => '用户激活密钥',
     'User Status' => '用户状态',
     'Display Name' => '显示名称',
+    'Avatar Url'=>'头像'
 
 ];

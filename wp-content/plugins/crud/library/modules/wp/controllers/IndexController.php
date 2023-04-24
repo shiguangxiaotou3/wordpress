@@ -23,14 +23,6 @@ class IndexController extends Controller
     /**
      * @return string
      */
-    public function actionInit(){
-        $this->layout =false;
-        return $this->render("init");
-    }
-
-    /**
-     * @return string
-     */
     public function actionError(){
         return $this->render("error");
     }

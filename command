@@ -1,4 +1,5 @@
 #!/usr/bin/env php
+
 <?php
 
 $config = require "wp-content/plugins/crud/console/web/App.php";

@@ -1,10 +1,5 @@
 #!/bin/bash
 
-
-
-# 包含服务器链接参数
-. "./bash/config.sh"
-
 # +----------------------------------------------------------------------
 # ｜交互登录ubuntu18.04并执行一条命令
 # +----------------------------------------------------------------------
@@ -131,14 +126,3 @@ EOF
 
   expect "$projectPath/bash/client.sh" "$user" "$host" "$password" "$action"
 }
-
-
-#user='root'
-#host='61.136.162.220'
-#password='8X8ABT6kF2'
-#projectPath='/www/wwwroot'
-#config=`cat $projectPath/nginx.conf`
-#
-#expect "$projectPath/nginx.sh" "$user" "$host" "$password" "$config"
-
-scp -r /Library/WebServer/Documents root@123.56.7.206:/var/www/html/mac
