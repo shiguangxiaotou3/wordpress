@@ -24,7 +24,7 @@ try {
 //php command   gii/model --ns=crud\\modules\\market\\models --tableName=wp_money --modelClass=Money --enableI18N=1 --messageCategory=market
 //php command   gii/model --ns=crud\\modules\\market\\models --tableName=wp_categorize --modelClass=Categorize --enableI18N=1 --messageCategory=market
 
-
+//php command   gii/model --ns=crud\\modules\\pay\\models --tableName=wp_pay_reflect --modelClass=PayReflect --enableI18N=1 --messageCategory=pay
 
 
 //php command   gii/model --ns=crud\\modules\\market\\models --tableName=wp_categorize --modelClass=Categorize --enableI18N=1 --messageCategory=market

@@ -16,6 +16,18 @@ return [
        ],
         [
             "parent_slug" =>  "market/index",
+            "page_title" => "页面设置",
+            "menu_title" => "页面设置",
+            "menu_slug" => "market/index/page",
+        ],
+        [
+            "parent_slug" =>  "market/index",
+            "page_title" => "用户中心",
+            "menu_title" => "用户中心",
+            "menu_slug" => "market/index/my",
+        ],
+        [
+            "parent_slug" =>  "market/index",
             "page_title" => "地址管理",
             "menu_title" => "地址管理",
             "menu_slug" => "market/index/address",

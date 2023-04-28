@@ -2,36 +2,34 @@
 
 namespace backend\web;
 
-use crud\components\Response;
-use crud\modules\market\components\BaseComponent;
-use crud\modules\market\components\Tencent;
-use crud\modules\market\components\WechatApplet;
-use crud\modules\pay\components\Alipay;
-use crud\modules\pay\components\WechatPay;
-use crud\modules\wechat\components\SubscriptionService;
-use crud\components\View;
-use shiguangxiaotou\alipay\request\AlipayEcoCityserviceAppinfoQueryRequest;
 use Yii;
 use Exception;
 use crud\models\Menu;
 use crud\modules\wp\Wp;
 use yii\web\Application;
-use crud\modules\sms\Sms;
-use crud\modules\pay\Pay;
+use crud\components\View;
 use crud\models\Settings;
+use crud\modules\pay\Pay;
+use crud\modules\sms\Sms;
 use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
+use crud\components\Response;
 use crud\modules\market\Market;
 use crud\modules\wechat\Wechat;
-//use crud\modules\gii\Module as GiiModule;
 use yii\gii\Module as GiiModule;
 use crud\modules\applets\Applets;
 use yii\base\InvalidRouteException;
 use yii\base\InvalidConfigException;
 use crud\modules\translate\Translate;
+use crud\modules\pay\components\Alipay;
 use crud\modules\base\Base as BaseModule;
 use PHPMailer\PHPMailer\PHPMailer as SMTP;
-
+use crud\modules\pay\components\WechatPay;
+use crud\modules\market\components\Tencent;
+use crud\modules\market\components\WechatApplet;
+use crud\modules\market\components\BaseComponent;
+use crud\modules\wechat\components\SubscriptionService;
+use shiguangxiaotou\alipay\request\AlipayEcoCityserviceAppinfoQueryRequest;
 /**
  * App对象基类
  *
@@ -122,13 +120,12 @@ class App extends Application
         // +----------------------------------------------------------------------
         add_action("admin_menu", [$this, "registerPage"]);
         add_action("admin_init", [$this, "registerSettings"]);
-
-
         // +----------------------------------------------------------------------
         // ｜Ajax、RestfulApi、路由配置、解析规则，挂载到wordpress钩子中
         // +----------------------------------------------------------------------
         add_action("init", [$this, "registerAjax"]);
         add_action("rest_api_init", [$this, "registerApi"]);
+        add_action( 'rest_api_init', [$this, "access"], 15 );
 
         //add_action("wp_ajax_pay/index/remit",[$this,"renderAjaxTest"]);
         //add_action("wp_ajax_nopriv_pay/index/remit",[$this,"renderAjaxTest"]);
@@ -166,6 +163,8 @@ class App extends Application
         remove_action('admin_init', '_maybe_update_core');    // 禁止 WordPress 检查更新
         remove_action('admin_init', '_maybe_update_plugins'); // 禁止 WordPress 更新插件
         remove_action('admin_init', '_maybe_update_themes');
+
+
 
         // +----------------------------------------------------------------------
         // ｜中国地区头像代理
@@ -939,8 +938,6 @@ class App extends Application
         $view = Yii::$app->getView();
         $view->adminPrintFooterScripts();
     }
-
-
     // +----------------------------------------------------------------------
     // ｜下面是将插件的中的某个页面映射到前台的有个路由
     // ｜实现在前台访问插件的页面
@@ -1081,8 +1078,6 @@ class App extends Application
             $this->sendFile($path);
         }
     }
-
-
     /**
      * 响应文件流
      *
@@ -1103,6 +1098,17 @@ class App extends Application
             header("Accept-length:" . filesize($path));
             exit( file_get_contents($path));
         }
+    }
+
+    public function access(){
+        add_filter( 'rest_pre_serve_request', function( $value ) {
+            header( 'Access-Control-Allow-Headers: Authorization, X-WP-Nonce,Content-Type, X-Requested-With');
+            header( 'Access-Control-Allow-Origin: *' );
+            header( 'Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE' );
+            header( 'Access-Control-Allow-Credentials: true' );
+
+            return $value;
+        } );
     }
 
 }

@@ -46,10 +46,10 @@ use crud\modules\pay\components\Alipay;
 //            $event->trade_no ="asdas";
 //            $event->beforeNotifyEvent();
 
-           $user = Order::find()->where(['id'=>25])->one();;
-           /** @var yii\db\ActiveQuery $query */
-           $query = $user->getUser();
-           dump( $query ->asArray()->one());
+//           $user = Order::find()->where(['id'=>25])->one();;
+//           /** @var yii\db\ActiveQuery $query */
+//           $query = $user->getUser();
+//           dump( $query ->asArray()->one());
 
 
 //        $model = Order::find()->where(['order_id'=>'text_1681137069'])->one();

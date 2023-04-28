@@ -35,6 +35,7 @@ register_activation_hook(__FILE__, "crud_activate");
 register_deactivation_hook(__FILE__, "crud_activate");
 date_default_timezone_set('Asia/Shanghai');
 //ini_set('magic_quotes_gpc',0);
+header("Access-Control-Allow-Origin:*");
 global $crud;
 $crud = new backend\web\App();
 $crud->run();

@@ -25,6 +25,22 @@ return [
         //翻译组件
         'i18n' => [
             'translations' => [
+//                'app' => [
+//                    'class' => 'yii\i18n\PhpMessageSource',
+//                    'basePath' => '@common/messages',
+//                    'fileMap' => [
+//                        'app' => 'app.php',
+//                        'app/error' => 'error.php',
+//                    ],
+//                ],
+//                'wp' => [
+//                    'class' => 'yii\i18n\PhpMessageSource',
+//                    'basePath' => '@crud/messages/wp',
+//                    'fileMap' => [
+//                        'wp' => 'wp.php',
+//                        'wp/error' => 'error.php',
+//                    ],
+//                ],
                 'pay' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@pay/messages/pay',

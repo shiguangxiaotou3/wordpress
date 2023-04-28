@@ -11,5 +11,5 @@ class SheetJSAsset extends AppAsset {
         'vue-json-excel.cjs.js'
     ];
     public $jsOptions=[];
-    public $depends = ['crud\assets\VueAsset'];
+    public $depends = [];
 }

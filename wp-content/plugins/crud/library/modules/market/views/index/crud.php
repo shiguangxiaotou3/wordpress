@@ -91,4 +91,8 @@ new Vue({
 JS;
 $js = str_replace('\'{{LINKS}}\'' ,$links,$js);
 $this->registerJs($js);
+
+
+
+
 ?>

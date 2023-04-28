@@ -1,10 +1,38 @@
 <?php
 namespace crud\controllers;
 
+use crud\models\wp\WpUsers;
+use Yii;
 use yii\web\Controller;
 
+/**
+ * @property-read WpUsers $user
+ */
 class ApiController extends Controller
 {
+
+    public $_user;
+
+    public function getUser(){
+        header("Access-Control-Allow-Origin:*");
+        if(isset($this->_user)){
+            return $this->_user;
+        }else{
+            $data =Yii::$app->request->headers;
+            $token = $data['token'];
+            if($user =(new WpUsers())->getUserByToken($token)){
+                $this->_user = (new WpUsers())->getUserByToken($token);
+                return $this->_user;
+            }else{
+                return false;
+            }
+
+        }
+
+    }
+
+
+
     public function error($message, $data = [],$header=[])
     {
         header('Content-Type: application/json');

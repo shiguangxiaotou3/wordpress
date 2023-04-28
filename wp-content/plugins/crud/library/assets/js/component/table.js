@@ -53,7 +53,7 @@ Vue.component("crud-table", {
                         <input id="cb-select-all-1" type="checkbox" @click="selectorAll">
                     </td>
                     <crud-columns-thead v-for="(field,index) in columns" :key="index" :field="field" />
-                    <th id="actions" class="manage-column" style="width: 130px">操作</th>
+                    <th id="actions" v-if="operate.length>0" class="manage-column" style="width: 130px">操作</th>
                 </tr>
             </thead>
             <!-- end thead -->
@@ -80,8 +80,8 @@ Vue.component("crud-table", {
                         
                         <!-- content first --> 
                         <crud-columns-tbody 
-                         v-for="(field,index) in columns" 
-                         :key="index"   
+                         v-for="(field,column_index) in columns" 
+                         :key="column_index"   
                          :field="field" 
                          :row="row"
                          @showMiniModal="showMiniModal" 
@@ -89,17 +89,17 @@ Vue.component("crud-table", {
                         <!-- end content --> 
                         
                         <!-- last -->
-                        <td>
-                            <div class="button-group">
-                                <div class="button last-child " style="padding: 0 ">
-                                  <span class="dashicons dashicons-visibility" @click="view(indexTr)" style="margin: 4px 4px "></span>
-                                </div>
-                                <div class="button " style="padding: 0 ">
-                                  <span  class="dashicons dashicons-admin-page" @click="edit(indexTr)" style="margin: 4px 4px "></span>
-                                </div>
-                                <div class="button first-child button-link-delete" style="padding: 0 ">
-                                  <span  class="dashicons dashicons-no" @click="deleteRow(indexTr)" style="margin: 4px 4px "></span>
-                                </div>
+                        <td v-if="operate.length>0">
+                            <div class="button-group" >
+                                <template v-for="(button,butIndex) in operate">
+                                    <div 
+                                     style="padding:0 4px;line-height: 28px"
+                                     :class="button.class + ((butIndex ==0) ? ' last-child' : ((butIndex ==(operate.length)-1))?' first-child':'')" 
+                                     @click="buttonsClick(button.name,indexTr,(button.callBack || ''))">
+                                        <span v-if="button.icons" :class="button.icons" style="margin: 4px 0"></span>
+                                        {{button.text}}
+                                    </div>
+                                </template>
                             </div>
                         </td>
                         <!-- end last -->
@@ -108,7 +108,7 @@ Vue.component("crud-table", {
                 <!-- 没有数据 -->
                 <template v-else>
                      <tr >
-                        <td :colspan="columns.length +2" style="color: red">Nothing</td>
+                        <td :colspan="columns.length +((operate.length>0)?2:1)" style="color: red">Nothing</td>
                     </tr>
                 </template>
             </tbody>
@@ -122,7 +122,7 @@ Vue.component("crud-table", {
                         <input id="cb-select-all-1" type="checkbox" @click="selectorAll">
                     </td>
                     <crud-columns-thead v-for="(field,index) in columns" :key="index" :field="field" />
-                    <th id="actions" class="manage-column" style="width: 130px">操作</th>
+                    <th id="actions" v-if="operate.length>0" class="manage-column" style="width: 130px">操作</th>
                 </tr>
             </tfoot>
             <!-- end tfoot -->
@@ -226,7 +226,25 @@ Vue.component("crud-table", {
       title:this.tableName,
       showMini:false,
       miniContent:'',
-      miniInfo:''
+      miniInfo:'',
+      operate:[],
+      defaultOperate:[
+        {
+          'name': 'view',
+          'class': 'button ',
+          'icons': 'dashicons dashicons-visibility',
+        },
+        {
+        'name': 'edit',
+          'class': 'button ',
+          'icons': 'dashicons dashicons-admin-page',
+        },
+        {
+          'name': 'delete',
+          'class': 'button button-small button-link-delete',
+          'icons': 'dashicons dashicons-no',
+        },
+      ]
     }
   },
   watch: {
@@ -270,6 +288,7 @@ Vue.component("crud-table", {
     actions(){
       return this.defaultActions
     },
+    // 定义下载字段
     json_fields(){
         let fields ={};
         for (let i =1;i<= this.columns.length -1;i++){
@@ -379,10 +398,19 @@ Vue.component("crud-table", {
         dataType: 'json',
         success: (res) => {
           if (res.code == 1) {
-            // console.log(res.data);
-            // this.page = res.data.page;
-            // this.pageSize = res.data.pageSize;
-            this.columns = res.data.columns;
+            let result = res.data.columns;
+            const found = result.find(item => item.field ==='operate');
+            if(found){
+              for (let i =1;i<= result.length -1;i++){
+                if(result[i].field =='operate'){
+                  this.operate = result[i].buttons || []
+                  result.splice(i,1)
+                }
+              }
+            }else {
+              this.operate = this.defaultOperate
+            }
+            this.columns = result;
           }
         },
         error: (res) => {
@@ -542,12 +570,27 @@ Vue.component("crud-table", {
       this.actionType='edit'
       this.open();
     },
+    operateAction(index,url){
+
+    },
+    buttonsClick(name,index,callBack){
+      if(name =='view'){
+        this.view(index)
+      }else if(name =='edit'){
+        this.edit(index)
+      }else if(name =='delete'){
+        this. deleteRow(index)
+      }else {
+        this.n =index
+        if(callBack){
+          eval('('+callBack+')').call(this,options,this.row,index);
+        }
+      }
+    },
     exportFile(){
         this.$refs.exportType;
         let exportType =this.$refs.exportType.value;
-        console.log(exportType)
         if(exportType =='Excel'){
-            console.log(this.$refs.downloadExcel)
             this.$refs.downloadExcel.click()
         }
 
@@ -566,15 +609,17 @@ Vue.component("crud-table", {
     },
     closeMiniModal(){
       this.showMini =false;
-    }
+    },
+
   },
   //生命周期 - 创建完成
   created() {
     this.init();
+    console.log('初始化完成')
   },
   //生命周期 - 挂载完成
   mounted() {
     this.index();
-    console.log('初始化完成')
+    console.log('首次价值完成')
   },
 });

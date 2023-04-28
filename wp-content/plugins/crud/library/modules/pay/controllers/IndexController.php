@@ -12,7 +12,7 @@ class IndexController extends Controller
 
     public function actions(){
         return [
-            "index",'alibaba','wechat'
+            "index",'alibaba','wechat','reflect'
         ];
     }
 
@@ -24,9 +24,13 @@ class IndexController extends Controller
         return $this->render('alibaba');
     }
 
+    /**
+     * 获取微信平台证书
+     * @return false|string
+     */
     public function actionWechat(){
         if(Yii::$app->request->isAjax){
-            return json_encode(  Yii::$app->wechatpay->certificates());
+            return json_encode( Yii::$app->wechatPay->certificates());
         }
         return $this->render('wechat');
     }
@@ -36,7 +40,8 @@ class IndexController extends Controller
 
     /**
      * 转账
-     * @return string
+     * @return false|string
+     * @throws Exception
      */
     public function actionRemit(){
         $request = Yii::$app->request;
@@ -66,8 +71,6 @@ class IndexController extends Controller
         return $this->render('remit');
     }
 
-
-
     public function actionOrder(){
        $links=[
             ['url'=>'pay/index','label'=>'支付'],
@@ -76,6 +79,7 @@ class IndexController extends Controller
             ['url'=>'pay/index/test','label'=>'测试'],
             ['url'=>'pay/index/remit','label'=>'转账到支付宝'],
             ['url'=>'pay/index/order','label'=>'订单表'],
+           ['url'=>'pay/index/reflect','label'=>'提现申请'],
 
        ];
         return  $this->render("@crud/views/ajax",[
@@ -84,6 +88,27 @@ class IndexController extends Controller
             'url_prefix'=>'pay',
             'links'=>json_encode($links),
             'tableName'=>'Order'
+        ]);
+    }
+
+
+    public function actionReflect(){
+        $links=[
+            ['url'=>'pay/index','label'=>'支付'],
+            ['url'=>'pay/index/alibaba','label'=>'支付宝'],
+            ['url'=>'pay/index/wechat','label'=>'微信支付'],
+            ['url'=>'pay/index/test','label'=>'测试'],
+            ['url'=>'pay/index/remit','label'=>'转账到支付宝'],
+            ['url'=>'pay/index/order','label'=>'订单表'],
+            ['url'=>'pay/index/reflect','label'=>'提现申请'],
+
+        ];
+        return  $this->render("@crud/views/ajax",[
+            'activeUrl'=>'pay/index/reflect',
+            'title'=>'用户管理',
+            'url_prefix'=>'pay',
+            'links'=>json_encode($links),
+            'tableName'=>'Reflect'
         ]);
     }
 

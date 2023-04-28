@@ -253,8 +253,8 @@ class IndexController extends Controller
      */
     public  function actionUuid(){
         $str='5aeff03ec98211edb261cf07b26b02c8';
-        echo strlen($str);
-//        echo Yii::$app->db->createCommand("select uuid() as uuid")->queryOne()['uuid'];
+//        echo strlen($str);
+        echo Yii::$app->db->createCommand("select uuid() as uuid")->queryOne()['uuid'];
     }
 
     /**
@@ -339,7 +339,7 @@ class IndexController extends Controller
      */
     public function actionUseSort($basePath =""){
         if (empty($basePath)) {
-            $basePath = Yii::getAlias("@backend");
+            $basePath = Yii::getAlias("@crud");
         }
         $handle = opendir($basePath);
         while (false !== ($file = readdir($handle))) {

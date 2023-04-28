@@ -2,7 +2,6 @@
 
 namespace crud\modules\wechat\components;
 
-use crud\modules\pay\behaviors\PayBehavior;
 use Yii;
 use Exception;
 use yii\web\View;
@@ -14,7 +13,6 @@ use yii\base\InvalidConfigException;
 use GuzzleHttp\Exception\GuzzleException;
 use crud\modules\wechat\assets\MarketAssets;
 use crud\modules\wechat\models\ValidateServer;
-use crud\modules\wechat\behaviors\SubscriptionServiceMessage;
 
 /**
  * 微信公众号组件
@@ -29,9 +27,8 @@ use crud\modules\wechat\behaviors\SubscriptionServiceMessage;
  * @property-read string $accessToken
  * @property-read string $ticket
  * @property-read array $jsConfig
- * @property-write array $conditionalMenu
  * @property-read array $jsApiList
- * @package crud\common\components\wechat
+ * @package crud\common\components\webxin
  */
 class SubscriptionService extends Component
 {
@@ -47,13 +44,6 @@ class SubscriptionService extends Component
     private $_client;
 
     public $domain = 'https://api.weixin.qq.com';
-
-    public function behaviors(){
-        return [
-            SubscriptionServiceMessage::class
-        ];
-    }
-
 
     /**
      * 验证开发者服务器
@@ -370,6 +360,8 @@ class SubscriptionService extends Component
             $msg = isset($error[$response['errcode']]) ? $error[$response['errcode']] : $response['errmsg'];
           throw new Exception($msg);
         } else {
+//            unset($response['errcode']);
+//            unset($response['errmsg']);
             return $response;
         }
     }

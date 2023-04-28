@@ -11,7 +11,6 @@ use crud\widgets\PageHeaderWidget;
 
 <div class="wrap">
     <?= PageHeaderWidget::widget() ?>
-        asdas
     <?php
 
 //    $result = WpUserMeta::find()
@@ -19,10 +18,10 @@ use crud\widgets\PageHeaderWidget;
 //        ->andWhere(['meta_value'=>'17762482477'])->one();
 ////    self::find()->where(['ID'=>$result->user_id])->one();
 //   $data = WpUsers::find()->where(['ID'=>1])->one();
-    dump( WpUsers::getUserByPhone('17762482477'));
+//    dump( (new WpUsers)->getUserByPhone('17762482477'));
 //    $tencent = Yii::$app->tencent;
 //    dump($tencent->applet->getAccessToken());
-        Yii::$app->cache->flush();
+//        Yii::$app->cache->flush();
 //    $cache = Yii::$app->cache;
 //    $access_token = $cache->get("market_applet_access_token");
 //    var_dump($access_token);

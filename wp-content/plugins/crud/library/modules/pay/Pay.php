@@ -57,7 +57,15 @@ class Pay extends Module implements BootstrapInterface
             ["menu_slug" => "pay/order/view"],
             ["menu_slug" => "pay/order/update"],
             ["menu_slug" => "pay/order/delete"],
-            ["menu_slug" => "pay/order/deletes"]
+            ["menu_slug" => "pay/order/deletes"],
+
+            ["menu_slug" => "pay/reflect/init"],
+            ["menu_slug" => "pay/reflect/index"],
+            ["menu_slug" => "pay/reflect/create"],
+            ["menu_slug" => "pay/reflect/view"],
+            ["menu_slug" => "pay/reflect/update"],
+            ["menu_slug" => "pay/reflect/delete"],
+            ["menu_slug" => "pay/reflect/deletes"]
         ];
         foreach ($menus as $menu) {
             $menuModel = new AjaxAction($menu);

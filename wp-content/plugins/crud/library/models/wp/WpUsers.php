@@ -2,11 +2,12 @@
 
 namespace crud\models\wp;
 
-use crud\modules\market\models\Money;
 use \Yii;
-use \WP_Error;
 use \WP_User;
+use \WP_Error;
 use \yii\db\ActiveRecord;
+use crud\modules\market\models\Money;
+
 /**
  * This is the model class for table "wp_users".
  *
@@ -256,8 +257,6 @@ class WpUsers extends ActiveRecord
     public function setSubscription_session_key($value){
         return $this->setUserMeta(self::LOGIN_TYPE_SUBSCRIPTION.'_session_key',$value,true);
     }
-
-
     /**
      * 通过用户名或邮箱登录
      * @param $username
@@ -378,22 +377,35 @@ class WpUsers extends ActiveRecord
      * @return array
      */
     public function getUserInfo(){
+        $avatarUrl =$nickname ='';
         if($this->ID ==1){
             $this->phone ='17762482477';
             $this->avatarUrl='https://www.shiguangxiaotou.com/wp-content/uploads/2023/03/WechatIMG586.jpeg';
             $this->token='';
-            $this->nickName ='时光小偷';
+            $nickname ='时光小偷';
+            $avatarUrl = 'https://www.shiguangxiaotou.com/wp-content/uploads/2023/03/WechatIMG586.jpeg';
+        }else{
+            $avatarUrl = $this->getAvatarUrl();
+            $nickname =$this->getNickName();
         }
-        $config =[
-            'phone','nickName','token','money','avatarUrl',
-            'gender','language','city','province','country','unionid','applet_session_key',
-            'applet_openid','subscription_session_key','subscription_openid'
+        return [
+            'id'=>$this->id,
+            'phone'=>$this->getPhone(),
+            'nickName'=>$nickname ,
+            'token'=>$this->getToken(),
+            'money'=>$this->getMoney(),
+            'avatarUrl'=>$avatarUrl,
+            'gender'=>$this->getGender(),
+            'language'=>$this->getLanguage(),
+            'city'=>$this->getCity(),
+            'province'=>$this->getProvince(),
+            'country'=>$this->getCountry(),
+            'unionid'=>$this->getUnionid(),
+            'applet_session_key'=>$this->getApplet_session_key(),
+            'applet_openid'=>$this->getApplet_openid(),
+            'subscription_session_key'=>$this->getSubscription_session_key(),
+            'subscription_openid'=>$this->getSubscription_openid()
         ];
-        $result =['id'=>$this->ID];
-        foreach ($config as $value){
-            $result[$value]= $this->$value;
-        }
-        return $result;
     }
 
     /**
@@ -470,8 +482,6 @@ class WpUsers extends ActiveRecord
             return  add_user_meta($this->ID,$field,$value,$unique);
         }
     }
-
-
     /**
      * 更新用户余额
      * @param $money

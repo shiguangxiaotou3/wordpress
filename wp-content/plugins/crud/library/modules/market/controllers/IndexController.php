@@ -1,8 +1,11 @@
 <?php
 namespace crud\modules\market\controllers;
 
+
 use Yii;
 use yii\web\Controller;
+use crud\components\Response;
+
 class IndexController extends Controller
 {
     /**
@@ -21,6 +24,56 @@ class IndexController extends Controller
     public function actionSettings(){
         return  $this->render("settings");
     }
+
+
+    public function actionTest(){
+        return  $this->render("test");
+    }
+
+    public function actionMy(){
+        $request = Yii::$app->request;
+        if($request->isAjax){
+            $orderTypeLise = $request->post('orderTypeLise');
+            $severList = $request->post('severList');
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            update_option('market_my_orderTypeLise',$orderTypeLise);
+            update_option('market_my_severList',$severList);
+
+            return json_encode(
+                [
+                    'code'=>1,
+                    'message'=>'Success',
+                    'time'=>time(),
+                    'data'=>[
+                        'orderTypeLise'=>$orderTypeLise,
+                        'severList'=>$severList
+                    ]
+                ]
+            );
+        }
+        return  $this->render("my");
+    }
+
+    public function actionPage(){
+        $request = Yii::$app->request;
+        if($request->isAjax){
+            $swiper = $request->post('swiper');
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            update_option('market_index_swiper',$swiper);
+            return json_encode(
+                [
+                    'code'=>1,
+                    'message'=>'Success',
+                    'time'=>time(),
+                    'data'=>[
+                        'swiper'=>$swiper,
+                    ]
+                ]
+            );
+        }
+        return  $this->render("page");
+    }
+
 
     /**
      * @return string
@@ -115,14 +168,12 @@ class IndexController extends Controller
         ]);
     }
 
-    public function actionTest(){
-        return  $this->render("test");
-    }
-
     private function links(){
         return [
             ['url' => 'market/index', 'label' => '商场'],
             ['url' => 'market/index/settings', 'label' => '基础设置'],
+            ['url' => 'market/index/page', 'label' => '页面设置'],
+            ['url' => 'market/index/my', 'label' => '个人中心'],
             ['url' => 'market/index/address', 'label' => '地址'],
             ['url' => 'market/index/money', 'label' => '余额管理'],
             ['url' => 'market/index/categorize', 'label' => '分类管理'],

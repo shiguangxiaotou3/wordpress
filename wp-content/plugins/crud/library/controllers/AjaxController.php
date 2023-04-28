@@ -52,7 +52,6 @@ class AjaxController extends ApiController
         $request = Yii::$app->request;
         $class =$this->modelClass;
         if ($request->isAjax) {
-            /** @var yii\db\ActiveRecord $query */
             $query = $class::find();
             $page =$request->get('page', 1)-1;
             $pageSize = $request->get('pageSize', 10);
