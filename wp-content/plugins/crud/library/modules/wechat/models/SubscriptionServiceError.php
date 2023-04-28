@@ -2,6 +2,7 @@
 namespace crud\modules\wechat\models;
 
 use yii\base\BaseObject;
+
 class SubscriptionServiceError extends BaseObject
 {
 

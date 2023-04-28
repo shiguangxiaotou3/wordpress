@@ -2,6 +2,7 @@
 namespace crud\models;
 
 use yii\base\Model;
+
 /**
  * Class Color
  * @package crud\common\model

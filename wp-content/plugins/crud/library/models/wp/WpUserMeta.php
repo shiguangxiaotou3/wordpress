@@ -3,7 +3,6 @@
 namespace crud\models\wp;
 
 use Yii;
-
 /**
  * This is the model class for table "wp_usermeta".
  *
@@ -46,8 +45,6 @@ class WpUserMeta extends \yii\db\ActiveRecord
             'meta_value' => 'Meta Value',
         ];
     }
-
-
     /**
      * {@inheritdoc}
      */
@@ -65,6 +62,4 @@ class WpUserMeta extends \yii\db\ActiveRecord
     //'User ID' => '',
     //'Meta Key' => '',
     //'Meta Value' => '',
-
-
 }

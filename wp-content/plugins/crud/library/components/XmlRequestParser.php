@@ -1,10 +1,11 @@
 <?php
 namespace crud\components;
 
+use yii\helpers\Xml;
 use SimpleXMLElement;
 use yii\web\RequestParserInterface;
 use yii\web\BadRequestHttpException;
-use yii\helpers\Xml;
+
 /**
  * Class XmlRequestParser
  * @package crud\components
@@ -31,8 +32,6 @@ class XmlRequestParser implements RequestParserInterface{
             return [];
         }
     }
-
-
     public static function xmlToArray($xml)
     {
 

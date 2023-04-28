@@ -3,9 +3,6 @@
  * This is the template for generating CRUD search class of the specified model.
  */
 
-use yii\helpers\StringHelper;
-
-
 /** @var yii\web\View $this */
 /** @var yii\gii\generators\crud\Generator $generator */
 
@@ -25,9 +22,9 @@ echo "<?php\n";
 namespace <?= StringHelper::dirname(ltrim($generator->searchModelClass, '\\')) ?>;
 
 use yii\base\Model;
+use yii\helpers\StringHelper;
 use yii\data\ActiveDataProvider;
 use <?= ltrim($generator->modelClass, '\\') . (isset($modelAlias) ? " as $modelAlias" : "") ?>;
-
 /**
  * <?= $searchModelClass ?> represents the model behind the search form of `<?= $generator->modelClass ?>`.
  */

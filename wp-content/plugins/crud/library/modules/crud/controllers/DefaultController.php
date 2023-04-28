@@ -15,6 +15,7 @@ use crud\modules\crud\Crud;
 use crud\modules\crud\Generator;
 use yii\web\NotFoundHttpException;
 use crud\modules\crud\generators\model\Generator  as modelGenerator;
+
 /**
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0

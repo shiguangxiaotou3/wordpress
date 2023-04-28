@@ -7,10 +7,9 @@
 
 namespace crud\modules\gii\components;
 
+use yii\helpers\Html;
 use yii\gii\Generator;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
-
 /**
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
@@ -25,8 +24,6 @@ class ActiveField extends \yii\widgets\ActiveField
      * @var Generator
      */
     public $model;
-
-
     /**
      * {@inheritdoc}
      */

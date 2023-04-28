@@ -1,11 +1,8 @@
 <?php
-
-
 namespace crud\modules\pay\events;
 
-
-use crud\modules\pay\models\Order;
 use yii\base\Event;
+use crud\modules\pay\models\Order;
 
 class SubmitEvent extends Event
 {
@@ -32,8 +29,6 @@ class SubmitEvent extends Event
 //        $model->subject = $data['palType'];
 //        $model->pal_type = $data['palType'];
     }
-
-
     public function notifyEvent(){
 
     }
@@ -41,8 +36,6 @@ class SubmitEvent extends Event
     public function returnEvent(){
 
     }
-
-
 
     public function updateUserMoney(){
 

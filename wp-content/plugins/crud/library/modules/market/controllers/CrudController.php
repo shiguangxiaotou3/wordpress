@@ -1,11 +1,8 @@
 <?php
-
-
 namespace crud\modules\market\controllers;
 
 use Yii;
 use crud\controllers\ApiController;
-
 class CrudController extends ApiController
 {
     public $modelClass;

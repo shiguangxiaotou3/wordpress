@@ -3,10 +3,6 @@
  * This is the template for generating a CRUD controller class file.
  */
 
-use yii\db\ActiveRecordInterface;
-use yii\helpers\StringHelper;
-
-
 /** @var yii\web\View $this */
 /** @var yii\gii\generators\crud\Generator $generator */
 
@@ -29,15 +25,18 @@ echo "<?php\n";
 
 namespace <?= StringHelper::dirname(ltrim($generator->controllerClass, '\\')) ?>;
 
-use <?= ltrim($generator->modelClass, '\\') ?>;
-<?php if (!empty($generator->searchModelClass)): ?>
-use <?= ltrim($generator->searchModelClass, '\\') . (isset($searchModelAlias) ? " as $searchModelAlias" : "") ?>;
-<?php else: ?>
-use yii\data\ActiveDataProvider;
-<?php endif; ?>
-use <?= ltrim($generator->baseControllerClass, '\\') ?>;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\StringHelper;
+use yii\data\ActiveDataProvider;
+use yii\db\ActiveRecordInterface;
+use yii\web\NotFoundHttpException;
+use <?= ltrim($generator->modelClass, '\\') ?>;
+use <?= ltrim($generator->baseControllerClass, '\\') ?>;
+use <?= ltrim($generator->searchModelClass, '\\') . (isset($searchModelAlias) ? " as $searchModelAlias" : "") ?>;
+
+<?php if (!empty($generator->searchModelClass)): ?>
+<?php else: ?>
+<?php endif; ?>
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.

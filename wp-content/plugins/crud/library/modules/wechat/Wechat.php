@@ -1,13 +1,14 @@
 <?php
 namespace crud\modules\wechat;
 
-use crud\models\AjaxAction;
 use Yii;
 use backend\web\App;
 use yii\base\Module;
 use yii\web\Application;
+use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
+
 class Wechat extends Module implements BootstrapInterface
 {
     /**

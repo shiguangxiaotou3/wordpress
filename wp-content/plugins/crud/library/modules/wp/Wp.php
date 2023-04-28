@@ -9,8 +9,9 @@ use yii\helpers\ArrayHelper;
 use yii\debug\panels\DumpPanel;
 use yii\base\BootstrapInterface;
 use yii\base\InvalidRouteException;
-use yii\console\Application as ConsoleApplication;
 use crud\widgets\RegisterHighlightAssetWidget;
+use yii\console\Application as ConsoleApplication;
+
 /**
  * Class Wp
  *

@@ -2,9 +2,8 @@
 
 namespace crud\modules\wechat\controllers;
 
-
-use crud\controllers\ApiController;
 use Yii;
+use crud\controllers\ApiController;
 class MenuController extends ApiController
 {
 

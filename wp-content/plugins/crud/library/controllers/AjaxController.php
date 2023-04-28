@@ -4,7 +4,6 @@ namespace crud\controllers;
 
 use Yii;
 use crud\controllers\ApiController;
-
 /**
  * ajax 控制器基类
  */

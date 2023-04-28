@@ -266,6 +266,7 @@ namespace yii\components\MyClass;
 
 use yii\base\Object;
 use yii\base\BaseObject;
+
 class MyClass extends Object
 {
     public \$prop1;

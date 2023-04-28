@@ -1,14 +1,11 @@
 <?php
-
-
 namespace crud\modules\market\components;
 
 use Yii;
 use Exception;
+use yii\base\BaseObject;
 use crud\components\Http;
 use GuzzleHttp\Exception\GuzzleException;
-use yii\base\BaseObject;
-
 /**
  * Class WechatApplet
  * @property-read string $accessToken
@@ -90,8 +87,6 @@ class WechatApplet extends BaseObject
         ];
         return   $this->response($this->client->post("/wxa/business/getuserphonenumber", $data));
     }
-
-
     /**
      * 处理请求结果,处理保存信息
      *

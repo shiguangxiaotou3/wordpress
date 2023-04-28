@@ -4,7 +4,6 @@ namespace crud\modules\wechat\controllers;
 
 use Yii;
 use crud\controllers\ApiController;
-
 class TemplateMessageController extends ApiController
 {
 
@@ -47,6 +46,4 @@ class TemplateMessageController extends ApiController
             return $this->success('success',$_POST);
         }
     }
-
-
 }

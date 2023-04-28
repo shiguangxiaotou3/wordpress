@@ -1,24 +1,21 @@
 <?php
-
-
 namespace crud\modules\pay\components;
 
-use crud\models\wp\WpUsers;
-use crud\modules\pay\behaviors\PayBehavior;
-use crud\modules\pay\events\PayEvent;
 use Yii;
-use \yii\helpers\ArrayHelper;
 use Exception;
-use yii\base\Component;
+use SodiumException;
 use WeChatPay\Builder;
+use yii\base\Component;
 use WeChatPay\Crypto\Rsa;
 use GuzzleHttp\Middleware;
 use WeChatPay\Util\PemUtil;
-use GuzzleHttp\Exception\RequestException;
-use Psr\Http\Message\ResponseInterface;
+use crud\models\wp\WpUsers;
 use WeChatPay\Crypto\AesGcm;
-use SodiumException;
-
+use \yii\helpers\ArrayHelper;
+use crud\modules\pay\events\PayEvent;
+use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Exception\RequestException;
+use crud\modules\pay\behaviors\PayBehavior;
 /**
  * Class WechatPay
  *
@@ -48,8 +45,6 @@ class WechatPay extends Component implements Pay
     public $returnUrl;
 
     private $_user;
-
-
     public function behaviors(){
         return [
             PayBehavior::className()
@@ -95,8 +90,6 @@ class WechatPay extends Component implements Pay
              ],
          ]);
      }
-
-
     /**
      * 获取「微信支付平台证书」
      *
@@ -223,8 +216,6 @@ class WechatPay extends Component implements Pay
          }
 
      }
-
-
     /**
      * @param $userId
      * @param $orderId
@@ -300,8 +291,6 @@ class WechatPay extends Component implements Pay
          }
 
      }
-
-
     /**
      * @param $userId
      * @param $orderId
@@ -363,8 +352,6 @@ class WechatPay extends Component implements Pay
          return $client->chain('/v3/pay/transactions/h5')
              ->post(['json' => $data]);
      }
-
-
     /**
      * @param $userId
      * @param $orderId
@@ -392,8 +379,6 @@ class WechatPay extends Component implements Pay
          return $client->chain('v3/pay/transactions/native')
              ->post(['json' => $data]);
      }
-
-
     /**
      * 通过用户id 返回openid
      * @param string $openid
@@ -402,8 +387,6 @@ class WechatPay extends Component implements Pay
     private function getUserIdByOpenId($openid=''){
         return  $this->_user->Applet_openid;
     }
-
-
     /**
      * @param $user
      * @return void
@@ -463,8 +446,6 @@ class WechatPay extends Component implements Pay
      {
 
      }
-
-
     /**
      * 签名
      * @param $signStr
@@ -535,8 +516,6 @@ class WechatPay extends Component implements Pay
             exit(json_encode(['code'=>'FAIL', "message"=>"签名验证失败"]));
         }
     }
-
-
     /**
      * @param $associatedData
      * @param $nonceStr

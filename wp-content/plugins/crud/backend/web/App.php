@@ -30,6 +30,7 @@ use crud\modules\market\components\WechatApplet;
 use crud\modules\market\components\BaseComponent;
 use crud\modules\wechat\components\SubscriptionService;
 use shiguangxiaotou\alipay\request\AlipayEcoCityserviceAppinfoQueryRequest;
+
 /**
  * App对象基类
  *
@@ -163,8 +164,6 @@ class App extends Application
         remove_action('admin_init', '_maybe_update_core');    // 禁止 WordPress 检查更新
         remove_action('admin_init', '_maybe_update_plugins'); // 禁止 WordPress 更新插件
         remove_action('admin_init', '_maybe_update_themes');
-
-
 
         // +----------------------------------------------------------------------
         // ｜中国地区头像代理

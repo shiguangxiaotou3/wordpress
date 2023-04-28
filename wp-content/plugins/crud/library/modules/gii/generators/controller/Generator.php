@@ -12,7 +12,6 @@ use yii\gii\CodeFile;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
-
 /**
  * This generator will generate a controller and one or a few action view files.
  *
@@ -43,8 +42,6 @@ class Generator extends \yii\gii\Generator
      * @var string list of action IDs separated by commas or spaces
      */
     public $actions = 'index';
-
-
     /**
      * {@inheritdoc}
      */

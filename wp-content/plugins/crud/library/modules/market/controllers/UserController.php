@@ -2,10 +2,9 @@
 
 namespace crud\modules\market\controllers;
 
-use crud\controllers\AjaxController;
 use Yii;
 use  crud\models\wp\WpUsers;
-
+use crud\controllers\AjaxController;
 
 class UserController  extends AjaxController
 {

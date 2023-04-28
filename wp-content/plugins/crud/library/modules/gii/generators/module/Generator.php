@@ -7,11 +7,10 @@
 
 namespace crud\modules\gii\generators\module;
 
+use Yii;
 use yii\gii\CodeFile;
 use yii\helpers\Html;
-use Yii;
 use yii\helpers\StringHelper;
-
 /**
  * This generator will generate the skeleton code needed by a module.
  *
@@ -31,8 +30,6 @@ class Generator extends \yii\gii\Generator
      * @var string
      */
     public $moduleID;
-
-
     /**
      * {@inheritdoc}
      */

@@ -2,7 +2,6 @@
 namespace crud\modules\pay\components;
 
 use yii\base\Component;
-
 class Paypal extends Component implements Pay
 {
 

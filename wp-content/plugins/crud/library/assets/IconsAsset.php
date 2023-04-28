@@ -2,6 +2,7 @@
 namespace crud\assets;
 
 use yii\web\AssetBundle;
+
 class IconsAsset extends AppAsset {
 
     public $sourcePath =  "@bower/webslides";

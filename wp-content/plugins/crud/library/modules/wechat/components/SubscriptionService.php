@@ -13,7 +13,6 @@ use yii\base\InvalidConfigException;
 use GuzzleHttp\Exception\GuzzleException;
 use crud\modules\wechat\assets\MarketAssets;
 use crud\modules\wechat\models\ValidateServer;
-
 /**
  * 微信公众号组件
  * @property string $appId
@@ -730,8 +729,6 @@ wx.ready(function(res){
         $query = http_build_query($config);
         return 'https://open.weixin.qq.com/connect/oauth2/authorize?'.$query."#wechat_redirect";
     }
-
-
     public function autoEcho(){
 
     }
@@ -767,8 +764,6 @@ wx.ready(function(res){
             ]
         ));
     }
-
-
     /**
      * 获取模版消息ids
      * @return array
@@ -807,6 +802,4 @@ wx.ready(function(res){
             ]
         ));
     }
-
-
 }

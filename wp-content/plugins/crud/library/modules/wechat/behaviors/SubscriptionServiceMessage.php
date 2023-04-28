@@ -2,10 +2,9 @@
 
 namespace crud\modules\wechat\behaviors;
 
-use crud\modules\wechat\models\WechatMessage;
 use Yii;
 use yii\base\Behavior;
-
+use crud\modules\wechat\models\WechatMessage;
 class SubscriptionServiceMessage extends Behavior
 {
     public $_ToUserName;
@@ -15,8 +14,6 @@ class SubscriptionServiceMessage extends Behavior
     public $model_id;
 
     public $test ='qwe';
-
-
     /**
      * 微信数据
      *

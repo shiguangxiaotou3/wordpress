@@ -3,7 +3,6 @@
 namespace crud\modules\market\models;
 
 use Yii;
-
 /**
  * This is the model class for table "wp_commodity".
  *
@@ -61,8 +60,6 @@ class Commodity extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('market', 'Updated At'),
         ];
     }
-
-
     /**
      * {@inheritdoc}
      */
@@ -96,6 +93,4 @@ class Commodity extends \yii\db\ActiveRecord
     //'Remarks' => '',
     //'Created At' => '',
     //'Updated At' => '',
-
-
 }

@@ -1,11 +1,8 @@
 <?php
-
-
 namespace crud\modules\market\components;
 
 use Yii;
 use yii\base\BaseObject;
-
 
 /**
  * Class Tencent
@@ -16,8 +13,6 @@ use yii\base\BaseObject;
  */
 class Tencent extends BaseObject
 {
-
-
     /**
      * @return crud\modules\pay\components\WechatPay
      */

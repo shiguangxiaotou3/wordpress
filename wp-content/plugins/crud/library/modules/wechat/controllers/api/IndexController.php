@@ -1,7 +1,6 @@
 <?php
 namespace crud\modules\wechat\controllers\api;
 
-
 use Yii;
 use crud\modules\market\controllers\api\ApiController;
 class IndexController extends ApiController
@@ -25,7 +24,5 @@ class IndexController extends ApiController
     {
         return $this->success('ok',  Yii::$app->subscription->autoMessage());
     }
-
-
 
 }

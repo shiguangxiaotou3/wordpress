@@ -3,6 +3,7 @@ namespace crud\models;
 
 use Yii;
 use yii\base\Model;
+
 /**
  * 注册菜单模型
  *

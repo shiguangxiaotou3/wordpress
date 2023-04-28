@@ -2,12 +2,11 @@
 
 namespace crud\modules\pay\models;
 
-use common\models\User;
-use crud\models\wp\WpUsers;
 use Yii;
+use common\models\User;
 use yii\db\ActiveRecord;
+use crud\models\wp\WpUsers;
 use yii\behaviors\TimestampBehavior;
-
 /**
  * This is the model class for table "wp_order".
  *
@@ -46,8 +45,6 @@ class Order extends ActiveRecord{
             ]
         ];
     }
-
-
     /**
      * {@inheritdoc}
      */
@@ -71,8 +68,6 @@ class Order extends ActiveRecord{
             [['order_id', 'subject', 'trade_no', 'notify_url', 'return_url'], 'string', 'max' => 255],
         ];
     }
-
-
     public function validateUser($attribute){
         if( WpUsers::find()->where(['Id'=>$this->user_id])->one()){
            return true;

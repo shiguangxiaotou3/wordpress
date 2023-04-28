@@ -9,7 +9,6 @@ namespace crud\modules\gii\generators\extension;
 
 use Yii;
 use yii\gii\CodeFile;
-
 /**
  * This generator will generate the skeleton files needed by an extension.
  *
@@ -32,8 +31,6 @@ class Generator extends \yii\gii\Generator
     public $license;
     public $authorName;
     public $authorEmail;
-
-
     /**
      * {@inheritdoc}
      */

@@ -7,7 +7,6 @@ use \WP_User;
 use \WP_Error;
 use \yii\db\ActiveRecord;
 use crud\modules\market\models\Money;
-
 /**
  * This is the model class for table "wp_users".
  *

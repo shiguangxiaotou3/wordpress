@@ -5,7 +5,6 @@ use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use crud\common\assets\ChartAsset;
-
 class BarChartWidget extends  Widget
 {
     public $id;

@@ -3,7 +3,6 @@ namespace crud\models;
 
 use Yii;
 use yii\base\Model;
-
 /**
  * 生成composer 依赖关系图
  * @package crud\models

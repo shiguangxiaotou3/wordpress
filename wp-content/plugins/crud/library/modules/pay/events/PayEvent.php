@@ -1,12 +1,9 @@
 <?php
-
-
 namespace crud\modules\pay\events;
 
-
-use crud\models\wp\WpUsers;
 use Yii;
 use yii\base\Event;
+use crud\models\wp\WpUsers;
 use crud\modules\pay\models\Order;
 /**
  * Class PayEvent
@@ -39,8 +36,6 @@ class PayEvent extends Event
     public $notify_url; //异步通知url
     public $return_url; //同步跳转url
     public $status; //支付状态
-
-
     private $_transaction;
     private $_model;
     private $_error=[];
@@ -104,8 +99,6 @@ class PayEvent extends Event
             $this->_model = $model;
         }
     }
-
-
     public function afterNotifyEvent(){
         $user= new WpUsers();
         $user->getUserById($this->model->user_id);
@@ -124,8 +117,6 @@ class PayEvent extends Event
     public function updateUserMoney(){
 
     }
-
-
     public function getModel(){
         return $this->_model;
     }

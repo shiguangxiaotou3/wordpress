@@ -4,7 +4,6 @@ namespace crud\modules\sms\controllers;
 use Yii;
 use yii\helpers\ArrayHelper;
 use crud\controllers\ApiController;
-
 class IndexController extends ApiController
 {
     public $layout=false;

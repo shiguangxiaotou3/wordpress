@@ -1,10 +1,11 @@
 <?php
 namespace crud\modules\market\components;
+
 use Yii;
-use crud\components\Http;
-use GuzzleHttp\Exception\GuzzleException;
 use yii\base\BaseObject;
+use crud\components\Http;
 use Darabonba\OpenApi\Models\Config;
+use GuzzleHttp\Exception\GuzzleException;
 use AlibabaCloud\Tea\Utils\Utils\RuntimeOptions;
 use AlibabaCloud\SDK\Dysmsapi\V20170525\Dysmsapi;
 use AlibabaCloud\SDK\Dysmsapi\V20170525\Models\SendSmsRequest;
@@ -25,8 +26,6 @@ use AlibabaCloud\SDK\Dysmsapi\V20170525\Models\QuerySmsTemplateListRequest;
  */
 class BaseComponent extends BaseObject
 {
-
-
     /**
      * @param $phone
      * @param string $code
@@ -136,6 +135,4 @@ class BaseComponent extends BaseObject
         }
         return $res;
     }
-
-
 }

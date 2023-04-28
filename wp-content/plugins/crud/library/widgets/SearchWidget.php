@@ -3,6 +3,7 @@ namespace crud\widgets;
 
 use yii\base\Widget;
 use yii\helpers\Html;
+
 class SearchWidget extends Widget
 {
     public $options=[];

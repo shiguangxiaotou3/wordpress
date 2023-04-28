@@ -1,8 +1,5 @@
 <?php
-
-
 namespace crud\modules\wechat\controllers\wechat;
-
 
 use yii\web\Controller;
 

@@ -2,7 +2,6 @@
 
 namespace crud\modules\wechat\controllers;
 
-
 use crud\controllers\AjaxController;
 
 class WechatMessageController extends AjaxController

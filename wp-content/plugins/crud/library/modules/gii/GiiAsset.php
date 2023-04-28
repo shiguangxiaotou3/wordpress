@@ -8,7 +8,6 @@
 namespace crud\modules\gii;
 
 use crud\assets\AppAsset;
-
 /**
  * This declares the asset files required by Gii.
  *

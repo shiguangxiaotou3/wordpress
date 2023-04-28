@@ -1,12 +1,12 @@
 <?php
 namespace crud\modules\pay\components;
 
-
 use Yii;
 use Exception;
+use SimpleXMLElement;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
-use SimpleXMLElement;
+use crud\modules\pay\events\PayEvent;
 use shiguangxiaotou\alipay\AopClient;
 use shiguangxiaotou\alipay\AlipayConfig;
 use shiguangxiaotou\alipay\AopCertClient;
@@ -16,7 +16,6 @@ use shiguangxiaotou\alipay\request\AlipayTradeQueryRequest;
 use shiguangxiaotou\alipay\request\AlipayTradeRefundRequest;
 use shiguangxiaotou\alipay\request\AlipayTradeWapPayRequest;
 use shiguangxiaotou\alipay\request\AlipayTradePagePayRequest;
-use crud\modules\pay\events\PayEvent;
 use shiguangxiaotou\alipay\request\AlipayFundTransUniTransferRequest;
 use shiguangxiaotou\alipay\request\AlipayTradeFastpayRefundQueryRequest;
 use shiguangxiaotou\alipay\request\AlipayDataDataserviceBillDownloadurlQueryRequest;
@@ -137,8 +136,6 @@ class Alipay extends Component implements Pay
             return  new AopCertClient ($alipayConfig);
         }
     }
-
-
     /**
      * 下单
      *

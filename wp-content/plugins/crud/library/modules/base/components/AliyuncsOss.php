@@ -7,6 +7,7 @@ use OSS\Core\OssUtil;
 use yii\base\Component;
 use OSS\Core\OssException;
 use OSS\Model\TaggingConfig;
+
 /**
  * 阿里云oss组件
  * @property $bucket 存储空间

@@ -33,6 +33,7 @@ use yii\web\NotFoundHttpException;
 use <?= ltrim($generator->modelClass, '\\') ?>;
 use <?= ltrim($generator->baseControllerClass, '\\') ?>;
 use <?= ltrim($generator->searchModelClass, '\\') . (isset($searchModelAlias) ? " as $searchModelAlias" : "") ?>;
+
 <?php if (!empty($generator->searchModelClass)): ?>
 <?php else: ?>
 <?php endif; ?>

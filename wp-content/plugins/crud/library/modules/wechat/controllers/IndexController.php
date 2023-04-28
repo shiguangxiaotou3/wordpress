@@ -3,6 +3,7 @@ namespace crud\modules\wechat\controllers;
 
 use Yii;
 use yii\web\Controller;
+
 class IndexController extends Controller
 {
 
@@ -24,8 +25,6 @@ class IndexController extends Controller
         $subscription =Yii::$app->subscription;
         return  $this->render("menu",['subscription'=>$subscription]);
     }
-
-
     /**
      * 事件
      * @return string

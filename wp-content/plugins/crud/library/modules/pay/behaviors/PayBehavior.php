@@ -1,10 +1,9 @@
 <?php
-
-
 namespace crud\modules\pay\behaviors;
-use crud\modules\pay\events\PayEvent;
-use yii\base\Behavior;
+
 use yii\base\Event;
+use yii\base\Behavior;
+use crud\modules\pay\events\PayEvent;
 
 /**
  * Class PayBehavior

@@ -1,7 +1,6 @@
 <?php
 namespace crud\modules\market\controllers;
 
-
 use Yii;
 use yii\web\Controller;
 use crud\components\Response;
@@ -24,8 +23,6 @@ class IndexController extends Controller
     public function actionSettings(){
         return  $this->render("settings");
     }
-
-
     public function actionTest(){
         return  $this->render("test");
     }
@@ -73,8 +70,6 @@ class IndexController extends Controller
         }
         return  $this->render("page");
     }
-
-
     /**
      * @return string
      */

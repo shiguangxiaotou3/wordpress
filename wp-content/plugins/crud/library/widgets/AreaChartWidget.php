@@ -5,7 +5,6 @@ use yii\base\Widget;
 use yii\helpers\Html;
 use crud\assets\ChartAsset;
 use yii\helpers\ArrayHelper;
-
 class AreaChartWidget extends  Widget{
     public $id;
     private $_defaultOptions=[

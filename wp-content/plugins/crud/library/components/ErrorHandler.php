@@ -1,13 +1,10 @@
 <?php
-
-
 namespace crud\components;
 
 use Yii;
+use yii\web\Response;
 use yii\base\UserException;
 use yii\web\ErrorHandler as BaseErrorHandler;
-use yii\web\Response;
-
 /**
  * 重写yii Deubg页面
  * @package crud\components

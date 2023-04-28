@@ -3,7 +3,6 @@
 namespace crud\modules\market\models;
 
 use Yii;
-
 /**
  * This is the model class for table "wp_express".
  *
@@ -74,8 +73,6 @@ class Express extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('market', 'Updated At'),
         ];
     }
-
-
     /**
      * {@inheritdoc}
      */
@@ -119,6 +116,4 @@ class Express extends \yii\db\ActiveRecord
     //'Status' => '',
     //'Created At' => '',
     //'Updated At' => '',
-
-
 }

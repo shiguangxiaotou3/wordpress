@@ -1,8 +1,5 @@
 <?php
-
-
 namespace crud\modules\pay\controllers;
-
 
 use crud\controllers\AjaxController;
 

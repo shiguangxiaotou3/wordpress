@@ -1,13 +1,14 @@
 <?php
 namespace crud\modules\pay;
 
-use crud\models\AjaxAction;
 use Yii;
 use backend\web\App;
 use yii\base\Module;
 use yii\web\Application;
+use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
+
 class Pay extends Module implements BootstrapInterface
 {
     /**

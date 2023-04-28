@@ -1,10 +1,11 @@
 <?php
 namespace crud\modules\pay\controllers;
 
-use crud\modules\pay\models\Order;
 use Yii;
 use yii\web\Controller;
+use crud\modules\pay\models\Order;
 use crud\modules\pay\components\Alipay;
+
 class IndexController extends Controller
 {
     public $layout=false;
@@ -90,8 +91,6 @@ class IndexController extends Controller
             'tableName'=>'Order'
         ]);
     }
-
-
     public function actionReflect(){
         $links=[
             ['url'=>'pay/index','label'=>'支付'],
@@ -111,6 +110,4 @@ class IndexController extends Controller
             'tableName'=>'Reflect'
         ]);
     }
-
-
 }

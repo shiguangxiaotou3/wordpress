@@ -3,9 +3,8 @@
 namespace crud\modules\market\models;
 
 use Yii;
-use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-
+use yii\behaviors\TimestampBehavior;
 /**
  * This is the model class for table "wp_money".
  *
@@ -56,8 +55,6 @@ class Money extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('market', 'Updated At'),
         ];
     }
-
-
     /**
      * {@inheritdoc}
      */
@@ -93,6 +90,4 @@ class Money extends \yii\db\ActiveRecord
             ]
         ];
     }
-
-
 }

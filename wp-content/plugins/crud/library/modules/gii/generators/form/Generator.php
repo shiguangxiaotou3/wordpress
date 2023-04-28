@@ -10,7 +10,6 @@ namespace crud\modules\gii\generators\form;
 use Yii;
 use yii\base\Model;
 use yii\gii\CodeFile;
-
 /**
  * This generator will generate an action view file based on the specified model class.
  *
@@ -25,8 +24,6 @@ class Generator extends \yii\gii\Generator
     public $viewPath = '@app/views';
     public $viewName;
     public $scenarioName;
-
-
     /**
      * {@inheritdoc}
      */

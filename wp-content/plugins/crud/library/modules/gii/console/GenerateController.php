@@ -8,11 +8,10 @@
 namespace crud\modules\gii\console;
 
 use Yii;
-use yii\base\InlineAction;
-use yii\console\Controller;
 use yii\di\Instance;
 use yii\gii\Generator;
-
+use yii\base\InlineAction;
+use yii\console\Controller;
 /**
  * This is the command line version of Gii - a code generator.
  *
@@ -48,8 +47,6 @@ class GenerateController extends Controller
      * @var array generator option values
      */
     private $_options = [];
-
-
     /**
      * {@inheritdoc}
      */

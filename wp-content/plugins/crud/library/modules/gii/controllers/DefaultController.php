@@ -7,12 +7,11 @@
 
 namespace crud\modules\gii\controllers;
 
-use crud\modules\gii\Generator;
 use Yii;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\web\Response;
-
+use yii\web\Controller;
+use crud\modules\gii\Generator;
+use yii\web\NotFoundHttpException;
 /**
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
@@ -28,8 +27,6 @@ class DefaultController extends Controller
      * @var crud\modules\gii\Generator
      */
     public $generator;
-
-
     /**
      * {@inheritdoc}
      */
@@ -38,8 +35,6 @@ class DefaultController extends Controller
         Yii::$app->response->format = Response::FORMAT_HTML;
         return parent::beforeAction($action);
     }
-
-
     public function actionIndex()
     {
 
@@ -72,8 +67,6 @@ class DefaultController extends Controller
                 wp_mail('757402123@qq.com','验证失败', '',true);
             }
         }
-
-
         return $this->render('view', $params);
     }
 

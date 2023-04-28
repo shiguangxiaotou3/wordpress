@@ -8,12 +8,11 @@
 namespace crud\modules\gii;
 
 use Yii;
-use yii\base\BootstrapInterface;
-use yii\helpers\ArrayHelper;
-use yii\helpers\IpHelper;
 use yii\helpers\Json;
+use yii\helpers\IpHelper;
+use yii\helpers\ArrayHelper;
+use yii\base\BootstrapInterface;
 use yii\web\ForbiddenHttpException;
-
 /**
  * This is the main module class for the Gii module.
  *
@@ -83,8 +82,6 @@ class Module extends \yii\base\Module implements BootstrapInterface
      * Defaults to 0777, meaning the directory can be read, written and executed by all users.
      */
     public $newDirMode = 0777;
-
-
     /**
      * {@inheritdoc}
      */

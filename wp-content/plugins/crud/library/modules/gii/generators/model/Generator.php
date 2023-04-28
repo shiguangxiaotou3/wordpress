@@ -8,18 +8,17 @@
 namespace crud\modules\gii\generators\model;
 
 use Yii;
-use yii\base\InvalidConfigException;
-use yii\base\NotSupportedException;
-use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
-use yii\db\Connection;
-use yii\db\Exception;
 use yii\db\Schema;
-use yii\db\TableSchema;
+use yii\db\Exception;
 use yii\gii\CodeFile;
+use yii\db\Connection;
+use yii\db\ActiveQuery;
+use yii\db\TableSchema;
+use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
-
+use yii\base\NotSupportedException;
+use yii\base\InvalidConfigException;
 /**
  * This generator will generate one or multiple ActiveRecord classes for the specified database table.
  *
@@ -76,8 +75,6 @@ class Generator extends \crud\modules\gii\Generator
      * @var string[]
      */
     protected $classNames = [];
-
-
     public function init()
     {
         parent::init();
@@ -529,8 +526,6 @@ class Generator extends \crud\modules\gii\Generator
     private function generateManyManyRelations($table, $fks, $relations)
     {
         $db = $this->getDbConnection();
-
-
         foreach ($fks as $pair) {
             list($firstKey, $secondKey) = $pair;
             $table0 = $firstKey[0][0];

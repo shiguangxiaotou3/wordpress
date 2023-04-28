@@ -6,6 +6,7 @@ use yii\helpers\Html;
 use crud\models\Color;
 use yii\helpers\ArrayHelper;
 use crud\assets\JvectormapAsset;
+
 /**
  * 地区统计
  * @package crud\library\widgets

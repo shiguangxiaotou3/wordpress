@@ -8,14 +8,13 @@
 namespace crud\modules\gii\generators\crud;
 
 use Yii;
-use yii\db\ActiveRecord;
-use yii\db\BaseActiveRecord;
 use yii\db\Schema;
 use yii\gii\CodeFile;
+use yii\web\Controller;
+use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii\helpers\VarDumper;
-use yii\web\Controller;
-
+use yii\db\BaseActiveRecord;
 /**
  * Generates CRUD controller and views.
  *
@@ -65,8 +64,6 @@ class Generator extends \yii\gii\Generator
      * @since 2.1.0
      */
     public $strictInflector = true;
-
-
     /**
      * {@inheritdoc}
      */

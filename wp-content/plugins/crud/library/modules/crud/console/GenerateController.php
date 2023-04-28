@@ -12,7 +12,6 @@ use yii\di\Instance;
 use yii\base\InlineAction;
 use yii\console\Controller;
 use crud\modules\crud\Generator;
-
 /**
  * This is the command line version of Gii - a code generator.
  *

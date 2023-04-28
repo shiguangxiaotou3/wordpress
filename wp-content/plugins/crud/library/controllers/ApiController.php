@@ -1,10 +1,9 @@
 <?php
 namespace crud\controllers;
 
-use crud\models\wp\WpUsers;
 use Yii;
 use yii\web\Controller;
-
+use crud\models\wp\WpUsers;
 /**
  * @property-read WpUsers $user
  */
@@ -30,8 +29,6 @@ class ApiController extends Controller
         }
 
     }
-
-
 
     public function error($message, $data = [],$header=[])
     {

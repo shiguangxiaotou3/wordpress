@@ -20,6 +20,7 @@ use crud\modules\crud\CodeFile;
 use yii\base\NotSupportedException;
 use yii\base\InvalidConfigException;
 use crud\modules\crud\Generator as BaseGenerator;
+
 /**
  * This generator will generate one or multiple ActiveRecord classes for the specified database table.
  *
