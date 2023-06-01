@@ -11,8 +11,8 @@ use yii\helpers\ArrayHelper;
 use crud\assets\WechatJsSdkAssets;
 use yii\base\InvalidConfigException;
 use GuzzleHttp\Exception\GuzzleException;
-use crud\modules\wechat\assets\MarketAssets;
-use crud\modules\wechat\models\ValidateServer;
+use crud\modules\wechat\assets\MarketAssets ;
+use crud\modules\wechat\models\ValidateServer ;
 /**
  * 微信公众号组件
  * @property string $appId
@@ -26,6 +26,7 @@ use crud\modules\wechat\models\ValidateServer;
  * @property-read string $accessToken
  * @property-read string $ticket
  * @property-read array $jsConfig
+ * @property-write array $conditionalMenu
  * @property-read array $jsApiList
  * @package crud\common\components\webxin
  */
@@ -88,6 +89,7 @@ class SubscriptionService extends Component
                 $cache->set(self::SUBSCRIPTION . "_access_token", $results["access_token"], $results["expires_in"]);
                 return $results["access_token"];
             } catch (Exception $exception) {
+//                throw new Exception($exception);
                 return false;
             }
         }
@@ -223,6 +225,7 @@ class SubscriptionService extends Component
             40051 => "分组名字不合法",
             40060 => "删除单篇图文时，指定的 article_idx 不合法",
             40117 => "分组名字不合法",
+            40164=>'请求ip不在白名单中',
             40118 => "media_id 大小不合法",
             40119 => "button 类型错误",
             40120 => "子 button 类型错误",
@@ -502,19 +505,18 @@ class SubscriptionService extends Component
     {
         /** @var View $view */
         $view = Yii::$app->getView();
-        global $wp;
         WechatJsSdkAssets::register($view);
-        $config = json_encode($this->getJsConfig());
+        $config = WechatJsSdkAssets::registerConfig($this->getJsConfig());
 
         $title = get_option('blogname');
         $desc = get_option('blogdescription');
-        $imgUrl = get_option('home') . "favicon.ico";
+        $imgUrl = get_option('home') . "/favicon.ico";
         $url = Yii::$app->request->getHostInfo() . Yii::$app->request->url;
 
         $id = get_the_ID();
         $title = get_the_title($id);
 
-        $data = json_encode([
+        $data =json_encode([
             // 分享标题
             'title' => $title,
             // 分享描述
@@ -533,13 +535,15 @@ class SubscriptionService extends Component
             'imgUrl' => $imgUrl,
             'success' => 'function(res){console.log(res) }'
         ]);
-        $js = "
-wx.config($config); 
+        $js= /** @lang text */
+<<<JS
+{$config}
 wx.ready(function(res){
-    wx.updateAppMessageShareData($data);
-    wx.onMenuShareTimeline($data2);
-})";
-        $view->registerJs($js);
+    wx.updateAppMessageShareData({$data});
+    wx.onMenuShareTimeline({$data2});
+});
+JS;
+    $view->registerJs($js);
 
     }
 
@@ -679,11 +683,10 @@ wx.ready(function(res){
     /**
      *
      * 生成随机字符串
-     * @param $length
+     * @param integer $length
      * @return string
      */
-    private function createNonceStr($length = 16)
-    {
+    private function createNonceStr($length=16){
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         $str = "";
         for ($i = 0; $i < $length; $i++) {

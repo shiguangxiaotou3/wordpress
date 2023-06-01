@@ -24,7 +24,6 @@ function download() {
     scp -r $user@$host:$serverPath/wp-content/plugins/crud $projectPath/wp-content/plugins
 }
 
-
 # +----------------------------------------------------------------------
 # ｜添加apache多站点配置
 # +----------------------------------------------------------------------
@@ -103,7 +102,7 @@ expect "$projectPath/bash/nginx.sh" "$user" "$host" "$password" "$config"
 # +----------------------------------------------------------------------
 function loginServerMysql() {
   sql=$1
-   expect "$projectPath/bash/mysql.sh" "$user" "$host" "$password" "$mysqlUser" "$mysqlPassword" "$mysqlDb" "$sql"
+  expect "$projectPath/bash/mysql.sh" "$user" "$host" "$password" "$mysqlUser" "$mysqlPassword" "$mysqlDb" "$sql"
 }
 
 function Permission(){
@@ -126,3 +125,18 @@ EOF
 
   expect "$projectPath/bash/client.sh" "$user" "$host" "$password" "$action"
 }
+
+function mysqldump (){
+  sql=$1
+  action="mysqldump -u $user -p $mysqlDb > $mysqlDb.sql"
+  echo "$action"
+#  expect "$projectPath/bash/client.sh" "$user" "$host" "$password" "$action"
+}
+
+function arrange() {
+read -d '' config<<EOF
+  cd /var/www/html
+  sudo mkdir
+EOF
+}
+

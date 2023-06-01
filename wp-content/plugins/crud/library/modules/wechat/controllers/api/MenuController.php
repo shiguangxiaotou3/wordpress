@@ -5,7 +5,6 @@ use Yii;
 use Exception;
 use yii\web\Response;
 use yii\web\Controller;
-
 class MenuController extends Controller
 {
 

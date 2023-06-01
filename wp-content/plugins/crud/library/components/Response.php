@@ -1,11 +1,15 @@
 <?php
 namespace crud\components;
 
+use yii\base\InvalidConfigException;
 use yii\web\Response  as YiiResponse;
-use yii\web\HeadersAlreadySentException;
 
 class Response extends YiiResponse
 {
+    /**
+     * @return void
+     * @throws InvalidConfigException
+     */
     public function send()
     {
         if ($this->isSent) {

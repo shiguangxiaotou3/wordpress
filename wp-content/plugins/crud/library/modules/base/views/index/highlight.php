@@ -51,14 +51,14 @@ JS;
         submit_button();
         ?>
     </form>
-    <div style="display: flex;justify-content: space-between;flex-wrap: wrap">
+    <div style="display: flex;flex-wrap: wrap">
         <div style="width: 350px">
             <pre><code  class="language-javascript"><?= $js ?></code></pre>
         </div>
-        <div style="width: 350px">
+        <div style="width: 350px;margin-left: 20px">
             <pre><code  class="language-html"><?= htmlentities($html) ?></code></pre>
         </div>
-        <div style="width: 350px">
+        <div style="width: 350px;margin-left: 20px">
             <pre><code  class="language-php"><?= $php ?></code></pre>
         </div>
     </div>

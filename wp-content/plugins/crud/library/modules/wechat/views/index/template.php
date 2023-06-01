@@ -9,22 +9,9 @@ use crud\modules\market\assets\MarketAsset;
 MarketAsset::register($this);
 ?>
     <div class="wrap" id="app">
-        <!--        <div v-show="msgSuccess" class="notice notice-success settings-success is-dismissible">-->
-        <!--            <p><strong v-html="message"></strong></p>-->
-        <!--            <button type="button" @click="msgSuccess =false" class="notice-dismiss"><span class="screen-reader-text" >忽略此通知。</span></button>-->
-        <!--        </div>-->
-        <!--        <div v-show="msgError" class="notice notice-error settings-error is-dismissible">-->
-        <!--            <p><strong v-html="message"></strong></p>-->
-        <!--            <button type="button" @click="msgError =false" class="notice-dismiss"><span class="screen-reader-text" >忽略此通知。</span></button>-->
-        <!--        </div>-->
         <?= PageHeaderWidget::widget() ?>
         <div class="settings-content" >
-
-
             <div class="content-settings"  >
-<!--                <div class="setting-title">-->
-<!--                    <h2>模版消息</h2>-->
-<!--                </div>-->
                 <div class="settings-content">
                     <div class="settings-left">
                         <!-- 菜单 -->
@@ -198,6 +185,7 @@ const app2 = new Vue({
                 dataType:'json',
                 type: 'GET',  
                 success:(res)=>{
+                    console.log(res)
                     if(res.code ==1){
                         this.templates = res.data.template_list;
                     }

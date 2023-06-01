@@ -3,7 +3,6 @@ namespace crud\assets;
 
 use Yii;
 use yii\web\View;
-
 class VueAsset extends AppAsset {
 
     public $sourcePath =  "@bower/vue/dist";
@@ -17,7 +16,7 @@ class VueAsset extends AppAsset {
     public static function loadComponents(){
         $component =[
             'common.js','modal.js','table.js','tablenav-pages.js',
-            'notice.js','columns.js','nav-tab-wrapper.js','crud.js','from.js'
+            'notice.js','input.js','columns.js','nav-tab-wrapper.js','crud.js','from.js'
         ];
         $path =Yii::getAlias("@crud/assets/js/component");
         $js ='';

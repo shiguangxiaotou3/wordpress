@@ -7,6 +7,7 @@ Vue.component("crud-table", {
      :page="page" 
      :total="total" 
      :pageSize="pageSize" 
+     @sizeChange="pageSizeChange"
      @pageChange="pageChange">
         <template v-slot:buttons>
             <div  class="alignleft actions bulkactions">
@@ -44,7 +45,7 @@ Vue.component("crud-table", {
     
     <!-- table -->
     <div style="width: 100%;overflow-x: scroll;">
-        <table class="wp-list-table widefat striped fixed  table-view-list" >
+        <table style="table-layout: auto;width: 100%;overflow-x: auto;" class="wp-list-table widefat striped fixed  table-view-list" >
             <!-- thead -->
             <thead>
                 <tr>
@@ -92,8 +93,7 @@ Vue.component("crud-table", {
                         <td v-if="operate.length>0">
                             <div class="button-group" >
                                 <template v-for="(button,butIndex) in operate">
-                                    <div 
-                                     style="padding:0 4px;line-height: 28px"
+                                    <div style="padding:0 4px;line-height: 28px"
                                      :class="button.class + ((butIndex ==0) ? ' last-child' : ((butIndex ==(operate.length)-1))?' first-child':'')" 
                                      @click="buttonsClick(button.name,indexTr,(button.callBack || ''))">
                                         <span v-if="button.icons" :class="button.icons" style="margin: 4px 0"></span>
@@ -144,6 +144,7 @@ Vue.component("crud-table", {
      @delete="deleteAll">
         <template v-slot:left>
             <crud-from 
+            test="asda"
              :tableName="tableName" 
              :submitUrl="submitUrl" 
              :columns="columns" 
@@ -167,21 +168,21 @@ Vue.component("crud-table", {
         <!-- end header -->
         
         <!-- screenshots  -->
-         <template v-slot:theme-screenshots>
-                              <div class="theme-screenshots">
-                        <div class="screenshot"  ></div>
-                    </div>
+        <template v-slot:theme-screenshots>
+            <div class="theme-screenshots">
+                <div class="screenshot"  ></div>
+            </div>
         </template>
         <!-- end screenshots -->
         
         <!-- info  -->
         <template v-slot:theme-info>
-                                <div class="theme-info">
-                        <h2 class="theme-name"><span class="theme-version"></span></h2>
-                        <p class="theme-author"></p>
-                        <p class="theme-description"></p>
-                        <p class="theme-tags"></p>
-                    </div>
+            <div class="theme-info">
+              <h2 class="theme-name"><span class="theme-version"></span></h2>
+              <p class="theme-author"></p>
+              <p class="theme-description"></p>
+              <p class="theme-tags"></p>
+            </div>
         </template>
         <!-- end info -->
         
@@ -202,6 +203,9 @@ Vue.component("crud-table", {
         <!-- end right -->
         
     </crud-modal-mini>
+    
+    
+
     <!-- end modal mini-->
 </div>`,
   data() {
@@ -237,7 +241,7 @@ Vue.component("crud-table", {
         {
         'name': 'edit',
           'class': 'button ',
-          'icons': 'dashicons dashicons-admin-page',
+          'icons': 'dashicons dashicons-welcome-write-blog',
         },
         {
           'name': 'delete',
@@ -320,6 +324,7 @@ Vue.component("crud-table", {
         let key = item.name.match(/\[(.+?)\]/g)[0].replace('[', "").replace(']', "");
         data[this.tableName][key] = item.value;
       });
+      console.log(data)
       if(type =='submit'){
         data.action =this.actions.add_url;
         delete data[this.tableName]['id']
@@ -327,6 +332,7 @@ Vue.component("crud-table", {
         delete data[this.tableName]['updated_at']
       }else if(type == 'update'){
         data.action =this.actions.update_url;
+        data[this.tableName]['id']=this.rowId;
         delete data[this.tableName]['created_at']
         delete data[this.tableName]['updated_at']
       }else if(type == 'delete'){
@@ -474,6 +480,7 @@ Vue.component("crud-table", {
         data: fromData,
         dataType: 'json',
         success: (res) => {
+          console.log(res)
           if (res.code == 1) {
             this.table.push((res.data)[0])
             this.n =  -1
@@ -490,12 +497,19 @@ Vue.component("crud-table", {
     },
     update(){
       let fromData =this.fromData('update');
+      if(fromData[this.tableName]['id'] ==undefined){
+        this.showMini =true;
+        this.miniContent ='id:字段不能为空';
+        console.log('意外结束')
+        return;
+      }
       this.$.ajax({
         url: ajaxurl,
         type: 'POST',
         data: fromData,
         dataType: 'json',
         success: (res) => {
+          console.log(res)
           if (res.code == 1) {
             this.table.splice(this.n, 1)
             this.open();
@@ -570,6 +584,9 @@ Vue.component("crud-table", {
       this.actionType='edit'
       this.open();
     },
+    test(){
+      console.log('ad')
+    },
     operateAction(index,url){
 
     },
@@ -605,11 +622,17 @@ Vue.component("crud-table", {
         }
     },
     showMiniModal(data){
-        this.showMini =true
+        this.showMini =true;
     },
-    closeMiniModal(){
+    closeMiniModal(data){
       this.showMini =false;
+
     },
+    pageSizeChange(value){
+      console.log('table')
+      this.pageSize =parseInt(value);
+      this.index(this.page)
+    }
 
   },
   //生命周期 - 创建完成

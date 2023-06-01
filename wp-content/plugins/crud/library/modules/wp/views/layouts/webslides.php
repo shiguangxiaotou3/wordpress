@@ -14,7 +14,7 @@ $this->registerCss(".logo a{background:url('".$wpAsset."/images/logo.jpeg')}");
 
 <?php $this->beginPage() ?>
     <!doctype html>
-    <html lang="<?= Yii::$app->language ?>" prefix="og: http://ogp.me/ns#">
+    <html lang="<?= Yii::$app->language ?>" prefix="og: https://www.shiguangxiaotou.com">
     <head>
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">

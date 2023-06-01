@@ -4,6 +4,7 @@ namespace crud\controllers;
 
 use Yii;
 use crud\controllers\ApiController;
+
 /**
  * ajax 控制器基类
  */
@@ -13,7 +14,7 @@ class AjaxController extends ApiController
 
     public $modelName;
     public $layout =false;
-   public $url_prefix;
+    public $url_prefix;
 
     public function actionInit(){
         $url =toUnderScore($this->modelName,'-');
@@ -51,7 +52,14 @@ class AjaxController extends ApiController
         $request = Yii::$app->request;
         $class =$this->modelClass;
         if ($request->isAjax) {
+
             $query = $class::find();
+            if($request->get('where')){
+                $query->where($request->get('where'));
+            }
+            if($request->get('andWhere')){
+                $query->where($request->get('andWhere'));
+            }
             $page =$request->get('page', 1)-1;
             $pageSize = $request->get('pageSize', 10);
             $total = $query->count();
@@ -60,7 +68,11 @@ class AjaxController extends ApiController
                 $orderBy ='created_at desc';
             }
 
-            $table = $query->offset($page*$pageSize)->limit($pageSize)->orderBy($orderBy)->asArray()->all();
+            $table = $query->offset($page*$pageSize)
+                ->limit($pageSize)
+                ->orderBy($orderBy)
+                ->asArray()
+                ->all();
             return  $this->success('ok', [
                 'page' => $page,
                 'pageSize' => $pageSize,

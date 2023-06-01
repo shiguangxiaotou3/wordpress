@@ -4,10 +4,12 @@ namespace crud\modules\base;
 use Yii;
 use yii\base\Module;
 use yii\web\Application;
+use crud\models\AjaxAction;
 use crud\Base as BaseModule;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
 use crud\modules\ModuleImplements;
+
 class Base extends Module  implements BootstrapInterface
 {
     /**
@@ -53,6 +55,7 @@ class Base extends Module  implements BootstrapInterface
             // ｜阿里对象存储，更文章中img的url
             // +----------------------------------------------------------------------
 //            add_filter( 'the_content', [$this, 'imageDisplayProcessing'] );
+            add_action("init", [$this, "registerAjax"]);
         }
     }
 
@@ -91,4 +94,17 @@ class Base extends Module  implements BootstrapInterface
         return $content;
     }
 
+    public function registerAjax(){
+//        $menus=[];
+        $config =[
+            'movie',
+        ];
+        $actions =['init','index','create','view','update','delete','deletes'];
+        foreach ($config as $menu){
+            foreach ($actions as $action){
+                $menuModel = new AjaxAction(['menu_slug'=>$this->id."/".$menu."/".$action]);
+                $menuModel->registerAjaxAction();
+            }
+        }
+    }
 }

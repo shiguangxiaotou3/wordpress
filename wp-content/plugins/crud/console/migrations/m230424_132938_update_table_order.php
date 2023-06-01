@@ -29,6 +29,9 @@ class m230424_132938_update_table_order extends Migration
     // Use up()/down() to run migration code without a transaction.
     public function up()
     {
+        if($this->tableExists('{{%order}}')){
+            $this->dropTable('{{%order}}');
+        }
 //        $this->dropTable('{{%order}}');
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
@@ -55,9 +58,16 @@ class m230424_132938_update_table_order extends Migration
 
     public function down()
     {
+        $this->dropTable('{{%order}}');
         echo "m230424_132938_update_table_order cannot be reverted.\n";
 
         return false;
     }
+
+    public function tableExists($tableName){
+        $tableSchema = \Yii::$app->db->schema->getTableSchema($tableName);
+        return ($tableSchema !== null);
+    }
+
 
 }

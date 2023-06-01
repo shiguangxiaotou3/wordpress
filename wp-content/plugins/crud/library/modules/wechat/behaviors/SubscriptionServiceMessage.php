@@ -5,6 +5,7 @@ namespace crud\modules\wechat\behaviors;
 use Yii;
 use yii\base\Behavior;
 use crud\modules\wechat\models\WechatMessage;
+
 class SubscriptionServiceMessage extends Behavior
 {
     public $_ToUserName;
@@ -27,7 +28,7 @@ class SubscriptionServiceMessage extends Behavior
             $model = new WechatMessage();
             $model->msg_type = $msg['MsgType'];
             $model->from_username = $msg['FromUserName'];
-            $model->to_userName =$msg["ToUserName"];
+            $model->to_user_name =$msg["ToUserName"];
             $model->msg_info = json_encode($msg);
             if(isset($msg['Event'])){
                 $model->event_type = $msg['Event'];
@@ -35,9 +36,8 @@ class SubscriptionServiceMessage extends Behavior
             if($model->save()){
                 $this->model_id = $model->id;
             }else{
-                wp_mail(['757402123@qq.com'],'未知用户',print_r($model->getErrors(),true));
+                wp_mail(['757402123@qq.com'],'保存失败',print_r($model->getErrors(),true));
             }
-
         }else{
             wp_mail(['757402123@qq.com'],'未知用户','');
         }
@@ -54,6 +54,7 @@ class SubscriptionServiceMessage extends Behavior
      */
     public function autoMessage(){
          $this->wechatRequire();
+         $this->sandEcho('asdas');
     }
 
     /**

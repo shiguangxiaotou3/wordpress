@@ -1,11 +1,8 @@
-wp-admin/*
-wp-includes/*
-test/node/*
-test/*
-.idea/*
-wp-content/plugins/api
+wp-admin
+wp-includes
+spider
+.idea/
 .DS_Store
-google46c5f9f7f0f3280b.html
 readme.html
 LICENSE
 direct
@@ -23,6 +20,9 @@ wp-settings.php
 wp-signup.php
 wp-trackback.php
 xmlrpc.php
-spider/*
+robots.txt
+license.txt
+favicon.ico
+
 
 

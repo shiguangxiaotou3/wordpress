@@ -89,6 +89,14 @@ return [
                         'wechat/error' => 'error.php',
                     ],
                 ],
+                'movie' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@crud/messages/movie',
+                    'fileMap' => [
+                        'movie' => 'movie.php',
+                        'movie/error' => 'error.php',
+                    ],
+                ],
             ],
         ],
     ],

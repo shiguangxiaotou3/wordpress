@@ -7,6 +7,7 @@ use \WP_User;
 use \WP_Error;
 use \yii\db\ActiveRecord;
 use crud\modules\market\models\Money;
+
 /**
  * This is the model class for table "wp_users".
  *
@@ -424,8 +425,9 @@ class WpUsers extends ActiveRecord
     }
 
     /**
+     * 通过token 获取用户
      * @param $token
-     * @return array|WpUsers|false|ActiveRecord|null
+     * @return array|false|ActiveRecord|null
      */
     public  function getUserByToken($token){
         return $this->getUserByMeta('token',$token);
@@ -435,7 +437,7 @@ class WpUsers extends ActiveRecord
      * 通过用户自定义字段查询用户
      * @param $field
      * @param $value
-     * @return array|WpUsers|false|ActiveRecord|null
+     * @return array|false|ActiveRecord|null
      */
     private function getUserByMeta($field,$value){
         $result= WpUserMeta::find()
@@ -489,7 +491,6 @@ class WpUsers extends ActiveRecord
      */
     public function updateUserMoney($money,$remarks =''){
         $user_id =(int) $this->ID;
-
         $before = $this->money;
         $after= $before + (float) $money;
         $model = new Money();
@@ -501,5 +502,9 @@ class WpUsers extends ActiveRecord
           $this->money =   $after;
           return true;
         }
+    }
+
+    public function integralPay(){
+
     }
 }

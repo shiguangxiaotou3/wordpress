@@ -29,7 +29,10 @@ class m230321_130155_create_order_table_1 extends Migration
     // Use up()/down() to run migration code without a transaction.
     public function up()
     {
-        $this->dropTable('{{%order}}');
+        if($this->tableExists('{{%order}}')){
+            $this->dropTable('{{%order}}');
+        }
+
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB COMMENT="订单表"';
@@ -55,9 +58,16 @@ class m230321_130155_create_order_table_1 extends Migration
 
     public function down()
     {
+        $this->dropTable('{{%order}}');
         echo "m230321_130155_create_order_table_1 cannot be reverted.\n";
 
         return false;
     }
+
+    public function tableExists($tableName){
+        $tableSchema = \Yii::$app->db->schema->getTableSchema($tableName);
+        return ($tableSchema !== null);
+    }
+
 
 }

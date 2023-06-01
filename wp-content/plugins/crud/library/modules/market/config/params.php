@@ -1,5 +1,5 @@
 <?php
-
+//    $api = Yii::$app->marketApi;
 return [
     "menus" => [
         [
@@ -197,8 +197,8 @@ return [
 
                     'section_id' => 'sms',
                     'args' => [
-                        "tag" => "dropDownList",
-                        "items" => [],
+                        "tag" => "text",
+                        //"items" =>$api->selectTemplateList(),
                         "description" => "短信发送模版",
                         'options' => [
                             "placeholder"=>"SMS_272575568",

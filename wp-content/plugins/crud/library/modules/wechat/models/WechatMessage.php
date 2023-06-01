@@ -5,12 +5,13 @@ namespace crud\modules\wechat\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+
 /**
  * This is the model class for table "wp_wechat_message".
  *
  * @property int $id
- * @property string $to_userName
- * @property string $from_username 支付场景
+ * @property string $to_user_name 接收人
+ * @property string $from_username 发送人
  * @property string|null $msg_type 消息类型
  * @property string|null $event_type 事件类型
  * @property string|null $msg_info 事件类型
@@ -53,9 +54,10 @@ class WechatMessage extends ActiveRecord
     public function rules()
     {
         return [
-            [['to_userName', 'from_username'], 'required'],
+            [['to_user_name', 'from_username'], 'required'],
+            [['msg_info', 'return_msg_info'], 'safe'],
             [['created_at', 'updated_at'], 'integer'],
-            [['to_userName', 'from_username', 'msg_type', 'event_type', 'msg_info', 'return_msg_info'], 'string', 'max' => 255],
+            [['to_user_name', 'from_username', 'msg_type', 'event_type'], 'string', 'max' => 255],
         ];
     }
 
@@ -66,7 +68,7 @@ class WechatMessage extends ActiveRecord
     {
         return [
             'id' => Yii::t('wechat', 'ID'),
-            'to_userName' => Yii::t('wechat', 'To User Name'),
+            'to_user_name' => Yii::t('wechat', 'To User Name'),
             'from_username' => Yii::t('wechat', 'From Username'),
             'msg_type' => Yii::t('wechat', 'Msg Type'),
             'event_type' => Yii::t('wechat', 'Event Type'),
@@ -84,7 +86,7 @@ class WechatMessage extends ActiveRecord
     {
         return [
             ['field' => 'id', 'title' => Yii::t('pay', 'ID'),"style"=>'width: 20px'],
-            ['field' =>'to_userName', 'title' => Yii::t('wechat', 'To User Name'),"style"=>'width: 130px'],
+            ['field' =>'to_user_name', 'title' => Yii::t('wechat', 'To User Name'),"style"=>'width: 130px'],
             ['field' =>'from_username' , 'title' =>Yii::t('wechat', 'From Username'),"style"=>'width: 130px'],
             ['field' =>'msg_type', 'title' => Yii::t('wechat', 'Msg Type'),"style"=>'width: 60px'],
             ['field' =>'event_type', 'title' => Yii::t('wechat', 'Event Type'),"style"=>'width: 60px'],

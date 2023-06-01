@@ -6,6 +6,7 @@ use Exception;
 use crud\models\Color;
 use yii\base\Component;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
+
 /**
  *
  * @property-read  string $path
@@ -46,7 +47,6 @@ class Crawlers extends Component
      */
     public function getReferer()
     {
-//        preg_match('#((http://)|(https://))?([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}#',$_SERVER["HTTP_REFERER"],$url);
         return isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : "";
     }
 
@@ -210,8 +210,6 @@ class Crawlers extends Component
                 $tmp['region'] = Yii::t("city", $data["region"]);
                 $tmp['country'] = Yii::t("city", $data["country"]);
                 $tmp['User-Agent'] = $_SERVER['HTTP_USER_AGENT'];
-
-                logObject($tmp);
                 unset($tmp);
                 $this->updateRecords($data);
                 // 统计客户端浏览器类型

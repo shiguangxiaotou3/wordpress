@@ -3,6 +3,8 @@ namespace crud\models;
 
 use Yii;
 use yii\base\Model;
+use backend\web\App;
+
 /**
  * 注册ajax
  *
@@ -27,8 +29,9 @@ class AjaxAction extends Model
     public $position=110;
 
     public function registerAjaxAction(){
+        /** @var App $app */
         $app = Yii::$app;
-        add_action("wp_ajax_".$this->menu_slug,[$app,"renderAjax"]);
+        add_action("wp_ajax_".$this->menu_slug,[$app->_ajax,"renderAjax"]);
         wp_localize_script(
             'ajax-script',
             'crud',
@@ -37,7 +40,7 @@ class AjaxAction extends Model
                 'nonce'    => wp_create_nonce( 'title_example' ),
             )
         );
-        add_action("wp_ajax_nopriv_".$this->menu_slug,[$app,"renderAjax"]);
-        add_action("wp_ajax_".$this->menu_slug,[$app,"renderAjax"]);
+        add_action("wp_ajax_nopriv_".$this->menu_slug,[$app->_ajax,"renderAjax"]);
+        add_action("wp_ajax_".$this->menu_slug,[$app->_ajax,"renderAjax"]);
     }
 }

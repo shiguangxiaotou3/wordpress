@@ -5,6 +5,9 @@ use Yii;
 use yii\web\View;
 use yii\web\AssetBundle;
 use yii\base\InvalidConfigException;
+/**
+ * 将Yii2 的资源包注册到wordpress 中排队
+ */
 class WpAsset extends AssetBundle
 {
 
@@ -90,8 +93,6 @@ class WpAsset extends AssetBundle
             unset($CssDepends);
         }
         /** @wp WP_Dependencies*/
-//        global $wp_styles;
-//        global $wp_scripts;
         return $view->registerAssetBundle($class);
     }
 
@@ -149,7 +150,7 @@ class WpAsset extends AssetBundle
     }
 
     public static function isHttp($str){
-        return preg_match("/^(http|https)/",$str);
+        return preg_match("/^(http|https|\/\/)/",$str);
     }
 }
 

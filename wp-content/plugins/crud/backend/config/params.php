@@ -20,12 +20,6 @@ return [
 //        ],
         [
             "parent_slug" => "index/index",
-            "page_title" => "测试",
-            "menu_title" => "测试",
-            "menu_slug" =>  "index/test",
-        ],
-        [
-            "parent_slug" => "index/index",
             "page_title" => "模块加载",
             "menu_title" => "模块加载",
             "menu_slug" =>  "index/modules",
@@ -35,6 +29,25 @@ return [
             "page_title" => "错误",
             "menu_title" => "错误",
             "menu_slug" =>  "index/error",
+        ],
+        [
+            "parent_slug" => "index/index",
+            "page_title" => "路由",
+            "menu_title" => "路由",
+            "menu_slug" =>  "index/rules",
+        ],
+        [
+            "parent_slug" => "index/index",
+            "page_title" => "样式",
+            "menu_title" => "样式",
+            "menu_slug" =>  "index/style",
+        ],
+        //rules
+        [
+            "parent_slug" => "index/index",
+            "page_title" => "Icons",
+            "menu_title" => "Icons",
+            "menu_slug" => "index/icons",
         ],
     ],
     'settings' => [

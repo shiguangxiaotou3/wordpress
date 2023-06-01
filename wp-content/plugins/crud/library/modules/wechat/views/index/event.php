@@ -5,7 +5,7 @@
 use crud\modules\wechat\components\SubscriptionService;
 use crud\widgets\PageHeaderWidget;
 use crud\modules\market\assets\MarketAsset;
-
+$wechat = Yii::$app->subscription;
 MarketAsset::register($this);
 ?>
 <div class="wrap" id="app">

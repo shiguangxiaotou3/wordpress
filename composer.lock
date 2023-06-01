@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f155249fe32911d3a340040fe8cf2c6",
+    "content-hash": "04515b6b6c3450f9787843ae03e1a364",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -2559,13 +2559,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/shiguangxiaotou3/alipay/zipball/6f8528375a8fffcc88fefcfe01f555f0fec33dab",
                 "reference": "6f8528375a8fffcc88fefcfe01f555f0fec33dab",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "default-branch": true,
             "type": "library",
@@ -2752,13 +2746,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/wechatpay-apiv3/wechatpay-php/zipball/fbe8d7c2b3b367e42bf98caa0cce582b3205d427",
                 "reference": "fbe8d7c2b3b367e42bf98caa0cce582b3205d427",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
@@ -6957,7 +6945,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=5.6",
-        "ext-json": "*"
+        "ext-simplexml": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"

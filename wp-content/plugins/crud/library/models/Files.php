@@ -4,7 +4,6 @@ namespace crud\models;
 use Yii;
 use yii\base\Model;
 use yii\helpers\FileHelper;
-
 class Files extends Model
 {
 
@@ -47,6 +46,7 @@ class Files extends Model
         }
         return  [];
     }
+
     /**
      * @param $alias
      * @return array
@@ -186,12 +186,18 @@ class Files extends Model
      */
     public static function fileInfo($path){
         if(is_dir($path)){
+            $user =posix_getpwuid(fileowner($path));
+            if($user){
+                $ownerName =$user['name'];
+            }else{
+                $ownerName ='';
+            }
             return [
                 'name'=>'',
                 'size'=>filesize($path),
                 'group'=>self::getGroup($path),
                 'owner'=>self::getOwner($path),
-                'ownerName'=>posix_getpwuid(fileowner($path))['name'],
+                'ownerName'=> $ownerName,
                 'permissions'=>self::getPermissionsNumber($path),
                 'is_writable'=>is_writable($path),
                 'is_readable'=>is_readable($path),
@@ -199,13 +205,19 @@ class Files extends Model
             ];
         }
         if (is_file($path)){
-            $text =file_get_contents($path);
+            $text = file_get_contents($path);
+            $user =posix_getpwuid(fileowner($path));
+            if($user){
+                $ownerName =$user['name'];
+            }else{
+                $ownerName ='';
+            }
             return [
                 'name'=>basename($path),
                 'size'=>filesize($path),
                 'group'=>self::getGroup($path),
                 'owner'=>self::getOwner($path),
-                'ownerName'=>posix_getpwuid(fileowner($path))['name'],
+                'ownerName'=>$ownerName,
                 'permissions'=>self::getPermissionsNumber($path),
                 'is_writable'=>is_writable($path),
                 'is_readable'=>is_readable($path),

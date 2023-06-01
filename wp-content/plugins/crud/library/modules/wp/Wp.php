@@ -11,7 +11,6 @@ use yii\base\BootstrapInterface;
 use yii\base\InvalidRouteException;
 use crud\widgets\RegisterHighlightAssetWidget;
 use yii\console\Application as ConsoleApplication;
-
 /**
  * Class Wp
  *
@@ -56,7 +55,8 @@ class Wp extends Module implements BootstrapInterface
         // 请不要忽略$app类名称检查的检查，因为console应用也会调用引导方法
         if ($app instanceof Application) {
 
-            Yii::$app->route('wp','crud');
+//            Yii::$app->route('wp','crud','');
+            $this->_frontendPage->registerFrontendRule($this->id,'crud');
             // +----------------------------------------------------------------------
             // ｜将yii\web\View事件挂载到wordpress钩子中
             // +----------------------------------------------------------------------

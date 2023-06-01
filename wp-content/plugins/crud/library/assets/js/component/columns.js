@@ -38,14 +38,16 @@ Vue.component("crud-columns-tbody", {
  v-if="display" 
  :class="className" 
  :style="field.style" 
- :data-colname="field.title" 
- xmlns="http://www.w3.org/1999/html">
+ :data-colname="field.title" >
     <template v-if="isType(field,'json')">
         <button 
             class="button button-small button-link" 
             v-if="(row[field.field] !=null)" 
             :data-value="row[field.field]" 
-            @click="showMiniModal(field)">Json</button>
+            @click="showJsonModal(field)">Json</button>
+            <crud-modal v-if="jsonModal.active"  :title="jsonModal.title" @cancel="jsonModal.active =!jsonModal.active">
+                <pre style="background-color: #0c0c0c;color: white"><code>{{jsonModal.content}}</code></pre>
+            </crud-modal>
     </template>
     
     <template  v-else-if="isType(field,'url')">
@@ -58,20 +60,30 @@ Vue.component("crud-columns-tbody", {
     <template v-else-if="isType(field,'timeStamp')" >
         {{format_text(row[field.field])}}
     </template>
-   
-    
+    <!--custom-->
+    <template v-else-if="isType(field,'custom')" >
+        <div  v-html="custom(field)"></div>
+    </template>
     <template  v-else-if="isType(field,'image')">
         <img :src="row[field.field]" />
     </template>
     
     <template  v-else-if="isType(field,'file')" />
     
-    <template  v-else  >{{row[field.field]}}</template>
+    <template  v-else >{{row[field.field]}}</template>
+    
+    
     
 </td>`,
     data(){
         return {
-            className:"manage-column"
+            className:"manage-column",
+            html:'<div>asdas</div>',
+            jsonModal:{
+                active:false,
+                title:'',
+                content:''
+            }
         }
     },
     props:{
@@ -137,8 +149,11 @@ Vue.component("crud-columns-tbody", {
             let content ='<pre style="text-align:left;width: 100%;height: 100%;">'+
                 JSON.stringify(str ,null, 4) + '</pre>';
         },
-        showMiniModal(data){
-            this.$emit('showMiniModal',data)
+        showJsonModal(data){
+            this.jsonModal.active=true;
+            this.jsonModal.title = data.title
+            let content = JSON.parse( this.row[data.field]) ||{};
+            this.jsonModal.content =JSON.stringify(content,null,4);
         },
         isType(field,type){
             let dataType = field.dataType || '';
@@ -151,6 +166,10 @@ Vue.component("crud-columns-tbody", {
             event.currentTarget.parentElement.firstElementChild.select()
             document.execCommand('copy');
             alert('复制成功');
+        },
+        custom(field){
+            console.log( eval('('+field.callBack+')'))
+            return  eval('('+field.callBack+')').call(this,this.row,field);
         }
     }
 });

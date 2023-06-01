@@ -29,10 +29,14 @@ class m230417_160918_create_table_wechat_message extends Migration
     // Use up()/down() to run migration code without a transaction.
     public function up()
     {
+        if($this->tableExists('{{%wechat_message}}')){
+            $this->dropTable('{{%wechat_message}}');
+        }
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB COMMENT="微信公众号消息"';
         }
+
 
         $this->createTable('{{%wechat_message}}', [
             'id' => $this->primaryKey(),
@@ -49,9 +53,16 @@ class m230417_160918_create_table_wechat_message extends Migration
 
     public function down()
     {
+        $this->dropTable('{{%wechat_message}}');
         echo "m230417_160918_create_table_wechat_message cannot be reverted.\n";
 
         return false;
     }
+
+    public function tableExists($tableName){
+        $tableSchema = \Yii::$app->db->schema->getTableSchema($tableName);
+        return ($tableSchema !== null);
+    }
+
 
 }

@@ -7,6 +7,7 @@ use common\models\User;
 use yii\db\ActiveRecord;
 use crud\models\wp\WpUsers;
 use yii\behaviors\TimestampBehavior;
+
 /**
  * This is the model class for table "wp_order".
  *
@@ -45,6 +46,7 @@ class Order extends ActiveRecord{
             ]
         ];
     }
+
     /**
      * {@inheritdoc}
      */
@@ -102,20 +104,20 @@ class Order extends ActiveRecord{
 
     public function columns(){
         return [
-            ['field' => 'id', 'title' => Yii::t('pay', 'ID'),"style"=>'width: 20px'],
-            ['field' => 'pal_type', 'title' => Yii::t('pay', 'Pal Type'),"style"=>'width: 80px'],
-            ['field' => 'user_id', 'title' => Yii::t('pay', 'User ID'),"style"=>'width: 50px'],
-            ['field' => 'order_id', 'title' => Yii::t('pay', 'Order ID'),"style"=>'width: 150px'],
-            ['field' => 'subject', 'title' => Yii::t('pay', 'Subject'),"style"=>'width: 100px'],
-            ['field' => 'total_amount', 'title' => Yii::t('pay', 'Total Amount'),"style"=>'width: 60px'],
-            ['field' => 'receipt_amount', 'title' => Yii::t('pay', 'Receipt Amount'),"style"=>'width: 60px'],
-            ['field' => 'trade_no', 'title' => Yii::t('pay', 'Trade No'),"style"=>'width: 200px'],
-            ['field' => 'notify_number', 'title' => Yii::t('pay', 'Notify Number'),"style"=>'width: 60px'],
-            ['field' => 'notify_url', 'title' => Yii::t('pay', 'Notify Url'),"dataType"=>'url',"style"=>'width: 200px'],
-            ['field' => 'return_url', 'title' => Yii::t('pay', 'Return Url'),"dataType"=>'url',"style"=>'width: 200px'],
-            ['field' => 'status', 'title' => Yii::t('pay', 'Status'),"formatter"=>'status',"style"=>'width: 60px','statusList'=>['未支付','支付成功']],
-            ['field' => 'created_at', 'title' => Yii::t('pay', 'Created At'),"dataType"=>'timeStamp',"style"=>'width: 130px'],
-            ['field' => 'updated_at', 'title' => Yii::t('pay', 'Updated At'),"dataType"=>'timeStamp',"style"=>'width: 130px'],
+            ['field' => 'id', 'title' => Yii::t('pay', 'ID'),],
+            ['field' => 'pal_type', 'title' => Yii::t('pay', 'Pal Type')],
+            ['field' => 'user_id', 'title' => Yii::t('pay', 'User ID')],
+            ['field' => 'order_id', 'title' => Yii::t('pay', 'Order ID')],
+            ['field' => 'subject', 'title' => Yii::t('pay', 'Subject')],
+            ['field' => 'total_amount', 'title' => Yii::t('pay', 'Total Amount')],
+            ['field' => 'receipt_amount', 'title' => Yii::t('pay', 'Receipt Amount')],
+            ['field' => 'trade_no', 'title' => Yii::t('pay', 'Trade No')],
+            ['field' => 'notify_number', 'title' => Yii::t('pay', 'Notify Number')],
+            ['field' => 'notify_url', 'title' => Yii::t('pay', 'Notify Url'),"dataType"=>'url'],
+            ['field' => 'return_url', 'title' => Yii::t('pay', 'Return Url'),"dataType"=>'url'],
+            ['field' => 'status', 'title' => Yii::t('pay', 'Status'),"formatter"=>'status','statusList'=>['未支付','支付成功']],
+            ['field' => 'created_at', 'title' => Yii::t('pay', 'Created At'),"dataType"=>'timeStamp'],
+            ['field' => 'updated_at', 'title' => Yii::t('pay', 'Updated At'),"dataType"=>'timeStamp'],
         ];
     }
 

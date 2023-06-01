@@ -2,11 +2,7 @@
   "name": "shiguangxiaotou/wordpress",
   "description": "这是一个基于Yii2的MVC的wordpress插件",
   "keywords": [
-    "wprdpress",
-    "yii2",
-    "plugins",
-    "MVC",
-    "project template"
+    "wprdpress", "yii2", "plugins", "MVC", "project template"
   ],
   "homepage": "http://www.shiguangxiaotou.com",
   "type": "project",
@@ -27,7 +23,6 @@
     "microsoft/bingads": "^13.0",
     "qiniu/php-sdk": "^7.8",
     "aliyuncs/oss-sdk-php": "^2.6",
-    "orhanerday/open-ai": "^3.4",
     "wechatpay/wechatpay": "^1.4",
     "alibabacloud/dysmsapi-20170525": "2.0.23",
     "shiguangxiaotou/alipay": "dev-master",
@@ -54,7 +49,8 @@
   },
   "autoload": {
     "psr-4": {
-      "crud\\": "wp-content/plugins/crud/library/"
+      "crud\\": "wp-content/plugins/crud/library/",
+      "backend\\": "wp-content/plugins/crud/backend"
     }
   },
   "config": {
@@ -72,15 +68,16 @@
       "sudo mkdir -p wp-content/uploads/runtime",
       "sudo chmod -R 777 wp-content/uploads/runtime",
       "sudo mkdir -p wp-content/plugins/crud/vendor/bower-asset",
-      "sudo mkdir -p wp-content/plugins/crud/vendor/npm-asset",
-      "bower install chart.js#^1.1.1",
-      "bower install jquery#^3.6.4",
-      "bower install vue#^2.7.14",
-      "bower install ace-builds#^1.15.3",
-      "bower install vuedraggable#^2.24.3",
-      "bower install echarts#^5.4.1",
-      "bower install git://github.com/shiguangxiaotou3/jvectormap-maps-data.git",
-      "bower install git://github.com/shiguangxiaotou3/webslides.git"
+      "sudo bower install jquery#^3.6.4 --allow-root --verbose",
+      "sudo bower install Chart.js#^1.1.1 --allow-root --verbose",
+      "sudo bower install git://github.com/vuejs/vue.git#^2.7.14 --allow-root --verbose",
+      "sudo bower install git://github.com/ajaxorg/ace-builds.git#^1.15.3 --allow-root --verbose",
+      "sudo bower install git://github.com/apache/echarts.git#^5.4.1 --allow-root --verbose",
+      "sudo bower install git://github.com/SortableJS/Sortable.git --allow-root --verbose",
+      "sudo bower install git://github.com/SortableJS/Vue.Draggable.git --allow-root --verbose",
+      "sudo bower install git://github.com/exceljs/exceljs.git#^4.3.0 --allow-root --verbose",
+      "sudo bower install git://github.com/shiguangxiaotou3/jvectormap-maps-data.git --allow-root --verbose",
+      "sudo bower install git://github.com/shiguangxiaotou3/webslides.git --allow-root --verbose"
     ],
     "pre-update-cmd":[],
     "post-update-cmd":[],

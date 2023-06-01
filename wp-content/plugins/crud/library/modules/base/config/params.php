@@ -76,12 +76,19 @@ return [
             "menu_title" =>"编辑器",
             "menu_slug" => "base/index/editor",
         ],
+
         [
             "parent_slug" => "base/index",
-            "page_title" => "Icons",
-            "menu_title" => "Icons",
-            "menu_slug" => "base/index/icons",
-        ]
+            "page_title" => "文件验证",
+            "menu_title" => "文件验证",
+            "menu_slug" => "base/index/mapping",
+        ],
+        [
+            "parent_slug" => "base/index",
+            "page_title" => "电影",
+            "menu_title" => "电影",
+            "menu_slug" => "base/index/movie",
+        ],
     ],
     'settings' => [
         "switch" => [

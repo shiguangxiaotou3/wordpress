@@ -5,6 +5,12 @@ Vue.component("crud-tablenav-pages", {
      <slot name="buttons"></slot>
     <div class="tablenav-pages">
         <span class="displaying-num">{{total}}个记录</span>
+        <select  class="tablenav-pages-navspan button" v-model="size"  @change="selectChange">
+                <option  value="10">10</option>
+                <option v-if="total>=15" value="15">15</option>
+                <option v-if="total>=20" value="20">20</option>
+                <option  :value="total">All</option>
+        </select>
         <span class="pagination-links">
             <button :class="'tablenav-pages-navspan button ' + ((index > 1) ? '' : 'disabled')"  @click="index=1">«</button>
             <button :class="'tablenav-pages-navspan button ' + ((index > 1) ? '' : 'disabled')"  @click="previous">‹</button>
@@ -20,7 +26,8 @@ Vue.component("crud-tablenav-pages", {
 </div>`,
     data(){
         return {
-            index:this.page
+            index:this.page,
+            size:this.pageSize
         }
     },
     props: {
@@ -36,10 +43,6 @@ Vue.component("crud-tablenav-pages", {
             type: Number,
             default: 0
         },
-        // buttons:{
-        //     type:Array,
-        //     default: 0
-        // }
     },
     watch:{
         page(value){
@@ -78,6 +81,12 @@ Vue.component("crud-tablenav-pages", {
             if(value && value<= this.pageSum){
                 this.index = value ;
             }
+        },
+        selectChange(){
+            console.log('bav')
+            this.$emit('sizeChange', this.size)
         }
+    },
+    mounted(){
     }
 });

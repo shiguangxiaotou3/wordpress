@@ -5,6 +5,7 @@ use yii\web\View;
 use yii\base\Widget;
 use yii\helpers\Html;
 use crud\assets\HighlightAsset;
+
 /**
  * Class PreCodeWidget
  * @package crud\common\widgets

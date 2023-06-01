@@ -3,6 +3,7 @@
 namespace crud\models\wp;
 
 use Yii;
+
 /**
  * This is the model class for table "wp_usermeta".
  *

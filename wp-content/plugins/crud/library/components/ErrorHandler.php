@@ -5,6 +5,7 @@ use Yii;
 use yii\web\Response;
 use yii\base\UserException;
 use yii\web\ErrorHandler as BaseErrorHandler;
+
 /**
  * 重写yii Deubg页面
  * @package crud\components
@@ -22,7 +23,7 @@ class ErrorHandler extends BaseErrorHandler
             $response->data = null;
             $response->content = null;
         } else {
-            $response = new Response();
+            $response = new crud\components\Response();
         }
 
         $response->setStatusCodeByException($exception);

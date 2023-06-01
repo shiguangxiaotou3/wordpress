@@ -40,3 +40,7 @@ fi
 if [ "$functionName" = "Permission" ]; then
  Permission
 fi
+
+if [ "$functionName" = "mysqldump" ]; then
+ mysqldump
+fi

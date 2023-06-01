@@ -2,7 +2,6 @@
 namespace crud\modules\pay\controllers;
 
 use crud\controllers\AjaxController;
-
 class OrderController extends AjaxController
 {
 

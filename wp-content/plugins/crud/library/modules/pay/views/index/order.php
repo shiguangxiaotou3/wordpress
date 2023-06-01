@@ -4,7 +4,7 @@
 /** @var $url string */
 /** @var $token  */
 /** @var $code  */
-use crud\Base;
+
 use crud\widgets\PageHeaderWidget;
 use crud\assets\EchartAsset;
 use crud\assets\VueAsset;

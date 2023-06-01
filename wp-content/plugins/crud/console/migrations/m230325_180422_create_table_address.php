@@ -34,6 +34,9 @@ class m230325_180422_create_table_address extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB COMMENT="地址表"';
         }
 
+        if ($this->tableExists('{{%address}}')){
+            $this->dropTable('{{%address}}');
+        }
         $this->createTable('{{%address}}', [
             'id' => $this->primaryKey(),
             'user_id'=>$this->integer(5)->defaultValue(null)->comment('用户id'),
@@ -52,9 +55,15 @@ class m230325_180422_create_table_address extends Migration
 
     public function down()
     {
+        $this->dropTable('{{%address}}');
         echo "m230325_180422_create_table_address cannot be reverted.\n";
 
         return false;
+    }
+
+    public function tableExists($tableName){
+        $tableSchema = \Yii::$app->db->schema->getTableSchema($tableName);
+        return ($tableSchema !== null);
     }
 
 }

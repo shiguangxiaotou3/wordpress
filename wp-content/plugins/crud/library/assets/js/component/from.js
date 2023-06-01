@@ -1,18 +1,18 @@
 Vue.component("crud-from", {
     template: `
 <form :id="tableName" method="post" :action="submitUrl">
-  <table class="form-table" role="presentation">
-      <tbody v-for="(field,index) in columns" v-if="display(field.field)">
-          <tr>
+  <table class="form-table" role="presentation" v-show="is_show">
+      <tbody v-for="(field,index) in columns" >
+          <tr v-if="display(field.field)">
               <th scope="row">{{field.title}}</th>
               <td>
-                   <input 
+                   <crud-input-text
                     type="text"
-                    class="regular-text code" 
+                    input-class="regular-text code" 
                     :disabled="disabled(field.field)" 
                     :id="tableName +'_' + field.field" 
                     :name="tableName + '[' + field.field + ']' " 
-                    :value="fieldValue(field)">
+                    :value="fieldValue(field)" />
                    <p v-if="field.error == true" style="color: #cc0000" v-html="field.message"></p>
               </td>
           </tr>
@@ -22,6 +22,7 @@ Vue.component("crud-from", {
 `,
     data(){
         return {
+            is_show:true,
         }
     },
     props:{
@@ -44,6 +45,20 @@ Vue.component("crud-from", {
         actionType:{
             type:String,
             default:'add'
+        },
+        test:{
+            type:String,
+            default:'add'
+        }
+
+    },
+    watch: {
+        row(){
+            if(this.actionType =="add"){
+                this.is_show = true;
+            }else{
+                this.is_show = Object.keys(this.row).length ==0 ? false :true
+            }
         }
     },
     computed: {
@@ -59,6 +74,7 @@ Vue.component("crud-from", {
                 return (this.row)[field.field] || ''
             }
         },
+        //隐藏字段
         display(field){
             let displayFields =['id','ID','created_at','updated_at'];
             if(this.actionType =='add'){
@@ -69,13 +85,19 @@ Vue.component("crud-from", {
             return true;
         },
         disabled(field){
-            let displayFields =['id','ID'];
-            if(this.actionType =='edit'){
+            if(this.actionType =="view"){
+                return true;
+            }else if(this.actionType == "edit"){
+                let displayFields =['id','ID'];
                 if(displayFields.indexOf(field) !=-1){
                     return true
                 }
+            }else{
+                return false
             }
-            return false
+
         }
+    },
+    mounted(){
     }
 });

@@ -6,11 +6,11 @@ use yii\base\Component;
 use Microsoft\BingAds\Auth\OAuthScope;
 use Microsoft\BingAds\Auth\ServiceClient;
 use Microsoft\BingAds\Auth\ApiEnvironment;
-use Microsoft\BingAds\Auth\AuthorizationData;
 use Microsoft\BingAds\Auth\ServiceClientType;
+use Microsoft\BingAds\Auth\AuthorizationData;
 use Microsoft\BingAds\Auth\OAuthTokenRequestException;
-use Microsoft\BingAds\Auth\OAuthDesktopMobileAuthCodeGrant;
 use Microsoft\BingAds\V13\CampaignManagement\AddAdsRequest;
+use Microsoft\BingAds\Auth\OAuthDesktopMobileAuthCodeGrant;
 use Microsoft\BingAds\V13\CustomerManagement\GetUserRequest;
 use Microsoft\BingAds\V13\CampaignManagement\UpdateAdsRequest;
 use Microsoft\BingAds\V13\CampaignManagement\AdEditorialStatus;
@@ -27,6 +27,7 @@ use Microsoft\BingAds\V13\CustomerManagement\GetCustomersInfoRequest;
 use Microsoft\BingAds\V13\CampaignManagement\GetAdsByAdGroupIdRequest;
 use Microsoft\BingAds\V13\CampaignManagement\GetKeywordsByAdGroupIdRequest;
 use Microsoft\BingAds\V13\CampaignManagement\GetBMCStoresByCustomerIdRequest;
+
 /**
  * Class Ads
  * @property-read OAuthDesktopMobileAuthCodeGrant $authentication

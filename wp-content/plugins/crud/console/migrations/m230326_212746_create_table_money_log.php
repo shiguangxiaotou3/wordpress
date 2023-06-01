@@ -33,6 +33,9 @@ class m230326_212746_create_table_money_log extends Migration
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB COMMENT="金额表"';
         }
+        if($this->tableExists('{{%money}}')){
+            $this->dropTable('{{%money}}');
+        }
 
         $this->createTable('{{%money}}', [
             'id' => $this->primaryKey(),
@@ -48,9 +51,15 @@ class m230326_212746_create_table_money_log extends Migration
 
     public function down()
     {
+        $this->dropTable('{{%money}}');
         echo "m230326_212746_create_table_money_log cannot be reverted.\n";
 
         return false;
+    }
+
+    public function tableExists($tableName){
+        $tableSchema = \Yii::$app->db->schema->getTableSchema($tableName);
+        return ($tableSchema !== null);
     }
 
 }

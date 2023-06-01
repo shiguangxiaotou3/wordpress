@@ -3,7 +3,6 @@ namespace crud\modules\wechat\controllers\api;
 
 use Yii;
 use yii\web\Controller;
-
 class MailController extends Controller
 {
     /**

@@ -8,7 +8,7 @@ use yii\web\Application;
 use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
-
+use yii\base\InvalidRouteException;
 class Pay extends Module implements BootstrapInterface
 {
     /**
@@ -44,8 +44,9 @@ class Pay extends Module implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app instanceof Application) {
-            add_action("init", [$this, "registerAjax"]);
-            add_action("rest_api_init", [$this, "registerApi"]);
+            add_action("init", [$this->_ajax, "registerAjax"]);
+            add_action("rest_api_init", [$this->_api, "registerApi"]);
+            $this->_frontendPage->registerFrontendRule($this->id,$this->id,'');
 
         }
     }
@@ -81,4 +82,14 @@ class Pay extends Module implements BootstrapInterface
     {
         App::addApi($this->id);
     }
+
+    /**
+     * 显示前台页面
+     * @throws InvalidRouteException
+     */
+    public function templateRedirect()
+    {
+        Yii::$app->templateRedirect($this->id,'frontend');
+    }
+
 }

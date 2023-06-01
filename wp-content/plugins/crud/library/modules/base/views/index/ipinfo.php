@@ -44,6 +44,7 @@ foreach ($visits as $key => $re) {
             settings_fields("crud_group_ipinfo");
             do_settings_sections("base/index/ipinfo");
             submit_button();
+            dump($visits);
             ?>
         </form>
         <hr style="width: 100%;"/>

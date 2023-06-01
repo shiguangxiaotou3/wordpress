@@ -3,6 +3,7 @@
 namespace crud\modules\market\models;
 
 use Yii;
+
 /**
  * This is the model class for table "wp_commodity".
  *
@@ -13,7 +14,7 @@ use Yii;
  * @property int|null $commodity_color 颜色
  * @property string|null $commodity_storage 存储大小
  * @property string|null $commodity_describe 描述
- * @property string|null $commoditye_image 图片
+ * @property string|null $commodity_image 图片
  * @property string|null $commodity_keyword 关键词
  * @property string|null $remarks 备注
  * @property int|null $created_at 创建时间
@@ -36,7 +37,7 @@ class Commodity extends \yii\db\ActiveRecord
     {
         return [
             [['categorize_id', 'commodity_color', 'created_at', 'updated_at'], 'integer'],
-            [['commodity_name', 'commodity_type', 'commodity_storage', 'commodity_describe', 'commoditye_image', 'commodity_keyword', 'remarks'], 'string', 'max' => 255],
+            [['commodity_name', 'commodity_type', 'commodity_storage', 'commodity_describe', 'commodity_image', 'commodity_keyword', 'remarks'], 'string', 'max' => 255],
         ];
     }
 
@@ -53,7 +54,7 @@ class Commodity extends \yii\db\ActiveRecord
             'commodity_color' => Yii::t('market', 'Commodity Color'),
             'commodity_storage' => Yii::t('market', 'Commodity Storage'),
             'commodity_describe' => Yii::t('market', 'Commodity Describe'),
-            'commoditye_image' => Yii::t('market', 'Commoditye Image'),
+            'commodity_image' => Yii::t('market', 'Commoditye Image'),
             'commodity_keyword' => Yii::t('market', 'Commodity Keyword'),
             'remarks' => Yii::t('market', 'Remarks'),
             'created_at' => Yii::t('market', 'Created At'),
@@ -73,7 +74,7 @@ class Commodity extends \yii\db\ActiveRecord
             ['field' =>'commodity_color', 'title' => Yii::t('market', 'Commodity Color')],
             ['field' =>'commodity_storage', 'title' => Yii::t('market', 'Commodity Storage')],
             ['field' =>'commodity_describe', 'title' => Yii::t('market', 'Commodity Describe')],
-            ['field' =>'commoditye_image', 'title' => Yii::t('market', 'Commoditye Image')],
+            ['field' =>'commodity_image', 'title' => Yii::t('market', 'Commoditye Image')],
             ['field' =>'commodity_keyword', 'title' => Yii::t('market', 'Commodity Keyword')],
             ['field' =>'remarks', 'title' => Yii::t('market', 'Remarks')],
             ['field' => 'created_at', 'title' => Yii::t('market', 'Created At'),"dataType"=>'timeStamp',"style"=>'width: 130px'],

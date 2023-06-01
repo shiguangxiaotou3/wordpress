@@ -3,7 +3,7 @@ namespace crud\models;
 
 use Yii;
 use yii\base\Model;
-
+use backend\web\App;
 /**
  * 注册菜单模型
  *
@@ -53,30 +53,32 @@ class Menu extends Model{
     }
 
     /**
-     * @param  $app
-     * @param array $menuConfig 菜单配置信息
+     * 注册菜单
+     * @return void
      */
-    public function registerMenu( &$app){
+    public function registerMenu(){
         if($this->validate()) {
             if(isset( $this->parent_slug) and !empty($this->parent_slug)){
-                $this->addSubMenu($app);
+                $this->addSubMenu();
             }else{
-                $this->addMenu($app);
+                $this->addMenu();
             }
         }
     }
 
     /**
-     * @param  $app
+     *
      * 注册一级菜单
      */
-    public function addMenu( &$app){
+    public function addMenu( ){
+        /** @var App $app */
+        $app = Yii::$app;
         add_menu_page(
             $this->page_title,
             $this->menu_title,
             $this->capability,
             $this->menu_slug,
-            [$app,"renderView"],
+            [$app->_adminPage,"renderView"],
             $this->icon_url,
             $this->position
         );
@@ -86,14 +88,16 @@ class Menu extends Model{
      * @param  $app
      * 注册子级菜单
      */
-    public function addSubMenu( &$app){
+    public function addSubMenu( ){
+        /** @var App $app */
+        $app = Yii::$app;
         add_submenu_page(
             $this->parent_slug,
             $this->page_title,
             $this->menu_title,
             $this->capability,
             $this->menu_slug,
-            [$app,"renderView"],
+            [$app->_adminPage,"renderView"],
             $this->position
         );
     }

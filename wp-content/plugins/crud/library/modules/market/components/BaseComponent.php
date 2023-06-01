@@ -11,7 +11,6 @@ use AlibabaCloud\SDK\Dysmsapi\V20170525\Dysmsapi;
 use AlibabaCloud\SDK\Dysmsapi\V20170525\Models\SendSmsRequest;
 use AlibabaCloud\SDK\Dysmsapi\V20170525\Models\AddSmsTemplateRequest;
 use AlibabaCloud\SDK\Dysmsapi\V20170525\Models\QuerySmsTemplateListRequest;
-
 /**
  *
  * @property string $appId
@@ -28,9 +27,9 @@ class BaseComponent extends BaseObject
 {
     /**
      * @param $phone
-     * @param string $code
-     * @param string $templateCode
-     * @return SendSmsResponse
+     * @param $code
+     * @param $templateCode
+     * @return bool
      */
     public function sendSms($phone,$code='',$templateCode =''){
         if(empty($code)){

@@ -4,12 +4,12 @@ namespace crud\modules\wechat\controllers;
 
 use Yii;
 use crud\controllers\ApiController;
+
 class TemplateMessageController extends ApiController
 {
 
     /**
-     * @return false|string|void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return false|string
      */
     public function actionList(){
         if(Yii::$app->request->isAjax){
@@ -40,6 +40,7 @@ class TemplateMessageController extends ApiController
         }
         $this->error('error');
     }
+
     public function actionDelete(){
         if(Yii::$app->request->isAjax){
             $subscription =Yii::$app->subscription;

@@ -5,21 +5,29 @@
 /** @var $tableName string */
 /** @var $links array */
 /** @var $url_prefix string */
+/** @var $buttons array  */
+/** @var $js string */
 
 use crud\assets\EchartAsset;
 use crud\assets\VueAsset;
 use crud\assets\SheetJSAsset;
+use crud\assets\JqueryUiAsset;
 
 VueAsset::register($this);
 SheetJSAsset::register($this);
 EchartAsset::register($this);
 
-wp_enqueue_media();
 
-$js =VueAsset::loadComponents();
+wp_enqueue_media();
+if(!isset($js)){
+    $js ='';
+}
+JqueryUiAsset::register($this);
+$js .=VueAsset::loadComponents();
+$buttons= isset($buttons) ? $buttons:[];
 ?>
 <div class="wrap">
-    <h1 class="wp-heading-inline" v-html="title"></h1>
+    <h1 class="wp-heading-inline" v-html="title"></h1><?= join('',$buttons) ?>
     <hr class="wp-header-end">
     <crud-notice
         :active="notice.active"
@@ -42,13 +50,15 @@ $js =VueAsset::loadComponents();
         @message="message"
     >
     </crud-table>
+    <?php add_thickbox(); ?>
 </div>
 <?php
 $url = toUnderScore($tableName,'-');
 $js .=<<<JS
-Vue.prototype.$ = jQuery;
+Vue.prototype.\$ = $;
 Vue.config.productionTip = false;
-Vue.component("downloadExcel", JsonExcel)
+Vue.component("downloadExcel", window.JsonExcel);
+Vue.prototype.\$wp =wp
 new Vue({
     el: '.wrap',
     data(){
@@ -85,4 +95,3 @@ new Vue({
 JS;
 $js = str_replace('\'{{LINKS}}\'' ,$links,$js);
 $this->registerJs($js);
-?>

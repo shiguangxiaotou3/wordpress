@@ -8,7 +8,7 @@ class SheetJSAsset extends AppAsset {
     public $css = [];
     public $js = [
 //        'https://cdn.jsdelivr.net/npm/vue-json-excel/dist/vue-json-excel.cjs.js',
-        'vue-json-excel.cjs.js'
+        'vue-json-excel.umd.js'
     ];
     public $jsOptions=[];
     public $depends = [];

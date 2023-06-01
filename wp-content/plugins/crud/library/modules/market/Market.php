@@ -7,7 +7,6 @@ use yii\web\Application;
 use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
-
 class Market extends Module implements BootstrapInterface
 {
     /**

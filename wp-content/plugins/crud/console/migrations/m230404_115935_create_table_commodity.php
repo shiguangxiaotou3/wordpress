@@ -33,7 +33,19 @@ class m230404_115935_create_table_commodity extends Migration
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB COMMENT="商品表"';
         }
-        $this->dropTable('{{%categorize}}');
+        if($this->tableExists('{{%categorize}}')){
+            $this->dropTable('{{%categorize}}');
+        }
+        if($this->tableExists('{{%categorize_price}}')){
+            $this->dropTable('{{%categorize_price}}');
+        }
+        if($this->tableExists('{{%storehouse}}')){
+            $this->dropTable('{{%storehouse}}');
+        }
+        if($this->tableExists('{{%express}}')){
+            $this->dropTable('{{%express}}');
+        }
+
         $this->createTable('{{%categorize}}', [
             'id' => $this->primaryKey(),
             'categorize_id'=>$this->integer(5)->defaultValue(null)->comment('分类id'),
@@ -97,9 +109,19 @@ class m230404_115935_create_table_commodity extends Migration
 
     public function down()
     {
+        $this->dropTable('{{%categorize}}');
+        $this->dropTable('{{%categorize_price}}');
+        $this->dropTable('{{%storehouse}}');
+        $this->dropTable('{{%express}}');
         echo "m230404_115935_create_table_commodity cannot be reverted.\n";
 
         return false;
     }
+
+    public function tableExists($tableName){
+        $tableSchema = \Yii::$app->db->schema->getTableSchema($tableName);
+        return ($tableSchema !== null);
+    }
+
 
 }

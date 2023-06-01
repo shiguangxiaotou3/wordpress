@@ -8,7 +8,7 @@ use yii\web\Application;
 use crud\models\AjaxAction;
 use yii\helpers\ArrayHelper;
 use yii\base\BootstrapInterface;
-
+use yii\base\InvalidRouteException;
 class Wechat extends Module implements BootstrapInterface
 {
     /**
@@ -48,9 +48,9 @@ class Wechat extends Module implements BootstrapInterface
 //            // +----------------------------------------------------------------------
 //            // ｜微信公众号
 //            // +----------------------------------------------------------------------
-            add_action("rest_api_init", [$this, "registerApi"]);
-            add_action("init", [$this, "registerAjax"]);
-            Yii::$app->route($this->id,'wechat','wechat');
+            add_action("rest_api_init", [$this->_api, "registerApi"]);
+            add_action("init", [$this->_ajax, "registerAjax"]);
+            $this->_frontendPage->registerFrontendRule($this->id,$this->id,'');
         }
     }
 
@@ -73,6 +73,10 @@ class Wechat extends Module implements BootstrapInterface
        App::addRestfulApi($this->id);
     }
 
+    /**
+     * @return void
+     * @throws InvalidRouteException
+     */
     public function templateRedirect(){
         Yii::$app->templateRedirect($this->id);
     }
@@ -84,7 +88,10 @@ class Wechat extends Module implements BootstrapInterface
             ['menu_slug'=>'wechat/menu/delete-menu'],
             ['menu_slug'=>'wechat/template-message/list'],
             ['menu_slug'=>'wechat/template-message/send'],
-            ['menu_slug'=>'wechat/template-message/delete']
+            ['menu_slug'=>'wechat/template-message/delete'],
+            ['menu_slug'=>'wechat/action/access-token'],
+            ['menu_slug'=>'wechat/action/ticket'],
+            ['menu_slug'=>'wechat/action/cache'],
         ];
         $controller =[
             'wechat-message'

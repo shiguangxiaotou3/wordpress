@@ -34,6 +34,9 @@ class m230326_215322_create_table_categorize extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB COMMENT="分类表"';
         }
 
+        if($this->tableExists('{{%categorize}}')){
+            $this->dropTable('{{%categorize}}');
+        }
         $this->createTable('{{%categorize}}', [
             'id' => $this->primaryKey(),
             'categorize_id'=>$this->integer(5)->defaultValue(null)->comment('分类id'),
@@ -47,9 +50,15 @@ class m230326_215322_create_table_categorize extends Migration
 
     public function down()
     {
+        $this->dropTable('{{%categorize}}');
         echo "m230326_215322_create_table_categorize cannot be reverted.\n";
 
         return false;
+    }
+
+    public function tableExists($tableName){
+        $tableSchema = \Yii::$app->db->schema->getTableSchema($tableName);
+        return ($tableSchema !== null);
     }
 
 }

@@ -5,6 +5,7 @@ namespace crud\modules\market\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+
 /**
  * This is the model class for table "wp_address".
  *
@@ -57,7 +58,7 @@ class Address extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'created_at', 'updated_at'], 'integer'],
-            [['username'], 'string', 'max' => 5],
+            [['username'], 'string', 'max' => 8],
             [['phone'], 'string', 'max' => 11],
             [['province', 'city', 'district', 'address_info'], 'string', 'max' => 255],
             [['address_type', 'status'], 'string', 'max' => 1],

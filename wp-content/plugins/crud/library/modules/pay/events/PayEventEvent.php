@@ -3,7 +3,6 @@ namespace crud\modules\pay\events;
 
 use yii\base\Event;
 use crud\modules\pay\models\Order;
-
 class PayEvent extends Event
 {
 

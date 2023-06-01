@@ -2,7 +2,6 @@
 namespace crud\models;
 
 use yii\base\Model;
-
 /**
  * Class Pages
  *

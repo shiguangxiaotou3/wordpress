@@ -3,6 +3,7 @@
 namespace crud\modules\market\models;
 
 use Yii;
+
 /**
  * This is the model class for table "wp_commodity_price".
  *

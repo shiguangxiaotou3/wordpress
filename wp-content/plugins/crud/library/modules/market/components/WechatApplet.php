@@ -5,11 +5,11 @@ use Yii;
 use Exception;
 use yii\base\BaseObject;
 use crud\components\Http;
-use GuzzleHttp\Exception\GuzzleException;
+
 /**
  * Class WechatApplet
  * @property-read string $accessToken
- * @property-read crud\components\Http $client
+ * @property-read Http $client
  * @package crud\modules\market\components
  */
 class WechatApplet extends BaseObject

@@ -36,9 +36,15 @@ class m230424_130048_add_column_table_reflect extends Migration
 
     public function down()
     {
+        $this->dropColumn('{{%pay_reflect}}','pay_type');
         echo "m230424_130048_add_column_table_reflect cannot be reverted.\n";
 
         return false;
     }
+
+    
+    
+    
+
 
 }

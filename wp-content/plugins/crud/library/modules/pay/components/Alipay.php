@@ -6,8 +6,8 @@ use Exception;
 use SimpleXMLElement;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
-use crud\modules\pay\events\PayEvent;
 use shiguangxiaotou\alipay\AopClient;
+use crud\modules\pay\events\PayEvent;
 use shiguangxiaotou\alipay\AlipayConfig;
 use shiguangxiaotou\alipay\AopCertClient;
 use crud\modules\pay\behaviors\PayBehavior;
@@ -19,7 +19,6 @@ use shiguangxiaotou\alipay\request\AlipayTradePagePayRequest;
 use shiguangxiaotou\alipay\request\AlipayFundTransUniTransferRequest;
 use shiguangxiaotou\alipay\request\AlipayTradeFastpayRefundQueryRequest;
 use shiguangxiaotou\alipay\request\AlipayDataDataserviceBillDownloadurlQueryRequest;
-
 /**
  * Class Alipay
  *
@@ -376,7 +375,7 @@ class Alipay extends Component implements Pay
      * @param string $notifyUrl
      * @param string $returnUrl
      * @param array $options
-     * @return 提交表单HTML文本|构建好的、签名后的最终跳转URL（GET）或String形式的form（POST）|string
+     * @return string
      * @throws Exception
      */
     public function submitWap($orderId, $subject, $money, $notifyUrl='', $returnUrl='',  $options=[]){

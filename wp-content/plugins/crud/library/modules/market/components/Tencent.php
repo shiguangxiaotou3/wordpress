@@ -3,7 +3,6 @@ namespace crud\modules\market\components;
 
 use Yii;
 use yii\base\BaseObject;
-
 /**
  * Class Tencent
  * @property \crud\modules\pay\components\WechatPay $pay 微信支付
@@ -14,10 +13,10 @@ use yii\base\BaseObject;
 class Tencent extends BaseObject
 {
     /**
-     * @return crud\modules\pay\components\WechatPay
+     * @return mixed|object|null
      */
     public function getPay(){
-        return Yii::$app->wechatpay;
+        return Yii::$app->wechatPay;
     }
 
     /**

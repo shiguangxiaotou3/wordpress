@@ -21,24 +21,52 @@ if ($handle = opendir($path)) {
 <div class="wrap">
     <?= PageHeaderWidget::widget() ?>
     <div class="settings-content" id="app">
-        <content-phone></content-phone>
-        <content-settings></content-settings>
+        <content-phone  @dragenter="dragenter" @create="create"></content-phone>
+        <content-settings @dragstart="dragstart" @create="create"></content-settings>
     </div>
 </div>
 
 <?php
-
-
 $js .=<<<JS
 const app2 = new Vue({
   el: '#app',
-  data: {},
+  data: {
+      options:''
+  },
   //监听
   watch: {},
   //计算属性
   computed: {},
   //方法
-  methods: {},
+  methods: {
+    dragenter(e){
+      console.log('父 进入')
+      console.log(this.options)
+      return  this.options;
+    },
+    dragstart(e){
+        console.log('父 开始拖拽')
+        console.log(e)
+       this.options =e
+    },
+    create(event){
+        console.log(this.\$refs.content);
+        event.preventDefault()
+     const el = new Vue({
+        render: h => h(this.options.tag, {
+          attrs: this.options.tag,
+          on: {
+            // click: () => console.log('clicked'),
+            // dragstart:this.dragstart,
+            // mouseover: this.myMouseover,
+            // mouseleave: this.myMouseleave
+          }
+        }, '这是一个测试元素')
+      });
+      el.\$mount();
+      this.\$refs.content.appendChild(el.\$el);
+    }
+  },
   //生命周期 - 创建完成
   created() { },
   //生命周期 - 挂载完成

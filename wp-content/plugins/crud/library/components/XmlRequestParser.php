@@ -5,7 +5,6 @@ use yii\helpers\Xml;
 use SimpleXMLElement;
 use yii\web\RequestParserInterface;
 use yii\web\BadRequestHttpException;
-
 /**
  * Class XmlRequestParser
  * @package crud\components

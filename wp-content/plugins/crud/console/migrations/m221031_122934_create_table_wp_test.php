@@ -40,4 +40,9 @@ class m221031_122934_create_table_wp_test extends Migration
     }
     */
 
+    public function tableExists($tableName){
+        $tableSchema = \Yii::$app->db->schema->getTableSchema($tableName);
+        return ($tableSchema !== null);
+    }
+
 }

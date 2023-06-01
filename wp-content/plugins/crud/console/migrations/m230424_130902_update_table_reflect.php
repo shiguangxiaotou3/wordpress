@@ -29,7 +29,10 @@ class m230424_130902_update_table_reflect extends Migration
     // Use up()/down() to run migration code without a transaction.
     public function up()
     {
-        $this->dropTable('{{%pay_reflect}}');
+        if($this->tableExists('{{%pay_reflect}}')){
+            $this->dropTable('{{%pay_reflect}}');
+        }
+//        $this->dropTable('{{%pay_reflect}}');
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB COMMENT="提现申请"';
@@ -52,9 +55,16 @@ class m230424_130902_update_table_reflect extends Migration
 
     public function down()
     {
+        $this->dropTable('{{%pay_reflect}}');
         echo "m230424_130902_update_table_reflect cannot be reverted.\n";
 
         return false;
     }
+
+    public function tableExists($tableName){
+        $tableSchema = \Yii::$app->db->schema->getTableSchema($tableName);
+        return ($tableSchema !== null);
+    }
+
 
 }

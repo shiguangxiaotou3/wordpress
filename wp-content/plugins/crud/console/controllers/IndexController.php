@@ -7,11 +7,9 @@ use Exception;
 use crud\models\Rely;
 use yii\helpers\Console;
 use yii\console\Controller;
-use crud\modules\wp\assets\WpAsset;
-use crud\modules\ads\components\Ads;
+
 use crud\modules\translate\components\GoogleTranslate;
 use crud\modules\translate\components\MicrosoftTranslate;
-use Shiguangxiaotou\Alipay\Request\AlipayTradePrecreateRequest;
 
 /**
  * 测试应用
@@ -19,16 +17,6 @@ use Shiguangxiaotou\Alipay\Request\AlipayTradePrecreateRequest;
 class IndexController extends Controller
 {
     public function actionTest(){
-        $arr =[];
-        for($i =1;$i<=11;$i++){
-            array_push($arr,Yii::$app->getSecurity()->generateRandomString(6));
-
-        }
-        print_r($arr);
-//        $PATH = ABSPATH."sms/设置.shortcut";
-////        echo ABSPATH;
-//        print_r(getFileFormat( $PATH ));
-////       echo Yii::getAlias("@crud");
     }
 
 
@@ -66,7 +54,8 @@ class IndexController extends Controller
      */
     public function actionDeleteDsStore(){
         $dir = dirname(__DIR__,5);
-        deleteDsStore($dir,[".DS_Store"]);
+        echo $dir;
+//        deleteDsStore($dir,[".DS_Store"]);
     }
 
     /**
@@ -336,7 +325,7 @@ class IndexController extends Controller
      */
     public function actionUseSort($basePath =""){
         if (empty($basePath)) {
-            $basePath = Yii::getAlias("@crud");
+            $basePath ="/Users/wanlong/web/wp/wp-content/plugins/crud/backend";// Yii::getAlias("@backend");
         }
         $handle = opendir($basePath);
         while (false !== ($file = readdir($handle))) {

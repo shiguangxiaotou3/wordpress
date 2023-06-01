@@ -1,8 +1,7 @@
 <?php
-namespace crud\modules\wechat\models;;
+namespace crud\modules\wechat\models;
 
 use yii\base\Model;
-
 /**
  * 开发者服务器验证模型
  * @property string $echostr;

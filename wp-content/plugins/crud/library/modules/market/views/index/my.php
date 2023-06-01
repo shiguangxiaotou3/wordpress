@@ -200,7 +200,6 @@ const app2 = new Vue({
                 url:'/wp-json/crud/api/market/index/my',
                 type: 'GET',  
                  success:(res)=>{
-                    console.log(res)
                     if(res.code ==1){
                         this.orderTypeLise = res.data.orderTypeLise;
                         this.severList = res.data.severList;

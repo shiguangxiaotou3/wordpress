@@ -4,7 +4,6 @@ namespace crud\modules\market\controllers;
 use Yii;
 use yii\web\Controller;
 use crud\components\Response;
-
 class IndexController extends Controller
 {
     /**
@@ -28,6 +27,7 @@ class IndexController extends Controller
     }
 
     public function actionMy(){
+
         $request = Yii::$app->request;
         if($request->isAjax){
             $orderTypeLise = $request->post('orderTypeLise');
@@ -54,19 +54,49 @@ class IndexController extends Controller
     public function actionPage(){
         $request = Yii::$app->request;
         if($request->isAjax){
-            $swiper = $request->post('swiper');
             Yii::$app->response->format = Response::FORMAT_JSON;
-            update_option('market_index_swiper',$swiper);
-            return json_encode(
-                [
-                    'code'=>1,
-                    'message'=>'Success',
-                    'time'=>time(),
-                    'data'=>[
-                        'swiper'=>$swiper,
+            if($request->isPost){
+                $swiper = $request->post('swiper','');
+                $notice = $request->post('notice','');
+                $course = $request->post('course','');
+                if(!empty($swiper)){
+                    update_option('market_index_swiper',$swiper);
+                }
+                if(!empty($notice)){
+                    update_option('market_index_notice',$notice);
+                }
+                if(!empty($course)){
+                    update_option('market_index_course',$course);
+                }
+                return json_encode(
+                    [
+                        'code'=>1,
+                        'message'=>'Success',
+                        'time'=>time(),
+                        'data'=>[
+                            'swiper'=>$swiper,
+                            'notice'=>$notice,
+                        ]
                     ]
-                ]
-            );
+                );
+            }
+            if($request->isGet){
+
+                $swiper=get_option('market_index_swiper',[]);
+                $notice= get_option('market_index_swiper',[]);
+                return json_encode(
+                    [
+                        'code'=>1,
+                        'message'=>'Success',
+                        'time'=>time(),
+                        'data'=>[
+                            'swiper'=>$swiper,
+                            'notice'=>$notice,
+                        ]
+                    ]
+                );
+            }
+
         }
         return  $this->render("page");
     }
@@ -122,6 +152,7 @@ class IndexController extends Controller
         ]);
     }
 
+
     /**
      * @return string
      */
@@ -172,6 +203,7 @@ class IndexController extends Controller
             ['url' => 'market/index/address', 'label' => '地址'],
             ['url' => 'market/index/money', 'label' => '余额管理'],
             ['url' => 'market/index/categorize', 'label' => '分类管理'],
+            ['url'=>'market/index/commodity','label' => '商品管理'],
             ['url' => 'market/index/commodity-price', 'label' => '商品价格管理'],
             ['url' => 'market/index/express', 'label' => '快递管理'],
             ['url' => 'market/index/storehouse', 'label' => '仓库管理'],
